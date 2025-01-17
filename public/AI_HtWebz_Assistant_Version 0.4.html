@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<link rel="shortcut icon" type="x-icon" href="../../Image_Assets/Tab_Icons/HtWebz_AI_Assistant_Icon.png">
+<head>
+    <title>HtWebz Assistant</title>
+    <style>
+        /* Your existing styles remain unchanged */
+        body {
+            font-family: Arial, sans-serif;
+            background: aquamarine;
+        }
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-track {
+            background: linear-gradient(cyan, aquamarine, cyan);
+            border-radius: 50px;
+        }
+        body::-webkit-scrollbar-thumb {
+            cursor: grab;
+            background: linear-gradient(aqua, rgb(8, 200, 200), darkcyan, rgb(8, 200, 200), aqua);
+            border-radius: 50px;
+        }
+        .return-to-homepage-button {
+            cursor: pointer;
+            position: relative;
+            border: 2px solid black;
+            border-radius: 10px;
+            background-color: red;
+            -webkit-user-select: none;
+            user-select: none;
+            padding-inline: 21%;
+            font-weight: bold;
+            font-size: 2em;
+            height: 60px;
+            color: rgb(139, 0, 0);
+            text-wrap-mode: nowrap;
+            box-shadow: 0 0 12.5px rgb(0, 0, 0);
+            -webkit-transition: all 0.15s ease-in-out;
+            transition: background-color 0.15s ease-in-out, color 0.35s ease-in-out, box-shadow 0.35s ease;
+        }
+        .return-to-homepage-button:hover {
+            background-color: rgb(168, 1, 1);
+            color: rgb(242, 114, 114);
+            box-shadow: 0 0 25px rgb(0, 0, 0);
+        }
+        .page-title {
+            margin-top: 14px;
+            -webkit-text-stroke: 2px darkcyan;
+            -webkit-text-fill-color: cyan;
+            -webkit-user-select: none;
+            user-select: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        /* Left conversation list */
+        #conversation-list {
+            flex: 1;
+            max-width: 250px;
+            margin-right: 20px;
+            background: lightblue;
+            border: 4px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            height: 428.5px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .conversation-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .conversation-item:hover {
+            background-color: lightgray;
+        }
+
+        .conversation-item .buttons {
+            margin-left: auto;
+            display: flex;
+            gap: 5px;
+        }
+
+        .notepad-icon {
+            font-size: 24px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 4.5px;
+            border-bottom-left-radius: 4.5px;
+            border-bottom-right-radius: 10px;
+            background: repeating-linear-gradient(aquamarine, cyan, skyblue);
+            padding: 3.5px;
+        }
+        .notepad-image-text {
+            position: relative;
+            margin-left: 2.5px;
+            box-sizing: border-box;
+            width: fit-content;
+            height: fit-content;
+            border: 1px dotted #ccc;
+            border-radius: 3px;
+            background: radial-gradient(aqua, aquamarine);
+            flex: 3;
+        }
+
+        /*.deletion-button, .load-button {
+            cursor: pointer;
+            border: 1px solid #000;
+            padding: 2px 5px;
+            background-color: lightcoral;
+            color: white;
+            border-radius: 5px;
+        }*/
+
+        /* Chatbox styles */
+        #chat-box {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            background: cornflowerblue;
+            border: 4px solid #ccc;
+            border-radius: 10px;
+            scroll-padding-right: 5px;
+            padding: 10px;
+            width: 635px;
+            height: 400px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+            text-wrap: stable;
+            -webkit-text-wrap-mode: auto;
+            text-wrap-mode: auto;
+            box-shadow: 0 5.25px 11.5px rgba(0, 0, 0, 0.5);
+        }
+        #chat-box::-webkit-scrollbar {
+            width: 11.5px;
+        }
+        #chat-box::-webkit-scrollbar-track {
+            background-color: darkcyan;
+            border-radius: 35px;
+        }
+        #chat-box::-webkit-scrollbar-thumb {
+            background-color: aqua;
+            border-radius: 35px;
+        }
+        #user-input {
+            width: 190px;
+            border-width: 0.5px;
+            border-color: lightgray;
+            border-style: solid;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 2px solid black;
+        }
+
+        .send-button {
+            border: 2px solid black;
+            border-radius: 10px;
+            background-color: cyan;
+            margin-right: 5px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-transition: all 0.15s ease-in-out;
+            transition: all 0.15s ease-in-out;
+        }
+
+        .send-button:hover {
+            background-color: darkcyan;
+        }
+
+        .clear-button {
+            cursor: pointer;
+            font-weight: bold;
+            border-left: 3px solid rgb(179, 179, 180);
+            border-top: 3px solid rgb(179, 179, 180);
+            border-bottom: 3px solid rgb(179, 179, 180);
+            border-right: 3px solid rgb(179, 179, 180);
+            background-color: red;
+            border-radius: 5cap;
+            transition: all 0.15s ease-in-out;
+            box-shadow: 0 4.25px 0px rgb(100, 100, 100);
+        }
+
+        .clear-button:hover {
+            background-color: darkred;
+        }
+
+        .save-button {
+            cursor: pointer;
+            border-radius: 5cap;
+            font-weight: bold;
+            border-left: 3px solid rgb(179, 179, 180);
+            border-top: 3px solid rgb(179, 179, 180);
+            border-bottom: 3px solid rgb(179, 179, 180);
+            border-right: 3px solid rgb(179, 179, 180);
+            background-color: limegreen;
+            transition: all 0.15s ease-in-out;
+            box-shadow: 0 4.25px 0px rgb(100, 100, 100);
+        }
+
+        .save-button:hover {
+            background-color: green;
+        }
+
+        .load-button {
+            cursor: pointer;
+            border-radius: 5cap;
+            background-color: #ff9d00;
+            font-weight: bold;
+            border-left: 3px solid rgb(179, 179, 180);
+            border-top: 3px solid rgb(179, 179, 180);
+            border-bottom: 3px solid rgb(179, 179, 180);
+            border-right: 3px solid rgb(179, 179, 180);
+            transition: all 0.15s ease-in-out;
+            box-shadow: 0 4.25px 0px rgb(100, 100, 100);
+        }
+
+        .load-button:hover {
+            background-color: #ffbe3b;
+        }
+        .deletion-button {
+            cursor: pointer;
+            border-radius: 5cap;
+            background-color: orangered;
+            font-weight: bold;
+            border-left: 3px solid rgb(179, 179, 180);
+            border-top: 3px solid rgb(179, 179, 180);
+            border-bottom: 3px solid rgb(179, 179, 180);
+            border-right: 3px solid rgb(179, 179, 180);
+            transition: all 0.15s ease-in-out;
+            box-shadow: 0 4.25px 0px rgb(100, 100, 100);
+            box-sizing: border-box;
+        }
+        .deletion-button:hover {
+            background-color: red;
+        }
+        #chat-section {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: row;
+        }
+        #messaging {
+            padding-top: 10px;
+        }
+        #chat-user-control-interface {
+            display: flex;
+            gap: 4px;
+            position: relative;
+            padding-inline-start: 8.5px;
+            padding-top: 1px;
+            padding-bottom: 5px;
+            border: 4px solid #ccc;
+            border-radius: 10px;
+            box-sizing: content-box;
+            height: fit-content;
+            width: fit-content;
+            background: repeating-linear-gradient(lightblue, skyblue);
+        }
+        .create-new-chat-text {
+            flex: auto;
+            position: relative;
+            font-weight: bold;
+            text-align: center;
+            margin-left: 12.5px;
+            box-sizing: content-box;
+            color: black;
+            -webkit-text-stroke: 1px gray;
+            -webkit-text-fill-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <audio id="sendMessage-audio" src="../Audio_Assets/SendSoundEffect.mp3"></audio>
+    <button class="return-to-homepage-button" id="return-to-homepage-button" onclick="returnToHomepage()">Return to Homepage</button>
+    <h1 class="page-title">HtWebz Assistant</h1>
+
+<section id="chat-section">
+    <!-- Conversation List on Left -->
+    <div id="conversation-list">
+        <div class="notepad-icon" onclick="startNewChat()"><text class="notepad-image-text">📝</text> <text class="create-new-chat-text">Create New</text></div>
+    </div>
+    <!-- Chat Box -->
+    <div id="chat-box"></div>
+</section>
+
+    <!-- Input Area -->
+    <div id="chat-user-control-interface">
+        <form onsubmit="event.preventDefault(); sendMessage();" id="messaging">
+            <input type="text" id="user-input" placeholder="Type a message..." />
+            <button class="send-button" type="submit">Send</button>
+        </form>
+        <button class="clear-button" id="clear-button" onclick="clearChat()">Clear Chat</button>
+        <button class="save-button" id="save-button" onclick="saveData()">Save Data</button>
+        <button class="load-button" id="load-button" onclick="document.getElementById('file-input').click();">Upload Data</button>
+        <input type="file" id="file-input" style="display: none;" onchange="loadData(event)" />
+    </div>
+
+    <script src="button_effect.js"></script>
+
+    <script>
+        document.body.addEventListener('mousedown', draggingScrollbar => {
+            if(document.body.style.curosr === 'grab' || document.body.style.cursor) {
+                document.body.style.cursor = 'grabbing';
+            }
+        });
+    </script>
+
+    <script>
+        const returnButton = document.getElementById('return-to-homepage-button');
+
+        returnButton.addEventListener('click', navigateToPage => {
+            window.location.href = '../../index.html';
+        });
+    </script>
+<script>
+const chatBox = document.getElementById('chat-box');
+const userInput = document.getElementById('user-input');
+const sendButton = document.getElementById('send-btn');
+const clearButton = document.getElementById('clear-btn');
+const conversationList = document.getElementById('conversation-list');
+let currentChatId = null;
+let conversationData = JSON.parse(localStorage.getItem('conversations')) || {}; // Load conversations from localStorage
+
+// Function to create a new chat and add it to the conversation list
+function startNewChat() {
+    const chatId = `Chat ${Object.keys(conversationData).length + 1}`;
+    currentChatId = chatId;
+    conversationData[chatId] = [];
+    saveConversations();
+
+    const conversationItem = document.createElement('div');
+    conversationItem.classList.add('conversation-item');
+    conversationItem.dataset.chatId = chatId;
+
+    conversationItem.innerHTML = `
+        <span>${chatId}</span>
+        <div class="buttons">
+            <button class="load-button" onclick="loadChat('${chatId}')">Load</button>
+            <button class="deletion-button" onclick="deleteChat('${chatId}')">Delete</button>
+        </div>
+    `;
+    conversationList.appendChild(conversationItem);
+    loadChat(chatId);
+}
+
+// Load conversation based on the selected chat ID
+function loadChat(chatId) {
+    if (currentChatId === chatId) return; // Avoid duplicate loading
+    currentChatId = chatId;
+
+    // Clear the chat box
+    chatBox.innerHTML = '';
+
+    // Append all messages from the selected conversation without duplicating
+    if (conversationData[chatId]) {
+        conversationData[chatId].forEach(message => {
+            appendMessage(message.sender, message.text, false); // Prevent re-saving on load
+        });
+
+        // Scroll to the bottom of the chat box
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+}
+
+// Delete a conversation from the list
+function deleteChat(chatId) {
+    delete conversationData[chatId];
+    saveConversations();
+
+    const chatItem = document.querySelector(`[data-chat-id="${chatId}"]`);
+    conversationList.removeChild(chatItem);
+
+    if (currentChatId === chatId) {
+        chatBox.innerHTML = '';
+        currentChatId = null;
+    }
+}
+
+// Append a message to the chat box and optionally update conversation data
+function appendMessage(sender, message, saveToData = true) {
+    const messageDiv = document.createElement('div');
+    messageDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Save message to conversation data if required
+    if (saveToData && currentChatId) {
+        conversationData[currentChatId].push({ sender, text: message });
+        saveConversations();
+    }
+}
+
+// Function to simulate typing out the message with a fade-in effect
+function typeOutMessage(sender, message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.innerHTML = `<strong>${sender}:</strong> <span class="fade-in"></span>`;
+    const messageSpan = messageDiv.querySelector('span');
+    chatBox.appendChild(messageDiv);
+
+    let i = 0;
+    
+    // Adjust typing speed based on the message length
+    let typingSpeed = 22.5;  // Default speed
+    if (message.length > 200) {
+        typingSpeed = 6.35;  // Faster typing speed for long responses
+    } else if (message.length > 100) {
+        typingSpeed = 16.25;  // Medium typing speed for moderate responses
+    }
+
+    function type() {
+        if (i < message.length) {
+            messageSpan.textContent += message.charAt(i);
+            i++;
+            setTimeout(type, typingSpeed);
+        } else {
+            // Save the AI's response after typing is complete
+            if (currentChatId) {
+                conversationData[currentChatId].push({ sender, text: message });
+                saveConversations();
+            }
+        }
+    }
+
+    type();
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Send message to server
+let isSending = false;
+const sendMessage = async () => {
+    if (isSending) return;
+    isSending = true;
+
+    const message = userInput.value.trim();
+    if (!message) {
+        isSending = false;
+        return;
+    }
+
+    if (!currentChatId) {
+        startNewChat();
+    }
+
+    appendMessage('User', message);
+    userInput.value = '';
+
+    if (message === '/start') {
+        try {
+            const response = await fetch('http://localhost:3000/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to start server');
+            }
+
+            const data = await response.json();
+            typeOutMessage('System', data.response);
+        } catch (error) {
+            typeOutMessage('System', 'Error: Unable to start server, please install node.js.');
+        }
+    } else {
+        try {
+            const response = await fetch('http://localhost:3000/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to process message');
+            }
+
+            const data = await response.json();
+            typeOutMessage('AI', data.response);
+        } catch (error) {
+            typeOutMessage('System', 'Error: Unable to process message');
+        }
+    }
+
+    isSending = false;
+};
+
+// Clear chat display without modifying stored data
+function clearChat() {
+    chatBox.innerHTML = '';
+    chatBox.scrollTop = 0; // Reset scroll position
+}
+
+// Save conversations to localStorage
+function saveConversations() {
+    localStorage.setItem('conversations', JSON.stringify(conversationData));
+}
+
+// Initialize conversation list from localStorage
+function initializeConversations() {
+    for (const chatId in conversationData) {
+        const conversationItem = document.createElement('div');
+        conversationItem.classList.add('conversation-item');
+        conversationItem.dataset.chatId = chatId;
+
+        conversationItem.innerHTML = `
+            <span>${chatId}</span>
+            <div class="buttons">
+                <button class="load-button" onclick="loadChat('${chatId}')">Load</button>
+                <button class="deletion-button" onclick="deleteChat('${chatId}')">Delete</button>
+            </div>
+        `;
+        conversationList.appendChild(conversationItem);
+    }
+}
+
+// Initialize on page load
+initializeConversations();
+
+// Event listeners
+sendButton.addEventListener('click', sendMessage);
+clearButton.addEventListener('click', clearChat);
+</script>
+</body>
+</html>
