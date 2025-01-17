@@ -129,7 +129,7 @@ function isWikipediaQuery(input) {
     return wikipediaTriggers.some(trigger => trigger.test(normalizedInput));
 }
 
-// Wikipedia info fetching with input sanitization (e.g., "What is X?") 
+// Wikipedia info fetching with input sanitization (e.g., "What is ${normalizedInput}?") 
 async function getWikipediaInfo(query) {
     // Clean up punctuation and prepare query
     const sanitizedQuery = query.replace(/[^\w\s]/g, '').trim();
