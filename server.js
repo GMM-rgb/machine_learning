@@ -159,8 +159,6 @@ expressApp.post('/chat', async (req, res) => {
     }
 });
 
-const ipconfig = '169.199.141.197';
-
 // Feedback API endpoint
 expressApp.post('/feedback', (req, res) => {
     const { message, correctResponse } = req.body;
@@ -186,7 +184,7 @@ expressApp.get('/', (req, res) => {
 
 // Start server
 expressApp.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://${ipconfig}:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
 
 // Electron App Initialization
@@ -202,7 +200,7 @@ function createWindow() {
         },
     });
 
-    win.loadURL(`http://${ipconfig}:${PORT}`);
+    win.loadURL(`http://localhost:${PORT}`);
     win.on('closed', () => {
         win = null;
     });
