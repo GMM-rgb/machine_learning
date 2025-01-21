@@ -1,0 +1,30 @@
+{
+  "Image1": {
+    "successes": 39,
+    "failures": 0
+  },
+  "Image2": {
+    "successes": 19,
+    "failures": 20
+  },
+  "Image3": {
+    "successes": 39,
+    "failures": 0
+  },
+  "Image4": {
+    "successes": 19,
+    "failures": 20
+  },
+  "Image5": {
+    "successes": 13,
+    "failures": 16
+  },
+  "Image6": {
+    "successes": 29,
+    "failures": 0
+  },
+  "Image7": {
+    "successes": 13,
+    "failures": 16
+  }
+}

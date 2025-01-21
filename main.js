@@ -5,6 +5,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const https = require('https');
+const wiki = require('wikijs').default;
 
 const DEFAULT_PORT = 3000;
 let expressApp;
