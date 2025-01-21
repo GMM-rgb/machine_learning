@@ -285,26 +285,31 @@ expressApp.get('/', (req, res) => {
 // Start server
 expressApp.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    //\\//\\//\\//
+    expressApp.loadURL(`http://localhost:${PORT}`);
+    expressApp.on('closed', () => {
+        expressApp = null;
+    });
 });
 
 // Electron App Initialization
-let win;
+//let win;
 
-function createWindow() {
-    win = new BrowserWindow({
-        width: 1250,
-        height: 1150,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-        },
-    });
+//function createWindow() {
+//    win = new BrowserWindow({
+//        width: 1250,
+//        height: 1150,
+//        webPreferences: {
+//            nodeIntegration: true,
+//            contextIsolation: false,
+//        },
+//    });
 
-    win.loadURL(`http://localhost:${PORT}`);
-    win.on('closed', () => {
-        win = null;
-    });
-}
+//    win.loadURL(`http://localhost:${PORT}`);
+//    win.on('closed', () => {
+//        win = null;
+//    });
+//}
 
 app.whenReady().then(() => {
     createWindow();

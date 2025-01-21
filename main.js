@@ -191,25 +191,25 @@ async function startServer(port = DEFAULT_PORT) {
 }
 
 // Electron app startup
-app.whenReady().then(async () => {
-    try {
-        await startServer(); // Ensure the server starts before creating the window
-        createWindow(); // Start the Electron window after server is ready
-    } catch (error) {
-        console.error('Error starting the server:', error);
-    }
-});
+//app.whenReady().then(async () => {
+//    try {
+//        await startServer(); // Ensure the server starts before creating the window
+//        createWindow(); // Start the Electron window after server is ready
+//    } catch (error) {
+//        console.error('Error starting the server:', error);
+//    }
+//});
 
 // Handling app behavior for macOS
-app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow();
-    }
-});
+//app.on('activate', () => {
+//    if (BrowserWindow.getAllWindows().length === 0) {
+//        createWindow();
+//    }
+//});
 
 // Quit the app when all windows are closed (except macOS)
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
-});
+//app.on('window-all-closed', () => {
+//    if (process.platform !== 'darwin') {
+//        app.quit();
+//    }
+//});
