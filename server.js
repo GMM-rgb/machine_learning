@@ -265,17 +265,17 @@ expressApp.post('/feedback', (req, res) => {
 });
 
 // Try to start local server for AI when /start is posted from HTML JavaScript
-const startManualPORT = 3001;
-expressApp.post('/start', async (req, res) => {
+//const startManualPORT = 3001;
+//expressApp.post('/start', async (req, res) => {
     // Serve the HTML file
-    expressApp.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
-    });
+//    expressApp.get('/', (req, res) => {
+//        res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
+//    });
     // Start server
-    expressApp.listen(startManualPORT, '0.0.0.0', () => {
-        console.log(`Server running on http://localhost:${startManualPORT}`);
-    });
-});
+//    expressApp.listen(startManualPORT, '0.0.0.0', () => {
+//        console.log(`Server running on http://localhost:${startManualPORT}`);
+//    });
+//});
 
 // Serve the HTML file
 expressApp.get('/', (req, res) => {
