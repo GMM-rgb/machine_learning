@@ -265,17 +265,17 @@ expressApp.post('/feedback', (req, res) => {
 });
 
 // Try to start local server for AI when /start is posted from HTML JavaScript
-//const startManualPORT = 3001;
-//expressApp.post('/start', async (req, res) => {
+const startManualPORT = 3001;
+expressApp.post('/start', async (req, res) => {
     // Serve the HTML file
-//    expressApp.get('/', (req, res) => {
-//        res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
-//    });
+    expressApp.get('/', (req, res) => {
+        res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
+    });
     // Start server
-//    expressApp.listen(startManualPORT, '0.0.0.0', () => {
-//        console.log(`Server running on http://localhost:${startManualPORT}`);
-//    });
-//});
+    expressApp.listen(startManualPORT, '0.0.0.0', () => {
+        console.log(`Server running on http://localhost:${startManualPORT}`);
+    });
+});
 
 // Serve the HTML file
 expressApp.get('/', (req, res) => {
@@ -288,23 +288,23 @@ expressApp.listen(PORT, '0.0.0.0', () => {
 });
 
 // Electron App Initialization
-//let win; 
+let win;
 
-//function createWindow() {
-//    win = new BrowserWindow({
-//        width: 1250,
-//        height: 1150,
-//        webPreferences: {
-//            nodeIntegration: true,
-//            contextIsolation: false,
-//        },
-//    });
+function createWindow() {
+    win = new BrowserWindow({
+        width: 1250,
+        height: 1150,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+    });
 
-//    win.loadURL(`http://localhost:${PORT}`);
-//    win.on('closed', () => {
-//        win = null;
-//    });
-//}
+    win.loadURL(`http://localhost:${PORT}`);
+    win.on('closed', () => {
+        win = null;
+    });
+}
 
 app.whenReady().then(() => {
     createWindow();
@@ -319,5 +319,5 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
-    }
+  }
 });
