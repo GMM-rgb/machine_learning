@@ -30,6 +30,7 @@
         "portfinder": "^1.0.32",
         "rc": "^1.2.8",
         "react": "^19.0.0",
+        "server": "^0.0.3",
         "tesseract.js": "^6.0.0"
     },
     "devDependencies": {
