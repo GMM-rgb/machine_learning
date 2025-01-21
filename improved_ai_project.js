@@ -14,6 +14,49 @@ if (fs.existsSync(knowledgeFile)) {
     fs.writeFileSync(knowledgeFile, JSON.stringify(knowledge, null, 2));
 }
 
+// Levenshtein distance for closest match
+function getLevenshteinDistance(a, b) {
+    const tmp = [];
+    for (let i = 0; i <= b.length; i++) {
+        tmp[i] = [i];
+    }
+    for (let i = 0; i <= a.length; i++) {
+        tmp[0][i] = i;
+    }
+
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            tmp[i][j] = b[i - 1] === a[j - 1] ? tmp[i - 1][j - 1] : Math.min(tmp[i - 1][j - 1] + 1, tmp[i][j - 1] + 1, tmp[i - 1][j] + 1);
+        }
+    }
+    return tmp[b.length][a.length];
+}
+
+// Find the best match in knowledge (with exact and fuzzy match)
+function findBestMatch(query, knowledge) {
+    let closestMatch = null;
+    let minDistance = Infinity;
+
+    // Check for exact matches first
+    for (const key in knowledge) {
+        const normalizedKey = key.toLowerCase();
+        if (query === normalizedKey) {
+            return knowledge[key];
+        }
+    }
+
+    // Use fuzzy matching based on Levenshtein distance
+    for (const key in knowledge) {
+        const distance = getLevenshteinDistance(query, key);
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestMatch = key;
+        }
+    }
+
+    return closestMatch ? knowledge[closestMatch] : "Sorry, I didn't understand that.";
+}
+
 // Load or initialize image training data
 let imageTrainingData = {};
 if (fs.existsSync(imageTrainingDataFile)) {
