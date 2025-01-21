@@ -285,6 +285,7 @@ expressApp.get('/', (req, res) => {
 // Start server
 expressApp.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server is sucessfully running.`);
 });
 
 // Electron App Initialization
