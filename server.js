@@ -204,7 +204,7 @@ function userInputHandler(input) {
         })
         .catch(error => {
             console.error('Error handling user input:', error);
-            return "An error occurred while handling the input.";
+            return "Unfortunately an error occurred while handling the input.";
         });
 }
 
