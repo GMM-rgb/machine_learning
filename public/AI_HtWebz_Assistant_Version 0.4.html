@@ -152,6 +152,7 @@
             border-radius: 35px;
         }
         #chat-box::-webkit-scrollbar-thumb {
+            cursor: pointer;
             background-color: aqua;
             border-radius: 35px;
         }
@@ -310,6 +311,24 @@
         <input type="file" id="file-input" style="display: none;" onchange="loadData(event)" />
     </div>
 
+    <style>
+        .chat-message {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+    
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+    
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>    
+
     <script src="button_effect.js"></script>
 
     <script>
@@ -394,7 +413,8 @@ function deleteChat(chatId) {
 // Append a message to the chat box and optionally update conversation data
 function appendMessage(sender, message, saveToData = true) {
     const messageDiv = document.createElement('div');
-    messageDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+    messageDiv.classList.add('chat-message');
+    messageDiv.innerHTML = `<strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}`;
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -408,6 +428,7 @@ function appendMessage(sender, message, saveToData = true) {
 // Function to simulate typing out the message with a fade-in effect
 function typeOutMessage(sender, message) {
     const messageDiv = document.createElement('div');
+    messageDiv.classList.add('chat-message');
     messageDiv.innerHTML = `<strong>${sender}:</strong> <span class="fade-in"></span>`;
     const messageSpan = messageDiv.querySelector('span');
     chatBox.appendChild(messageDiv);
@@ -424,7 +445,11 @@ function typeOutMessage(sender, message) {
 
     function type() {
         if (i < message.length) {
-            messageSpan.textContent += message.charAt(i);
+            if (message.charAt(i) === '\n') {
+                messageSpan.innerHTML += '<br>';
+            } else {
+                messageSpan.textContent += message.charAt(i);
+            }
             i++;
             setTimeout(type, typingSpeed);
         } else {
