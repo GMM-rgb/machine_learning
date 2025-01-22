@@ -279,6 +279,23 @@ expressApp.post('/start', async (req, res) => {
     });
 });
 
+// Function to get the public IP address
+function getPublicIP() {
+    return new Promise((resolve, reject) => {
+        https.get('https://ifconfig.me', (resp) => {
+            let data = '';
+            resp.on('data', (chunk) => {
+                data += chunk;
+            });
+            resp.on('end', () => {
+                resolve(data);
+            });
+        }).on('error', (err) => {
+            reject(err);
+        });
+    });
+}
+
 // Serve the HTML file
 expressApp.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
@@ -287,7 +304,7 @@ expressApp.get('/', (req, res) => {
 // Start server
 expressApp.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`Server is sucessfully running.`);
+    console.log(`Server startup was successful.`);
 });
 
 // Electron App Initialization
