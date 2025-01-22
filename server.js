@@ -8,6 +8,7 @@ const wiki = require('wikijs').default;
 const math = require('mathjs');
 const { ifError } = require('assert');
 const tfjs = require('@tensorflow/tfjs');
+const https = require('https');
 
 const expressApp = express();
 const PORT = 3000;
@@ -289,13 +290,13 @@ function getPublicIP() {
             });
             resp.on('end', () => {
                 resolve(data);
+                console.log(`${getPublicIP}`);
             });
         }).on('error', (err) => {
             reject(err);
         });
     });
 }
-
 // Serve the HTML file
 expressApp.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
@@ -303,6 +304,7 @@ expressApp.get('/', (req, res) => {
 
 // Start server
 expressApp.listen(PORT, '0.0.0.0', () => {
+    getPublicIP();
     console.log(`Server running on http://localhost:${PORT}`);
     console.log(`Server startup was successful.`);
 });
