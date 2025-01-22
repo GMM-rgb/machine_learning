@@ -7,6 +7,7 @@ const { app, BrowserWindow } = require('electron');
 const wiki = require('wikijs').default;
 const math = require('mathjs');
 const { ifError } = require('assert');
+const tfjs = require('@tensorflow/tfjs');
 
 const expressApp = express();
 const PORT = 3000;
