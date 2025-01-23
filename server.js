@@ -318,7 +318,10 @@ app.whenReady().then(() => {
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow();
+            console.log('BrowserWindow created successfully.');
         }
+    }).catch((error) => {
+        console.error('Error creating BrowserWindow:', error);
     });
 });
 
@@ -327,3 +330,4 @@ app.on('window-all-closed', () => {
         app.quit();
   }
 });
+console.log('Server.js loaded successfully, and has been initialized.');
