@@ -149,11 +149,13 @@
         }
         #chat-box::-webkit-scrollbar-track {
             background-color: darkcyan;
+            border: 1px solid black;
             border-radius: 35px;
         }
         #chat-box::-webkit-scrollbar-thumb {
             cursor: pointer;
             background-color: aqua;
+            border: 1px solid black;
             border-radius: 35px;
         }
         #user-input {
@@ -313,7 +315,7 @@
     <!-- Input Area -->
     <div id="chat-user-control-interface">
         <form onsubmit="event.preventDefault(); sendMessage();" id="messaging">
-            <input type="text" id="user-input" placeholder="Type a message..." />
+            <input type="text" id="user-input" placeholder="Type a message..." autocomplete="off" autofocus="onload" />
             <button class="send-button" type="submit">Send</button>
         </form>
         <button class="clear-button" id="clear-button" onclick="clearChat()">Clear Chat</button>
