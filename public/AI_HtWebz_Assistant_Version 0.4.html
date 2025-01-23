@@ -583,6 +583,7 @@ const ccd = document.getElementById('current-chat-display');
 const cinf = document.getElementById('chat-user-control-interface');
 let currentChatId = null;
 let conversationData = JSON.parse(localStorage.getItem('conversations')) || {}; // Load conversations from localStorage
+// Flag to determine if the chat box should be scrolled to the bottom
 let isScrollLocked = true;
 
 // Function to create a new chat and add it to the conversation list
