@@ -361,7 +361,7 @@
         .chat-message img {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
+            border-radius: 25%;
             margin-right: 10px;
         }
 
@@ -632,7 +632,7 @@ function appendMessage(sender, message, saveToData = true) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('chat-message', sender.toLowerCase());
     messageDiv.innerHTML = `
-        <img src="../Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+        <img src="${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
         <div class="message-content">
             <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
         </div>
