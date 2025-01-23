@@ -313,6 +313,8 @@
             color: black;
             -webkit-text-stroke: 2px darkcyan;
             -webkit-text-fill-color: cyan;
+            user-select: none;
+            -webkit-user-select: none;
         }
         #user-input:focus {
             border: 2px solid cyan;
@@ -325,6 +327,7 @@
         <style>
             #return-to-homepage {
                 position: fixed;
+                flex: 1;
                 top: 0;
                 left: 0;
                 z-index: 1000;
@@ -336,6 +339,11 @@
                 background: linear-gradient(to right, cyan, aquamarine, cyan);
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
                 opacity: 0.875;
+                border: 2px solid #ccc;
+                border-bottom-left-radius: 7.5px;
+                border-bottom-right-radius: 7.5px;
+                box-sizing: border-box;
+                transition: all 0.25s ease;
             }
             #minimize-return-button {
                 position: absolute;
@@ -353,16 +361,70 @@
                 line-height: 0;
                 color: black;
                 cursor: pointer;
-                transition: background 0.15s, color 0.15s;
+                transition: background 0.15s ease-in, color 0.15s ease-in;
+            }
+            #minimize-return-button::before {
+                content: '';
+                transform: translateY(-50%);
             }
             #minimize-return-button:hover {
+                background: darkcyan;
+                color: white;
+            }
+            #minimize-return-button-one {
+                position: fixed;
+                top: 0;
+                left: 2.5px;
+                transform: translateY(5%);
+                width: 30px;
+                height: 30px;
+                background: cyan;
+                border: 2px solid black;
+                border-radius: 25px;
+                font-size: 1.5em;
+                font-weight: bold;
+                text-align: center;
+                line-height: 1;
+                color: black;
+                cursor: pointer;
+                box-sizing: content-box;
+                width: fit-content;
+                transition: background 0.15s ease-in, color 0.15s ease-in;
+            }
+            #minimize-return-button-one:hover {
                 background: darkcyan;
                 color: white;
             }
         </style>
         <button class="return-to-homepage-button" id="return-to-homepage-button" onclick="returnToHomepage()">Return to Homepage</button>
         <button id="minimize-return-button"><</button>
+        <script>
+            const minimize = document.getElementById('minimize-return-button');
+            const minimizetwo = document.getElementById('minimize-return-button-one');
+            const returnContainer = document.getElementById('return-to-homepage');
+
+            function wait(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            function waitFor(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            minimize.addEventListener('click', minimizeReturnButton => {
+                returnContainer.style.opacity = '0';
+                wait(250).then(() => {
+                    returnContainer.style.display = 'none';
+                });
+            });
+            minimizetwo.addEventListener('click', unminimizeReturnButton => {
+                returnContainer.style.display = 'flex';
+                waitFor(10).then(() => {
+                    returnContainer.style.opacity = '1';
+                });
+            });
+        </script>
     </div>
+    <button id="minimize-return-button-one">Show Return</button>
     <h1 class="page-title">HtWebz Assistant</h1>
 
 <section id="chat-section">
