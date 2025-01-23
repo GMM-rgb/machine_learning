@@ -135,8 +135,15 @@ function isWikipediaQuery(input) {
     return wikipediaTriggers.some(trigger => trigger.test(normalizedInput));
 }
 
+// Function to summarize text into bullet points
+function summarizeText(text) {
+    const sentences = text.split('. ');
+    const summary = sentences.slice(0, 5).map(sentence => `• ${sentence.trim()}`).join('\n');
+    return summary;
+}
+
 // Wikipedia info fetching with input sanitization (e.g., "What is X?") 
-async function getWikipediaInfo(query) {
+async function getWikipediaInfo(query, summarize = false) {
     // Clean up punctuation and prepare query
     const sanitizedQuery = query
         .replace(/[^\w\s]/g, '') // Remove punctuation
@@ -146,6 +153,9 @@ async function getWikipediaInfo(query) {
     try {
         const page = await wiki().page(sanitizedQuery);
         const summary = await page.summary();
+        if (summarize) {
+            return `Here's a summary of what I found on Wikipedia:\n${summarizeText(summary)}`;
+        }
         return `Here's what I found on Wikipedia: ${summary}`;
     } catch (error) {
         console.error(`Error fetching data from Wikipedia for query "${sanitizedQuery}":`, error);
@@ -230,7 +240,8 @@ expressApp.post('/chat', async (req, res) => {
 
     // Prioritize Wikipedia query for specific patterns
     if (isWikipediaQuery(message)) {
-        let response = await getWikipediaInfo(message);
+        const summarize = /summarize|summary|bullet points/i.test(message);
+        let response = await getWikipediaInfo(message, summarize);
         if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
             response = await getBingSearchInfo(message);
         }
