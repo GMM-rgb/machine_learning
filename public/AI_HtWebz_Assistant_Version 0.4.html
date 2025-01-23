@@ -688,6 +688,8 @@ function typeOutMessage(sender, message) {
         typingSpeed = 6.35;  // Faster typing speed for long responses
     } else if (message.length > 100) {
         typingSpeed = 16.25;  // Medium typing speed for moderate responses
+    } else if (message.length > 50) {
+        typingSpeed = 19.5;  // Slower typing speed for short responses
     }
 
     function type() {
