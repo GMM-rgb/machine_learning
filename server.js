@@ -7,9 +7,8 @@ const { app, BrowserWindow } = require('electron');
 const wiki = require('wikijs').default;
 const math = require('mathjs');
 const { ifError } = require('assert');
-const tfjs = require('@tensorflow/tfjs');
+const tf = require('@tensorflow/tfjs-node'); // Correct import of TensorFlow.js
 const https = require('https');
-const tf = require('@tensorflow/tfjs-node');
 
 const expressApp = express();
 const PORT = 3000;
@@ -222,12 +221,12 @@ function userInputHandler(input) {
         });
 }
 
-// Function to preprocess text for TensorFlow model
+// Function to preprocess text for TensorFlow (AI) model
 function preprocessText(text) {
     return text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(' ');
 }
 
-// Function to create a TensorFlow model
+// Function to create a TensorFlow (AI) model
 function createModel(vocabSize) {
     const model = tf.sequential();
     model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
@@ -238,14 +237,14 @@ function createModel(vocabSize) {
     return model;
 }
 
-// Function to train the TensorFlow model
+// Function to train the TensorFlow (AI) model
 async function trainModel(model, data, labels, epochs = 10) {
     const xs = tf.tensor2d(data, [data.length, data[0].length]);
     const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
     await model.fit(xs, ys, { epochs });
 }
 
-// Function to predict the next word using the TensorFlow model
+// Function to predict the next word using the TensorFlow (AI) model
 async function predictNextWord(model, inputText, vocab) {
     const input = preprocessText(inputText);
     const inputTensor = tf.tensor2d([input.map(word => vocab[word] || 0)], [1, input.length]);
@@ -256,7 +255,7 @@ async function predictNextWord(model, inputText, vocab) {
 
 // Initialize vocabulary and model
 const vocab = {};
-let model = createModel(Object.keys(vocab).length);
+let model;
 
 // Train the model with existing knowledge
 async function initializeModel() {
@@ -274,6 +273,7 @@ async function initializeModel() {
             }
         });
     }
+    model = createModel(Object.keys(vocab).length);
     await trainModel(model, data, labels);
 }
 
