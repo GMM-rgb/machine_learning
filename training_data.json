@@ -1,5 +1,84 @@
 {
   "conversations": [],
-  "vocabulary": {},
+  "vocabulary": {
+    "definitions": [
+      {
+        "word": "hello",
+        "definition": "used as a greeting or to begin a conversation."
+      },
+      {
+        "word": "goodbye",
+        "definition": "used to express good wishes when parting or at the end of a conversation."
+      },
+      {
+        "word": "ration",
+        "definition": "a fixed amount of a commodity officially allowed to each person during a time of shortage, as in wartime."
+      },
+      {
+        "word": "rationing",
+        "definition": "allow each person to have only a fixed amount of (a particular commodity)."
+      },
+      {
+        "word": "food",
+        "definition": "any nutritious substance that people or animals eat or drink or that plants absorb in order to maintain life and growth."
+      },
+      {
+        "word": "water",
+        "definition": "a colorless, transparent, odorless liquid that forms the seas, lakes, rivers, and rain and is the basis of the fluids of living organisms."
+      },
+      {
+        "word": "shelter",
+        "definition": "a place giving temporary protection from bad weather or danger."
+      },
+      {
+        "word": "clothing",
+        "definition": "items worn to cover the body."
+      },
+      {
+        "word": "medicine",
+        "definition": "the science or practice of the diagnosis, treatment, and prevention of disease."
+      },
+      {
+        "word": "security",
+        "definition": "the state of being free from danger or threat."
+      },
+      {
+        "word": "safety",
+        "definition": "the condition of being protected from or unlikely to cause danger, risk, or injury."
+      },
+      {
+        "word": "health",
+        "definition": "the state of being free from illness or injury."
+      },
+      {
+        "word": "education",
+        "definition": "the process of receiving or giving systematic instruction, especially at a school or university."
+      },
+      {
+        "word": "communication",
+        "definition": "the imparting or exchanging of information by speaking, writing, or using some other medium."
+      },
+      {
+        "word": "transportation",
+        "definition": "the action of transporting someone or something or the process of being transported."
+      },
+      {
+        "word": "energy",
+        "definition": "the strength and vitality required for sustained physical or mental activity."
+      },
+      {
+        "word": "information",
+        "definition": "facts provided or learned about something or someone."
+      },
+      {
+        "word": "money",
+        "definition": "a current medium of exchange in the form of coins and banknotes; coins and banknotes collectively."
+      },
+      {
+        "word": "employment",
+        "definition": "the condition of having paid work."
+      }
+    ]
+  },
   "lastTrainingDate": null
 }

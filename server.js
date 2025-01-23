@@ -120,8 +120,8 @@ function addTrainingData(userMessage, aiResponse) {
 
     saveTrainingData();
 
-    // Retrain model if we have enough new data (every 10 conversations)
-    if (trainingData.conversations.length % 10 === 0) {
+    // Retrain model if we have enough new data (every 5 conversations)
+    if (trainingData.conversations.length % 5 === 0) {
         retrainModel();
     }
 }
