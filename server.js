@@ -81,6 +81,90 @@ if (fs.existsSync(knowledgeFile)) {
     fs.writeFileSync(knowledgeFile, JSON.stringify(knowledge, null, 2));
 }
 
+// Initialize training data storage
+const trainingDataFile = 'training_data.json';
+let trainingData = {
+    conversations: [],
+    vocabulary: {},
+    lastTrainingDate: null
+};
+
+// Load or create training data file
+if (fs.existsSync(trainingDataFile)) {
+    trainingData = JSON.parse(fs.readFileSync(trainingDataFile, 'utf8'));
+} else {
+    fs.writeFileSync(trainingDataFile, JSON.stringify(trainingData, null, 2));
+}
+
+// Function to save training data
+function saveTrainingData() {
+    trainingData.lastTrainingDate = new Date().toISOString();
+    fs.writeFileSync(trainingDataFile, JSON.stringify(trainingData, null, 2));
+}
+
+// Function to add new training data
+function addTrainingData(userMessage, aiResponse) {
+    trainingData.conversations.push({
+        input: userMessage,
+        output: aiResponse,
+        timestamp: new Date().toISOString()
+    });
+
+    // Update vocabulary
+    const words = preprocessText(userMessage + ' ' + aiResponse);
+    words.forEach(word => {
+        if (!trainingData.vocabulary[word]) {
+            trainingData.vocabulary[word] = Object.keys(trainingData.vocabulary).length + 1;
+        }
+    });
+
+    saveTrainingData();
+
+    // Retrain model if we have enough new data (every 10 conversations)
+    if (trainingData.conversations.length % 10 === 0) {
+        retrainModel();
+    }
+}
+
+// Function to retrain the model with accumulated data
+async function retrainModel() {
+    const data = [];
+    const labels = [];
+
+    // Process all conversations for training
+    trainingData.conversations.forEach(conversation => {
+        const inputWords = preprocessText(conversation.input);
+        const outputWords = preprocessText(conversation.output);
+
+        // Create training pairs
+        inputWords.forEach((word, index) => {
+            if (!vocab[word]) {
+                vocab[word] = Object.keys(vocab).length + 1;
+            }
+            if (index < inputWords.length - 1) {
+                data.push(inputWords.slice(0, index + 1).map(w => vocab[w]));
+                labels.push([vocab[inputWords[index + 1]]]);
+            }
+        });
+
+        // Also learn from AI responses
+        outputWords.forEach((word, index) => {
+            if (!vocab[word]) {
+                vocab[word] = Object.keys(vocab).length + 1;
+            }
+            if (index < outputWords.length - 1) {
+                data.push(outputWords.slice(0, index + 1).map(w => vocab[w]));
+                labels.push([vocab[outputWords[index + 1]]]);
+            }
+        });
+    });
+
+    // Retrain the model
+    model = createModel(Object.keys(vocab).length);
+    await trainModel(model, data, labels);
+    console.log('Model retrained with accumulated data');
+}
+
 // Levenshtein distance for closest match
 function getLevenshteinDistance(a, b) {
     const tmp = [];
@@ -317,6 +401,13 @@ expressApp.post('/chat', async (req, res) => {
             res.json({ response });
         }
     }
+
+    // Add the interaction to training data
+    if (response && !message.startsWith('/')) {
+        addTrainingData(normalizedMessage, response);
+    }
+
+    res.json({ response });
 });
 
 // Feedback API endpoint

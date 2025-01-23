@@ -2,7 +2,7 @@
     "name": "npm",
     "version": "1.0.0",
     "main": "server.js",
-    "module": "main.js",
+    "module": "tensorflow.js",
     "displayName": "ai-project",
     "scripts": {
         "start": "electron .",
@@ -50,5 +50,6 @@
     },
     "author": "Farvour",
     "license": "ISC",
+    "keywords": [],
     "description": ""
 }
