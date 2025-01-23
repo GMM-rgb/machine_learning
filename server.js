@@ -9,6 +9,7 @@ const math = require('mathjs');
 const { ifError } = require('assert');
 const tfjs = require('@tensorflow/tfjs');
 const https = require('https');
+const tf = require('@tensorflow/tfjs-node');
 
 const expressApp = express();
 const PORT = 3000;
@@ -220,6 +221,63 @@ function userInputHandler(input) {
             return "Unfortunately an error occurred while handling the input.";
         });
 }
+
+// Function to preprocess text for TensorFlow model
+function preprocessText(text) {
+    return text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(' ');
+}
+
+// Function to create a TensorFlow model
+function createModel(vocabSize) {
+    const model = tf.sequential();
+    model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
+    model.add(tf.layers.lstm({ units: 128, returnSequences: true }));
+    model.add(tf.layers.lstm({ units: 128 }));
+    model.add(tf.layers.dense({ units: vocabSize, activation: 'softmax' }));
+    model.compile({ optimizer: 'adam', loss: 'sparseCategoricalCrossentropy' });
+    return model;
+}
+
+// Function to train the TensorFlow model
+async function trainModel(model, data, labels, epochs = 10) {
+    const xs = tf.tensor2d(data, [data.length, data[0].length]);
+    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
+    await model.fit(xs, ys, { epochs });
+}
+
+// Function to predict the next word using the TensorFlow model
+async function predictNextWord(model, inputText, vocab) {
+    const input = preprocessText(inputText);
+    const inputTensor = tf.tensor2d([input.map(word => vocab[word] || 0)], [1, input.length]);
+    const prediction = model.predict(inputTensor);
+    const predictedIndex = prediction.argMax(-1).dataSync()[0];
+    return Object.keys(vocab).find(key => vocab[key] === predictedIndex);
+}
+
+// Initialize vocabulary and model
+const vocab = {};
+let model = createModel(Object.keys(vocab).length);
+
+// Train the model with existing knowledge
+async function initializeModel() {
+    const data = [];
+    const labels = [];
+    for (const key in knowledge) {
+        const words = preprocessText(key);
+        words.forEach((word, index) => {
+            if (!vocab[word]) {
+                vocab[word] = Object.keys(vocab).length + 1;
+            }
+            if (index < words.length - 1) {
+                data.push(words.slice(0, index + 1).map(w => vocab[w]));
+                labels.push([vocab[words[index + 1]]]);
+            }
+        });
+    }
+    await trainModel(model, data, labels);
+}
+
+initializeModel();
 
 // API endpoint for chatting
 expressApp.post('/chat', async (req, res) => {
