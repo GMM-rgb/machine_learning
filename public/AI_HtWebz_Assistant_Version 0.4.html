@@ -11,6 +11,7 @@
         }
         body::-webkit-scrollbar {
             width: 12px;
+            box-sizing: content-box;
         }
         body::-webkit-scrollbar-track {
             background: linear-gradient(cyan, aquamarine, cyan);
@@ -22,6 +23,11 @@
             background: linear-gradient(aqua, rgb(8, 200, 200), darkcyan, rgb(8, 200, 200), aqua);
             border: 2px solid #ccc;
             border-radius: 50px;
+        }
+        body::-webkit-scrollbar-corner {
+            background: radial-gradient(aqua, aquamarine, skyblue);
+            border: 1px solid #ccc;
+            border-radius: 25px;
         }
         .return-to-homepage-button {
             cursor: pointer;
@@ -166,8 +172,9 @@
             margin-bottom: 10px;
             border-radius: 5px;
             border: 2px solid black;
+            outline: none;
+            user-select: text;
         }
-
         .send-button {
             border: 2px solid black;
             border-radius: 10px;
@@ -289,12 +296,18 @@
             position: relative;
             margin-top: 10px;
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 1.5em;
+            font-size: 1.75em;
             font-weight: bold;
             list-style-position: inside;
             text-rendering: optimizeLegibility;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: black;
+            -webkit-text-stroke: 2px darkcyan;
+            -webkit-text-fill-color: cyan;
+        }
+        #user-input:focus {
+            border: 2px solid cyan;
         }
     </style>
 </head>
@@ -323,7 +336,20 @@
         <button class="load-button" id="load-button" onclick="document.getElementById('file-input').click();">Upload Data</button>
         <input type="file" id="file-input" style="display: none;" onchange="loadData(event)" />
     </div>
+
     <footer class="developer">Made by: Maximus Farvour</footer>
+    
+    <script>
+        const usrIn = document.getElementById('user-input');
+        
+        usrIn.addEventListener('focus', () => {
+            usrIn.placeholder = 'Typing...';
+        });
+    
+        usrIn.addEventListener('blur', () => {
+            usrIn.placeholder = 'Type a message...';
+        });
+    </script>    
     <style>
         .chat-message {
             font-family: Arial, sans-serif;
