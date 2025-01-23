@@ -570,6 +570,7 @@ const clearButton = document.getElementById('clear-btn');
 const conversationList = document.getElementById('conversation-list');
 let currentChatId = null;
 let conversationData = JSON.parse(localStorage.getItem('conversations')) || {}; // Load conversations from localStorage
+let isScrollLocked = true;
 
 // Function to create a new chat and add it to the conversation list
 function startNewChat() {
@@ -637,7 +638,10 @@ function appendMessage(sender, message, saveToData = true) {
         </div>
     `;
     chatBox.appendChild(messageDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
+
+    if (isScrollLocked) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
     // Save message to conversation data if required
     if (saveToData && currentChatId) {
@@ -685,10 +689,13 @@ function typeOutMessage(sender, message) {
                 saveConversations();
             }
         }
+
+        if (isScrollLocked) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
     }
 
     type();
-    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 // Send message to server
@@ -783,6 +790,15 @@ initializeConversations();
 // Event listeners
 sendButton.addEventListener('click', sendMessage);
 clearButton.addEventListener('click', clearChat);
+
+// Disable scroll lock when the user manually scrolls
+chatBox.addEventListener('scroll', () => {
+    if (chatBox.scrollTop + chatBox.clientHeight < chatBox.scrollHeight) {
+        isScrollLocked = false;
+    } else {
+        isScrollLocked = true;
+    }
+});
 </script>
 </body>
 </html>
