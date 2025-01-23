@@ -54,6 +54,7 @@
             box-shadow: 0 0 25px rgb(0, 0, 0);
         }
         .page-title {
+            display: block;
             margin-top: 12vh;
             -webkit-text-stroke: 2px darkcyan;
             -webkit-text-fill-color: cyan;
@@ -62,6 +63,20 @@
             color: black;
             font-weight: bold;
             font-size: 3em;
+        }
+        .page-title-1 {
+            display: none;
+            flex: 1;
+            position: static;
+            margin-top: 30px;
+            -webkit-text-stroke: 2px darkcyan;
+            -webkit-text-fill-color: cyan;
+            -webkit-user-select: none;
+            user-select: none;
+            color: black;
+            font-weight: bold;
+            font-size: 3em;
+            box-sizing: border-box;
         }
 
         /* Left conversation list */
@@ -377,6 +392,7 @@
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
+                align-content: center;
                 align-items: center;
                 padding: 10px;
                 background: linear-gradient(to right, cyan, aquamarine, cyan);
@@ -443,12 +459,14 @@
             }
         </style>
         <button class="return-to-homepage-button" id="return-to-homepage-button" onclick="returnToHomepage()">Return to Homepage</button>
+        <h1 class="page-title-1">HtWebz Assistant</h1>
         <button id="minimize-return-button"><</button>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const minimize = document.getElementById('minimize-return-button');
                 const minimizetwo = document.getElementById('minimize-return-button-one');
                 const returnContainer = document.getElementById('return-to-homepage');
+                const pageT = document.getElementById('page-title');
         
                 function wait(ms) {
                     return new Promise(resolve => setTimeout(resolve, ms));
