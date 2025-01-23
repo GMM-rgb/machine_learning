@@ -510,6 +510,79 @@
             <input type="text" id="user-input" placeholder="Type a message..." autocomplete="off" autofocus="onload" />
             <button class="send-button" type="submit">Send</button>
         </form>
+        <style>
+            #command-container {
+                display: none;
+                pointer-events: none;
+                position: absolute;
+                margin-top: -50px;
+            }
+            .command {
+                position: relative;
+                display: inline-block;
+                pointer-events: all;
+                margin-top: 0;
+                margin-left: 0;
+                padding: 5px;
+                border: 2px solid black;
+                border-radius: 5px;
+                background-color: lightblue;
+                color: black;
+                font-weight: bold;
+                font-size: 1.25em;
+                cursor: pointer;
+                box-shadow: 0 0 2.75px rgba(0, 0, 0, 0.5);
+                transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+            }
+        </style>
+        <div id="command-container">
+            <ul style="cursor: pointer;" class="command" onclick="">/start</ul>
+            <ul style="cursor: pointer;" class="command" onclick="">/stop</ul>
+            <ul style="cursor: pointer;" class="command" onclick="">/help</ul>
+            <ul style="cursor: pointer;" class="command" onclick="">/clear</ul>
+        </div>
+        <script>
+            const commands = document.querySelectorAll('.command');
+            const userInput = document.getElementById('user-input');
+            const commandContainer = document.getElementById('command-container');
+
+            // Function to highlight matching letters in commands
+            function highlightCommand(command, input) {
+                const commandText = command.innerText;
+                const regex = new RegExp(`(${input})`, 'gi');
+                command.innerHTML = commandText.replace(regex, '<span style="color: red;">$1</span>');
+            }
+
+            // Function to show or hide commands based on user input
+            function toggleCommands() {
+                const input = userInput.value;
+                if (input.startsWith('/')) {
+                    commandContainer.style.display = 'block';
+                    commands.forEach(command => {
+                        if (command.innerText.startsWith(input)) {
+                            command.style.display = 'inline-block';
+                            highlightCommand(command, input);
+                        } else {
+                            command.style.display = 'none';
+                        }
+                    });
+                } else {
+                    commandContainer.style.display = 'none';
+                }
+            }
+
+            // Event listener for user input
+            userInput.addEventListener('input', toggleCommands);
+
+            // Event listener for command click
+            commands.forEach(command => {
+                command.addEventListener('click', () => {
+                    const commandText = command.innerText;
+                    userInput.value = commandText;
+                    sendMessage();
+                });
+            });
+        </script>
         <button class="clear-button" id="clear-button" onclick="clearChat()">Clear Chat</button>
         <button class="save-button" id="save-button" onclick="saveData()">Save Data</button>
         <button class="load-button" id="load-button" onclick="document.getElementById('file-input').click();">Upload Data</button>
@@ -577,7 +650,6 @@
     </script>
 <script>
 const chatBox = document.getElementById('chat-box');
-const userInput = document.getElementById('user-input');
 const sendButton = document.getElementById('send-btn');
 const clearButton = document.getElementById('clear-btn');
 const conversationList = document.getElementById('conversation-list');
@@ -741,7 +813,7 @@ const sendMessage = async () => {
 
     if (message === '/start') {
         try {
-            const response = await fetch('http://localhost:3000/start', {
+            const response = await fetch('https://obscure-pancake-r4q4qg4pqv43wg6-3000.app.github.dev/start', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             });
