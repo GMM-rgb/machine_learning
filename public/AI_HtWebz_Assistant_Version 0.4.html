@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
-<link rel="shortcut icon" type="x-icon" href="../../Image_Assets/Tab_Icons/HtWebz_AI_Assistant_Icon.png">
+<link rel="shortcut icon" type="x-icon" href="../Image_Assets/Tab_Icons/HtWebz_AI_Assistant_Icon.png">
 <head>
     <title>HtWebz Assistant</title>
     <style>
@@ -283,6 +283,17 @@
             -webkit-text-stroke: 1px gray;
             -webkit-text-fill-color: lightgray;
         }
+        .developer {
+            position: relative;
+            margin-top: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.5em;
+            font-weight: bold;
+            list-style-position: inside;
+            text-rendering: optimizeLegibility;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -310,7 +321,7 @@
         <button class="load-button" id="load-button" onclick="document.getElementById('file-input').click();">Upload Data</button>
         <input type="file" id="file-input" style="display: none;" onchange="loadData(event)" />
     </div>
-    <footer>Made by: Maximus Farvour</footer>
+    <footer class="developer">Made by: Maximus Farvour</footer>
     <style>
         .chat-message {
             font-family: Arial, sans-serif;
