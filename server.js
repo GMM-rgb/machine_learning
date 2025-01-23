@@ -281,23 +281,6 @@ expressApp.post('/start', async (req, res) => {
     });
 });
 
-// Function to get the public IP address
-function getPublicIP() {
-    return new Promise((resolve, reject) => {
-        https.get('https://ifconfig.me', (resp) => {
-            let data = '';
-            resp.on('data', (chunk) => {
-                data += chunk;
-            });
-            resp.on('end', () => {
-                resolve(data);
-                console.log(`${getPublicIP}`);
-            });
-        }).on('error', (err) => {
-            reject(err);
-        });
-    });
-}
 // Serve the HTML file
 expressApp.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
