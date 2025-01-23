@@ -512,6 +512,7 @@
         <button class="save-button" id="save-button" onclick="saveData()">Save Data</button>
         <button class="load-button" id="load-button" onclick="document.getElementById('file-input').click();">Upload Data</button>
         <input type="file" id="file-input" style="display: none;" onchange="loadData(event)" />
+        <text id="current-chat-display"></text>
     </div>
 
     <footer class="developer">Made by: Maximus Farvour</footer>
@@ -533,6 +534,16 @@
             font-size: 16px;
             line-height: 1.5;
             margin-bottom: 10px;
+        }
+        #current-chat-display {
+            display: none;
+            font-weight: bold;
+            font-size: 1.45em;
+            margin-left: 10px;
+            margin-top: 8.75px;
+            color: black;
+            -webkit-text-stroke: 1px gray;
+            -webkit-text-fill-color: lightgray;
         }
     
         .fade-in {
@@ -568,6 +579,8 @@ const userInput = document.getElementById('user-input');
 const sendButton = document.getElementById('send-btn');
 const clearButton = document.getElementById('clear-btn');
 const conversationList = document.getElementById('conversation-list');
+const ccd = document.getElementById('current-chat-display');
+const cinf = document.getElementById('chat-user-control-interface');
 let currentChatId = null;
 let conversationData = JSON.parse(localStorage.getItem('conversations')) || {}; // Load conversations from localStorage
 let isScrollLocked = true;
@@ -606,6 +619,9 @@ function loadChat(chatId) {
     if (conversationData[chatId]) {
         conversationData[chatId].forEach(message => {
             appendMessage(message.sender, message.text, false); // Prevent re-saving on load
+            ccd.style.display = 'block';
+            ccd.innerText = `Current Chat: ${chatId}`;
+            cinf.style.paddingRight = '10px';
         });
 
         // Scroll to the bottom of the chat box
