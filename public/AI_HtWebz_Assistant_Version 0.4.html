@@ -498,7 +498,7 @@ const sendMessage = async () => {
             const data = await response.json();
             typeOutMessage('System', data.response);
         } catch (error) {
-            typeOutMessage('System', 'Error: Unable to start server, please install node.js.');
+            typeOutMessage('System', 'Error: Unable to start server, please verify server is running.');
         }
     } else {
         try {
