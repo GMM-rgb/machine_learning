@@ -319,6 +319,48 @@
         #user-input:focus {
             border: 2px solid cyan;
         }
+        /* Styles for chat messages */
+        .chat-message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.25s ease;
+        }
+
+        .chat-message.user {
+            align-self: flex-end;
+            background-color: lightblue;
+            border: 2px solid #ccc;
+        }
+
+        .chat-message.ai {
+            align-self: flex-start;
+            background-color: lightgreen;
+            border: 2px solid #ccc;
+        }
+
+        .chat-message img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .chat-message .message-content {
+            flex: 1;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -568,8 +610,13 @@ function deleteChat(chatId) {
 // Append a message to the chat box and optionally update conversation data
 function appendMessage(sender, message, saveToData = true) {
     const messageDiv = document.createElement('div');
-    messageDiv.classList.add('chat-message');
-    messageDiv.innerHTML = `<strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}`;
+    messageDiv.classList.add('chat-message', sender.toLowerCase());
+    messageDiv.innerHTML = `
+        <img src="../Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+        <div class="message-content">
+            <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
+        </div>
+    `;
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -583,8 +630,13 @@ function appendMessage(sender, message, saveToData = true) {
 // Function to simulate typing out the message with a fade-in effect
 function typeOutMessage(sender, message) {
     const messageDiv = document.createElement('div');
-    messageDiv.classList.add('chat-message');
-    messageDiv.innerHTML = `<strong>${sender}:</strong> <span class="fade-in"></span>`;
+    messageDiv.classList.add('chat-message', sender.toLowerCase());
+    messageDiv.innerHTML = `
+        <img src="../Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+        <div class="message-content">
+            <strong>${sender}:</strong> <span class="fade-in"></span>
+        </div>
+    `;
     const messageSpan = messageDiv.querySelector('span');
     chatBox.appendChild(messageDiv);
 
