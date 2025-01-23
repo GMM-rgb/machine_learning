@@ -823,4 +823,55 @@ chatBox.addEventListener('scroll', () => {
 });
 </script>
 </body>
+<style>
+    body {
+      background: aquamarine;
+    }
+    .context-menu {
+      display: none;
+      position: fixed;
+      background: radial-gradient(circle, #22c6e3, #077082);
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 1px 15px rgba(24, 188, 217, 0.95);
+      z-index: 1000;
+  }
+  
+  .context-menu ul {
+      list-style: none;
+      font-family: Sans-Serif;
+      font-weight: bold;
+      -webkit-user-select: none;
+      user-select: none;
+      padding: 10px;
+      margin: 0;
+  }
+  
+  .context-menu li {
+      padding: 8px 12px;
+      border-radius: 0.25cm;
+      cursor: pointer;
+      transition: all 0.15s ease;
+  }
+  
+  .context-menu li:hover {
+      background-color: aqua;
+  }
+  .context-menu .disabled { color: #ccc; pointer-events: none; }
+  .context-menu .link-option { display: none; }
+      </style>
+  </head>
+  <body>
+      <div id="myMenu" class="context-menu">
+          <ul>
+              <li id="copy">Copy</li>
+              <li id="paste">Paste</li>
+              <li id="reload">Reload</li>
+              <li id="openNewTab" class="link-option">Open Link in New Tab</li> 
+              <li id="openNewWindow" class="link-option">Open Link in New Window</li>
+              <li id="inspect">Inspect</li>
+              <li id="viewSource">View Page Source</li>
+          </ul>
+      </div>
+  <script src="context_menu.js"></script>
 </html>
