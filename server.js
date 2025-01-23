@@ -188,6 +188,7 @@ async function handleUserInput(input) {
             if (query) {
                 const cleanedQuery = query.replace(keyword, '').trim();
                 const result = await getBingSearchInfo(cleanedQuery);
+                userInputHandler();
                 return result;
             } else {
                 return 'Please provide a search query.';
@@ -268,7 +269,7 @@ expressApp.post('/feedback', (req, res) => {
 });
 
 // Try to start local server for AI when /start is posted from HTML JavaScript
-const startManualPORT = 3001;
+const startManualPORT = 53483;
 expressApp.post('/start', async (req, res) => {
     // Serve the HTML file
     expressApp.get('/', (req, res) => {
