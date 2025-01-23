@@ -629,10 +629,11 @@ function deleteChat(chatId) {
 
 // Append a message to the chat box and optionally update conversation data
 function appendMessage(sender, message, saveToData = true) {
+    const timestamp = new Date().getTime(); // Get the current timestamp
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('chat-message', sender.toLowerCase());
     messageDiv.innerHTML = `
-        <img src="${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+        <img src="Image_Assets/${sender.toLowerCase()}_profile.png?${timestamp}" alt="${sender} Profile">
         <div class="message-content">
             <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
         </div>
