@@ -10,15 +10,17 @@
             background: aquamarine;
         }
         body::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
         body::-webkit-scrollbar-track {
             background: linear-gradient(cyan, aquamarine, cyan);
+            border: 2px solid #ccc;
             border-radius: 50px;
         }
         body::-webkit-scrollbar-thumb {
-            cursor: grab;
+            cursor: pointer;
             background: linear-gradient(aqua, rgb(8, 200, 200), darkcyan, rgb(8, 200, 200), aqua);
+            border: 2px solid #ccc;
             border-radius: 50px;
         }
         .return-to-homepage-button {
@@ -149,13 +151,11 @@
         }
         #chat-box::-webkit-scrollbar-track {
             background-color: darkcyan;
-            border: 1px solid black;
             border-radius: 35px;
         }
         #chat-box::-webkit-scrollbar-thumb {
             cursor: pointer;
             background-color: aqua;
-            border: 1px solid black;
             border-radius: 35px;
         }
         #user-input {
@@ -344,13 +344,13 @@
 
     <script src="button_effect.js"></script>
 
-    <script>
+    <!--<script>
         document.body.addEventListener('mousedown', draggingScrollbar => {
             if(document.body.style.curosr === 'grab' || document.body.style.cursor) {
                 document.body.style.cursor = 'grabbing';
             }
         });
-    </script>
+    </script>-->
 
     <script>
         const returnButton = document.getElementById('return-to-homepage-button');
