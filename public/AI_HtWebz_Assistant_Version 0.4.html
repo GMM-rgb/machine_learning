@@ -372,6 +372,7 @@
                 color: white;
             }
             #minimize-return-button-one {
+                display: none;
                 position: fixed;
                 top: 0;
                 left: 2.5px;
@@ -399,30 +400,32 @@
         <button class="return-to-homepage-button" id="return-to-homepage-button" onclick="returnToHomepage()">Return to Homepage</button>
         <button id="minimize-return-button"><</button>
         <script>
-            const minimize = document.getElementById('minimize-return-button');
-            const minimizetwo = document.getElementById('minimize-return-button-one');
-            const returnContainer = document.getElementById('return-to-homepage');
-
-            function wait(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-            function waitFor(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-
-            minimize.addEventListener('click', minimizeReturnButton => {
-                returnContainer.style.opacity = '0';
-                wait(250).then(() => {
-                    returnContainer.style.display = 'none';
+            document.addEventListener('DOMContentLoaded', () => {
+                const minimize = document.getElementById('minimize-return-button');
+                const minimizetwo = document.getElementById('minimize-return-button-one');
+                const returnContainer = document.getElementById('return-to-homepage');
+        
+                function wait(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+        
+                minimize.addEventListener('click', minimizeReturnButton => {
+                    returnContainer.style.opacity = '0';
+                    wait(250).then(() => {
+                        returnContainer.style.display = 'none';
+                        minimizetwo.style.display = 'block';
+                    });
+                });
+        
+                minimizetwo.addEventListener('click', unminimizeReturnButton => {
+                    returnContainer.style.display = 'flex';
+                    minimizetwo.style.display = 'none';
+                    wait(50).then(() => {
+                        returnContainer.style.opacity = '1';
+                    });
                 });
             });
-            minimizetwo.addEventListener('click', unminimizeReturnButton => {
-                returnContainer.style.display = 'flex';
-                waitFor(10).then(() => {
-                    returnContainer.style.opacity = '1';
-                });
-            });
-        </script>
+        </script>    
     </div>
     <button id="minimize-return-button-one">Show Return</button>
     <h1 class="page-title">HtWebz Assistant</h1>
