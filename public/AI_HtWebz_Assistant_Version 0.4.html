@@ -661,12 +661,7 @@
 
 /* Ensure proper spacing between messages */
 .chat-message + .chat-message {
-    margin-top: 16px;
-}
-
-.chat-message.user + .chat-message.ai,
-.chat-message.ai + .chat-message.user {
-    margin-top: 24px;
+    margin-top: 24px;  /* Add space between consecutive messages */
 }
 </style>
 </head>
@@ -993,11 +988,6 @@ function loadChat(chatId) {
     if (conversationData[chatId]) {
         conversationData[chatId].forEach((message, index) => {
             appendMessage(message.sender, message.text, false); // Prevent re-saving on load
-            if (index < conversationData[chatId].length - 1) {
-                const spacer = document.createElement('div');
-                spacer.className = 'message-spacer';
-                chatBox.appendChild(spacer);
-            }
         });
         ccd.style.display = 'block';
         ccd.innerText = `Current Chat: ${chatId}`;
@@ -1045,12 +1035,7 @@ function appendMessage(sender, message, saveToData = true) {
     }
 
     // Insert message
-    const thinking = chatBox.querySelector('.thinking-container');
-    if (thinking) {
-        chatBox.insertBefore(messageDiv, thinking);
-    } else {
-        chatBox.appendChild(messageDiv);
-    }
+    chatBox.appendChild(messageDiv);
 
     // Ensure smooth scroll
     setTimeout(() => {
