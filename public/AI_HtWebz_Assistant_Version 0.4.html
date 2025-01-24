@@ -462,7 +462,213 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
         }
-    </style>
+
+        #chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;  /* Consistent spacing between messages */
+            padding: 20px;
+        }
+
+        .message-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            margin: 0;
+        }
+
+        .chat-message {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            max-width: 80%;
+            margin: 0;  /* Remove default margins */
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Update message alignment styles */
+        .chat-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-message.ai,
+        .chat-message.system {
+            align-self: flex-start;
+        }
+
+        .thinking-container {
+            align-self: flex-start;
+            margin: 8px 0;
+        }
+        /* Update chat box styles */
+        #chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;  /* Increased gap between messages */
+            padding: 20px;
+        }
+
+        .chat-message {
+            display: flex;
+            align-items: flex-start;
+            max-width: 75%;
+            padding: 12px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            margin: 0;  /* Remove default margins */
+            position: relative;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        .chat-message.user {
+            margin-left: 12.5%;  /* Push user messages to the right */
+            align-self: flex-end;
+            flex-direction: row-reverse;
+            background: radial-gradient(lightcyan, lightblue, skyblue);
+            border: 3px solid #ccc;
+            transform-origin: right bottom;
+        }
+
+        .chat-message.ai,
+        .chat-message.system {
+            margin-right: 12.5%;  /* Push AI messages to the left */
+            align-self: flex-start;
+            background: radial-gradient(lightgreen, rgb(133, 251, 133), lightgreen);
+            border: 3px solid #ccc;
+            transform-origin: left bottom;
+        }
+
+        @keyframes messageSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Update message spacing for consecutive messages */
+        .chat-message + .chat-message {
+            margin-top: 16px;  /* Add space between consecutive messages */
+        }
+
+        .chat-message.user + .chat-message.ai,
+        .chat-message.ai + .chat-message.user {
+            margin-top: 24px;  /* Add extra space when switching sides */
+        }
+        /* Update message spacing styles */
+        #chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0;  /* Remove default gap */
+            padding: 20px;
+        }
+
+        .message-spacer {
+            height: 24px;  /* Space between messages */
+            width: 100%;
+        }
+
+        .chat-message {
+            display: flex;
+            align-items: flex-start;
+            max-width: 75%;
+            padding: 12px;
+            margin: 0;
+            border-radius: 15px;
+            animation: slideInMessage 0.3s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideInMessage {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Remove previous margin styles */
+        .chat-message.user,
+        .chat-message.ai,
+        .chat-message.system {
+            margin: 0;
+        }
+#chat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;  /* Consistent spacing between messages */
+    padding: 20px;
+}
+
+.chat-message {
+    display: flex;
+    align-items: flex-start;
+    max-width: 75%;
+    padding: 12px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    margin: 0;
+    position: relative;
+    animation: slideInMessage 0.3s ease-out;
+    word-wrap: break-word;  /* Ensure long messages wrap */
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+    background: radial-gradient(lightcyan, lightblue, skyblue);
+    border: 3px solid #ccc;
+}
+
+.chat-message.ai,
+.chat-message.system {
+    align-self: flex-start;
+    background: radial-gradient(lightgreen, rgb(133, 251, 133), lightgreen);
+    border: 3px solid #ccc;
+}
+
+@keyframes slideInMessage {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ensure proper spacing between messages */
+.chat-message + .chat-message {
+    margin-top: 16px;
+}
+
+.chat-message.user + .chat-message.ai,
+.chat-message.ai + .chat-message.user {
+    margin-top: 24px;
+}
+</style>
 </head>
 <body>
     <audio id="sendMessage-audio" src="../Audio_Assets/SendSoundEffect.mp3"></audio>
@@ -785,12 +991,17 @@ function loadChat(chatId) {
 
     // Append all messages from the selected conversation without duplicating
     if (conversationData[chatId]) {
-        conversationData[chatId].forEach(message => {
+        conversationData[chatId].forEach((message, index) => {
             appendMessage(message.sender, message.text, false); // Prevent re-saving on load
-            ccd.style.display = 'block';
-            ccd.innerText = `Current Chat: ${chatId}`;
-            cinf.style.paddingRight = '10px';
+            if (index < conversationData[chatId].length - 1) {
+                const spacer = document.createElement('div');
+                spacer.className = 'message-spacer';
+                chatBox.appendChild(spacer);
+            }
         });
+        ccd.style.display = 'block';
+        ccd.innerText = `Current Chat: ${chatId}`;
+        cinf.style.paddingRight = '10px';
 
         // Scroll to the bottom of the chat box
         chatBox.scrollTop = chatBox.scrollHeight;
@@ -811,13 +1022,12 @@ function deleteChat(chatId) {
     }
 }
 
-// Append a message to the chat box and optionally update conversation data
+// Function to append message with proper positioning
 function appendMessage(sender, message, saveToData = true) {
     const timestamp = new Date().getTime();
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('chat-message', sender.toLowerCase());
     
-    // Adjust the order of elements based on sender
     if (sender.toLowerCase() === 'user') {
         messageDiv.innerHTML = `
             <div class="message-content">
@@ -834,7 +1044,7 @@ function appendMessage(sender, message, saveToData = true) {
         `;
     }
 
-    // Insert message before thinking animation if it exists
+    // Insert message
     const thinking = chatBox.querySelector('.thinking-container');
     if (thinking) {
         chatBox.insertBefore(messageDiv, thinking);
@@ -842,9 +1052,10 @@ function appendMessage(sender, message, saveToData = true) {
         chatBox.appendChild(messageDiv);
     }
 
-    if (isScrollLocked) {
+    // Ensure smooth scroll
+    setTimeout(() => {
         chatBox.scrollTop = chatBox.scrollHeight;
-    }
+    }, 100);
 
     if (saveToData && currentChatId) {
         conversationData[currentChatId].push({ sender, text: message });
@@ -852,30 +1063,24 @@ function appendMessage(sender, message, saveToData = true) {
     }
 }
 
-// Function to simulate typing out the message with a fade-in effect
+// Update typeOutMessage function similarly
 function typeOutMessage(sender, message) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('chat-message', sender.toLowerCase());
+    
     messageDiv.innerHTML = `
         <img src="../Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
         <div class="message-content">
             <strong>${sender}:</strong> <span class="fade-in"></span>
         </div>
     `;
-    const messageSpan = messageDiv.querySelector('span');
-    chatBox.appendChild(messageDiv);
-
-    let i = 0;
     
-    // Adjust typing speed based on the message length
-    let typingSpeed = 22.5;  // Default speed
-    if (message.length > 200) {
-        typingSpeed = 6.35;  // Faster typing speed for long responses
-    } else if (message.length > 100) {
-        typingSpeed = 16.25;  // Medium typing speed for moderate responses
-    } else if (message.length > 50) {
-        typingSpeed = 19.5;  // Slower typing speed for short responses
-    }
+    chatBox.appendChild(messageDiv);
+    const messageSpan = messageDiv.querySelector('span');
+    
+    // Typing animation code, simulate typing effect
+    let i = 0;
+    let typingSpeed = message.length > 200 ? 6.35 : message.length > 100 ? 16.25 : message.length > 50 ? 19.5 : 22.5;
 
     function type() {
         if (i < message.length) {
@@ -886,21 +1091,34 @@ function typeOutMessage(sender, message) {
             }
             i++;
             setTimeout(type, typingSpeed);
-        } else {
-            // Save the AI's response after typing is complete
-            if (currentChatId) {
-                conversationData[currentChatId].push({ sender, text: message });
-                saveConversations();
-            }
-        }
-
-        if (isScrollLocked) {
             chatBox.scrollTop = chatBox.scrollHeight;
+        } else if (currentChatId) {
+            conversationData[currentChatId].push({ sender, text: message });
+            saveConversations();
         }
     }
 
     type();
 }
+
+// Add a style to ensure proper message flow
+const style = document.createElement('style');
+style.textContent = `
+    #chat-box {
+        display: flex;
+        flex-direction: column;
+    }
+    #chat-box::after {
+        content: '';
+        clear: both;
+        display: table;
+    }
+    .chat-message {
+        max-width: 80%;
+        margin-bottom: 15px;
+    }
+`;
+document.head.appendChild(style);
 
 // Send message to server
 let isSending = false;
