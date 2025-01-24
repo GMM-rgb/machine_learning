@@ -282,7 +282,6 @@ async function handleUserInput(input) {
             if (query) {
                 const cleanedQuery = query.replace(keyword, '').trim();
                 const result = await getBingSearchInfo(cleanedQuery);
-                userInputHandler();
                 return result;
             } else {
                 return 'Please provide a search query.';
@@ -333,7 +332,7 @@ async function predictNextWord(model, inputText, vocab) {
     const input = preprocessText(inputText);
     const inputTensor = tf.tensor2d([input.map(word => vocab[word] || 0)], [1, input.length]);
     const prediction = model.predict(inputTensor);
-    const predictedIndex = prediction.argMax(-1).dataSync()[0];
+    const predictedIndex = (await prediction.argMax(-1).data())[0];  // Use async/await to properly read the prediction
     return Object.keys(vocab).find(key => vocab[key] === predictedIndex);
 }
 
@@ -398,7 +397,10 @@ expressApp.post('/chat', async (req, res) => {
             }
             res.send(wikipediaInfo);  // Send the response as HTML
         } else {
-            res.send(response);  // Send the response as HTML
+            predictNextWord(model, normalizedMessage, vocab).then(prediction => {
+                response += ` ${prediction}`;
+                res.send(response);  // Send the response as HTML
+            });
         }
     }
 
@@ -406,8 +408,6 @@ expressApp.post('/chat', async (req, res) => {
     if (response && !message.startsWith('/')) {
         addTrainingData(normalizedMessage, response);
     }
-
-    res.json({ response });
 });
 
 // Feedback API endpoint
@@ -480,14 +480,13 @@ app.whenReady().then(() => {
             createWindow();
             console.log('BrowserWindow created successfully.');
         }
-    }).catch((error) => {
-        console.error('Error creating BrowserWindow:', error);
     });
 });
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
-  }
+    }
 });
-console.log('Server.js loaded successfully, and has been initialized.');
+
+console.log('Server.js loaded successfully, and has been initialized');
