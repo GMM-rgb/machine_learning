@@ -264,7 +264,7 @@ async function getBingSearchInfo(query) {
 
         const topResult = response.data.webPages.value[0];
         chatEnabled = true; // Re-enable chat after search completes
-        return `Here's what I found on Bing: ${topResult.name} - ${topResult.snippet} (${topResult.url})`;
+        return `Here's what I found on Bing: ${topResult.name} - ${topResult.snippet} <a href="${topResult.url}" target="_blank">${topResult.url}</a>`;
     } catch (error) {
         chatEnabled = true; // Ensure chat is re-enabled in case of error
         console.error(`Error fetching data from Bing for query "${query}":`, error);
@@ -376,7 +376,7 @@ expressApp.post('/chat', async (req, res) => {
     // Check for Bing search keywords
     if (['search bing', 'bing', 'search bing for'].some(keyword => normalizedMessage.startsWith(keyword))) {
         const bingResponse = await handleUserInput(message);
-        res.json({ response: bingResponse });
+        res.send(bingResponse);  // Send the response as HTML
         return;
     }
 
@@ -387,7 +387,7 @@ expressApp.post('/chat', async (req, res) => {
         if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
             response = await getBingSearchInfo(message);
         }
-        res.json({ response });
+        res.send(response);  // Send the response as HTML
     } else {
         let response = findBestMatch(normalizedMessage, knowledge);
         
@@ -396,9 +396,9 @@ expressApp.post('/chat', async (req, res) => {
             if (wikipediaInfo.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
                 wikipediaInfo = await getBingSearchInfo(message);
             }
-            res.json({ response: wikipediaInfo });
+            res.send(wikipediaInfo);  // Send the response as HTML
         } else {
-            res.json({ response });
+            res.send(response);  // Send the response as HTML
         }
     }
 

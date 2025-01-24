@@ -1057,7 +1057,6 @@ function appendMessage(sender, message, saveToData = true) {
     }
 }
 
-// Update typeOutMessage function similarly
 function typeOutMessage(sender, message) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('chat-message', sender.toLowerCase());
@@ -1081,7 +1080,7 @@ function typeOutMessage(sender, message) {
             if (message.charAt(i) === '\n') {
                 messageSpan.innerHTML += '<br>';
             } else {
-                messageSpan.textContent += message.charAt(i);
+                messageSpan.innerHTML += message.charAt(i);  // Use innerHTML to render HTML content
             }
             i++;
             setTimeout(type, typingSpeed);
