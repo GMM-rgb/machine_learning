@@ -1155,7 +1155,7 @@ const sendMessage = async () => {
         await new Promise(resolve => setTimeout(resolve, 1500));
 
         if (message === '/start') {
-            const response = await fetch('https://obscure-pancake-r4q4qg4pqv43wg6-3000.app.github.dev/start', {
+            const response = await fetch('http://localhost/start', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -1166,7 +1166,7 @@ const sendMessage = async () => {
             thinking.style.display = 'none';
             typeOutMessage('System', data.response);
         } else {
-            const response = await fetch('https://obscure-pancake-r4q4qg4pqv43wg6-3000.app.github.dev/chat', {
+            const response = await fetch('http://localhost/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message }),
