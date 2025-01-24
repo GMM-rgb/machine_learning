@@ -77,6 +77,26 @@
       {
         "word": "employment",
         "definition": "the condition of having paid work."
+      },
+      {
+        "word": "income",
+        "definition": "money received, especially on a regular basis, for work or through investments."
+      },
+      {
+        "word": "poverty",
+        "definition": "the state of being extremely poor."
+      },
+      {
+        "word": "hunger",
+        "definition": "a feeling of discomfort or weakness caused by lack of food, coupled with the desire to eat."
+      },
+      {
+        "word": "homelessness",
+        "definition": "the state of having no home."
+      },
+      {
+        "word": "computer",
+        "definition": "an electronic device for storing and processing data, typically in binary form, according to instructions given to it in a variable program."
       }
     ]
   },
