@@ -379,6 +379,55 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
+        .thinking-container {
+            display: none;
+            align-self: flex-start;
+            margin: 10px;
+            padding: 10px;
+            background: radial-gradient(circle at center, #b3ffff, #80ffff);
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .thinking-text {
+            color: darkcyan;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: inline-block;
+            animation: ripple 1.5s infinite;
+        }
+
+        .thinking-dots {
+            display: inline-block;
+        }
+
+        .thinking-dot {
+            display: inline-block;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite;
+        }
+
+        .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+        .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes ripple {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
     </style>
 </head>
 <body>
@@ -502,7 +551,16 @@
         <div class="notepad-icon" onclick="startNewChat()"><text class="notepad-image-text">📝</text> <text class="create-new-chat-text">Create New</text></div>
     </div>
     <!-- Chat Box -->
-    <div id="chat-box"></div>
+    <div id="chat-box">
+        <div class="thinking-container">
+            <span class="thinking-text">AI is thinking</span>
+            <span class="thinking-dots">
+                <span class="thinking-dot">.</span>
+                <span class="thinking-dot">.</span>
+                <span class="thinking-dot">.</span>
+            </span>
+        </div>
+    </div>
 </section>
 
     <!-- Input Area -->
@@ -721,7 +779,7 @@ function deleteChat(chatId) {
 
 // Append a message to the chat box and optionally update conversation data
 function appendMessage(sender, message, saveToData = true) {
-    const timestamp = new Date().getTime(); // Get the current timestamp
+    const timestamp = new Date().getTime();
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('chat-message', sender.toLowerCase());
     messageDiv.innerHTML = `
@@ -730,13 +788,19 @@ function appendMessage(sender, message, saveToData = true) {
             <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
         </div>
     `;
-    chatBox.appendChild(messageDiv);
+    
+    // Find thinking container and insert before it if it exists
+    const thinking = chatBox.querySelector('.thinking-container');
+    if (thinking) {
+        chatBox.insertBefore(messageDiv, thinking);
+    } else {
+        chatBox.appendChild(messageDiv);
+    }
 
     if (isScrollLocked) {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    // Save message to conversation data if required
     if (saveToData && currentChatId) {
         conversationData[currentChatId].push({ sender, text: message });
         saveConversations();
@@ -812,42 +876,63 @@ const sendMessage = async () => {
     appendMessage('User', message);
     userInput.value = '';
 
-    if (message === '/start') {
-        try {
+    // Reset chat box HTML with thinking container
+    const thinkingContainer = document.querySelector('.thinking-container');
+    if (!thinkingContainer) {
+        chatBox.innerHTML += `
+            <div class="thinking-container">
+                <span class="thinking-text">AI is thinking</span>
+                <span class="thinking-dots">
+                    <span class="thinking-dot">.</span>
+                    <span class="thinking-dot">.</span>
+                    <span class="thinking-dot">.</span>
+                </span>
+            </div>
+        `;
+    }
+    const thinking = chatBox.querySelector('.thinking-container');
+    thinking.style.display = 'block';
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    try {
+        // Add minimum delay for thinking animation
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        if (message === '/start') {
             const response = await fetch('https://obscure-pancake-r4q4qg4pqv43wg6-3000.app.github.dev/start', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to start server');
-            }
+            if (!response.ok) throw new Error('Failed to start server');
 
             const data = await response.json();
+            thinking.style.display = 'none';
             typeOutMessage('System', data.response);
-        } catch (error) {
-            typeOutMessage('System', 'Error: Unable to start server, please verify server is running.');
-        }
-    } else {
-        try {
+        } else {
             const response = await fetch('https://obscure-pancake-r4q4qg4pqv43wg6-3000.app.github.dev/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to process message');
-            }
+            if (!response.ok) throw new Error('Failed to process message');
 
             const data = await response.json();
-            typeOutMessage('AI', data.response);
-        } catch (error) {
-            typeOutMessage('System', 'Error: Unable to process message');
+            thinking.style.display = 'none';
+            if (data && data.response) {
+                typeOutMessage('AI', data.response);
+            } else {
+                throw new Error('Invalid response from server');
+            }
         }
+    } catch (error) {
+        console.error('Error:', error);
+        thinking.style.display = 'none';
+        typeOutMessage('System', 'Error: Unable to process message. Please try again.');
+    } finally {
+        isSending = false;
     }
-
-    isSending = false;
 };
 
 // Clear chat display without modifying stored data
