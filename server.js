@@ -211,7 +211,7 @@ function findBestMatch(query, knowledge) {
 // Detect if the user is asking for Wikipedia information
 function isWikipediaQuery(input) {
     const wikipediaTriggers = [
-        /what is|what are|tell me about|who is|explain|define|describe/i,
+        /what is|what are|what was|tell me about|who is|explain|define|describe/i,
         /how does|how do|how can|can you/i
     ];
 
@@ -231,7 +231,7 @@ async function getWikipediaInfo(query, summarize = false) {
     // Clean up punctuation and prepare query
     const sanitizedQuery = query
         .replace(/[^\w\s]/g, '') // Remove punctuation
-        .replace(/\b(what is|what are|tell me about|who is|define|describe|how does|how do|how can|can you)\b/gi, '') // Remove common question patterns
+        .replace(/\b(what is|what are|what was|tell me about|who is|define|describe|how does|how do|how can|can you)\b/gi, '') // Remove common question patterns
         .trim();
 
     try {

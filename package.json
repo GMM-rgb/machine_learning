@@ -7,7 +7,6 @@
     "scripts": {
         "start": "electron .",
         "test": "esbuild .",
-        "publish": "electron .",
         "poststart": "electron ."
     },
     "dependencies": {
