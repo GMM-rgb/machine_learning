@@ -372,42 +372,44 @@ expressApp.post('/chat', async (req, res) => {
     
     const { message } = req.body;
     const normalizedMessage = normalizeText(message.replace(/[,']/g, "").toLowerCase());
+    let response = '';
 
-    // Check for Bing search keywords
-    if (['search bing', 'bing', 'search bing for'].some(keyword => normalizedMessage.startsWith(keyword))) {
-        const bingResponse = await handleUserInput(message);
-        res.send(bingResponse);  // Send the response as HTML
-        return;
-    }
-
-    // Prioritize Wikipedia query for specific patterns
-    if (isWikipediaQuery(message)) {
-        const summarize = /summarize|summary|bullet points/i.test(message);
-        let response = await getWikipediaInfo(message, summarize);
-        if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
-            response = await getBingSearchInfo(message);
+    try {
+        // Check for Bing search keywords
+        if (['search bing', 'bing', 'search bing for'].some(keyword => normalizedMessage.startsWith(keyword))) {
+            response = await handleUserInput(message);
+            res.json({ response });
+            return;
         }
-        res.send(response);  // Send the response as HTML
-    } else {
-        let response = findBestMatch(normalizedMessage, knowledge);
-        
-        if (response === "Sorry, I didn't understand that.") {
-            let wikipediaInfo = await getWikipediaInfo(message);
-            if (wikipediaInfo.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
-                wikipediaInfo = await getBingSearchInfo(message);
+
+        // Prioritize Wikipedia query for specific patterns
+        if (isWikipediaQuery(message)) {
+            const summarize = /summarize|summary|bullet points/i.test(message);
+            response = await getWikipediaInfo(message, summarize);
+            if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
+                response = await getBingSearchInfo(message);
             }
-            res.send(wikipediaInfo);  // Send the response as HTML
         } else {
-            res.send(response);  // Send the response as HTML
+            response = findBestMatch(normalizedMessage, knowledge);
+            
+            if (response === "Sorry, I didn't understand that.") {
+                response = await getWikipediaInfo(message);
+                if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
+                    response = await getBingSearchInfo(message);
+                }
+            }
         }
-    }
 
-    // Add the interaction to training data
-    if (response && !message.startsWith('/')) {
-        addTrainingData(normalizedMessage, response);
-    }
+        // Add the interaction to training data if it's not a command
+        if (!message.startsWith('/')) {
+            addTrainingData(normalizedMessage, response);
+        }
 
-    res.json({ response });
+        res.json({ response });
+    } catch (error) {
+        console.error('Error in chat endpoint:', error);
+        res.status(500).json({ response: "An error occurred while processing your message." });
+    }
 });
 
 // Feedback API endpoint
@@ -461,8 +463,7 @@ function createWindow() {
         height: 1150,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false,
-            sandbox: true,
+            contextIsolation: false
         },
     });
 

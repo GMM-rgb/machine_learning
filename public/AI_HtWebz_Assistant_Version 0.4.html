@@ -163,6 +163,7 @@
             width: 635px;
             height: 372.5px;
             overflow-y: scroll;
+            overflow-y: scroll;
             margin-bottom: 10px;
             text-wrap: stable;
             -webkit-text-wrap-mode: auto;
@@ -402,36 +403,19 @@
         }
 
         .thinking-container {
-            float: left;
-            clear: both;
-            margin-right: auto;
-        }
-
-        /* Clear float after messages */
-        #chat-box::after {
-            content: '';
-            display: block;
-            clear: both;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .thinking-container {
             display: none;
             align-self: flex-start;
+            margin-top: auto; /* Push to bottom of chat box */
+            position: sticky; /* Keep visible while scrolling */
+            bottom: 0;
+            width: calc(40% - 40px); /* Account for padding */
             margin: 10px;
             padding: 10px;
             background: radial-gradient(circle at center, #b3ffff, #80ffff);
             border-radius: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             animation: pulse 2s infinite;
+            z-index: 100; /* Ensure it stays on top */
         }
 
         .thinking-text {
@@ -1155,7 +1139,7 @@ const sendMessage = async () => {
         await new Promise(resolve => setTimeout(resolve, 1500));
 
         if (message === '/start') {
-            const response = await fetch('http://localhost/start', {
+            const response = await fetch('http://localhost:3000/start', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -1166,7 +1150,7 @@ const sendMessage = async () => {
             thinking.style.display = 'none';
             typeOutMessage('System', data.response);
         } else {
-            const response = await fetch('http://localhost/chat', {
+            const response = await fetch('http://localhost:3000/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message }),
@@ -1189,7 +1173,13 @@ const sendMessage = async () => {
     } finally {
         isSending = false;
     }
-};
+}
+
+// Clear chat display without modifying stored data
+function clearChat() {
+    chatBox.innerHTML = '';
+    chatBox.scrollTop = 0; // Reset scroll position
+}
 
 // Clear chat display without modifying stored data
 function clearChat() {
@@ -1271,21 +1261,5 @@ chatBox.addEventListener('scroll', () => {
   .context-menu li:hover {
       background-color: aqua;
   }
-  .context-menu .disabled { color: #ccc; pointer-events: none; }
-  .context-menu .link-option { display: none; }
-      </style>
-  </head>
-  <body>
-      <div id="myMenu" class="context-menu">
-          <ul>
-              <li id="copy">Copy</li>
-              <li id="paste">Paste</li>
-              <li id="reload">Reload</li>
-              <li id="openNewTab" class="link-option">Open Link in New Tab</li> 
-              <li id="openNewWindow" class="link-option">Open Link in New Window</li>
-              <li id="inspect">Inspect</li>
-              <li id="viewSource">View Page Source</li>
-          </ul>
-      </div>
-  <script src="context_menu.js"></script>
+  .context-menu .disabled { color: #ccc; pointer-events: none; }  .context-menu .link-option { display: none; }      </style>  </head>  <body>      <div id="myMenu" class="context-menu">          <ul>              <li id="copy">Copy</li>              <li id="paste">Paste</li>              <li id="reload">Reload</li>              <li id="openNewTab" class="link-option">Open Link in New Tab</li>               <li id="openNewWindow" class="link-option">Open Link in New Window</li>              <li id="inspect">Inspect</li>              <li id="viewSource">View Page Source</li>          </ul>      </div>  <script src="context_menu.js"></script>
 </html>

@@ -1,1 +1,3 @@
 node_modules
+git config --global user.email "maximus.farvour@outlook.com"
+git config --global user.name "Maximus Farvour"

@@ -1,5 +1,36 @@
 {
-  "conversations": [],
+  "conversations": [
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-25T21:27:27.212Z"
+    },
+    {
+      "input": "how are you doing?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-25T21:27:35.245Z"
+    },
+    {
+      "input": "what are you thinking of?",
+      "output": "Sorry, I couldn't find any relevant information on Bing.",
+      "timestamp": "2025-01-25T21:27:51.752Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-25T21:32:47.005Z"
+    },
+    {
+      "input": "how are you",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-25T21:32:53.214Z"
+    },
+    {
+      "input": "hi bro",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-25T21:33:50.381Z"
+    }
+  ],
   "vocabulary": {
     "definitions": [
       {
@@ -98,7 +129,36 @@
         "word": "computer",
         "definition": "an electronic device for storing and processing data, typically in binary form, according to instructions given to it in a variable program."
       }
-    ]
+    ],
+    "hi": 2,
+    "hello": 3,
+    "there": 4,
+    "how": 5,
+    "may": 6,
+    "i": 7,
+    "help": 8,
+    "you": 9,
+    "are": 10,
+    "doing": 11,
+    "not": 12,
+    "too": 13,
+    "much": 14,
+    "but": 15,
+    "hey": 16,
+    "im": 17,
+    "great": 18,
+    "what": 19,
+    "thinking": 20,
+    "of": 21,
+    "sorry": 22,
+    "couldnt": 23,
+    "find": 24,
+    "any": 25,
+    "relevant": 26,
+    "information": 27,
+    "on": 28,
+    "bing": 29,
+    "bro": 30
   },
-  "lastTrainingDate": null
+  "lastTrainingDate": "2025-01-25T21:33:50.382Z"
 }
