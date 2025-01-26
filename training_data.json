@@ -522,8 +522,13 @@
     },
     {
       "input": "good to hear",
-      "output": "Your very welcome, if you need help let me know!",
+      "output": "Your very welcome, if you need help let me know! 😊",
       "timestamp": "2025-01-26T20:26:42.800Z"
+    },
+    {
+      "input": "also what are you doing?",
+      "output": "I understand that what is asking for information specifying something..",
+      "timestamp": "2025-01-26T20:28:49.003Z"
     }
   ],
   "vocabulary": {
@@ -828,6 +833,14 @@
       {
         "word": "hear",
         "definition": "Here's what I found on Wikipedia: Hear, hear is an expression which represents a listener's agreement with the point being made by a speaker or in response to a toast."
+      },
+      {
+        "word": "also",
+        "definition": ""
+      },
+      {
+        "word": "doing?",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
       }
     ],
     "hi": 2,
@@ -1769,7 +1782,11 @@
     "attract": 983,
     "someones": 984,
     "ok": 985,
-    "good": 986
+    "good": 986,
+    "understand": 987,
+    "asking": 988,
+    "specifying": 989,
+    "something": 990
   },
-  "lastTrainingDate": "2025-01-26T20:26:45.391Z"
+  "lastTrainingDate": "2025-01-26T20:28:50.520Z"
 }
