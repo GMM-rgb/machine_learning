@@ -347,7 +347,7 @@ function createModel(vocabSize) {
 // Function to train the TensorFlow (AI) model
 async function trainModel(model, data, labels, epochs = 10, batchSize = 32) {
     const xs = tf.tensor3d(data.map(d => d.map(v => [v])), [data.length, data[0].length, 1]); // Reshape to 3D tensor
-    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensure labels have the correct shape
+    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
     const dataset = tf.data.zip({xs: tf.data.array(xs), ys: tf.data.array(ys)}).batch(batchSize);
     await model.fitDataset(dataset, { epochs });
 }
@@ -365,9 +365,17 @@ function createTransformerModel(vocabSize) {
 // Function to train the Transformer model
 async function trainTransformerModel(model, data, labels, epochs = 10, batchSize = 32) {
     const xs = tf.tensor3d(data.map(d => d.map(v => [v])), [data.length, data[0].length, 1]); // Reshape to 3D tensor
-    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensure labels have the correct shape
+    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
     const dataset = tf.data.zip({xs: tf.data.array(xs), ys: tf.data.array(ys)}).batch(batchSize);
-    await model.fitDataset(dataset, { epochs });
+    
+    await model.fitDataset(dataset, {
+        epochs,
+        callbacks: {
+            onEpochEnd: (epoch, logs) => {
+                console.log(`Epoch ${epoch + 1}: loss=${logs.loss.toFixed(6)}`);
+            }
+        }
+    });
 }
 
 // Function to predict the next word using the Transformer model
