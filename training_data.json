@@ -457,8 +457,28 @@
     },
     {
       "input": "great to hear",
-      "output": "I'm glad you think so about me!",
+      "output": "Sure I can, just describe what you need help with.",
       "timestamp": "2025-01-26T20:10:24.952Z"
+    },
+    {
+      "input": "hey bud",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:13:07.894Z"
+    },
+    {
+      "input": "buddy how are you doing?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T20:13:17.790Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-26T20:13:24.116Z"
+    },
+    {
+      "input": "thank u",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-26T20:13:33.140Z"
     }
   ],
   "vocabulary": {
@@ -1428,7 +1448,8 @@
     "attention": 863,
     "suggest": 864,
     "hear": 865,
-    "describe": 866
+    "describe": 866,
+    "bud": 867
   },
-  "lastTrainingDate": "2025-01-26T20:10:24.952Z"
+  "lastTrainingDate": "2025-01-26T20:13:33.140Z"
 }
