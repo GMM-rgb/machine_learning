@@ -663,6 +663,42 @@
       {
       "word": "chemistry",
       "definition": "the branch of science that deals with the identification of the substances of which matter is composed; the investigation of their properties and the ways in which they interact, combine, and change; and the use of these processes to form new substances."
+      },
+      {
+        "word": "physics",
+        "definition": "the branch of science concerned with the nature and properties of matter and energy. The subject matter of physics includes mechanics, heat, light and other radiation, sound, electricity, magnetism, and the structure of atoms."
+      },
+      {
+        "word": "astronomy",
+        "definition": "the branch of science that deals with celestial objects, space, and the physical universe as a whole."
+      },
+      {
+        "word": "psychology",
+        "definition": "the scientific study of the human mind and its functions, especially those affecting behavior in a given context."
+      },
+      {
+        "word": "sociology",
+        "definition": "the study of the development, structure, and functioning of human society."
+      },
+      {
+        "word": "anthropology",
+        "definition": "the study of human societies and cultures and their development."
+      },
+      {
+        "word": "economics",
+        "definition": "the branch of knowledge concerned with the production, consumption, and transfer of wealth."
+      },
+      {
+        "word": "political science",
+        "definition": "the branch of knowledge that deals with systems of government; the analysis of political activity and behavior."
+      },
+      {
+        "word": "philosophy",
+        "definition": "the study of the fundamental nature of knowledge, reality, and existence, especially when considered as an academic discipline."
+      },
+      {
+        "word": "religion",
+        "definition": "the belief in and worship of a superhuman controlling power, especially a personal God or gods."
       }
     ],
     "hi": 2,
