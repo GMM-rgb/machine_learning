@@ -668,6 +668,10 @@ expressApp.post('/chat', async (req, res) => {
         else if (['hi', 'hello', 'hey', 'yo', 'sup'].includes(normalizedMessage)) {
             response = "Hello there! How may I help you?";
         }
+        // Handle developer-related queries
+        else if (normalizedMessage.includes("who is your developer") || normalizedMessage.includes("who created you")) {
+            response = "My developer is Maximus Farvour.";
+        }
         // Finally, try training data and knowledge base
         else {
             response = getResponse(normalizedMessage);
