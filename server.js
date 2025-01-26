@@ -7,7 +7,7 @@ const { app, BrowserWindow } = require('electron');
 const wiki = require('wikijs').default;
 const math = require('mathjs');
 const { ifError } = require('assert');
-const tf = require('@tensorflow/tfjs-node'); // Correct import of TensorFlow.js
+const tf = require('@tensorflow/tfjs-node-gpu'); // Correct import of TensorFlow.js
 const https = require('https');
 const ProgressBar = require('progress'); // Ensure the progress bar module is imported
 
