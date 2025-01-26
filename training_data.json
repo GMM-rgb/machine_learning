@@ -479,6 +479,26 @@
       "input": "thank u",
       "output": "Your very welcome, if you need help let me know!",
       "timestamp": "2025-01-26T20:13:33.140Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:21:57.041Z"
+    },
+    {
+      "input": "whats up bro?",
+      "output": "Hey, whats up? Anything on your mind?",
+      "timestamp": "2025-01-26T20:22:22.414Z"
+    },
+    {
+      "input": "what are concepts?",
+      "output": "Here's what I found on Wikipedia: A concept is an abstract idea that serves as a foundation for more concrete principles, thoughts, and beliefs.\nConcepts play an important role in all aspects of cognition. As such, concepts are studied within such disciplines as linguistics, psychology, and philosophy, and these disciplines are interested in the logical and psychological structure of concepts, and how they are put together to form thoughts and sentences. The study of concepts has served as an important flagship of an emerging interdisciplinary approach, cognitive science.\nIn contemporary philosophy, three understandings of a concept prevail:\n\nmental representations, such that a concept is an entity that exists in the mind (a mental object)\nabilities peculiar to cognitive agents (mental states)\nFregean senses, abstract objects rather than a mental object or a mental state\nConcepts are classified into a hierarchy, higher levels of which are termed \"superordinate\" and lower levels termed \"subordinate\". Additionally, there is the \"basic\" or \"middle\" level at which people will most readily categorize a concept. For example, a basic-level concept would be \"chair\", with its superordinate, \"furniture\", and its subordinate, \"easy chair\".\nConcepts may be exact or inexact. When the mind makes a generalization such as the concept of tree, it extracts similarities from numerous examples; the simplification enables higher-level thinking. A concept is instantiated (reified) by all of its actual or potential instances, whether these are things in the real world or other ideas.\nConcepts are studied as components of human cognition in the cognitive science disciplines of linguistics, psychology, and philosophy, where an ongoing debate asks whether all cognition must occur through concepts. Concepts are regularly formalized in mathematics, computer science, databases and artificial intelligence. Examples of specific high-level conceptual classes in these fields include classes, schema or categories. In informal use, the word concept can refer to any idea.\n\n",
+      "timestamp": "2025-01-26T20:22:44.068Z"
+    },
+    {
+      "input": "oh okay thanks",
+      "output": "Alright, let me know if you need help.",
+      "timestamp": "2025-01-26T20:23:20.873Z"
     }
   ],
   "vocabulary": {
@@ -645,11 +665,11 @@
         "definition": "the abstract science of number, quantity, and space, either as abstract concepts (pure mathematics) or as applied to other disciplines such as physics and engineering (applied mathematics)."
       },
       {
-      "word": "history",
-      "definition": "the study of past events, particularly in human affairs."
+        "word": "history",
+        "definition": "the study of past events, particularly in human affairs."
       },
       {
-        "word": "geography", 
+        "word": "geography",
         "definition": "the study of the physical features of the earth and its atmosphere, and of human activity as it affects and is affected by these, including the distribution of populations and resources, land use, and industries."
       },
       {
@@ -661,8 +681,8 @@
         "definition": "the study of living organisms, divided into many specialized fields that cover their morphology, physiology, anatomy, behavior, origin, and distribution."
       },
       {
-      "word": "chemistry",
-      "definition": "the branch of science that deals with the identification of the substances of which matter is composed; the investigation of their properties and the ways in which they interact, combine, and change; and the use of these processes to form new substances."
+        "word": "chemistry",
+        "definition": "the branch of science that deals with the identification of the substances of which matter is composed; the investigation of their properties and the ways in which they interact, combine, and change; and the use of these processes to form new substances."
       },
       {
         "word": "physics",
@@ -699,6 +719,46 @@
       {
         "word": "religion",
         "definition": "the belief in and worship of a superhuman controlling power, especially a personal God or gods."
+      },
+      {
+        "word": "hi",
+        "definition": "used as a friendly greeting or to attract someone's attention."
+      },
+      {
+        "word": "whats",
+        "definition": "Here's what I found on Wikipedia: \"Whats Poppin\" (stylized in all caps) is a song by American rapper Jack Harlow, released as the lead single from his EP Sweet Action, by Generation Now and Atlantic Records on January 21, 2020."
+      },
+      {
+        "word": "up",
+        "definition": "extending or moving from a lower to a higher place."
+      },
+      {
+        "word": "bro?",
+        "definition": "used to address"
+      },
+      {
+        "word": "what",
+        "definition": "asking for information specifying something."
+      },
+      {
+        "word": "are",
+        "definition": "existance of something."
+      },
+      {
+        "word": "concepts?",
+        "definition": "Here's what I found on Wikipedia: A concept is an abstract idea that serves as a foundation for more concrete principles, thoughts, and beliefs."
+      },
+      {
+        "word": "oh",
+        "definition": "Here's what I found on Wikipedia: Oh, OH, or Oh! is an interjection, often proclaiming surprise."
+      },
+      {
+        "word": "okay",
+        "definition": "Here's what I found on Wikipedia: It's Okay to Not Be Okay (Korean: 사이코지만 괜찮아) is a 2020 South Korean romantic comedy drama television series written by Jo Yong, directed by Park Shin-woo, and starring Kim Soo-hyun, Seo Yea-ji and Oh Jung-se."
+      },
+      {
+        "word": "thanks",
+        "definition": "Thanks may refer to: Gratitude, an emotion."
       }
     ],
     "hi": 2,
@@ -1521,7 +1581,120 @@
     "suggest": 864,
     "hear": 865,
     "describe": 866,
-    "bud": 867
+    "bud": 867,
+    "concepts": 868,
+    "concept": 869,
+    "abstract": 870,
+    "idea": 871,
+    "serves": 872,
+    "concrete": 873,
+    "thoughts": 874,
+    "beliefs\nconcepts": 875,
+    "important": 876,
+    "role": 877,
+    "cognition": 878,
+    "studied": 879,
+    "within": 880,
+    "disciplines": 881,
+    "linguistics": 882,
+    "psychology": 883,
+    "philosophy": 884,
+    "these": 885,
+    "interested": 886,
+    "logical": 887,
+    "psychological": 888,
+    "put": 889,
+    "together": 890,
+    "form": 891,
+    "sentences": 892,
+    "study": 893,
+    "has": 894,
+    "served": 895,
+    "flagship": 896,
+    "emerging": 897,
+    "interdisciplinary": 898,
+    "approach": 899,
+    "cognitive": 900,
+    "science\nin": 901,
+    "contemporary": 902,
+    "three": 903,
+    "understandings": 904,
+    "prevail\n\nmental": 905,
+    "representations": 906,
+    "entity": 907,
+    "mental": 908,
+    "object\nabilities": 909,
+    "peculiar": 910,
+    "agents": 911,
+    "states\nfregean": 912,
+    "senses": 913,
+    "objects": 914,
+    "rather": 915,
+    "object": 916,
+    "state\nconcepts": 917,
+    "classified": 918,
+    "hierarchy": 919,
+    "higher": 920,
+    "levels": 921,
+    "termed": 922,
+    "superordinate": 923,
+    "lower": 924,
+    "subordinate": 925,
+    "additionally": 926,
+    "level": 927,
+    "people": 928,
+    "readily": 929,
+    "categorize": 930,
+    "example": 931,
+    "basiclevel": 932,
+    "would": 933,
+    "chair": 934,
+    "furniture": 935,
+    "easy": 936,
+    "chair\nconcepts": 937,
+    "exact": 938,
+    "inexact": 939,
+    "generalization": 940,
+    "tree": 941,
+    "extracts": 942,
+    "similarities": 943,
+    "numerous": 944,
+    "examples": 945,
+    "simplification": 946,
+    "enables": 947,
+    "higherlevel": 948,
+    "instantiated": 949,
+    "reified": 950,
+    "actual": 951,
+    "instances": 952,
+    "whether": 953,
+    "things": 954,
+    "real": 955,
+    "ideas\nconcepts": 956,
+    "components": 957,
+    "science": 958,
+    "where": 959,
+    "ongoing": 960,
+    "debate": 961,
+    "asks": 962,
+    "must": 963,
+    "occur": 964,
+    "regularly": 965,
+    "formalized": 966,
+    "mathematics": 967,
+    "databases": 968,
+    "artificial": 969,
+    "intelligence": 970,
+    "specific": 971,
+    "highlevel": 972,
+    "conceptual": 973,
+    "classes": 974,
+    "fields": 975,
+    "categories": 976,
+    "informal": 977,
+    "word": 978,
+    "refer": 979,
+    "idea\n\n": 980
   },
-  "lastTrainingDate": "2025-01-26T20:13:33.140Z"
+  "lastTrainingDate": "2025-01-26T20:23:23.219Z"
 }
