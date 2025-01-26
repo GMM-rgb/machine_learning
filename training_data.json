@@ -414,6 +414,26 @@
       "input": "hello bro!",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-26T19:42:33.861Z"
+    },
+    {
+      "input": "what could i do",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T19:44:03.806Z"
+    },
+    {
+      "input": "okay thanks",
+      "output": "Alright, let me know if you need help.",
+      "timestamp": "2025-01-26T19:44:17.909Z"
+    },
+    {
+      "input": "explain to me chromium",
+      "output": "Here's what I found on Wikipedia: Chromium is a free and open-source web browser project, primarily developed and maintained by Google. It is a widely-used codebase, providing the vast majority of code for Google Chrome and many other browsers, including Microsoft Edge, Samsung Internet, and Opera. The code is also used by several app frameworks.",
+      "timestamp": "2025-01-26T20:03:02.144Z"
+    },
+    {
+      "input": "cool and interesting",
+      "output": "I'm glad you think so!",
+      "timestamp": "2025-01-26T20:03:16.422Z"
     }
   ],
   "vocabulary": {
@@ -1344,7 +1364,29 @@
     "3353857873245": 826,
     "670771574648000": 827,
     "05": 828,
-    "infinity": 831
+    "infinity": 831,
+    "chromium": 832,
+    "browser": 833,
+    "project": 834,
+    "primarily": 835,
+    "maintained": 836,
+    "google": 837,
+    "widelyused": 838,
+    "codebase": 839,
+    "providing": 840,
+    "vast": 841,
+    "majority": 842,
+    "chrome": 843,
+    "browsers": 844,
+    "edge": 845,
+    "samsung": 846,
+    "internet": 847,
+    "opera": 848,
+    "several": 849,
+    "app": 850,
+    "frameworks": 851,
+    "cool": 852,
+    "interesting": 853
   },
-  "lastTrainingDate": "2025-01-26T19:42:33.861Z"
+  "lastTrainingDate": "2025-01-26T20:03:16.422Z"
 }
