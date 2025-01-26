@@ -256,62 +256,76 @@ async function getWikipediaInfo(query, summarize = false) {
     }
 }
 
-// Bing search info fetching
+// Update Bing search function with better error handling and logging
 async function getBingSearchInfo(query) {
+    // You'll need to get a valid API key from Microsoft Azure
     const subscriptionKey = '1feda3372abf425494ce986ad9024238';
-    const endpoint = `https://api.bing.microsoft.com/v7.0/search?q=${encodeURIComponent(query)}`;
+    const endpoint = 'https://api.bing.microsoft.com/v7.0/search';
 
     try {
         chatEnabled = false; // Disable chat while searching
-        console.log(`Searching Bing for: ${query}`); // Log the query being searched
-        const response = await axios.get(endpoint, {
+        console.log('Initiating Bing search for:', query);
+
+        const response = await axios({
+            method: 'get',
+            url: endpoint,
             headers: {
-                'Ocp-Apim-Subscription-Key': subscriptionKey
+                'Ocp-Apim-Subscription-Key': subscriptionKey,
+                'Accept': 'application/json'
+            },
+            params: {
+                q: query,
+                count: 1,
+                responseFilter: 'Webpages',
+                mkt: 'en-US'
             }
         });
-        console.log('Bing search response:', response.data); // Log the response from Bing
 
-        const topResult = response.data.webPages.value[0];
-        chatEnabled = true; // Re-enable chat after search completes
-        return `Here's what I found on Bing: ${topResult.name} - ${topResult.snippet} <a href="${topResult.url}" target="_blank">${topResult.url}</a>`;
+        console.log('Bing API response status:', response.status);
+        
+        if (response.data && response.data.webPages && response.data.webPages.value && response.data.webPages.value.length > 0) {
+            const result = response.data.webPages.value[0];
+            chatEnabled = true;
+            return `Here's what I found on Bing: ${result.name}\n${result.snippet}\nSource: ${result.url}`;
+        } else {
+            console.log('No results found in Bing response:', response.data);
+            return "Sorry, I couldn't find any relevant information on Bing.";
+        }
     } catch (error) {
-        chatEnabled = true; // Ensure chat is re-enabled in case of error
-        console.error(`Error fetching data from Bing for query "${query}":`, error);
-        return "Sorry, I couldn't find any relevant information on Bing.";
+        console.error('Bing search error:', error.response ? error.response.data : error.message);
+        chatEnabled = true;
+        if (error.response && error.response.status === 401) {
+            return "Sorry, there's an issue with the Bing search authentication. Please check the API key.";
+        }
+        return "Sorry, I couldn't complete the Bing search at this time.";
+    } finally {
+        chatEnabled = true; // Always re-enable chat
     }
 }
 
+// Update handleUserInput function to better handle Bing searches
 async function handleUserInput(input) {
     const searchKeywords = ['search bing', 'bing'];
-    const lowerCaseInput = input.toLowerCase();
+    const lowerCaseInput = input.toLowerCase().trim();
 
+    // Check if input starts with any search keywords
     for (const keyword of searchKeywords) {
         if (lowerCaseInput.startsWith(keyword)) {
-            const query = lowerCaseInput.replace(keyword, '').trim();
-            if (query) {
-                const cleanedQuery = query.replace(keyword, '').trim();
-                const result = await getBingSearchInfo(cleanedQuery);
-                userInputHandler();
-                return result;
-            } else {
+            // Extract the actual search query
+            const query = lowerCaseInput
+                .replace(keyword, '')
+                .trim();
+
+            if (!query) {
                 return 'Please provide a search query.';
             }
+
+            console.log('Processing Bing search for:', query);
+            return await getBingSearchInfo(query);
         }
     }
 
     return "I'm not sure how to handle that request.";
-}
-
-function userInputHandler(input) {
-    return handleUserInput(input)
-        .then(result => {
-            console.log(result);
-            return result;
-        })
-        .catch(error => {
-            console.error('Error handling user input:', error);
-            return "Unfortunately an error occurred while handling the input.";
-        });
 }
 
 // Function to preprocess text for TensorFlow (AI) model
@@ -426,7 +440,7 @@ function getResponse(message) {
     return findBestMatch(message, knowledge);
 }
 
-// Modify the chat endpoint to prioritize Wikipedia searches
+// Update the chat endpoint to better handle Bing searches
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
         res.json({ response: "Chat is currently disabled while performing a search. Please try again in a moment." });
@@ -438,22 +452,24 @@ expressApp.post('/chat', async (req, res) => {
     let response = '';
 
     try {
-        // First check if it's a Wikipedia query
-        if (isWikipediaQuery(message)) {
+        // Check for Bing search first (when explicitly requested)
+        if (['search bing', 'bing'].some(keyword => normalizedMessage.startsWith(keyword))) {
+            console.log('Bing search requested:', message);
+            response = await handleUserInput(message);
+        }
+        // Then check for Wikipedia queries
+        else if (isWikipediaQuery(message)) {
             console.log("Wikipedia query detected:", message);
             const summarize = /summarize|summary|bullet points/i.test(message);
             response = await getWikipediaInfo(message, summarize);
             
             // Only fallback to Bing if Wikipedia fails
             if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
+                console.log('Wikipedia failed, trying Bing fallback');
                 response = await getBingSearchInfo(message);
             }
         }
-        // If not a Wikipedia query, check for Bing search keywords
-        else if (['search bing', 'bing', 'search bing for'].some(keyword => normalizedMessage.startsWith(keyword))) {
-            response = await handleUserInput(message);
-        }
-        // If neither Wikipedia nor Bing search, try training data and knowledge base
+        // Finally, try training data and knowledge base
         else {
             response = getResponse(normalizedMessage);
         }
