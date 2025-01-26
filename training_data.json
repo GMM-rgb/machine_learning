@@ -599,6 +599,46 @@
       "input": "calculate 5*4",
       "output": "The answer is: 20",
       "timestamp": "2025-01-26T21:06:27.035Z"
+    },
+    {
+      "input": "hi friend",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T21:49:32.382Z"
+    },
+    {
+      "input": "compute 7^2",
+      "output": "The answer is: 49",
+      "timestamp": "2025-01-26T21:49:49.888Z"
+    },
+    {
+      "input": "thank you thank you",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-26T21:50:02.884Z"
+    },
+    {
+      "input": "yo",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T21:52:39.859Z"
+    },
+    {
+      "input": "make me a sandwiche",
+      "output": "Okay lets move on.",
+      "timestamp": "2025-01-26T21:53:00.510Z"
+    },
+    {
+      "input": "will you be my daddy",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T21:53:19.139Z"
+    },
+    {
+      "input": "why is max always meanto his mom then?",
+      "output": "I don't know how to respond to that.",
+      "timestamp": "2025-01-26T21:55:46.355Z"
+    },
+    {
+      "input": "does max love his mom",
+      "output": "Yes he does, he loves his mom very much.",
+      "timestamp": "2025-01-26T21:56:54.566Z"
     }
   ],
   "vocabulary": {
@@ -625,10 +665,12 @@
     "36": 766,
     "45": 677,
     "47": 820,
+    "49": 1197,
     "50": 830,
     "54": 1194,
     "59": 676,
     "70": 355,
+    "72": 1196,
     "77": 673,
     "80": 135,
     "85": 356,
@@ -1093,6 +1135,110 @@
       {
         "word": "5*4",
         "definition": "Here's what I found on Wikipedia: Year 504 (DIV) was a leap year starting on Thursday of the Julian calendar."
+      },
+      {
+        "word": "friend",
+        "definition": "Here's what I found on Wikipedia: A friend-to-friend (or F2F) computer network is a type of peer-to-peer network in which users only make direct connections with people they know."
+      },
+      {
+        "word": "compute",
+        "definition": "Here's what I found on Wikipedia: Computing is any goal-oriented activity requiring, benefiting from, or creating computing machinery."
+      },
+      {
+        "word": "7^2",
+        "definition": ""
+      },
+      {
+        "word": "thank",
+        "definition": ""
+      },
+      {
+        "word": "thank",
+        "definition": ""
+      },
+      {
+        "word": "yo",
+        "definition": ""
+      },
+      {
+        "word": "make",
+        "definition": ""
+      },
+      {
+        "word": "a",
+        "definition": "Here's what I found on Wikipedia: A or a is the first letter and the first vowel letter of the Latin alphabet, used in the modern English alphabet, and others worldwide."
+      },
+      {
+        "word": "sandwiche",
+        "definition": "Here's what I found on Wikipedia: Sandwiches are a common type of lunch food often eaten as part of a packed lunch."
+      },
+      {
+        "word": "will",
+        "definition": ""
+      },
+      {
+        "word": "be",
+        "definition": ""
+      },
+      {
+        "word": "my",
+        "definition": ""
+      },
+      {
+        "word": "daddy",
+        "definition": "Here's what I found on Wikipedia: Daddy is an affectionate term for a father."
+      },
+      {
+        "word": "does",
+        "definition": ""
+      },
+      {
+        "word": "max",
+        "definition": ""
+      },
+      {
+        "word": "love",
+        "definition": "Here's what I found on Wikipedia: Love encompasses a range of strong and positive emotional and mental states, from the most sublime virtue or good habit, or the deepest interpersonal affection, to the simplest pleasure."
+      },
+      {
+        "word": "his",
+        "definition": ""
+      },
+      {
+        "word": "mom?",
+        "definition": "Here's what I found on Wikipedia: Mom is a colloquial term for a mother."
+      },
+      {
+        "word": "why",
+        "definition": "Here's what I found on Wikipedia: Why may refer to:\n\nCausality, a consequential relationship between two events\nReason (argument), a premise in support of an argument, for what reason or purpose\nGrounding (metaphysics), a topic in metaphysics regarding how things exist in virtue of more fundamental things."
+      },
+      {
+        "word": "max",
+        "definition": ""
+      },
+      {
+        "word": "always",
+        "definition": ""
+      },
+      {
+        "word": "mom",
+        "definition": "Here's what I found on Wikipedia: Mom is a colloquial term for a mother."
+      },
+      {
+        "word": "then?",
+        "definition": "Here's what I found on Wikipedia: Then is a grammatical conjunction used to connect two parts of a sentence."
+      },
+      {
+        "word": "does",
+        "definition": "does will refer to a question."
+      },
+      {
+        "word": "max",
+        "definition": "Here's what I found on Wikipedia: Max is a masculine given name."
+      },
+      {
+        "word": "his",
+        "definition": "Here's what I found on Wikipedia: His is the possessive form of he."
       }
     ],
     "hi": 2,
@@ -2229,7 +2375,19 @@
     "coming": 1190,
     "yep": 1191,
     "totally": 1192,
-    "actually": 1193
+    "actually": 1193,
+    "yo": 1198,
+    "sandwiche": 1199,
+    "lets": 1200,
+    "move": 1201,
+    "daddy": 1202,
+    "does": 1203,
+    "max": 1204,
+    "mom": 1205,
+    "meanto": 1206,
+    "then": 1207,
+    "he": 1208,
+    "loves": 1209
   },
-  "lastTrainingDate": "2025-01-26T21:06:27.035Z"
+  "lastTrainingDate": "2025-01-26T21:56:57.079Z"
 }
