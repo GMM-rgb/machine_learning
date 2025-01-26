@@ -127,13 +127,13 @@ function addTrainingData(userMessage, aiResponse) {
     }
 }
 
-// Function to read training data in a special way
+// Function to read training data in a special encoding
 function readTrainingData() {
     if (fs.existsSync(trainingDataFile)) {
         const rawData = fs.readFileSync(trainingDataFile, 'utf8');
         const parsedData = JSON.parse(rawData);
 
-        // Process the training data in a special way
+        // Process the training data in a special encoding
         parsedData.conversations.forEach(conversation => {
             const inputWords = preprocessText(conversation.input);
             const outputWords = preprocessText(conversation.output);
