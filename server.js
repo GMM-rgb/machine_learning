@@ -534,7 +534,88 @@ async function solveMathProblem(input) {
     }
 }
 
-// Update the chat endpoint to handle math queries
+// Add definitions lookup and processing
+function findDefinitionInTrainingData(word) {
+    if (trainingData.vocabulary.definitions) {
+        const definition = trainingData.vocabulary.definitions.find(
+            def => def.word.toLowerCase() === word.toLowerCase()
+        );
+        return definition ? definition.definition : null;
+    }
+    return null;
+}
+
+// Enhanced understanding using definitions
+function understandInput(input) {
+    const words = input.toLowerCase().split(/\s+/);
+    const understanding = {
+        definitions: [],
+        unknownWords: [],
+        context: {}
+    };
+
+    words.forEach(word => {
+        const definition = findDefinitionInTrainingData(word);
+        if (definition) {
+            understanding.definitions.push({ word, definition });
+        } else {
+            understanding.unknownWords.push(word);
+        }
+    });
+
+    return understanding;
+}
+
+// Background learning function
+async function learnInBackground(unknownWords) {
+    for (const word of unknownWords) {
+        try {
+            // Try to find information about unknown words
+            const info = await getWikipediaInfo(word);
+            if (!info.includes("Sorry")) {
+                // Add new definition to training data
+                if (!trainingData.vocabulary.definitions) {
+                    trainingData.vocabulary.definitions = [];
+                }
+                trainingData.vocabulary.definitions.push({
+                    word: word,
+                    definition: info.substring(0, info.indexOf('.') + 1)
+                });
+                saveTrainingData();
+                console.log(`Learned new word: ${word}`);
+            }
+        } catch (error) {
+            console.log(`Failed to learn about: ${word}`);
+        }
+    }
+}
+
+// Sentence generation using training data and knowledge
+function generateSentence(context) {
+    const responses = trainingData.conversations.map(conv => conv.output);
+    const templates = [
+        "Based on what I know, {concept} means {definition}.",
+        "I understand that {concept} is {definition}.",
+        "Let me explain: {concept} refers to {definition}.",
+        "According to my knowledge, {concept} is {definition}."
+    ];
+
+    let response = '';
+    if (context.definitions.length > 0) {
+        const template = templates[Math.floor(Math.random() * templates.length)];
+        const def = context.definitions[0];
+        response = template
+            .replace('{concept}', def.word)
+            .replace('{definition}', def.definition);
+    } else {
+        // Use existing responses as templates
+        response = responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    return response;
+}
+
+// Update the chat endpoint to use enhanced understanding
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
         res.json({ response: "Chat is currently disabled while performing a search. Please try again in a moment." });
@@ -546,6 +627,15 @@ expressApp.post('/chat', async (req, res) => {
     let response = '';
 
     try {
+        // First understand the input using definitions
+        const understanding = understandInput(normalizedMessage);
+        console.log('Understanding:', understanding);
+
+        // Start background learning for unknown words
+        if (understanding.unknownWords.length > 0) {
+            learnInBackground(understanding.unknownWords);
+        }
+
         // First check if it's a math query
         if (isMathQuery(message)) {
             console.log('Math query detected:', message);
@@ -566,6 +656,10 @@ expressApp.post('/chat', async (req, res) => {
                 console.log('Wikipedia failed, trying Bing fallback');
                 response = await getBingSearchInfo(message);
             }
+        }
+        // Try to generate a response using understanding
+        else if (understanding.definitions.length > 0) {
+            response = generateSentence(understanding);
         }
         // Finally, try training data and knowledge base
         else {
