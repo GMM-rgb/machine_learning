@@ -345,19 +345,11 @@ function createModel(vocabSize) {
 }
 
 // Function to train the TensorFlow (AI) model
-async function trainModel(model, data, labels, epochs = 10) {
+async function trainModel(model, data, labels, epochs = 10, batchSize = 32) {
     const xs = tf.tensor2d(data, [data.length, data[0].length]);
-    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
-    await model.fit(xs, ys, { epochs });
-}
-
-// Function to predict the next word using the TensorFlow (AI) model
-async function predictNextWord(model, inputText, vocab) {
-    const input = preprocessText(inputText);
-    const inputTensor = tf.tensor2d([input.map(word => vocab[word] || 0)], [1, input.length]);
-    const prediction = model.predict(inputTensor);
-    const predictedIndex = prediction.argMax(-1).dataSync()[0];
-    return Object.keys(vocab).find(key => vocab[key] === predictedIndex);
+    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensure labels have the correct shape
+    const dataset = tf.data.zip({xs: tf.data.array(xs), ys: tf.data.array(ys)}).batch(batchSize);
+    await model.fitDataset(dataset, { epochs });
 }
 
 // Function to create a Transformer model
@@ -371,10 +363,11 @@ function createTransformerModel(vocabSize) {
 }
 
 // Function to train the Transformer model
-async function trainTransformerModel(model, data, labels, epochs = 10) {
+async function trainTransformerModel(model, data, labels, epochs = 10, batchSize = 32) {
     const xs = tf.tensor2d(data, [data.length, data[0].length]);
-    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
-    await model.fit(xs, ys, { epochs });
+    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensure labels have the correct shape
+    const dataset = tf.data.zip({xs: tf.data.array(xs), ys: tf.data.array(ys)}).batch(batchSize);
+    await model.fitDataset(dataset, { epochs });
 }
 
 // Function to predict the next word using the Transformer model
