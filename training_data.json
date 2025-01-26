@@ -239,6 +239,36 @@
       "input": "alright thanks",
       "output": "Alright, let me know if you need help.",
       "timestamp": "2025-01-26T01:33:34.551Z"
+    },
+    {
+      "input": "hwello again",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:39:00.858Z"
+    },
+    {
+      "input": "hmmm not sure",
+      "output": "I will let you decide on that, unless you need some ideas.",
+      "timestamp": "2025-01-26T01:42:42.249Z"
+    },
+    {
+      "input": "hey wake up.",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:43:23.452Z"
+    },
+    {
+      "input": "okay",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:43:31.956Z"
+    },
+    {
+      "input": "wait",
+      "output": "I'm here, take your time.",
+      "timestamp": "2025-01-26T01:43:40.869Z"
+    },
+    {
+      "input": "okay i'm back",
+      "output": "Alright, let me know if you got anything, and we can solve it.",
+      "timestamp": "2025-01-26T01:43:49.482Z"
     }
   ],
   "vocabulary": {
@@ -995,7 +1025,16 @@
     "pretty": 654,
     "like": 655,
     "computer": 656,
-    "perhaps": 657
+    "perhaps": 657,
+    "hwello": 658,
+    "again": 659,
+    "sure": 660,
+    "wait": 661,
+    "take": 662,
+    "time": 663,
+    "back": 664,
+    "got": 665,
+    "we": 666
   },
-  "lastTrainingDate": "2025-01-26T01:33:34.551Z"
+  "lastTrainingDate": "2025-01-26T01:43:49.482Z"
 }

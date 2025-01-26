@@ -440,7 +440,63 @@ function getResponse(message) {
     return findBestMatch(message, knowledge);
 }
 
-// Update the chat endpoint to better handle Bing searches
+// Add math detection and solving functions
+function isMathQuery(input) {
+    const mathTriggers = [
+        /^calculate/i,
+        /^solve/i,
+        /^compute/i,
+        /^evaluate/i,
+        /^what is/i,
+        /=\?$/,
+        /\d+[\+\-\*\/\^\(\)]/,
+        /[\+\-\*\/\^\(\)]\d+/,
+        /\d+\s*[\+\-\*\/\^]\s*\d+/,
+    ];
+
+    return mathTriggers.some(trigger => trigger.test(input));
+}
+
+function cleanMathExpression(input) {
+    return input
+        .toLowerCase()
+        .replace(/(calculate|solve|compute|evaluate|what is)/g, '')
+        .replace(/[?=]/g, '')
+        .replace(/×/g, '*')
+        .replace(/÷/g, '/')
+        .replace(/\s+/g, '')
+        .trim();
+}
+
+async function solveMathProblem(input) {
+    try {
+        const cleanedExpression = cleanMathExpression(input);
+        console.log('Solving math expression:', cleanedExpression);
+
+        // Handle special cases
+        if (cleanedExpression.includes('!')) {
+            const num = parseInt(cleanedExpression.replace('!', ''));
+            return `The factorial of ${num} is ${math.factorial(num)}`;
+        }
+
+        // Parse and evaluate the expression
+        const result = math.evaluate(cleanedExpression);
+
+        // Format the result based on its type
+        if (math.typeOf(result) === 'Matrix') {
+            return `Result:\n${result.toString()}`;
+        } else if (typeof result === 'number') {
+            return `The answer is: ${Number.isInteger(result) ? result : result.toFixed(4)}`;
+        } else {
+            return `Result: ${result.toString()}`;
+        }
+    } catch (error) {
+        console.error('Math evaluation error:', error);
+        return "Sorry, I couldn't solve that math problem. Please check the expression and try again.";
+    }
+}
+
+// Update the chat endpoint to handle math queries
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
         res.json({ response: "Chat is currently disabled while performing a search. Please try again in a moment." });
@@ -452,8 +508,13 @@ expressApp.post('/chat', async (req, res) => {
     let response = '';
 
     try {
-        // Check for Bing search first (when explicitly requested)
-        if (['search bing', 'bing'].some(keyword => normalizedMessage.startsWith(keyword))) {
+        // First check if it's a math query
+        if (isMathQuery(message)) {
+            console.log('Math query detected:', message);
+            response = await solveMathProblem(message);
+        }
+        // Then check for Bing search
+        else if (['search bing', 'bing'].some(keyword => normalizedMessage.startsWith(keyword))) {
             console.log('Bing search requested:', message);
             response = await handleUserInput(message);
         }
@@ -463,7 +524,6 @@ expressApp.post('/chat', async (req, res) => {
             const summarize = /summarize|summary|bullet points/i.test(message);
             response = await getWikipediaInfo(message, summarize);
             
-            // Only fallback to Bing if Wikipedia fails
             if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
                 console.log('Wikipedia failed, trying Bing fallback');
                 response = await getBingSearchInfo(message);
