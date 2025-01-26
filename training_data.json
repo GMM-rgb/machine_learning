@@ -529,6 +529,21 @@
       "input": "also what are you doing?",
       "output": "I understand that what is asking for information specifying something..",
       "timestamp": "2025-01-26T20:28:49.003Z"
+    },
+    {
+      "input": "yes that is correct",
+      "output": "Something like that I guess",
+      "timestamp": "2025-01-26T20:30:42.112Z"
+    },
+    {
+      "input": "yeah",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:30:51.161Z"
+    },
+    {
+      "input": "😂",
+      "output": "I see your laughing about something, that's great! 😂",
+      "timestamp": "2025-01-26T20:31:19.317Z"
     }
   ],
   "vocabulary": {
@@ -841,6 +856,30 @@
       {
         "word": "doing?",
         "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": "yes",
+        "definition": ""
+      },
+      {
+        "word": "that",
+        "definition": "Here's what I found on Wikipedia: That is an English language word used for several grammatical purposes."
+      },
+      {
+        "word": "is",
+        "definition": "a verb or a noun, of current existence."
+      },
+      {
+        "word": "correct",
+        "definition": "Here's what I found on Wikipedia: Correct or Correctness may refer to:\n\nWhat is true\nAccurate; Error-free\nCorrectness (computer science), in theoretical computer science\nPolitical correctness, a sociolinguistic concept\nCorrect, Indiana, Terrance Carson is always correct."
+      },
+      {
+        "word": "yeah",
+        "definition": "a meaning of yes."
+      },
+      {
+        "word": "😂",
+        "definition": "Here's what I found on Wikipedia: Face with Tears of Joy (😂) is an emoji depicting a face crying with laughter."
       }
     ],
     "hi": 2,
@@ -1786,7 +1825,9 @@
     "understand": 987,
     "asking": 988,
     "specifying": 989,
-    "something": 990
+    "something": 990,
+    "correct": 991,
+    "guess": 992
   },
-  "lastTrainingDate": "2025-01-26T20:28:50.520Z"
+  "lastTrainingDate": "2025-01-26T20:31:20.085Z"
 }
