@@ -518,7 +518,6 @@ function isMathQuery(input) {
         /^solve/i,
         /^compute/i,
         /^evaluate/i,
-        /^what is/i,
         /=\?$/,
         /\d+[\+\-\*\/\^\(\)]/,
         /[\+\-\*\/\^\(\)]\d+/,
@@ -531,7 +530,7 @@ function isMathQuery(input) {
 function cleanMathExpression(input) {
     return input
         .toLowerCase()
-        .replace(/(calculate|solve|compute|evaluate|what is)/g, '')
+        .replace(/(calculate|solve|compute|evaluate)/g, '')
         .replace(/[?=]/g, '')
         .replace(/×/g, '*')
         .replace(/÷/g, '/')
