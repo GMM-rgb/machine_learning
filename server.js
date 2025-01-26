@@ -9,7 +9,6 @@ const math = require('mathjs');
 const { ifError } = require('assert');
 const tf = require('@tensorflow/tfjs-node'); // Correct import of TensorFlow.js
 const https = require('https');
-const { Transformer } = require('transformer-js'); // Import a transformer library
 
 const expressApp = express();
 const PORT = 3000;
@@ -363,17 +362,11 @@ async function predictNextWord(model, inputText, vocab) {
 
 // Function to create a Transformer model
 function createTransformerModel(vocabSize) {
-    const model = new Transformer({
-        numLayers: 4,
-        dModel: 128,
-        numHeads: 8,
-        dff: 512,
-        inputVocabSize: vocabSize,
-        targetVocabSize: vocabSize,
-        peInput: 10000,
-        peTarget: 10000,
-        rate: 0.1
-    });
+    const model = tf.sequential();
+    model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
+    model.add(tf.layers.dense({ units: 128, activation: 'relu' }));
+    model.add(tf.layers.dense({ units: vocabSize, activation: 'softmax' }));
+    model.compile({ optimizer: 'adam', loss: 'sparseCategoricalCrossentropy' });
     return model;
 }
 
@@ -434,9 +427,9 @@ async function initializeModel() {
     await trainTransformerModel(model, data, labels);
 }
 
-// Function to train the model before starting the server
-async function trainModelBeforeServerStart() {
-    console.log('Training model before starting the server...');
+// Function to train the model asynchronously
+async function trainModelAsync() {
+    console.log('Training model asynchronously...');
     await initializeModel();
     console.log('Model training completed.');
 
@@ -446,29 +439,31 @@ async function trainModelBeforeServerStart() {
     console.log(`Predicted next word for "${testInput}": ${predictedWord}`);
 }
 
-// Train the model before starting the server
-trainModelBeforeServerStart().then(() => {
-    // Main server startup
-    expressApp.listen(PORT, '0.0.0.0', () => {
-        const localIps = getLocalIpAddress();
-        console.log('\n=== Server Network Information ===');
-        console.log(`Local Access: http://localhost:${PORT}`);
-        console.log(`\nNetwork Access URLs:`);
-        
-        if (localIps.length > 0) {
-            localIps.forEach(({name, address, isMain}) => {
-                if (isMain) {
-                    console.log(`\n→ Main URL (Your IP): http://${address}:${PORT}`);
-                    console.log(`  Use this URL to access from other devices on your network`);
-                } else {
-                    console.log(`\nAlternative URL: http://${address}:${PORT}`);
-                }
-            });
-        } else {
-            console.log('No network interfaces found');
-        }
-        
-        console.log('\nServer startup & setup was successful.');
+// Main server startup
+expressApp.listen(PORT, '0.0.0.0', () => {
+    const localIps = getLocalIpAddress();
+    console.log('\n=== Server Network Information ===');
+    console.log(`Local Access: http://localhost:${PORT}`);
+    console.log(`\nNetwork Access URLs:`);
+    
+    if (localIps.length > 0) {
+        localIps.forEach(({name, address, isMain}) => {
+            if (isMain) {
+                console.log(`\n→ Main URL (Your IP): http://${address}:${PORT}`);
+                console.log(`  Use this URL to access from other devices on your network`);
+            } else {
+                console.log(`\nAlternative URL: http://${address}:${PORT}`);
+            }
+        });
+    } else {
+        console.log('No network interfaces found');
+    }
+    
+    console.log('\nServer startup & setup was successful.');
+
+    // Train the model asynchronously
+    trainModelAsync().catch(error => {
+        console.error('Error during model training:', error);
     });
 });
 
@@ -837,7 +832,10 @@ function createWindow() {
         `http://${localIps[0].address}:${PORT}` : 
         `http://localhost:${PORT}`;
 
-    win.loadURL(serverUrl);
+    win.loadURL(serverUrl).catch(error => {
+        console.error('Failed to load URL:', error);
+    });
+
     win.on('closed', () => {
         win = null;
     });
@@ -853,9 +851,9 @@ app.whenReady().then(() => {
             createWindow();
             console.log('BrowserWindow created successfully.');
         }
-    }).catch((error) => {
-        console.error('Error creating BrowserWindow:', error);
     });
+}).catch((error) => {
+    console.error('Error creating BrowserWindow:', error);
 });
 
 app.on('window-all-closed', () => {

@@ -644,6 +644,16 @@
       "input": "who created you",
       "output": "My developer is Maximus Farvour.",
       "timestamp": "2025-01-26T22:04:24.870Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T22:17:03.954Z"
+    },
+    {
+      "input": "hello again",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T22:18:49.141Z"
     }
   ],
   "vocabulary": {
@@ -1251,6 +1261,10 @@
       },
       {
         "word": "created",
+        "definition": ""
+      },
+      {
+        "word": "again",
         "definition": ""
       }
     ],
@@ -2404,5 +2418,5 @@
     "created": 1210,
     "developer": 1211
   },
-  "lastTrainingDate": "2025-01-26T22:04:26.786Z"
+  "lastTrainingDate": "2025-01-26T22:18:50.012Z"
 }
