@@ -9,6 +9,7 @@ const math = require('mathjs');
 const { ifError } = require('assert');
 const tf = require('@tensorflow/tfjs-node'); // Correct import of TensorFlow.js
 const https = require('https');
+const { Transformer } = require('transformer-js'); // Import a transformer library
 
 const expressApp = express();
 const PORT = 3000;
@@ -360,6 +361,38 @@ async function predictNextWord(model, inputText, vocab) {
     return Object.keys(vocab).find(key => vocab[key] === predictedIndex);
 }
 
+// Function to create a Transformer model
+function createTransformerModel(vocabSize) {
+    const model = new Transformer({
+        numLayers: 4,
+        dModel: 128,
+        numHeads: 8,
+        dff: 512,
+        inputVocabSize: vocabSize,
+        targetVocabSize: vocabSize,
+        peInput: 10000,
+        peTarget: 10000,
+        rate: 0.1
+    });
+    return model;
+}
+
+// Function to train the Transformer model
+async function trainTransformerModel(model, data, labels, epochs = 10) {
+    const xs = tf.tensor2d(data, [data.length, data[0].length]);
+    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
+    await model.fit(xs, ys, { epochs });
+}
+
+// Function to predict the next word using the Transformer model
+async function predictNextWordTransformer(model, inputText, vocab) {
+    const input = preprocessText(inputText);
+    const inputTensor = tf.tensor2d([input.map(word => vocab[word] || 0)], [1, input.length]);
+    const prediction = model.predict(inputTensor);
+    const predictedIndex = prediction.argMax(-1).dataSync()[0];
+    return Object.keys(vocab).find(key => vocab[key] === predictedIndex);
+}
+
 // Initialize vocabulary and model
 const vocab = {};
 let model;
@@ -397,8 +430,8 @@ async function initializeModel() {
         });
     });
 
-    model = createModel(Object.keys(vocab).length);
-    await trainModel(model, data, labels);
+    model = createTransformerModel(Object.keys(vocab).length);
+    await trainTransformerModel(model, data, labels);
 }
 
 initializeModel();
@@ -668,13 +701,17 @@ expressApp.post('/chat', async (req, res) => {
         }
         // Finally, try training data and knowledge base
         else {
-            response = getResponse(normalizedMessage);
+            response = await predictNextWordTransformer(model, normalizedMessage, vocab);
         }
 
         // Add the interaction to training data if it's not a command
         if (!message.startsWith('/')) {
             addTrainingData(normalizedMessage, response);
         }
+        
+        // Example usage of getResponse function
+        const aiResponse = getResponse(normalizedMessage);
+        console.log('AI Response:', aiResponse);
 
         res.json({ response });
     } catch (error) {
