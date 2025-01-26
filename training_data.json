@@ -501,11 +501,6 @@
       "timestamp": "2025-01-26T20:23:20.873Z"
     },
     {
-      "input": "hi again!",
-      "output": "Let me explain: hi refers to used as a friendly greeting or to attract someone's attention..",
-      "timestamp": "2025-01-26T20:26:04.345Z"
-    },
-    {
       "input": "ok",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-26T20:26:15.909Z"
@@ -524,46 +519,6 @@
       "input": "good to hear",
       "output": "Your very welcome, if you need help let me know! 😊",
       "timestamp": "2025-01-26T20:26:42.800Z"
-    },
-    {
-      "input": "also what are you doing?",
-      "output": "I understand that what is asking for information specifying something..",
-      "timestamp": "2025-01-26T20:28:49.003Z"
-    },
-    {
-      "input": "yes that is correct",
-      "output": "Something like that I guess",
-      "timestamp": "2025-01-26T20:30:42.112Z"
-    },
-    {
-      "input": "yeah",
-      "output": "Hello there! How may I help you?",
-      "timestamp": "2025-01-26T20:30:51.161Z"
-    },
-    {
-      "input": "😂",
-      "output": "I see your laughing about something, that's great! 😂",
-      "timestamp": "2025-01-26T20:31:19.317Z"
-    },
-    {
-      "input": "hi",
-      "output": "Let me explain: hi refers to used as a friendly greeting or to attract someone's attention..",
-      "timestamp": "2025-01-26T20:34:00.860Z"
-    },
-    {
-      "input": "hi",
-      "output": "Based on what I know, hi means used as a friendly greeting or to attract someone's attention..",
-      "timestamp": "2025-01-26T20:41:32.881Z"
-    },
-    {
-      "input": "hi there",
-      "output": "Let me explain: hi refers to used as a friendly greeting or to attract someone's attention..",
-      "timestamp": "2025-01-26T20:41:42.083Z"
-    },
-    {
-      "input": "hello bro",
-      "output": "Let me explain: hello refers to used as a greeting or to begin a conversation..",
-      "timestamp": "2025-01-26T20:41:46.895Z"
     }
   ],
   "vocabulary": {
@@ -1861,5 +1816,5 @@
     "begin": 995,
     "conversation": 996
   },
-  "lastTrainingDate": "2025-01-26T20:41:47.465Z"
+  "lastTrainingDate": "2025-01-26T20:45:47.324Z"
 }
