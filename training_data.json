@@ -669,6 +669,11 @@
       "input": "hi",
       "output": "We talked about \"hi\" earlier. Anything else on your mind?",
       "timestamp": "2025-01-26T22:24:08.490Z"
+    },
+    {
+      "input": "what should i do?",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T22:43:03.738Z"
     }
   ],
   "vocabulary": {
@@ -1281,6 +1286,18 @@
       {
         "word": "again",
         "definition": ""
+      },
+      {
+        "word": "should",
+        "definition": "Here's what I found on Wikipedia: The English modal auxiliary verbs are a subset of the English auxiliary verbs used mostly to express modality, properties such as possibility and obligation."
+      },
+      {
+        "word": "i",
+        "definition": "Here's what I found on Wikipedia: I or i is the ninth letter and the third vowel letter of the Latin alphabet, used in the modern English alphabet, the alphabets of other western European languages and others worldwide."
+      },
+      {
+        "word": "do?",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
       }
     ],
     "hi": 2,
@@ -2436,5 +2453,5 @@
     "earlier": 1213,
     "else": 1214
   },
-  "lastTrainingDate": "2025-01-26T22:24:08.490Z"
+  "lastTrainingDate": "2025-01-26T22:43:08.993Z"
 }
