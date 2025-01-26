@@ -566,32 +566,97 @@ expressApp.post('/feedback', (req, res) => {
 
 // Try to start local server for AI when /start is posted from HTML JavaScript
 const startManualPORT = 53483;
+
+// Update the getLocalIpAddress function to highlight your specific IP
+function getLocalIpAddress() {
+    const { networkInterfaces } = require('os');
+    const nets = networkInterfaces();
+    const results = [];
+    const targetIP = '192.168.0.62';
+
+    for (const name of Object.keys(nets)) {
+        for (const net of nets[name]) {
+            // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+            if (net.family === 'IPv4' && !net.internal) {
+                if (net.address === targetIP) {
+                    console.log('\n=== Your Main Network Interface ===');
+                    console.log(`Interface: ${name}`);
+                    console.log(`IP Address: ${net.address} (This is your machine)`);
+                    console.log(`Netmask: ${net.netmask}`);
+                }
+                results.push({
+                    name: name,
+                    address: net.address,
+                    netmask: net.netmask,
+                    isMain: net.address === targetIP
+                });
+            }
+        }
+    }
+
+    // Sort results to put your IP first
+    results.sort((a, b) => b.isMain - a.isMain);
+
+    return results;
+}
+
+// Modify the server startup sections
+// Replace the existing expressApp.listen calls with these:
+
+// Start manual server
 expressApp.post('/start', async (req, res) => {
-    // Serve the HTML file
+    const localIps = getLocalIpAddress();
+    
     expressApp.get('/', (req, res) => {
         res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
     });
-    // Start server
+    
     expressApp.listen(startManualPORT, '0.0.0.0', () => {
-        console.log(`Server running on http://localhost:${startManualPORT}`);
+        console.log('\n=== Manual Server Network Information ===');
+        console.log(`Local Access: http://localhost:${startManualPORT}`);
+        console.log(`\nNetwork Access:`);
+        
+        if (localIps.length > 0) {
+            localIps.forEach(({name, address, netmask}) => {
+                console.log(`\nInterface: ${name}`);
+                console.log(`URL: http://${address}:${startManualPORT}`);
+                console.log(`Netmask: ${netmask}`);
+            });
+        } else {
+            console.log('No network interfaces found');
+        }
     });
 });
 
-// Serve the HTML file
-expressApp.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
-});
-
-// Start server
+// Main server startup
 expressApp.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`Server startup & setup was successful.`);
+    const localIps = getLocalIpAddress();
+    console.log('\n=== Server Network Information ===');
+    console.log(`Local Access: http://localhost:${PORT}`);
+    console.log(`\nNetwork Access URLs:`);
+    
+    if (localIps.length > 0) {
+        localIps.forEach(({name, address, isMain}) => {
+            if (isMain) {
+                console.log(`\n→ Main URL (Your IP): http://${address}:${PORT}`);
+                console.log(`  Use this URL to access from other devices on your network`);
+            } else {
+                console.log(`\nAlternative URL: http://${address}:${PORT}`);
+            }
+        });
+    } else {
+        console.log('No network interfaces found');
+    }
+    
+    console.log('\nServer startup & setup was successful.');
 });
 
 // Electron App Initialization
 let win;
 
+// Update createWindow to use the first valid network interface
 function createWindow() {
+    const localIps = getLocalIpAddress();
     win = new BrowserWindow({
         width: 1250,
         height: 1150,
@@ -601,10 +666,16 @@ function createWindow() {
         },
     });
 
-    win.loadURL(`http://localhost:${PORT}`);
+    const serverUrl = localIps.length > 0 ? 
+        `http://${localIps[0].address}:${PORT}` : 
+        `http://localhost:${PORT}`;
+
+    win.loadURL(serverUrl);
     win.on('closed', () => {
         win = null;
     });
+    
+    console.log(`\nElectron app loading from: ${serverUrl}`);
 }
 
 app.whenReady().then(() => {
