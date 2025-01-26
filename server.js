@@ -434,7 +434,43 @@ async function initializeModel() {
     await trainTransformerModel(model, data, labels);
 }
 
-initializeModel();
+// Function to train the model before starting the server
+async function trainModelBeforeServerStart() {
+    console.log('Training model before starting the server...');
+    await initializeModel();
+    console.log('Model training completed.');
+
+    // Test the prediction function
+    const testInput = "hello";
+    const predictedWord = await predictNextWordTransformer(model, testInput, vocab);
+    console.log(`Predicted next word for "${testInput}": ${predictedWord}`);
+}
+
+// Train the model before starting the server
+trainModelBeforeServerStart().then(() => {
+    // Main server startup
+    expressApp.listen(PORT, '0.0.0.0', () => {
+        const localIps = getLocalIpAddress();
+        console.log('\n=== Server Network Information ===');
+        console.log(`Local Access: http://localhost:${PORT}`);
+        console.log(`\nNetwork Access URLs:`);
+        
+        if (localIps.length > 0) {
+            localIps.forEach(({name, address, isMain}) => {
+                if (isMain) {
+                    console.log(`\n→ Main URL (Your IP): http://${address}:${PORT}`);
+                    console.log(`  Use this URL to access from other devices on your network`);
+                } else {
+                    console.log(`\nAlternative URL: http://${address}:${PORT}`);
+                }
+            });
+        } else {
+            console.log('No network interfaces found');
+        }
+        
+        console.log('\nServer startup & setup was successful.');
+    });
+});
 
 // Find similar conversations from training history with fuzzy matching
 function findSimilarConversation(input) {
@@ -781,29 +817,6 @@ expressApp.post('/start', async (req, res) => {
 
 // Update main server startup with static file serving
 expressApp.use('/', express.static(path.join(__dirname, 'public')));
-
-// Main server startup
-expressApp.listen(PORT, '0.0.0.0', () => {
-    const localIps = getLocalIpAddress();
-    console.log('\n=== Server Network Information ===');
-    console.log(`Local Access: http://localhost:${PORT}`);
-    console.log(`\nNetwork Access URLs:`);
-    
-    if (localIps.length > 0) {
-        localIps.forEach(({name, address, isMain}) => {
-            if (isMain) {
-                console.log(`\n→ Main URL (Your IP): http://${address}:${PORT}`);
-                console.log(`  Use this URL to access from other devices on your network`);
-            } else {
-                console.log(`\nAlternative URL: http://${address}:${PORT}`);
-            }
-        });
-    } else {
-        console.log('No network interfaces found');
-    }
-    
-    console.log('\nServer startup & setup was successful.');
-});
 
 // Electron App Initialization
 let win;
