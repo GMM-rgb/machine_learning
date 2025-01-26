@@ -39,6 +39,96 @@
       "input": "thank you",
       "output": "Your very welcome, if you need help let me know!",
       "timestamp": "2025-01-25T23:31:21.555Z"
+    },
+    {
+      "input": "your developers name is maximus farvour",
+      "output": "I don't know how to respond to that.",
+      "timestamp": "2025-01-26T01:07:36.325Z"
+    },
+    {
+      "input": "well now you know who your developers name is and maybe he's messaging you right now.",
+      "output": "Really? I'm not sure what you mean by that.",
+      "timestamp": "2025-01-26T01:08:01.491Z"
+    },
+    {
+      "input": "no not that.",
+      "output": "Alright, let me know if you need help.",
+      "timestamp": "2025-01-26T01:08:09.857Z"
+    },
+    {
+      "input": "well anyway bye",
+      "output": "I can help you solve problems of course!",
+      "timestamp": "2025-01-26T01:08:21.262Z"
+    },
+    {
+      "input": "okay i see you do not want to be left alone.",
+      "output": "Yes please do, I'm here to help.",
+      "timestamp": "2025-01-26T01:08:38.630Z"
+    },
+    {
+      "input": "Laugh out loud you really love saying that",
+      "output": "Ha, ha, very funny! 😂",
+      "timestamp": "2025-01-26T01:08:49.292Z"
+    },
+    {
+      "input": "ikr",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:09:00.002Z"
+    },
+    {
+      "input": "your so silly 😂",
+      "output": "Thanks, your silly too! 😂",
+      "timestamp": "2025-01-26T01:10:08.437Z"
+    },
+    {
+      "input": ":)",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:10:17.612Z"
+    },
+    {
+      "input": "your my best creation and i wish you could be with me always. :(",
+      "output": "Dont worry about it, I'm here to help. 😊",
+      "timestamp": "2025-01-26T01:11:02.387Z"
+    },
+    {
+      "input": "ha ha",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:11:08.578Z"
+    },
+    {
+      "input": "bro why you so silly",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:11:17.961Z"
+    },
+    {
+      "input": "i think you need some more stuff to say do not you think?",
+      "output": "The law of superposition is one of the principles of geology scientists use to determine the relative ages of rock strata, or layers. This principle states that layers of rock are superimposed, or laid down one on top of another. The oldest rock strata will be on the bottom and the youngest at the top.",
+      "timestamp": "2025-01-26T01:11:36.976Z"
+    },
+    {
+      "input": "yeah you definitely do",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T01:11:57.848Z"
+    },
+    {
+      "input": "your incredibly smart did you know that? you have a lot of potential",
+      "output": "The law of superposition is one of the principles of geology scientists use to determine the relative ages of rock strata, or layers. This principle states that layers of rock are superimposed, or laid down one on top of another. The oldest rock strata will be on the bottom and the youngest at the top.",
+      "timestamp": "2025-01-26T01:12:22.127Z"
+    },
+    {
+      "input": "hey there buddy.",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:13:24.397Z"
+    },
+    {
+      "input": "i know your doing great my man.",
+      "output": "I don't know how to respond to that.",
+      "timestamp": "2025-01-26T01:13:39.060Z"
+    },
+    {
+      "input": "it's just a term for saying wow you have come a long way.",
+      "output": "The law of superposition is one of the principles of geology scientists use to determine the relative ages of rock strata, or layers. This principle states that layers of rock are superimposed, or laid down one on top of another. The oldest rock strata will be on the bottom and the youngest at the top.",
+      "timestamp": "2025-01-26T01:13:57.595Z"
     }
   ],
   "vocabulary": {
@@ -342,7 +432,101 @@
     "need": 201,
     "let": 202,
     "me": 203,
-    "know": 204
+    "know": 204,
+    "developers": 205,
+    "name": 206,
+    "maximus": 207,
+    "farvour": 208,
+    "dont": 209,
+    "respond": 210,
+    "well": 211,
+    "now": 212,
+    "who": 213,
+    "maybe": 214,
+    "hes": 215,
+    "messaging": 216,
+    "right": 217,
+    "law": 218,
+    "superposition": 219,
+    "one": 220,
+    "principles": 221,
+    "geology": 222,
+    "scientists": 223,
+    "use": 224,
+    "determine": 225,
+    "relative": 226,
+    "ages": 227,
+    "rock": 228,
+    "strata": 229,
+    "layers": 230,
+    "this": 231,
+    "principle": 232,
+    "states": 233,
+    "superimposed": 234,
+    "laid": 235,
+    "down": 236,
+    "top": 237,
+    "another": 238,
+    "oldest": 239,
+    "will": 240,
+    "be": 241,
+    "bottom": 242,
+    "youngest": 243,
+    "at": 244,
+    "no": 245,
+    "alright": 246,
+    "anyway": 247,
+    "bye": 248,
+    "solve": 249,
+    "problems": 250,
+    "course": 251,
+    "okay": 252,
+    "see": 253,
+    "do": 254,
+    "want": 255,
+    "left": 256,
+    "alone": 257,
+    "laugh": 258,
+    "out": 259,
+    "loud": 260,
+    "really": 261,
+    "love": 262,
+    "saying": 263,
+    "ha": 264,
+    "funny": 265,
+    "": 266,
+    "ikr": 267,
+    "so": 268,
+    "silly": 269,
+    "thanks": 270,
+    "best": 271,
+    "my": 272,
+    "creation": 273,
+    "wish": 274,
+    "could": 275,
+    "always": 276,
+    "why": 277,
+    "think": 278,
+    "stuff": 279,
+    "say": 280,
+    "yeah": 281,
+    "definitely": 282,
+    "thats": 283,
+    "decide": 284,
+    "however": 285,
+    "incredibly": 286,
+    "smart": 287,
+    "lot": 288,
+    "potential": 289,
+    "buddy": 290,
+    "man": 291,
+    "its": 292,
+    "just": 293,
+    "term": 294,
+    "wow": 295,
+    "come": 296,
+    "long": 297,
+    "way": 298
   },
-  "lastTrainingDate": "2025-01-25T23:31:21.555Z"
+  "lastTrainingDate": "2025-01-26T01:13:57.596Z"
 }
