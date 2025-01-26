@@ -9,6 +9,7 @@ const math = require('mathjs');
 const { ifError } = require('assert');
 const tf = require('@tensorflow/tfjs-node'); // Correct import of TensorFlow.js
 const https = require('https');
+const ProgressBar = require('progress'); // Ensure the progress bar module is imported
 
 const expressApp = express();
 const PORT = 3000;
@@ -124,6 +125,72 @@ function addTrainingData(userMessage, aiResponse) {
     if (trainingData.conversations.length % 5 === 0) {
         retrainModel();
     }
+}
+
+// Function to read training data in a special way
+function readTrainingData() {
+    if (fs.existsSync(trainingDataFile)) {
+        const rawData = fs.readFileSync(trainingDataFile, 'utf8');
+        const parsedData = JSON.parse(rawData);
+
+        // Process the training data in a special way
+        parsedData.conversations.forEach(conversation => {
+            const inputWords = preprocessText(conversation.input);
+            const outputWords = preprocessText(conversation.output);
+
+            // Create training pairs
+            inputWords.forEach((word, index) => {
+                if (!vocab[word]) {
+                    vocab[word] = Object.keys(vocab).length + 1;
+                }
+                if (index < inputWords.length - 1) {
+                    data.push(inputWords.slice(0, index + 1).map(w => vocab[w]));
+                    labels.push([vocab[inputWords[index + 1]]]);
+                }
+            });
+
+            // Also learn from AI responses
+            outputWords.forEach((word, index) => {
+                if (!vocab[word]) {
+                    vocab[word] = Object.keys(vocab).length + 1;
+                }
+                if (index < outputWords.length - 1) {
+                    data.push(outputWords.slice(0, index + 1).map(w => vocab[w]));
+                    labels.push([vocab[outputWords[index + 1]]]);
+                }
+            });
+        });
+
+        trainingData = parsedData;
+    }
+}
+
+// Initialize vocabulary and model
+const vocab = {};
+let model;
+const data = [];
+const labels = [];
+
+// Train the model with existing knowledge
+async function initializeModel() {
+    readTrainingData();
+
+    // Add knowledge base data
+    for (const key in knowledge) {
+        const words = preprocessText(key);
+        words.forEach((word, index) => {
+            if (!vocab[word]) {
+                vocab[word] = Object.keys(vocab).length + 1;
+            }
+            if (index < words.length - 1) {
+                data.push(words.slice(0, index + 1).map(w => vocab[w]));
+                labels.push([vocab[words[index + 1]]]);
+            }
+        });
+    }
+
+    model = createTransformerModel(Object.keys(vocab).length);
+    await trainTransformerModel(model, data, labels);
 }
 
 // Function to retrain the model with accumulated data
@@ -365,14 +432,20 @@ function createTransformerModel(vocabSize) {
 // Function to train the Transformer model
 async function trainTransformerModel(model, data, labels, epochs = 10, batchSize = 32) {
     const xs = tf.tensor3d(data.map(d => d.map(v => [v])), [data.length, data[0].length, 1]); // Reshape to 3D tensor
-    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
+    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensure labels have the correct shape
     const dataset = tf.data.zip({xs: tf.data.array(xs), ys: tf.data.array(ys)}).batch(batchSize);
-    
+
+    const bar = new ProgressBar('Training [:bar] :percent :etas', { total: epochs, width: 40 });
+
     await model.fitDataset(dataset, {
         epochs,
         callbacks: {
+            onEpochBegin: (epoch) => {
+                bar.tick(0, { epoch: epoch + 1 });
+            },
             onEpochEnd: (epoch, logs) => {
                 console.log(`Epoch ${epoch + 1}: loss=${logs.loss.toFixed(6)}`);
+                bar.tick();
             }
         }
     });
@@ -387,14 +460,9 @@ async function predictNextWordTransformer(model, inputText, vocab) {
     return Object.keys(vocab).find(key => vocab[key] === predictedIndex);
 }
 
-// Initialize vocabulary and model
-const vocab = {};
-let model;
-
 // Train the model with existing knowledge
 async function initializeModel() {
-    const data = [];
-    const labels = [];
+    readTrainingData();
 
     // Add knowledge base data
     for (const key in knowledge) {
@@ -409,20 +477,6 @@ async function initializeModel() {
             }
         });
     }
-
-    // Add training data
-    trainingData.conversations.forEach(conv => {
-        const words = preprocessText(conv.input);
-        words.forEach((word, index) => {
-            if (!vocab[word]) {
-                vocab[word] = Object.keys(vocab).length + 1;
-            }
-            if (index < words.length - 1) {
-                data.push(words.slice(0, index + 1).map(w => vocab[w]));
-                labels.push([vocab[words[index + 1]]]);
-            }
-        });
-    });
 
     model = createTransformerModel(Object.keys(vocab).length);
     await trainTransformerModel(model, data, labels);
