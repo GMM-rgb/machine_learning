@@ -674,6 +674,61 @@
       "input": "what should i do?",
       "output": "That's up to you to decide, however, I'm always here to help!",
       "timestamp": "2025-01-26T22:43:03.738Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:35:39.849Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:39:04.385Z"
+    },
+    {
+      "input": "how are you today?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T23:39:10.611Z"
+    },
+    {
+      "input": "that is good to hear",
+      "output": "I'm glad you think so! I'm here to help you with anything you need.",
+      "timestamp": "2025-01-26T23:39:18.109Z"
+    },
+    {
+      "input": "yup",
+      "output": "I help you with anything you need.",
+      "timestamp": "2025-01-26T23:39:25.789Z"
+    },
+    {
+      "input": "hmm?",
+      "output": "I will let you decide on that, unless you need some ideas.",
+      "timestamp": "2025-01-26T23:39:35.821Z"
+    },
+    {
+      "input": "Laugh out loud",
+      "output": "Ha, ha, very funny! 😂",
+      "timestamp": "2025-01-26T23:39:41.048Z"
+    },
+    {
+      "input": "yo.",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:43:29.933Z"
+    },
+    {
+      "input": "yo",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:43:34.155Z"
+    },
+    {
+      "input": "yo",
+      "output": "We talked about \"yo\" earlier. Anything else on your mind?",
+      "timestamp": "2025-01-26T23:43:36.894Z"
+    },
+    {
+      "input": "hello htwebz",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:44:04.739Z"
     }
   ],
   "vocabulary": {
@@ -1277,15 +1332,15 @@
       },
       {
         "word": "who",
-        "definition": ""
+        "definition": "term for determining a person."
       },
       {
         "word": "created",
-        "definition": ""
+        "definition": "Here's what I found on Wikipedia: Creation is the act of making or producing something."
       },
       {
         "word": "again",
-        "definition": ""
+        "definition": "repeating something over."
       },
       {
         "word": "should",
@@ -1298,6 +1353,42 @@
       {
         "word": "do?",
         "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": "hey",
+        "definition": "Here's what I found on Wikipedia: The song \"Hey-Hey-Hey-Hey\", also known as \"Hey-Hey-Hey-Hey! (Goin' Back to Birmingham)\", was written by Little Richard and recorded on May 9, 1956 at J&M Studio, New Orleans, Louisiana, (supervised by Bumps Blackwell)."
+      },
+      {
+        "word": "today?",
+        "definition": "Here's what I found on Wikipedia: Today is the day of the present, the current day."
+      },
+      {
+        "word": "yup",
+        "definition": "Here's what I found on Wikipedia: Yup is a slang word for yes, see Yes and no."
+      },
+      {
+        "word": "hmm?",
+        "definition": "Here's what I found on Wikipedia: A hum is a sound made by producing a wordless tone with the mouth closed, forcing the sound to emerge from the nose."
+      },
+      {
+        "word": "laugh",
+        "definition": "Here's what I found on Wikipedia: \"Laugh, Laugh\" is a song by American rock group the Beau Brummels, written by guitarist Ron Elliott and produced by Sylvester Stewart, later known as Sly Stone."
+      },
+      {
+        "word": "out",
+        "definition": ""
+      },
+      {
+        "word": "loud",
+        "definition": "loud is a sound."
+      },
+      {
+        "word": "yo.",
+        "definition": "yo means hello."
+      },
+      {
+        "word": "htwebz",
+        "definition": "Here's what I found on Wikipedia: HTWebz is a web development group, specializing in web design and development."
       }
     ],
     "hi": 2,
@@ -2451,7 +2542,10 @@
     "developer": 1211,
     "talked": 1212,
     "earlier": 1213,
-    "else": 1214
+    "else": 1214,
+    "yup": 1215,
+    "hmm": 1216,
+    "htwebz": 1217
   },
-  "lastTrainingDate": "2025-01-26T22:43:08.993Z"
+  "lastTrainingDate": "2025-01-26T23:44:04.739Z"
 }
