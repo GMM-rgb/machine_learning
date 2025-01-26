@@ -793,8 +793,14 @@
 
     <!-- Input Area -->
     <div id="chat-user-control-interface">
-        <form onsubmit="event.preventDefault(); sendMessage();" id="messaging">
-            <input type="text" id="user-input" placeholder="Type a message..." autocomplete="off" autofocus="onload" />
+        <form id="messaging" onsubmit="event.preventDefault(); sendMessage();">
+            <input 
+                type="text" 
+                id="user-input" 
+                placeholder="Type a message..." 
+                autocomplete="off" 
+                autofocus="onload"
+            />
             <button class="send-button" type="submit">Send</button>
         </form>
         <style>
@@ -1103,6 +1109,7 @@ const sendMessage = async () => {
     if (isSending) return;
     isSending = true;
 
+    const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
     if (!message) {
         isSending = false;
@@ -1116,64 +1123,56 @@ const sendMessage = async () => {
     appendMessage('User', message);
     userInput.value = '';
 
-    // Reset chat box HTML with thinking container
-    const thinkingContainer = document.querySelector('.thinking-container');
-    if (!thinkingContainer) {
-        chatBox.innerHTML += `
-            <div class="thinking-container">
-                <span class="thinking-text">AI is thinking</span>
-                <span class="thinking-dots">
-                    <span class="thinking-dot">.</span>
-                    <span class="thinking-dot">.</span>
-                    <span class="thinking-dot">.</span>
-                </span>
-            </div>
-        `;
-    }
-    const thinking = chatBox.querySelector('.thinking-container');
-    thinking.style.display = 'block';
+    // Show thinking animation
+    const thinkingContainer = document.createElement('div');
+    thinkingContainer.className = 'thinking-container';
+    thinkingContainer.innerHTML = `
+        <span class="thinking-text">AI is thinking</span>
+        <span class="thinking-dots">
+            <span class="thinking-dot">.</span>
+            <span class="thinking-dot">.</span>
+            <span class="thinking-dot">.</span>
+        </span>
+    `;
+    chatBox.appendChild(thinkingContainer);
     chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
         // Add minimum delay for thinking animation
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 750));
 
-        if (message === '/start') {
-            const response = await fetch('http://localhost:3000/start', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-            });
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message })
+        });
 
-            if (!response.ok) throw new Error('Failed to start server');
+        if (!response.ok) throw new Error('Failed to get response');
 
-            const data = await response.json();
-            thinking.style.display = 'none';
-            typeOutMessage('System', data.response);
+        const data = await response.json();
+        thinkingContainer.remove();
+        
+        if (data && data.response) {
+            typeOutMessage('AI', data.response);
         } else {
-            const response = await fetch('http://localhost:3000/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message }),
-            });
-
-            if (!response.ok) throw new Error('Failed to process message');
-
-            const data = await response.json();
-            thinking.style.display = 'none';
-            if (data && data.response) {
-                typeOutMessage('AI', data.response);
-            } else {
-                throw new Error('Invalid response from server');
-            }
+            throw new Error('Invalid response format');
         }
     } catch (error) {
         console.error('Error:', error);
-        thinking.style.display = 'none';
+        thinkingContainer.remove();
         typeOutMessage('System', 'Error: Unable to process message. Please try again.');
     } finally {
         isSending = false;
     }
-}
+};
+
+// Add event listener for Enter key
+document.getElementById('user-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
 
 // Clear chat display without modifying stored data
 function clearChat() {

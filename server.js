@@ -600,18 +600,24 @@ function getLocalIpAddress() {
     return results;
 }
 
-// Modify the server startup sections
-// Replace the existing expressApp.listen calls with these:
+// Move the route definition before the server startup
+// Add this before any expressApp.listen calls
+expressApp.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
+});
 
-// Start manual server
+// Update the manual server start
 expressApp.post('/start', async (req, res) => {
     const localIps = getLocalIpAddress();
     
-    expressApp.get('/', (req, res) => {
+    const manualServer = express();
+    manualServer.use(express.static(path.join(__dirname, 'public')));
+    
+    manualServer.get('/', (req, res) => {
         res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
     });
     
-    expressApp.listen(startManualPORT, '0.0.0.0', () => {
+    manualServer.listen(startManualPORT, '0.0.0.0', () => {
         console.log('\n=== Manual Server Network Information ===');
         console.log(`Local Access: http://localhost:${startManualPORT}`);
         console.log(`\nNetwork Access:`);
@@ -626,7 +632,12 @@ expressApp.post('/start', async (req, res) => {
             console.log('No network interfaces found');
         }
     });
+
+    res.json({ status: 'Manual server started' });
 });
+
+// Update main server startup with static file serving
+expressApp.use('/', express.static(path.join(__dirname, 'public')));
 
 // Main server startup
 expressApp.listen(PORT, '0.0.0.0', () => {
