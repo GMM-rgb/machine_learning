@@ -345,6 +345,8 @@ let model;
 async function initializeModel() {
     const data = [];
     const labels = [];
+
+    // Add knowledge base data
     for (const key in knowledge) {
         const words = preprocessText(key);
         words.forEach((word, index) => {
@@ -357,13 +359,65 @@ async function initializeModel() {
             }
         });
     }
+
+    // Add training data
+    trainingData.conversations.forEach(conv => {
+        const words = preprocessText(conv.input);
+        words.forEach((word, index) => {
+            if (!vocab[word]) {
+                vocab[word] = Object.keys(vocab).length + 1;
+            }
+            if (index < words.length - 1) {
+                data.push(words.slice(0, index + 1).map(w => vocab[w]));
+                labels.push([vocab[words[index + 1]]]);
+            }
+        });
+    });
+
     model = createModel(Object.keys(vocab).length);
     await trainModel(model, data, labels);
 }
 
 initializeModel();
 
-// API endpoint for chatting
+// Find similar conversations from training history
+function findSimilarConversation(input) {
+    const conversations = trainingData.conversations;
+    let bestMatch = null;
+    let bestScore = 0;
+
+    for (const conv of conversations) {
+        const similarity = calculateSimilarity(input.toLowerCase(), conv.input.toLowerCase());
+        if (similarity > bestScore && similarity > 0.6) { // Threshold of 60% similarity
+            bestScore = similarity;
+            bestMatch = conv;
+        }
+    }
+
+    return bestMatch;
+}
+
+// Calculate similarity between two strings
+function calculateSimilarity(str1, str2) {
+    const words1 = str1.split(' ');
+    const words2 = str2.split(' ');
+    const commonWords = words1.filter(word => words2.includes(word));
+    return commonWords.length / Math.max(words1.length, words2.length);
+}
+
+// Get response from training data or knowledge base
+function getResponse(message) {
+    // First check training data
+    const similarConversation = findSimilarConversation(message);
+    if (similarConversation) {
+        return similarConversation.output;
+    }
+
+    // If no match in training data, check knowledge base
+    return findBestMatch(message, knowledge);
+}
+
+// Modify the existing chat endpoint to use both knowledge and training data
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
         res.json({ response: "Chat is currently disabled while performing a search. Please try again in a moment." });
@@ -378,25 +432,23 @@ expressApp.post('/chat', async (req, res) => {
         // Check for Bing search keywords
         if (['search bing', 'bing', 'search bing for'].some(keyword => normalizedMessage.startsWith(keyword))) {
             response = await handleUserInput(message);
+            addTrainingData(normalizedMessage, response);
             res.json({ response });
             return;
         }
 
-        // Prioritize Wikipedia query for specific patterns
-        if (isWikipediaQuery(message)) {
-            const summarize = /summarize|summary|bullet points/i.test(message);
-            response = await getWikipediaInfo(message, summarize);
+        // First try to get response from training data or knowledge base
+        response = getResponse(normalizedMessage);
+
+        // If no good match found, try Wikipedia or Bing
+        if (response === "Sorry, I didn't understand that.") {
+            if (isWikipediaQuery(message)) {
+                const summarize = /summarize|summary|bullet points/i.test(message);
+                response = await getWikipediaInfo(message, summarize);
+            }
+            
             if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
                 response = await getBingSearchInfo(message);
-            }
-        } else {
-            response = findBestMatch(normalizedMessage, knowledge);
-            
-            if (response === "Sorry, I didn't understand that.") {
-                response = await getWikipediaInfo(message);
-                if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
-                    response = await getBingSearchInfo(message);
-                }
             }
         }
 

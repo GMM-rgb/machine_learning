@@ -122,13 +122,48 @@
     },
     {
       "input": "i know your doing great my man.",
-      "output": "I don't know how to respond to that.",
+      "output": "Not too much, but hey I'm doing great! And you?",
       "timestamp": "2025-01-26T01:13:39.060Z"
     },
     {
       "input": "it's just a term for saying wow you have come a long way.",
       "output": "The law of superposition is one of the principles of geology scientists use to determine the relative ages of rock strata, or layers. This principle states that layers of rock are superimposed, or laid down one on top of another. The oldest rock strata will be on the bottom and the youngest at the top.",
       "timestamp": "2025-01-26T01:13:57.595Z"
+    },
+    {
+      "input": "hey there",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:17:30.255Z"
+    },
+    {
+      "input": "how r you my silly bro",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:17:39.002Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-26T01:17:46.390Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:21:45.934Z"
+    },
+    {
+      "input": "how are you doing today buddy?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:21:55.365Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-26T01:22:02.448Z"
+    },
+    {
+      "input": "thanks",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-26T01:22:11.201Z"
     }
   ],
   "vocabulary": {
@@ -526,7 +561,10 @@
     "wow": 295,
     "come": 296,
     "long": 297,
-    "way": 298
+    "way": 298,
+    "r": 299,
+    "today": 300,
+    "happy": 301
   },
-  "lastTrainingDate": "2025-01-26T01:13:57.596Z"
+  "lastTrainingDate": "2025-01-26T01:22:11.201Z"
 }
