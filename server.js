@@ -211,11 +211,11 @@ function findBestMatch(query, knowledge) {
 // Detect if the user is asking for Wikipedia information
 function isWikipediaQuery(input) {
     const wikipediaTriggers = [
-        /what is|what are|what was|tell me about|who is|explain|define|describe/i,
-        /how does|how do|how can|can you/i
+        /^what is |^what are |^what was |^tell me about |^who is |^explain |^define |^describe /i,
+        /^how does |^how do |^how can |^what does |^where is |^when did /i
     ];
 
-    const normalizedInput = input.toLowerCase();
+    const normalizedInput = input.toLowerCase().trim();
     return wikipediaTriggers.some(trigger => trigger.test(normalizedInput));
 }
 
@@ -228,15 +228,24 @@ function summarizeText(text) {
 
 // Wikipedia info fetching with input sanitization (e.g., "What is X?") 
 async function getWikipediaInfo(query, summarize = false) {
-    // Clean up punctuation and prepare query
+    // Clean up query
     const sanitizedQuery = query
-        .replace(/[^\w\s]/g, '') // Remove punctuation
-        .replace(/\b(what is|what are|what was|tell me about|who is|define|describe|how does|how do|how can|can you)\b/gi, '') // Remove common question patterns
+        .toLowerCase()
+        .replace(/^(what is|what are|what was|tell me about|who is|explain|define|describe|how does|how do|how can|what does|where is|when did)\s+/i, '')
+        .replace(/[?.,!]/g, '')
         .trim();
 
+    console.log("Sanitized Wikipedia query:", sanitizedQuery);
+
     try {
-        const page = await wiki().page(sanitizedQuery);
+        const searchResults = await wiki().search(sanitizedQuery);
+        if (!searchResults.results || !searchResults.results.length) {
+            return `Sorry, I couldn't find any relevant information on Wikipedia about ${query}.`;
+        }
+
+        const page = await wiki().page(searchResults.results[0]);
         const summary = await page.summary();
+        
         if (summarize) {
             return `Here's a summary of what I found on Wikipedia:\n${summarizeText(summary)}`;
         }
@@ -417,7 +426,7 @@ function getResponse(message) {
     return findBestMatch(message, knowledge);
 }
 
-// Modify the existing chat endpoint to use both knowledge and training data
+// Modify the chat endpoint to prioritize Wikipedia searches
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
         res.json({ response: "Chat is currently disabled while performing a search. Please try again in a moment." });
@@ -429,27 +438,24 @@ expressApp.post('/chat', async (req, res) => {
     let response = '';
 
     try {
-        // Check for Bing search keywords
-        if (['search bing', 'bing', 'search bing for'].some(keyword => normalizedMessage.startsWith(keyword))) {
-            response = await handleUserInput(message);
-            addTrainingData(normalizedMessage, response);
-            res.json({ response });
-            return;
-        }
-
-        // First try to get response from training data or knowledge base
-        response = getResponse(normalizedMessage);
-
-        // If no good match found, try Wikipedia or Bing
-        if (response === "Sorry, I didn't understand that.") {
-            if (isWikipediaQuery(message)) {
-                const summarize = /summarize|summary|bullet points/i.test(message);
-                response = await getWikipediaInfo(message, summarize);
-            }
+        // First check if it's a Wikipedia query
+        if (isWikipediaQuery(message)) {
+            console.log("Wikipedia query detected:", message);
+            const summarize = /summarize|summary|bullet points/i.test(message);
+            response = await getWikipediaInfo(message, summarize);
             
+            // Only fallback to Bing if Wikipedia fails
             if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
                 response = await getBingSearchInfo(message);
             }
+        }
+        // If not a Wikipedia query, check for Bing search keywords
+        else if (['search bing', 'bing', 'search bing for'].some(keyword => normalizedMessage.startsWith(keyword))) {
+            response = await handleUserInput(message);
+        }
+        // If neither Wikipedia nor Bing search, try training data and knowledge base
+        else {
+            response = getResponse(normalizedMessage);
         }
 
         // Add the interaction to training data if it's not a command
