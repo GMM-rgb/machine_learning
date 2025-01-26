@@ -499,6 +499,31 @@
       "input": "oh okay thanks",
       "output": "Alright, let me know if you need help.",
       "timestamp": "2025-01-26T20:23:20.873Z"
+    },
+    {
+      "input": "hi again!",
+      "output": "Let me explain: hi refers to used as a friendly greeting or to attract someone's attention..",
+      "timestamp": "2025-01-26T20:26:04.345Z"
+    },
+    {
+      "input": "ok",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:26:15.909Z"
+    },
+    {
+      "input": "hi?",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:26:25.162Z"
+    },
+    {
+      "input": "so how r you doin",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T20:26:36.086Z"
+    },
+    {
+      "input": "good to hear",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-26T20:26:42.800Z"
     }
   ],
   "vocabulary": {
@@ -759,6 +784,50 @@
       {
         "word": "thanks",
         "definition": "Thanks may refer to: Gratitude, an emotion."
+      },
+      {
+        "word": "again!",
+        "definition": ""
+      },
+      {
+        "word": "ok",
+        "definition": "Here's what I found on Wikipedia: OK ( ), with spelling variations including okay, okeh, O."
+      },
+      {
+        "word": "hi?",
+        "definition": ""
+      },
+      {
+        "word": "so",
+        "definition": ""
+      },
+      {
+        "word": "how",
+        "definition": ""
+      },
+      {
+        "word": "r",
+        "definition": "Here's what I found on Wikipedia: R or r is the eighteenth letter of the Latin alphabet, used in the modern English alphabet, the alphabets of other western European languages and others worldwide."
+      },
+      {
+        "word": "you",
+        "definition": "Here's what I found on Wikipedia: In Modern English, the word \"you\" is the second-person pronoun."
+      },
+      {
+        "word": "doin",
+        "definition": "Here's what I found on Wikipedia: Dōin (道因, 1090 — c."
+      },
+      {
+        "word": "good",
+        "definition": "Here's what I found on Wikipedia: In most contexts, the concept of good denotes the conduct that should be preferred when posed with a choice between possible actions."
+      },
+      {
+        "word": "to",
+        "definition": "Here's what I found on Wikipedia: To, TO, or T."
+      },
+      {
+        "word": "hear",
+        "definition": "Here's what I found on Wikipedia: Hear, hear is an expression which represents a listener's agreement with the point being made by a speaker or in response to a toast."
       }
     ],
     "hi": 2,
@@ -1694,7 +1763,13 @@
     "informal": 977,
     "word": 978,
     "refer": 979,
-    "idea\n\n": 980
+    "idea\n\n": 980,
+    "refers": 981,
+    "friendly": 982,
+    "attract": 983,
+    "someones": 984,
+    "ok": 985,
+    "good": 986
   },
-  "lastTrainingDate": "2025-01-26T20:23:23.219Z"
+  "lastTrainingDate": "2025-01-26T20:26:45.391Z"
 }
