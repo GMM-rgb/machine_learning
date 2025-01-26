@@ -549,6 +549,21 @@
       "input": "hi",
       "output": "Let me explain: hi refers to used as a friendly greeting or to attract someone's attention..",
       "timestamp": "2025-01-26T20:34:00.860Z"
+    },
+    {
+      "input": "hi",
+      "output": "Based on what I know, hi means used as a friendly greeting or to attract someone's attention..",
+      "timestamp": "2025-01-26T20:41:32.881Z"
+    },
+    {
+      "input": "hi there",
+      "output": "Let me explain: hi refers to used as a friendly greeting or to attract someone's attention..",
+      "timestamp": "2025-01-26T20:41:42.083Z"
+    },
+    {
+      "input": "hello bro",
+      "output": "Let me explain: hello refers to used as a greeting or to begin a conversation..",
+      "timestamp": "2025-01-26T20:41:46.895Z"
     }
   ],
   "vocabulary": {
@@ -885,6 +900,14 @@
       {
         "word": "😂",
         "definition": "Here's what I found on Wikipedia: Face with Tears of Joy (😂) is an emoji depicting a face crying with laughter."
+      },
+      {
+        "word": "there",
+        "definition": "current proximity of something."
+      },
+      {
+        "word": "bro",
+        "definition": "slang term used for brother"
       }
     ],
     "hi": 2,
@@ -1832,7 +1855,11 @@
     "specifying": 989,
     "something": 990,
     "correct": 991,
-    "guess": 992
+    "guess": 992,
+    "based": 993,
+    "means": 994,
+    "begin": 995,
+    "conversation": 996
   },
-  "lastTrainingDate": "2025-01-26T20:34:00.860Z"
+  "lastTrainingDate": "2025-01-26T20:41:47.465Z"
 }

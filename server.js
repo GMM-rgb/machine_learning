@@ -623,31 +623,6 @@ async function learnInBackground(unknownWords) {
     }
 }
 
-// Sentence generation using training data and knowledge
-function generateSentence(context) {
-    const responses = trainingData.conversations.map(conv => conv.output);
-    const templates = [
-        "Based on what I know, {concept} means {definition}.",
-        "I understand that {concept} is {definition}.",
-        "Let me explain: {concept} refers to {definition}.",
-        "According to my knowledge, {concept} is {definition}."
-    ];
-
-    let response = '';
-    if (context.definitions.length > 0) {
-        const template = templates[Math.floor(Math.random() * templates.length)];
-        const def = context.definitions[0];
-        response = template
-            .replace('{concept}', def.word)
-            .replace('{definition}', def.definition);
-    } else {
-        // Use existing responses as templates
-        response = responses[Math.floor(Math.random() * responses.length)];
-    }
-
-    return response;
-}
-
 // Update the chat endpoint to use enhanced understanding
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
@@ -690,10 +665,6 @@ expressApp.post('/chat', async (req, res) => {
                 response = await getBingSearchInfo(message);
             }
         }
-        // Try to generate a response using understanding
-        else if (understanding.definitions.length > 0) {
-            response = generateSentence(understanding);
-        }
         // Handle simple greetings with explanations
         else if (['hi', 'hello', 'hey', 'yo', 'sup'].includes(normalizedMessage)) {
             const definition = findDefinitionInTrainingData(normalizedMessage);
@@ -701,17 +672,13 @@ expressApp.post('/chat', async (req, res) => {
         }
         // Finally, try training data and knowledge base
         else {
-            response = await predictNextWordTransformer(model, normalizedMessage, vocab);
+            response = getResponse(normalizedMessage);
         }
 
         // Add the interaction to training data if it's not a command
         if (!message.startsWith('/')) {
             addTrainingData(normalizedMessage, response);
         }
-        
-        // Example usage of getResponse function
-        const aiResponse = getResponse(normalizedMessage);
-        console.log('AI Response:', aiResponse);
 
         res.json({ response });
     } catch (error) {
