@@ -564,6 +564,11 @@
       "input": "your amazing",
       "output": "I'm glad you think so! I'm here to help you with anything you need.",
       "timestamp": "2025-01-26T20:50:46.339Z"
+    },
+    {
+      "input": "hello there my best friend!",
+      "output": "Not too much, but hey I'm doing great! And I'm happy to see you too!",
+      "timestamp": "2025-01-26T20:52:08.030Z"
     }
   ],
   "vocabulary": {
@@ -973,6 +978,18 @@
       {
         "word": "amazing",
         "definition": ""
+      },
+      {
+        "word": "my",
+        "definition": ""
+      },
+      {
+        "word": "best",
+        "definition": ""
+      },
+      {
+        "word": "friend!",
+        "definition": "Here's what I found on Wikipedia: A friend-to-friend (or F2F) computer network is a type of peer-to-peer network in which users only make direct connections with people they know."
       }
     ],
     "hi": 2,
@@ -2035,5 +2052,5 @@
     "enough": 1109,
     "amazing": 1110
   },
-  "lastTrainingDate": "2025-01-26T20:50:47.665Z"
+  "lastTrainingDate": "2025-01-26T20:52:10.004Z"
 }
