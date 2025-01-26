@@ -569,6 +569,26 @@
       "input": "hello there my best friend!",
       "output": "Not too much, but hey I'm doing great! And I'm happy to see you too!",
       "timestamp": "2025-01-26T20:52:08.030Z"
+    },
+    {
+      "input": "what are you up to?",
+      "output": "Here's what I found on Wikipedia: \"Never Gonna Give You Up\" is a pop song by English singer Rick Astley, released on 27 July 1987. The song is widely regarded as Astley's most popular, as well as his signature song, and it is often played at the end of his live concerts.  Written and produced by Stock Aitken Waterman, it was released by RCA Records as the first single from Astley's debut studio album, Whenever You Need Somebody (1987), with a music video directed by Simon West.  \nThe song became a worldwide hit, initially in the United Kingdom in 1987, where it stayed at the top of the chart for five weeks and was the best-selling single of that year. It eventually topped charts in 25 different countries, including the US and West Germany, and winning Best British Single at the 1988 Brit Awards.\nThe video resurged in popularity in 2007 due to the bait-and-switch \"Rickroll\" Internet meme. In 2008, Astley won the MTV Europe Music Award for Best Act Ever with the song, as a result of a collective campaign by thousands of people on the Internet. In 2019, Astley recorded and released a new 'Pianoforte' arrangement of the song for his album The Best of Me. In 2023, Billboard magazine ranked \"Never Gonna Give You Up\" among the 500 best pop songs of all time.\n\n",
+      "timestamp": "2025-01-26T20:53:27.251Z"
+    },
+    {
+      "input": "bro literally rick rolled me",
+      "output": "Many types, coming from math to history, language and much more.",
+      "timestamp": "2025-01-26T20:57:17.698Z"
+    },
+    {
+      "input": "yep yep totally",
+      "output": "Ha, ha, very funny! 😂",
+      "timestamp": "2025-01-26T20:57:31.856Z"
+    },
+    {
+      "input": "hmmm you know actually what could we do",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T21:00:55.633Z"
     }
   ],
   "vocabulary": {
@@ -588,6 +608,8 @@
     "16": 604,
     "19": 806,
     "22": 667,
+    "25": 1158,
+    "27": 1120,
     "33": 605,
     "36": 766,
     "45": 677,
@@ -599,6 +621,7 @@
     "80": 135,
     "85": 356,
     "120": 1086,
+    "500": 1184,
     "1769": 624,
     "1931": 396,
     "1937": 401,
@@ -609,6 +632,10 @@
     "1943": 494,
     "1944": 501,
     "1945": 320,
+    "1987": 1122,
+    "1988": 1160,
+    "2007": 1165,
+    "2008": 1170,
     "2013": 812,
     "2015": 813,
     "2017": 814,
@@ -849,11 +876,11 @@
       },
       {
         "word": "so",
-        "definition": ""
+        "definition": "Here's what I found on Wikipedia: So is a disjunctive word used to coordinate and connect ideas."
       },
       {
         "word": "how",
-        "definition": ""
+        "definition": "meaning for a question."
       },
       {
         "word": "r",
@@ -990,6 +1017,58 @@
       {
         "word": "friend!",
         "definition": "Here's what I found on Wikipedia: A friend-to-friend (or F2F) computer network is a type of peer-to-peer network in which users only make direct connections with people they know."
+      },
+      {
+        "word": "to?",
+        "definition": "Here's what I found on Wikipedia: To, TO, or T."
+      },
+      {
+        "word": "literally",
+        "definition": "Here's what I found on Wikipedia: Literally is an English adverb meaning \"in a literal sense or manner\" or an intensifier which strengthens the following statement."
+      },
+      {
+        "word": "rick",
+        "definition": ""
+      },
+      {
+        "word": "rolled",
+        "definition": "Here's what I found on Wikipedia: Rolled oats are a type of lightly processed whole-grain food."
+      },
+      {
+        "word": "yep",
+        "definition": ""
+      },
+      {
+        "word": "yep",
+        "definition": ""
+      },
+      {
+        "word": "totally",
+        "definition": ""
+      },
+      {
+        "word": "hmmm",
+        "definition": "Here's what I found on Wikipedia: A hum is a sound made by producing a wordless tone with the mouth closed, forcing the sound to emerge from the nose."
+      },
+      {
+        "word": "know",
+        "definition": "Here's what I found on Wikipedia: Knowledge is an awareness of facts, a familiarity with individuals and situations, or a practical skill."
+      },
+      {
+        "word": "actually",
+        "definition": "Here's what I found on Wikipedia: Actually (stylised as Pet Shop Boys, actually."
+      },
+      {
+        "word": "could",
+        "definition": "Here's what I found on Wikipedia: The English modal auxiliary verbs are a subset of the English auxiliary verbs used mostly to express modality, properties such as possibility and obligation."
+      },
+      {
+        "word": "we",
+        "definition": "Here's what I found on Wikipedia: In Modern English, we is a plural, first-person pronoun."
+      },
+      {
+        "word": "do",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
       }
     ],
     "hi": 2,
@@ -2050,7 +2129,83 @@
     "ehh": 1107,
     "close": 1108,
     "enough": 1109,
-    "amazing": 1110
+    "amazing": 1110,
+    "never": 1111,
+    "gonna": 1112,
+    "give": 1113,
+    "pop": 1114,
+    "song": 1115,
+    "english": 1116,
+    "singer": 1117,
+    "rick": 1118,
+    "astley": 1119,
+    "july": 1121,
+    "regarded": 1123,
+    "astleys": 1124,
+    "popular": 1125,
+    "his": 1126,
+    "signature": 1127,
+    "often": 1128,
+    "end": 1129,
+    "live": 1130,
+    "concerts": 1131,
+    "written": 1132,
+    "produced": 1133,
+    "stock": 1134,
+    "aitken": 1135,
+    "waterman": 1136,
+    "rca": 1137,
+    "records": 1138,
+    "single": 1139,
+    "debut": 1140,
+    "album": 1141,
+    "whenever": 1142,
+    "somebody": 1143,
+    "music": 1144,
+    "directed": 1145,
+    "simon": 1146,
+    "became": 1147,
+    "hit": 1148,
+    "stayed": 1149,
+    "chart": 1150,
+    "five": 1151,
+    "weeks": 1152,
+    "bestselling": 1153,
+    "year": 1154,
+    "eventually": 1155,
+    "topped": 1156,
+    "charts": 1157,
+    "winning": 1159,
+    "brit": 1161,
+    "awards\nthe": 1162,
+    "resurged": 1163,
+    "popularity": 1164,
+    "due": 1166,
+    "baitandswitch": 1167,
+    "rickroll": 1168,
+    "meme": 1169,
+    "won": 1171,
+    "mtv": 1172,
+    "award": 1173,
+    "result": 1174,
+    "collective": 1175,
+    "campaign": 1176,
+    "thousands": 1177,
+    "recorded": 1178,
+    "pianoforte": 1179,
+    "arrangement": 1180,
+    "billboard": 1181,
+    "magazine": 1182,
+    "ranked": 1183,
+    "songs": 1185,
+    "time\n\n": 1186,
+    "literally": 1187,
+    "rolled": 1188,
+    "types": 1189,
+    "coming": 1190,
+    "yep": 1191,
+    "totally": 1192,
+    "actually": 1193
   },
-  "lastTrainingDate": "2025-01-26T20:52:10.004Z"
+  "lastTrainingDate": "2025-01-26T21:00:59.726Z"
 }
