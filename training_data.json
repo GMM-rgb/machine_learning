@@ -519,6 +519,11 @@
       "input": "good to hear",
       "output": "Your very welcome, if you need help let me know! 😊",
       "timestamp": "2025-01-26T20:26:42.800Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:47:06.473Z"
     }
   ],
   "vocabulary": {
@@ -1816,5 +1821,5 @@
     "begin": 995,
     "conversation": 996
   },
-  "lastTrainingDate": "2025-01-26T20:45:47.324Z"
+  "lastTrainingDate": "2025-01-26T20:47:06.473Z"
 }

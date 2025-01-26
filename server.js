@@ -665,10 +665,9 @@ expressApp.post('/chat', async (req, res) => {
                 response = await getBingSearchInfo(message);
             }
         }
-        // Handle simple greetings with explanations
+        // Handle simple greetings with conversational responses
         else if (['hi', 'hello', 'hey', 'yo', 'sup'].includes(normalizedMessage)) {
-            const definition = findDefinitionInTrainingData(normalizedMessage);
-            response = definition ? `Let me explain: ${normalizedMessage} refers to ${definition}.` : "Hello there! How may I help you?";
+            response = "Hello there! How may I help you?";
         }
         // Finally, try training data and knowledge base
         else {
