@@ -403,40 +403,78 @@ async function initializeModel() {
 
 initializeModel();
 
-// Find similar conversations from training history
+// Find similar conversations from training history with fuzzy matching
 function findSimilarConversation(input) {
     const conversations = trainingData.conversations;
     let bestMatch = null;
     let bestScore = 0;
+    let minDistance = Infinity;
+
+    // Normalize input for comparison
+    const normalizedInput = input.toLowerCase().trim();
 
     for (const conv of conversations) {
-        const similarity = calculateSimilarity(input.toLowerCase(), conv.input.toLowerCase());
-        if (similarity > bestScore && similarity > 0.6) { // Threshold of 60% similarity
+        // Try exact word matching first
+        const similarity = calculateSimilarity(normalizedInput, conv.input.toLowerCase());
+        if (similarity > bestScore && similarity > 0.6) {
             bestScore = similarity;
             bestMatch = conv;
+            continue;
+        }
+
+        // If no good word match, try fuzzy matching
+        const distance = getLevenshteinDistance(normalizedInput, conv.input.toLowerCase());
+        if (distance < minDistance) {
+            minDistance = distance;
+            // Only use fuzzy match if it's close enough (adjust threshold as needed)
+            if (distance < normalizedInput.length * 0.4) { // 40% similarity threshold
+                bestMatch = conv;
+            }
         }
     }
 
     return bestMatch;
 }
 
-// Calculate similarity between two strings
+// Enhanced similarity calculation that considers partial matches
 function calculateSimilarity(str1, str2) {
     const words1 = str1.split(' ');
     const words2 = str2.split(' ');
-    const commonWords = words1.filter(word => words2.includes(word));
-    return commonWords.length / Math.max(words1.length, words2.length);
+    let matches = 0;
+    let totalWords = Math.max(words1.length, words2.length);
+
+    // Check each word from the first string
+    for (const word1 of words1) {
+        // Look for exact or fuzzy matches in the second string
+        for (const word2 of words2) {
+            if (word1 === word2) {
+                matches += 1; // Full match
+                break;
+            }
+            const distance = getLevenshteinDistance(word1, word2);
+            if (distance <= Math.min(word1.length, word2.length) * 0.3) { // 30% difference tolerance
+                matches += 0.8; // Partial match
+                break;
+            }
+        }
+    }
+
+    return matches / totalWords;
 }
 
 // Get response from training data or knowledge base
 function getResponse(message) {
-    // First check training data
+    // First try to find a similar conversation using fuzzy matching
     const similarConversation = findSimilarConversation(message);
     if (similarConversation) {
+        console.log('Found similar conversation:', {
+            input: similarConversation.input,
+            confidence: calculateSimilarity(message, similarConversation.input)
+        });
         return similarConversation.output;
     }
 
-    // If no match in training data, check knowledge base
+    // If no conversation match, try knowledge base
     return findBestMatch(message, knowledge);
 }
 

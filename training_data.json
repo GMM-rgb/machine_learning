@@ -437,8 +437,28 @@
     },
     {
       "input": "interesting",
-      "output": "Greeting is an act of communication in which human beings intentionally make their presence known to each other, to show attention to, and to suggest a",
+      "output": "I'm glad you think so!",
       "timestamp": "2025-01-26T20:04:31.393Z"
+    },
+    {
+      "input": "interesting",
+      "output": "I'm glad you think so!",
+      "timestamp": "2025-01-26T20:05:36.448Z"
+    },
+    {
+      "input": "hi!",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:06:17.042Z"
+    },
+    {
+      "input": "how r u doing",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T20:10:17.774Z"
+    },
+    {
+      "input": "great to hear",
+      "output": "I'm glad you think so about me!",
+      "timestamp": "2025-01-26T20:10:24.952Z"
     }
   ],
   "vocabulary": {
@@ -583,6 +603,10 @@
       {
         "word": "computer",
         "definition": "an electronic device for storing and processing data, typically in binary form, according to instructions given to it in a variable program."
+      },
+      {
+        "word": "internet",
+        "definition": "a global computer network providing a variety of information and communication facilities, consisting of interconnected networks using standardized communication protocols."
       }
     ],
     "hi": 2,
@@ -1402,7 +1426,9 @@
     "each": 861,
     "show": 862,
     "attention": 863,
-    "suggest": 864
+    "suggest": 864,
+    "hear": 865,
+    "describe": 866
   },
-  "lastTrainingDate": "2025-01-26T20:05:36.448Z"
+  "lastTrainingDate": "2025-01-26T20:10:24.952Z"
 }
