@@ -589,6 +589,16 @@
       "input": "hmmm you know actually what could we do",
       "output": "That's up to you to decide, however, I'm always here to help!",
       "timestamp": "2025-01-26T21:00:55.633Z"
+    },
+    {
+      "input": "can you calculate 5*4",
+      "output": "Sorry, I couldn't solve that math problem. Please check the expression and try again.",
+      "timestamp": "2025-01-26T21:05:59.559Z"
+    },
+    {
+      "input": "calculate 5*4",
+      "output": "The answer is: 20",
+      "timestamp": "2025-01-26T21:06:27.035Z"
     }
   ],
   "vocabulary": {
@@ -607,6 +617,7 @@
     "15": 535,
     "16": 604,
     "19": 806,
+    "20": 1195,
     "22": 667,
     "25": 1158,
     "27": 1120,
@@ -615,6 +626,7 @@
     "45": 677,
     "47": 820,
     "50": 830,
+    "54": 1194,
     "59": 676,
     "70": 355,
     "77": 673,
@@ -852,7 +864,7 @@
       },
       {
         "word": "oh",
-        "definition": "Here's what I found on Wikipedia: Oh, OH, or Oh! is an interjection, often proclaiming surprise."
+        "definition": "Here's what I found on Wikipedia: Oh, OH, or Oh! is an interjection, often proclaiming surprise, fear, or realization."
       },
       {
         "word": "okay",
@@ -1069,6 +1081,18 @@
       {
         "word": "do",
         "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": "can",
+        "definition": ""
+      },
+      {
+        "word": "calculate",
+        "definition": "Here's what I found on Wikipedia: A calculation is a deliberate mathematical process that transforms one or more inputs into one or more outputs or results."
+      },
+      {
+        "word": "5*4",
+        "definition": "Here's what I found on Wikipedia: Year 504 (DIV) was a leap year starting on Thursday of the Julian calendar."
       }
     ],
     "hi": 2,
@@ -2207,5 +2231,5 @@
     "totally": 1192,
     "actually": 1193
   },
-  "lastTrainingDate": "2025-01-26T21:00:59.726Z"
+  "lastTrainingDate": "2025-01-26T21:06:27.035Z"
 }
