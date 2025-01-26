@@ -743,6 +743,30 @@ function getVariedResponse(message, sessionId) {
     return null;
 }
 
+// Load or initialize goal data
+const goalDataFile = 'goal_data.json';
+let goalData = {};
+
+if (fs.existsSync(goalDataFile)) {
+    goalData = JSON.parse(fs.readFileSync(goalDataFile, 'utf8'));
+} else {
+    fs.writeFileSync(goalDataFile, JSON.stringify(goalData, null, 2));
+}
+
+// Function to read goal data
+function readGoalData() {
+    if (fs.existsSync(goalDataFile)) {
+        const rawData = fs.readFileSync(goalDataFile, 'utf8');
+        goalData = JSON.parse(rawData);
+    }
+}
+
+// Function to get the current goal and priority
+function getCurrentGoal() {
+    readGoalData();
+    return goalData;
+}
+
 // Update the chat endpoint to use varied responses
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
@@ -801,6 +825,10 @@ expressApp.post('/chat', async (req, res) => {
         if (!message.startsWith('/')) {
             addTrainingData(normalizedMessage, response);
         }
+
+        // Include the current goal and priority in the response
+        const currentGoal = getCurrentGoal();
+        response += `\n\nCurrent Goal: ${currentGoal.goal}\nPriority: ${currentGoal.priority}`;
 
         res.json({ response });
     } catch (error) {
