@@ -309,6 +309,16 @@
       "input": "hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-26T02:12:07.452Z"
+    },
+    {
+      "input": "hello",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T02:13:13.962Z"
+    },
+    {
+      "input": "how you doing my friend?",
+      "output": "Not too much, but hey I'm doing great! And you?",
+      "timestamp": "2025-01-26T02:13:39.125Z"
     }
   ],
   "vocabulary": {
@@ -1086,7 +1096,8 @@
     "sir": 671,
     "compute": 672,
     "calculate": 675,
-    "favorite": 678
+    "favorite": 678,
+    "friend": 679
   },
-  "lastTrainingDate": "2025-01-26T02:12:07.452Z"
+  "lastTrainingDate": "2025-01-26T02:13:39.125Z"
 }
