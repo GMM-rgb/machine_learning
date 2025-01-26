@@ -654,6 +654,21 @@
       "input": "hello again",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-26T22:18:49.141Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T22:23:52.748Z"
+    },
+    {
+      "input": "how are you doing?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T22:23:59.283Z"
+    },
+    {
+      "input": "hi",
+      "output": "We talked about \"hi\" earlier. Anything else on your mind?",
+      "timestamp": "2025-01-26T22:24:08.490Z"
     }
   ],
   "vocabulary": {
@@ -2416,7 +2431,10 @@
     "he": 1208,
     "loves": 1209,
     "created": 1210,
-    "developer": 1211
+    "developer": 1211,
+    "talked": 1212,
+    "earlier": 1213,
+    "else": 1214
   },
-  "lastTrainingDate": "2025-01-26T22:18:50.012Z"
+  "lastTrainingDate": "2025-01-26T22:24:08.490Z"
 }

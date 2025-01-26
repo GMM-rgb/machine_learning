@@ -653,59 +653,93 @@ async function learnInBackground(unknownWords) {
     }
 }
 
-// Update the chat endpoint to use enhanced understanding
+// Add conversation history tracking
+const conversationHistory = new Map(); // Store conversation history per session
+
+// Function to get varied response based on repetition
+function getVariedResponse(message, sessionId) {
+    if (!conversationHistory.has(sessionId)) {
+        conversationHistory.set(sessionId, []);
+    }
+    
+    const history = conversationHistory.get(sessionId);
+    const repeatedCount = history.filter(m => m.toLowerCase() === message.toLowerCase()).length;
+    
+    // Add message to history
+    history.push(message);
+    // Keep last 10 messages only
+    if (history.length > 10) history.shift();
+    
+    // If message is repeated, provide variation
+    if (repeatedCount > 0) {
+        const similarConversation = findSimilarConversation(message);
+        if (similarConversation) {
+            const variations = [
+                `You've already mentioned "${similarConversation.input}". How can I assist further?`,
+                `We talked about "${similarConversation.input}" earlier. Anything else on your mind?`,
+                `You mentioned "${similarConversation.input}" before. Let's discuss something new.`,
+                `I remember you said "${similarConversation.input}". What else would you like to know?`
+            ];
+            return variations[repeatedCount % variations.length];
+        }
+    }
+    
+    // If not repeated or no specific variation, return normal response
+    return null;
+}
+
+// Update the chat endpoint to use varied responses
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
         res.json({ response: "Chat is currently disabled while performing a search. Please try again in a moment." });
         return;
     }
     
-    const { message } = req.body;
+    const { message, sessionId = 'default' } = req.body;
     const normalizedMessage = normalizeText(message.replace(/[,']/g, "").toLowerCase());
     let response = '';
 
     try {
-        // First understand the input using definitions
-        const understanding = understandInput(normalizedMessage);
-        console.log('Understanding:', understanding);
+        // Check for repeated messages first
+        const variedResponse = getVariedResponse(normalizedMessage, sessionId);
+        if (variedResponse) {
+            response = variedResponse;
+        } else {
+            // Original response logic
+            const understanding = understandInput(normalizedMessage);
+            console.log('Understanding:', understanding);
 
-        // Start background learning for unknown words
-        if (understanding.unknownWords.length > 0) {
-            learnInBackground(understanding.unknownWords);
-        }
-
-        // First check if it's a math query
-        if (isMathQuery(message)) {
-            console.log('Math query detected:', message);
-            response = await solveMathProblem(message);
-        }
-        // Then check for Bing search
-        else if (['search bing', 'bing'].some(keyword => normalizedMessage.startsWith(keyword))) {
-            console.log('Bing search requested:', message);
-            response = await handleUserInput(message);
-        }
-        // Then check for Wikipedia queries
-        else if (isWikipediaQuery(message)) {
-            console.log("Wikipedia query detected:", message);
-            const summarize = /summarize|summary|bullet points/i.test(message);
-            response = await getWikipediaInfo(message, summarize);
-            
-            if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
-                console.log('Wikipedia failed, trying Bing fallback');
-                response = await getBingSearchInfo(message);
+            if (understanding.unknownWords.length > 0) {
+                learnInBackground(understanding.unknownWords);
             }
-        }
-        // Handle simple greetings with conversational responses
-        else if (['hi', 'hello', 'hey', 'yo', 'sup'].includes(normalizedMessage)) {
-            response = "Hello there! How may I help you?";
-        }
-        // Handle developer-related queries
-        else if (normalizedMessage.includes("who is your developer") || normalizedMessage.includes("who created you")) {
-            response = "My developer is Maximus Farvour.";
-        }
-        // Finally, try training data and knowledge base
-        else {
-            response = getResponse(normalizedMessage);
+
+            if (isMathQuery(message)) {
+                console.log('Math query detected:', message);
+                response = await solveMathProblem(message);
+            }
+            else if (['search bing', 'bing'].some(keyword => normalizedMessage.startsWith(keyword))) {
+                console.log('Bing search requested:', message);
+                response = await handleUserInput(message);
+            }
+            else if (isWikipediaQuery(message)) {
+                console.log("Wikipedia query detected:", message);
+                const summarize = /summarize|summary|bullet points/i.test(message);
+                response = await getWikipediaInfo(message, summarize);
+                
+                if (response.includes("Sorry, I couldn't find any relevant information on Wikipedia")) {
+                    console.log('Wikipedia failed, trying Bing fallback');
+                    response = await getBingSearchInfo(message);
+                }
+            }
+            else if (['hi', 'hello', 'hey', 'yo', 'sup'].includes(normalizedMessage)) {
+                response = "Hello there! How may I help you?";
+            }
+            else if (normalizedMessage.includes("who is your developer") || normalizedMessage.includes("who created you")) {
+                response = "My developer is Maximus Farvour.";
+            }
+            else {
+                response = getResponse(normalizedMessage);
+            }
         }
 
         // Add the interaction to training data if it's not a command
