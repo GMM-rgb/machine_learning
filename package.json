@@ -37,7 +37,8 @@
         "rc": "^1.2.8",
         "react": "^19.0.0",
         "server": "^0.0.3",
-        "tesseract.js": "^6.0.0"
+        "tesseract.js": "^6.0.0",
+        "transformer-js": "^0.0.9"
     },
     "devDependencies": {
         "electron": "^33.3.1",
