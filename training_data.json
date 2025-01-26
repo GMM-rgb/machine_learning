@@ -639,6 +639,11 @@
       "input": "does max love his mom",
       "output": "Yes he does, he loves his mom very much.",
       "timestamp": "2025-01-26T21:56:54.566Z"
+    },
+    {
+      "input": "who created you",
+      "output": "My developer is Maximus Farvour.",
+      "timestamp": "2025-01-26T22:04:24.870Z"
     }
   ],
   "vocabulary": {
@@ -1239,6 +1244,14 @@
       {
         "word": "his",
         "definition": "Here's what I found on Wikipedia: His is the possessive form of he."
+      },
+      {
+        "word": "who",
+        "definition": ""
+      },
+      {
+        "word": "created",
+        "definition": ""
       }
     ],
     "hi": 2,
@@ -2387,7 +2400,9 @@
     "meanto": 1206,
     "then": 1207,
     "he": 1208,
-    "loves": 1209
+    "loves": 1209,
+    "created": 1210,
+    "developer": 1211
   },
-  "lastTrainingDate": "2025-01-26T21:56:57.079Z"
+  "lastTrainingDate": "2025-01-26T22:04:26.786Z"
 }
