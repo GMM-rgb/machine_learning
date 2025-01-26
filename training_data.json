@@ -524,6 +524,46 @@
       "input": "hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-26T20:47:06.473Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:49:29.166Z"
+    },
+    {
+      "input": "how are you doing",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T20:49:33.896Z"
+    },
+    {
+      "input": "explain to me nvme ssd",
+      "output": "Here's what I found on Wikipedia: The PlayStation 5 (PS5) is a home video game console developed by Sony Interactive Entertainment. It was announced as the successor to the PlayStation 4 in April 2019, was launched on November 12, 2020, in Australia, Japan, New Zealand, North America, and South Korea, and was released worldwide a week later. The PS5 is part of the ninth generation of video game consoles, along with Microsoft's Xbox Series X/S consoles, which were released in the same month.\nThe base model includes an optical disc drive compatible with Ultra HD Blu-ray discs. The Digital Edition lacks this drive, as a lower-cost model for buying games only through download. The two variants were launched simultaneously. Slimmer hardware revisions of both models replaced the original models on sale in November 2023. A PlayStation 5 Pro model was released on November 7, 2024, featuring a faster GPU, improved ray tracing, and introducing an AI-driven upscaling technology. \nThe PlayStation 5's main hardware features include a solid-state drive customized for high-speed data streaming to enable significant improvements in storage performance, an AMD GPU capable of 4K resolution display at up to 120 frames per second, hardware-accelerated ray tracing for realistic lighting and reflections, and the Tempest Engine for hardware-accelerated 3D audio effects. Other features include the DualSense controller with haptic feedback, backward compatibility with the majority of PlayStation 4 and PlayStation VR games, and the PlayStation VR2 headset.",
+      "timestamp": "2025-01-26T20:50:03.748Z"
+    },
+    {
+      "input": "ehh close enough.",
+      "output": "I can help you solve problems of course!",
+      "timestamp": "2025-01-26T20:50:21.298Z"
+    },
+    {
+      "input": "sure do!",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:50:30.776Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-26T20:50:35.442Z"
+    },
+    {
+      "input": "you too",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:50:40.813Z"
+    },
+    {
+      "input": "your amazing",
+      "output": "I'm glad you think so! I'm here to help you with anything you need.",
+      "timestamp": "2025-01-26T20:50:46.339Z"
     }
   ],
   "vocabulary": {
@@ -533,9 +573,11 @@
     "4": 669,
     "5": 601,
     "6": 530,
+    "7": 1057,
     "8": 521,
     "9": 531,
     "10": 602,
+    "12": 1012,
     "14": 674,
     "15": 535,
     "16": 604,
@@ -551,6 +593,7 @@
     "77": 673,
     "80": 135,
     "85": 356,
+    "120": 1086,
     "1769": 624,
     "1931": 396,
     "1937": 401,
@@ -565,7 +608,9 @@
     "2015": 813,
     "2017": 814,
     "2019": 817,
+    "2020": 1013,
     "2022": 808,
+    "2023": 1055,
     "2024": 807,
     "4232": 128,
     "10560": 97,
@@ -868,6 +913,66 @@
       {
         "word": "bro",
         "definition": "slang term used for brother"
+      },
+      {
+        "word": "how",
+        "definition": ""
+      },
+      {
+        "word": "doing",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": "explain",
+        "definition": "Here's what I found on Wikipedia: An explanation is a set of statements usually constructed to describe a set of facts that clarifies the causes, context, and consequences of those facts."
+      },
+      {
+        "word": "me",
+        "definition": "Here's what I found on Wikipedia: Me most often refers to:\n\nMe (pronoun), the first-person singular pronoun, referring to the speaker\nMe, M."
+      },
+      {
+        "word": "nvme",
+        "definition": "Here's what I found on Wikipedia: NVM Express (NVMe) or Non-Volatile Memory Host Controller Interface Specification (NVMHCIS) is an open, logical-device interface specification for accessing a computer's non-volatile storage media usually attached via the PCI Express bus."
+      },
+      {
+        "word": "ssd",
+        "definition": "Here's what I found on Wikipedia: A solid-state drive (SSD) is a type of solid-state storage device that uses integrated circuits to store data persistently."
+      },
+      {
+        "word": "ehh",
+        "definition": ""
+      },
+      {
+        "word": "close",
+        "definition": ""
+      },
+      {
+        "word": "enough.",
+        "definition": ""
+      },
+      {
+        "word": "sure",
+        "definition": ""
+      },
+      {
+        "word": "do!",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": ":)",
+        "definition": "Here's what I found on Wikipedia: A bracket is either of two tall fore- or back-facing punctuation marks commonly used to isolate a segment of text or data from its surroundings."
+      },
+      {
+        "word": "too",
+        "definition": "Here's what I found on Wikipedia: Too or TOO may refer to:\n\nTarget of opportunity, a concept in targeting\nThreshold of originality, a concept in copyright law\nToo (Fantastic Plastic Machine album), the fourth studio album by Fantastic Plastic Machine\nToo (Fidlar album), the second studio album by American skate punk band Fidlar\nToo (Kingdom Come album), the seventh album by the band Kingdom Come\nToo (Madita album), the second solo album by Matida\nToo (S."
+      },
+      {
+        "word": "your",
+        "definition": "Here's what I found on Wikipedia: In Modern English, the word \"you\" is the second-person pronoun."
+      },
+      {
+        "word": "amazing",
+        "definition": ""
       }
     ],
     "hi": 2,
@@ -1819,7 +1924,116 @@
     "based": 993,
     "means": 994,
     "begin": 995,
-    "conversation": 996
+    "conversation": 996,
+    "nvme": 997,
+    "ssd": 998,
+    "playstation": 999,
+    "ps5": 1000,
+    "home": 1001,
+    "video": 1002,
+    "game": 1003,
+    "console": 1004,
+    "sony": 1005,
+    "interactive": 1006,
+    "entertainment": 1007,
+    "successor": 1008,
+    "april": 1009,
+    "launched": 1010,
+    "november": 1011,
+    "australia": 1014,
+    "zealand": 1015,
+    "released": 1016,
+    "week": 1017,
+    "later": 1018,
+    "part": 1019,
+    "ninth": 1020,
+    "generation": 1021,
+    "consoles": 1022,
+    "along": 1023,
+    "microsofts": 1024,
+    "xbox": 1025,
+    "series": 1026,
+    "xs": 1027,
+    "same": 1028,
+    "month\nthe": 1029,
+    "base": 1030,
+    "model": 1031,
+    "optical": 1032,
+    "disc": 1033,
+    "drive": 1034,
+    "compatible": 1035,
+    "ultra": 1036,
+    "hd": 1037,
+    "bluray": 1038,
+    "discs": 1039,
+    "digital": 1040,
+    "lacks": 1041,
+    "lowercost": 1042,
+    "buying": 1043,
+    "games": 1044,
+    "download": 1045,
+    "variants": 1046,
+    "simultaneously": 1047,
+    "slimmer": 1048,
+    "hardware": 1049,
+    "revisions": 1050,
+    "models": 1051,
+    "replaced": 1052,
+    "original": 1053,
+    "sale": 1054,
+    "pro": 1056,
+    "featuring": 1058,
+    "faster": 1059,
+    "gpu": 1060,
+    "improved": 1061,
+    "ray": 1062,
+    "tracing": 1063,
+    "introducing": 1064,
+    "aidriven": 1065,
+    "upscaling": 1066,
+    "technology": 1067,
+    "\nthe": 1068,
+    "5s": 1069,
+    "main": 1070,
+    "features": 1071,
+    "solidstate": 1072,
+    "customized": 1073,
+    "highspeed": 1074,
+    "data": 1075,
+    "streaming": 1076,
+    "enable": 1077,
+    "improvements": 1078,
+    "storage": 1079,
+    "performance": 1080,
+    "amd": 1081,
+    "capable": 1082,
+    "4k": 1083,
+    "resolution": 1084,
+    "display": 1085,
+    "frames": 1087,
+    "per": 1088,
+    "hardwareaccelerated": 1089,
+    "realistic": 1090,
+    "lighting": 1091,
+    "reflections": 1092,
+    "tempest": 1093,
+    "engine": 1094,
+    "3d": 1095,
+    "audio": 1096,
+    "effects": 1097,
+    "dualsense": 1098,
+    "controller": 1099,
+    "haptic": 1100,
+    "feedback": 1101,
+    "backward": 1102,
+    "compatibility": 1103,
+    "vr": 1104,
+    "vr2": 1105,
+    "headset": 1106,
+    "ehh": 1107,
+    "close": 1108,
+    "enough": 1109,
+    "amazing": 1110
   },
-  "lastTrainingDate": "2025-01-26T20:47:06.473Z"
+  "lastTrainingDate": "2025-01-26T20:50:47.665Z"
 }
