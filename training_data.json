@@ -627,6 +627,42 @@
       {
         "word": "internet",
         "definition": "a global computer network providing a variety of information and communication facilities, consisting of interconnected networks using standardized communication protocols."
+      },
+      {
+        "word": "technology",
+        "definition": "the application of scientific knowledge for practical purposes, especially in industry."
+      },
+      {
+        "word": "science",
+        "definition": "the intellectual and practical activity encompassing the systematic study of the structure and behavior of the physical and natural world through observation and experiment."
+      },
+      {
+        "word": "engineering",
+        "definition": "the branch of science and technology concerned with the design, building, and use of engines, machines, and structures."
+      },
+      {
+        "word": "mathematics",
+        "definition": "the abstract science of number, quantity, and space, either as abstract concepts (pure mathematics) or as applied to other disciplines such as physics and engineering (applied mathematics)."
+      },
+      {
+      "word": "history",
+      "definition": "the study of past events, particularly in human affairs."
+      },
+      {
+        "word": "geography", 
+        "definition": "the study of the physical features of the earth and its atmosphere, and of human activity as it affects and is affected by these, including the distribution of populations and resources, land use, and industries."
+      },
+      {
+        "word": "geology",
+        "definition": "the science that deals with the earth's physical structure and substance, its history, and the processes that act on it."
+      },
+      {
+        "word": "biology",
+        "definition": "the study of living organisms, divided into many specialized fields that cover their morphology, physiology, anatomy, behavior, origin, and distribution."
+      },
+      {
+      "word": "chemistry",
+      "definition": "the branch of science that deals with the identification of the substances of which matter is composed; the investigation of their properties and the ways in which they interact, combine, and change; and the use of these processes to form new substances."
       }
     ],
     "hi": 2,
