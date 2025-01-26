@@ -544,6 +544,11 @@
       "input": "😂",
       "output": "I see your laughing about something, that's great! 😂",
       "timestamp": "2025-01-26T20:31:19.317Z"
+    },
+    {
+      "input": "hi",
+      "output": "Let me explain: hi refers to used as a friendly greeting or to attract someone's attention..",
+      "timestamp": "2025-01-26T20:34:00.860Z"
     }
   ],
   "vocabulary": {
@@ -1829,5 +1834,5 @@
     "correct": 991,
     "guess": 992
   },
-  "lastTrainingDate": "2025-01-26T20:31:20.085Z"
+  "lastTrainingDate": "2025-01-26T20:34:00.860Z"
 }

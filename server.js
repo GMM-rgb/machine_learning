@@ -661,6 +661,11 @@ expressApp.post('/chat', async (req, res) => {
         else if (understanding.definitions.length > 0) {
             response = generateSentence(understanding);
         }
+        // Handle simple greetings with explanations
+        else if (['hi', 'hello', 'hey', 'yo', 'sup'].includes(normalizedMessage)) {
+            const definition = findDefinitionInTrainingData(normalizedMessage);
+            response = definition ? `Let me explain: ${normalizedMessage} refers to ${definition}.` : "Hello there! How may I help you?";
+        }
         // Finally, try training data and knowledge base
         else {
             response = getResponse(normalizedMessage);
