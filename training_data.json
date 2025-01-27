@@ -799,6 +799,31 @@
       "input": ":)",
       "output": "I see your happy, that's great! 😊",
       "timestamp": "2025-01-27T06:09:18.513Z"
+    },
+    {
+      "input": "hello there",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-27T06:48:04.314Z"
+    },
+    {
+      "input": "how r u today brother?",
+      "output": "I don't know how to respond to that.",
+      "timestamp": "2025-01-27T06:48:20.041Z"
+    },
+    {
+      "input": "how r you today",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-27T06:48:31.149Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-27T06:48:51.333Z"
+    },
+    {
+      "input": "calculate 500*2+5",
+      "output": "The answer is: 1005",
+      "timestamp": "2025-01-27T06:49:06.888Z"
     }
   ],
   "vocabulary": {
@@ -836,6 +861,7 @@
     "85": 356,
     "120": 1086,
     "500": 1184,
+    "1005": 1222,
     "1769": 624,
     "1931": 396,
     "1937": 401,
@@ -861,6 +887,7 @@
     "4232": 128,
     "10560": 97,
     "16384": 821,
+    "50025": 1221,
     "171720": 823,
     "343445": 822,
     "definitions": [
@@ -1471,6 +1498,30 @@
       {
         "word": "duing",
         "definition": "Here's what I found on Wikipedia: Edwin Duing Eshleman (December 4, 1920 – January 10, 1985) was an American politician who represented Pennsylvania in the United States House of Representatives as a Republican from 1967 to 1977."
+      },
+      {
+        "word": "u",
+        "definition": "Here's what I found on Wikipedia: U or u is the twenty-first letter and the fifth vowel letter of the Latin alphabet, used in the modern English alphabet and the alphabets of other western European languages and others worldwide."
+      },
+      {
+        "word": "today",
+        "definition": ""
+      },
+      {
+        "word": "brother?",
+        "definition": "Here's what I found on Wikipedia: A brother (pl."
+      },
+      {
+        "word": "today",
+        "definition": ""
+      },
+      {
+        "word": "sup",
+        "definition": ""
+      },
+      {
+        "word": "500*2+5",
+        "definition": "Here's what I found on Wikipedia: Bcl-2, encoded in humans by the BCL2 gene, is the founding member of the Bcl-2 family of regulator proteins."
       }
     ],
     "hi": 2,
@@ -2629,7 +2680,8 @@
     "hmm": 1216,
     "htwebz": 1217,
     "sup": 1218,
-    "duing": 1219
+    "duing": 1219,
+    "brother": 1220
   },
-  "lastTrainingDate": "2025-01-27T06:09:18.513Z"
+  "lastTrainingDate": "2025-01-27T06:49:08.440Z"
 }

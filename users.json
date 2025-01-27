@@ -6,7 +6,7 @@
       "Chat 1": [
         {
           "sender": "User",
-          "text": "hi"
+          "text": "hello there"
         },
         {
           "sender": "AI",
@@ -14,19 +14,37 @@
         },
         {
           "sender": "User",
-          "text": "how are you duing"
+          "text": "how r u today brother?"
+        },
+        {
+          "sender": "AI",
+          "text": "I don't know how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "how r you today"
         },
         {
           "sender": "AI",
           "text": "Not too much, but hey I'm doing great!\n\nCurrent Goal: Assist users with their queries\nPriority: High"
-        },
+        }
+      ],
+      "Chat 2": [
         {
           "sender": "User",
-          "text": ":)"
+          "text": "sup"
         },
         {
           "sender": "AI",
-          "text": "I see your happy, that's great! 😊\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "calculate 500*2+5"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 1005\n\nCurrent Goal: Assist users with their queries\nPriority: High"
         }
       ]
     }
