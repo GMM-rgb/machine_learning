@@ -943,6 +943,7 @@
             <button class="load-button" id="load-button" onclick="document.getElementById('file-input').click();">Upload Data</button>
             <input type="file" id="file-input" style="display: none;" onchange="loadData(event)" />
             <text id="current-chat-display"></text>
+            <button onclick="logoutUser()">Logout</button>
         </div>
 
         <footer class="developer">Made by: Maximus Farvour</footer>
@@ -1004,30 +1005,35 @@
             });
         </script>
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
+            let accountId = localStorage.getItem('accountId');
+            let conversationData = {}; // Initialize conversation data
+            let currentChatId = null; // Initialize current chat ID
+
+            document.addEventListener("DOMContentLoaded", function () {
                 const loginContainer = document.getElementById('login-container');
                 const signupContainer = document.getElementById('signup-container');
                 const mainContainer = document.getElementById('main-container');
                 const errorMessage = document.getElementById('error-message');
                 const signupErrorMessage = document.getElementById('signup-error-message');
+                const conversationList = document.getElementById('conversation-list');
+                const chatBox = document.getElementById('chat-box');
+                const ccd = document.getElementById('current-chat-display');
+                const cinf = document.getElementById('chat-user-control-interface');
 
-                // Verify initialization
-                if (!loginContainer || !signupContainer || !mainContainer || !errorMessage || !signupErrorMessage) {
-                    console.error('Initialization error: One or more elements are not found.');
-                    return;
-                }
-
-                function showSignupForm() {
+                // Show signup form
+                window.showSignupForm = function () {
                     loginContainer.style.display = 'none';
                     signupContainer.style.display = 'flex';
                 }
 
-                function showLoginForm() {
+                // Show login form
+                window.showLoginForm = function () {
                     signupContainer.style.display = 'none';
                     loginContainer.style.display = 'flex';
                 }
 
-                function loginUser() {
+                // Handle login
+                window.loginUser = function () {
                     const username = document.getElementById('username').value;
                     const password = document.getElementById('password').value;
 
@@ -1036,23 +1042,26 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username, password })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            localStorage.setItem('accountId', data.accountId);
-                            loginContainer.style.display = 'none';
-                            mainContainer.style.display = 'block';
-                        } else {
-                            errorMessage.textContent = data.message;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        errorMessage.textContent = 'An error occurred. Please try again.';
-                    });
-                }
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                accountId = data.accountId;
+                                localStorage.setItem('accountId', accountId);
+                                loginContainer.style.display = 'none';
+                                mainContainer.style.display = 'block';
+                                loadUserConversations();
+                            } else {
+                                errorMessage.textContent = data.message;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            errorMessage.textContent = 'An error occurred. Please try again.';
+                        });
+                };
 
-                function signupUser() {
+                // Handle sign-up
+                window.signupUser = function () {
                     const username = document.getElementById('signup-username').value;
                     const password = document.getElementById('signup-password').value;
 
@@ -1061,35 +1070,163 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username, password })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            localStorage.setItem('accountId', data.accountId);
-                            signupContainer.style.display = 'none';
-                            mainContainer.style.display = 'block';
-                        } else {
-                            signupErrorMessage.textContent = data.message;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        signupErrorMessage.textContent = 'An error occurred. Please try again.';
-                    });
-                }
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                accountId = data.accountId;
+                                localStorage.setItem('accountId', accountId);
+                                signupContainer.style.display = 'none';
+                                mainContainer.style.display = 'block';
+                                loadUserConversations();
+                            } else {
+                                signupErrorMessage.textContent = data.message;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            signupErrorMessage.textContent = 'An error occurred. Please try again.';
+                        });
+                };
 
-                function getAccountId() {
-                    return localStorage.getItem('accountId');
-                }
-
-                // Ensure the user is logged in before showing the main container
-                const accountId = getAccountId();
+                // Load user conversations on page load if logged in
                 if (accountId) {
-                    loginContainer.style.display = 'none';
-                    mainContainer.style.display = 'block';
+                    loadUserConversations();
                 }
 
-                // Update the sendMessage function to include the accountId
-                const sendMessage = async () => {
+                // Function to create a new chat and add it to the conversation list
+                window.startNewChat = function () {
+                    const chatId = `Chat ${Object.keys(conversationData).length + 1}`;
+                    currentChatId = chatId;
+                    conversationData[chatId] = [];
+                    saveUserConversation(chatId, conversationData[chatId]);
+
+                    const conversationItem = document.createElement('div');
+                    conversationItem.classList.add('conversation-item');
+                    conversationItem.dataset.chatId = chatId;
+
+                    conversationItem.innerHTML = `
+                        <span>${chatId}</span>
+                        <div class="buttons">
+                            <button class="load-button" onclick="loadChat('${chatId}')">Load</button>
+                            <button class="deletion-button" onclick="deleteChat('${chatId}')">Delete</button>
+                        </div>
+                    `;
+                    conversationList.appendChild(conversationItem);
+                    loadChat(chatId);
+                }
+
+                // Load conversation based on the selected chat ID
+                window.loadChat = function (chatId) {
+                    if (currentChatId === chatId) return; // Avoid duplicate loading
+                    currentChatId = chatId;
+
+                    // Clear the chat box
+                    chatBox.innerHTML = '';
+
+                    // Append all messages from the selected conversation without duplicating
+                    if (conversationData[chatId]) {
+                        conversationData[chatId].forEach((message, index) => {
+                            appendMessage(message.sender, message.text, false); // Prevent re-saving on load
+                        });
+                        ccd.style.display = 'block';
+                        ccd.innerText = `Current Chat: ${chatId}`;
+                        cinf.style.paddingRight = '10px';
+
+                        // Scroll to the bottom of the chat box
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }
+                }
+
+                // Delete a conversation from the list
+                window.deleteChat = function (chatId) {
+                    delete conversationData[chatId];
+                    deleteUserConversation(chatId);
+
+                    const chatItem = document.querySelector(`[data-chat-id="${chatId}"]`);
+                    conversationList.removeChild(chatItem);
+
+                    if (currentChatId === chatId) {
+                        chatBox.innerHTML = '';
+                        currentChatId = null;
+                    }
+                }
+
+                // Function to append message with proper positioning
+                window.appendMessage = function (sender, message, saveToData = true) {
+                    const timestamp = new Date().getTime();
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('chat-message', sender.toLowerCase());
+
+                    if (sender.toLowerCase() === 'user') {
+                        messageDiv.innerHTML = `
+                            <div class="message-content">
+                                <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
+                            </div>
+                            <img src="Image_Assets/${sender.toLowerCase()}_profile.png?${timestamp}" alt="${sender} Profile">
+                        `;
+                    } else {
+                        messageDiv.innerHTML = `
+                            <img src="Image_Assets/${sender.toLowerCase()}_profile.png?${timestamp}" alt="${sender} Profile">
+                            <div class="message-content">
+                                <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
+                            </div>
+                        `;
+                    }
+
+                    // Insert message
+                    chatBox.appendChild(messageDiv);
+
+                    // Ensure smooth scroll
+                    setTimeout(() => {
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }, 100);
+
+                    if (saveToData && currentChatId) {
+                        conversationData[currentChatId].push({ sender, text: message });
+                        saveUserConversation(currentChatId, conversationData[currentChatId]);
+                    }
+                }
+
+                window.typeOutMessage = function (sender, message) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('chat-message', sender.toLowerCase());
+
+                    messageDiv.innerHTML = `
+                        <img src="../Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+                        <div class="message-content">
+                            <strong>${sender}:</strong> <span class="fade-in"></span>
+                        </div>
+                    `;
+
+                    chatBox.appendChild(messageDiv);
+                    const messageSpan = messageDiv.querySelector('span');
+
+                    // Typing animation code, simulate typing effect
+                    let i = 0;
+                    let typingSpeed = message.length > 200 ? 6.35 : message.length > 100 ? 16.25 : message.length > 50 ? 19.5 : 22.5;
+
+                    function type() {
+                        if (i < message.length) {
+                            if (message.charAt(i) === '\n') {
+                                messageSpan.innerHTML += '<br>';
+                            } else {
+                                messageSpan.innerHTML += message.charAt(i);  // Use innerHTML to render HTML content
+                            }
+                            i++;
+                            setTimeout(type, typingSpeed);
+                            chatBox.scrollTop = chatBox.scrollHeight;
+                        } else if (currentChatId) {
+                            conversationData[currentChatId].push({ sender, text: message });
+                            saveUserConversation(currentChatId, conversationData[currentChatId]);
+                        }
+                    }
+
+                    type();
+                }
+
+                // Send message to server
+                let isSending = false;
+                window.sendMessage = async function () {
                     if (isSending) return;
                     isSending = true;
 
@@ -1129,14 +1266,14 @@
                         const response = await fetch('/chat', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ message, accountId: getAccountId() })
+                            body: JSON.stringify({ message, accountId })
                         });
 
                         if (!response.ok) throw new Error('Failed to get response');
 
                         const data = await response.json();
                         thinkingContainer.remove();
-                        
+
                         if (data && data.response) {
                             typeOutMessage('AI', data.response);
                         } else {
@@ -1149,191 +1286,21 @@
                     } finally {
                         isSending = false;
                     }
-                };
-
-                const chatBox = document.getElementById('chat-box');
-                const sendButton = document.getElementById('send-btn');
-                const clearButton = document.getElementById('clear-btn');
-                const conversationList = document.getElementById('conversation-list');
-                const ccd = document.getElementById('current-chat-display');
-                const cinf = document.getElementById('chat-user-control-interface');
-                let currentChatId = null;
-                let conversationData = JSON.parse(localStorage.getItem('conversations')) || {}; // Load conversations from localStorage
-                let isSending = false; // Flag to determine if a message is being sent
-                // Flag to determine if the chat box should be scrolled to the bottom
-                let isScrollLocked = true;
-
-                // Function to create a new chat and add it to the conversation list
-                function startNewChat() {
-                    const chatId = `Chat ${Object.keys(conversationData).length + 1}`;
-                    currentChatId = chatId;
-                    conversationData[chatId] = [];
-                    saveConversations();
-
-                    const conversationItem = document.createElement('div');
-                    conversationItem.classList.add('conversation-item');
-                    conversationItem.dataset.chatId = chatId;
-
-                    conversationItem.innerHTML = `
-                        <span>${chatId}</span>
-                        <div class="buttons">
-                            <button class="load-button" onclick="loadChat('${chatId}')">Load</button>
-                            <button class="deletion-button" onclick="deleteChat('${chatId}')">Delete</button>
-                        </div>
-                    `;
-                    conversationList.appendChild(conversationItem);
-                    loadChat(chatId);
                 }
-
-                // Load conversation based on the selected chat ID
-                function loadChat(chatId) {
-                    if (currentChatId === chatId) return; // Avoid duplicate loading
-                    currentChatId = chatId;
-
-                    // Clear the chat box
-                    chatBox.innerHTML = '';
-
-                    // Append all messages from the selected conversation without duplicating
-                    if (conversationData[chatId]) {
-                        conversationData[chatId].forEach((message, index) => {
-                            appendMessage(message.sender, message.text, false); // Prevent re-saving on load
-                        });
-                        ccd.style.display = 'block';
-                        ccd.innerText = `Current Chat: ${chatId}`;
-                        cinf.style.paddingRight = '10px';
-
-                        // Scroll to the bottom of the chat box
-                        chatBox.scrollTop = chatBox.scrollHeight;
-                    }
-                }
-
-                // Delete a conversation from the list
-                function deleteChat(chatId) {
-                    delete conversationData[chatId];
-                    saveConversations();
-
-                    const chatItem = document.querySelector(`[data-chat-id="${chatId}"]`);
-                    conversationList.removeChild(chatItem);
-
-                    if (currentChatId === chatId) {
-                        chatBox.innerHTML = '';
-                        currentChatId = null;
-                    }
-                }
-
-                // Function to append message with proper positioning
-                function appendMessage(sender, message, saveToData = true) {
-                    const timestamp = new Date().getTime();
-                    const messageDiv = document.createElement('div');
-                    messageDiv.classList.add('chat-message', sender.toLowerCase());
-                    
-                    if (sender.toLowerCase() === 'user') {
-                        messageDiv.innerHTML = `
-                            <div class="message-content">
-                                <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
-                            </div>
-                            <img src="Image_Assets/${sender.toLowerCase()}_profile.png?${timestamp}" alt="${sender} Profile">
-                        `;
-                    } else {
-                        messageDiv.innerHTML = `
-                            <img src="Image_Assets/${sender.toLowerCase()}_profile.png?${timestamp}" alt="${sender} Profile">
-                            <div class="message-content">
-                                <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
-                            </div>
-                        `;
-                    }
-
-                    // Insert message
-                    chatBox.appendChild(messageDiv);
-
-                    // Ensure smooth scroll
-                    setTimeout(() => {
-                        chatBox.scrollTop = chatBox.scrollHeight;
-                    }, 100);
-
-                    if (saveToData && currentChatId) {
-                        conversationData[currentChatId].push({ sender, text: message });
-                        saveConversations();
-                    }
-                }
-
-                function typeOutMessage(sender, message) {
-                    const messageDiv = document.createElement('div');
-                    messageDiv.classList.add('chat-message', sender.toLowerCase());
-                    
-                    messageDiv.innerHTML = `
-                        <img src="../Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
-                        <div class="message-content">
-                            <strong>${sender}:</strong> <span class="fade-in"></span>
-                        </div>
-                    `;
-                    
-                    chatBox.appendChild(messageDiv);
-                    const messageSpan = messageDiv.querySelector('span');
-                    
-                    // Typing animation code, simulate typing effect
-                    let i = 0;
-                    let typingSpeed = message.length > 200 ? 6.35 : message.length > 100 ? 16.25 : message.length > 50 ? 19.5 : 22.5;
-
-                    function type() {
-                        if (i < message.length) {
-                            if (message.charAt(i) === '\n') {
-                                messageSpan.innerHTML += '<br>';
-                            } else {
-                                messageSpan.innerHTML += message.charAt(i);  // Use innerHTML to render HTML content
-                            }
-                            i++;
-                            setTimeout(type, typingSpeed);
-                            chatBox.scrollTop = chatBox.scrollHeight;
-                        } else if (currentChatId) {
-                            conversationData[currentChatId].push({ sender, text: message });
-                            saveConversations();
-                        }
-                    }
-
-                    type();
-                }
-
-                // Add a style to ensure proper message flow
-                const style = document.createElement('style');
-                style.textContent = `
-                    #chat-box {
-                        display: flex;
-                        flex-direction: column;
-                    }
-                    #chat-box::after {
-                        content: '';
-                        clear: both;
-                        display: table;
-                    }
-                    .chat-message {
-                        max-width: 80%;
-                        margin-bottom: 15px;
-                    }
-                `;
-                document.head.appendChild(style);
-
-                // Add event listener for Enter key
-                document.getElementById('user-input').addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        sendMessage();
-                    }
-                });
 
                 // Clear chat display without modifying stored data
-                function clearChat() {
+                window.clearChat = function () {
                     chatBox.innerHTML = '';
                     chatBox.scrollTop = 0; // Reset scroll position
                 }
 
                 // Save conversations to localStorage
-                function saveConversations() {
+                window.saveConversations = function () {
                     localStorage.setItem('conversations', JSON.stringify(conversationData));
                 }
 
                 // Initialize conversation list from localStorage
-                function initializeConversations() {
+                window.initializeConversations = function () {
                     for (const chatId in conversationData) {
                         const conversationItem = document.createElement('div');
                         conversationItem.classList.add('conversation-item');
@@ -1354,8 +1321,8 @@
                 initializeConversations();
 
                 // Event listeners
-                sendButton.addEventListener('click', sendMessage);
-                clearButton.addEventListener('click', clearChat);
+                document.getElementById('send-button').addEventListener('click', sendMessage);
+                document.getElementById('clear-button').addEventListener('click', clearChat);
 
                 // Disable scroll lock when the user manually scrolls
                 chatBox.addEventListener('scroll', () => {
@@ -1366,6 +1333,69 @@
                     }
                 });
             });
+
+            function loadUserConversations() {
+                fetch('/getConversations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accountId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            conversationData = data.conversations;
+                            initializeConversations();
+                        } else {
+                            console.error('Error loading conversations:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            function saveUserConversation(chatId, conversation) {
+                fetch('/saveConversation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accountId, chatId, conversation })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            console.error('Error saving conversation:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            function deleteUserConversation(chatId) {
+                fetch('/deleteConversation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accountId, chatId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            console.error('Error deleting conversation:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            function logoutUser() {
+                localStorage.removeItem('accountId');
+                accountId = null;
+                conversationData = {};
+                localStorage.removeItem('conversations');
+                document.getElementById('main-container').style.display = 'none';
+                document.getElementById('login-container').style.display = 'flex';
+            }
         </script>
     </div>
     <style>

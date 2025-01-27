@@ -784,6 +784,21 @@
       "input": "how r you doin bro",
       "output": "Not too much, but hey I'm doing great!",
       "timestamp": "2025-01-27T03:21:32.137Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-27T06:08:47.893Z"
+    },
+    {
+      "input": "how are you duing",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-27T06:09:07.321Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-27T06:09:18.513Z"
     }
   ],
   "vocabulary": {
@@ -1452,6 +1467,10 @@
       {
         "word": "my",
         "definition": ""
+      },
+      {
+        "word": "duing",
+        "definition": "Here's what I found on Wikipedia: Edwin Duing Eshleman (December 4, 1920 – January 10, 1985) was an American politician who represented Pennsylvania in the United States House of Representatives as a Republican from 1967 to 1977."
       }
     ],
     "hi": 2,
@@ -2609,7 +2628,8 @@
     "yup": 1215,
     "hmm": 1216,
     "htwebz": 1217,
-    "sup": 1218
+    "sup": 1218,
+    "duing": 1219
   },
-  "lastTrainingDate": "2025-01-27T03:21:32.137Z"
+  "lastTrainingDate": "2025-01-27T06:09:18.513Z"
 }

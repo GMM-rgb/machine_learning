@@ -14,7 +14,19 @@
         },
         {
           "sender": "User",
-          "text": "how r you doin bro"
+          "text": "how are you duing"
+        },
+        {
+          "sender": "AI",
+          "text": "Not too much, but hey I'm doing great!\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": ":)"
+        },
+        {
+          "sender": "AI",
+          "text": "I see your happy, that's great! 😊\n\nCurrent Goal: Assist users with their queries\nPriority: High"
         }
       ]
     }

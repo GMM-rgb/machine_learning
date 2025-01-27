@@ -1028,3 +1028,51 @@ console.log('Server.js loaded successfully, and has been initialized.');
 if (!expressApp || !PORT || !chatEnabled || !usersFile || !users || !knowledgeFile || !knowledge || !trainingDataFile || !trainingData || !vocab || !model || !data || !labels) {
     console.error('Initialization error: One or more necessary variables or functions are not initialized.');
 }
+
+// Endpoint to get user conversations
+expressApp.post('/getConversations', (req, res) => {
+    const { accountId } = req.body;
+
+    const user = Object.values(users).find(user => user.accountId === accountId);
+    if (!user) {
+        return res.json({ success: false, message: 'User not found.' });
+    }
+
+    res.json({ success: true, conversations: user.conversations || {} });
+});
+
+// Endpoint to save user conversations
+expressApp.post('/saveConversation', (req, res) => {
+    const { accountId, chatId, conversation } = req.body;
+
+    const user = Object.values(users).find(user => user.accountId === accountId);
+    if (!user) {
+        return res.json({ success: false, message: 'User not found.' });
+    }
+
+    if (!user.conversations) {
+        user.conversations = {};
+    }
+
+    user.conversations[chatId] = conversation;
+    saveUserData();
+    res.json({ success: true });
+});
+
+// Endpoint to delete user conversation
+expressApp.post('/deleteConversation', (req, res) => {
+    const { accountId, chatId } = req.body;
+
+    const user = Object.values(users).find(user => user.accountId === accountId);
+    if (!user) {
+        return res.json({ success: false, message: 'User not found.' });
+    }
+
+    if (user.conversations && user.conversations[chatId]) {
+        delete user.conversations[chatId];
+        saveUserData();
+        return res.json({ success: true });
+    }
+
+    res.json({ success: false, message: 'Conversation not found.' });
+});
