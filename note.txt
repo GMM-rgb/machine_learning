@@ -1,0 +1,1 @@
+"build": "CC=/usr/bin/clang CXX=/usr/bin/clang++ npm install && npm run test",
