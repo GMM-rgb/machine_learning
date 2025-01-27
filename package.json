@@ -8,7 +8,7 @@
         "start": "TF_CPP_MIN_LOG_LEVEL=2 electron .",
         "test": "npm install && electron .",
         "poststart": "npm install && express .",
-        "build": "npm install && npm run test"
+        "build": "npm install && npm run test && electron-builder ."
     },
     "dependencies": {
         "@tensorflow-models/universal-sentence-encoder": "^1.3.3",
@@ -32,7 +32,7 @@
         "electron": "^33.3.1"
     },
     "devDependencies": {
-        "electron": "^33.3.1",
+        "electron-builder": "^22.11.7",     
         "wikijs": "^6.4.1"
     },
     "engines": {
