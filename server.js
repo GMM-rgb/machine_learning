@@ -897,7 +897,6 @@ function getLocalIpAddress() {
 }
 
 // Move the route definition before the server startup
-// Add this before any expressApp.listen calls
 expressApp.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'AI_HtWebz_Assistant_Version 0.4.html'));
 });

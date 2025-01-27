@@ -8,7 +8,8 @@
         "start": "TF_CPP_MIN_LOG_LEVEL=2 electron .",
         "test": "electron .",
         "poststart": "express .",
-        "build": "CC=/usr/bin/clang CXX=/usr/bin/clang++ npm install && npm run test"
+        "build": "CC=/usr/bin/clang CXX=/usr/bin/clang++ npm install && npm run test",
+        "install": "npm++ node.js"
     },
     "dependencies": {
         "@tensorflow-models/universal-sentence-encoder": "^1.3.3",
