@@ -1,10 +1,22 @@
 {
-    "Maximus Farvour": {
-        "password": "592011",
-        "accountId": "account_0000000000001"
-    },
-    "Admin": {
-        "password": "admin592011",
-        "accountId": "account_1633024900000"
+  "Maximus Farvour": {
+    "password": "592011",
+    "accountId": "7255dc937801efe02e86abfe00cba0e4",
+    "conversations": {
+      "Chat 1": [
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "how r you doin bro"
+        }
+      ]
     }
+  }
 }
