@@ -1,4 +1,3 @@
-# Workflow for building and deploying a Jekyll site to GitHub Pages with Electron
 name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 
 on:
@@ -37,6 +36,11 @@ jobs:
 
       - name: Build site with Electron
         run: npm run build
+
+      - name: Ensure Jekyll directories exist
+        run: |
+          mkdir -p ./public/AI_HtWebz_Assistant_Version%200.4
+          mkdir -p ./_site
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
