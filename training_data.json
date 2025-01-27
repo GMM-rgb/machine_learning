@@ -729,6 +729,21 @@
       "input": "hello htwebz",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-26T23:44:04.739Z"
+    },
+    {
+      "input": "how you doin",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T23:52:34.239Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:57:37.448Z"
+    },
+    {
+      "input": "sup",
+      "output": "We talked about \"sup\" earlier. Anything else on your mind?",
+      "timestamp": "2025-01-26T23:57:56.773Z"
     }
   ],
   "vocabulary": {
@@ -1389,6 +1404,10 @@
       {
         "word": "htwebz",
         "definition": "Here's what I found on Wikipedia: HTWebz is a web development group, specializing in web design and development."
+      },
+      {
+        "word": "sup",
+        "definition": ""
       }
     ],
     "hi": 2,
@@ -2545,7 +2564,8 @@
     "else": 1214,
     "yup": 1215,
     "hmm": 1216,
-    "htwebz": 1217
+    "htwebz": 1217,
+    "sup": 1218
   },
-  "lastTrainingDate": "2025-01-26T23:44:04.739Z"
+  "lastTrainingDate": "2025-01-26T23:57:56.773Z"
 }
