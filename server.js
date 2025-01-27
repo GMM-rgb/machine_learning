@@ -20,6 +20,48 @@ let chatEnabled = true; // Flag to control chat availability
 expressApp.use(bodyParser.json());
 expressApp.use(express.static(path.join(__dirname, 'public')));
 
+// Load or initialize user data
+const usersFile = path.join(__dirname, 'users.json');
+let users = {};
+
+if (fs.existsSync(usersFile)) {
+    users = JSON.parse(fs.readFileSync(usersFile, 'utf8'));
+} else {
+    fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
+}
+
+// Function to save user data
+function saveUserData() {
+    fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
+}
+
+// Endpoint for user registration
+expressApp.post('/signup', (req, res) => {
+    const { username, password } = req.body;
+
+    if (users[username]) {
+        res.json({ success: false, message: 'Username already exists.' });
+        return;
+    }
+
+    users[username] = { password, accountId: `account_${Date.now()}` };
+    saveUserData();
+
+    res.json({ success: true, accountId: users[username].accountId });
+});
+
+// Endpoint for user login
+expressApp.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    if (!users[username] || users[username].password !== password) {
+        res.json({ success: false, message: 'Invalid username or password.' });
+        return;
+    }
+
+    res.json({ success: true, accountId: users[username].accountId });
+});
+
 // Normalize input by replacing contractions and short term meaning
 function normalizeText(input) {
     const maps = {
@@ -73,7 +115,7 @@ function normalizeText(input) {
 }
 
 // Load or initialize knowledge
-const knowledgeFile = 'knowledge.json';
+const knowledgeFile = path.join(__dirname, 'knowledge.json');
 let knowledge = {};
 
 if (fs.existsSync(knowledgeFile)) {
@@ -83,7 +125,7 @@ if (fs.existsSync(knowledgeFile)) {
 }
 
 // Initialize training data storage
-const trainingDataFile = 'training_data.json';
+const trainingDataFile = path.join(__dirname, 'training_data.json');
 let trainingData = {
     conversations: [],
     vocabulary: {},
@@ -709,15 +751,15 @@ async function learnInBackground(unknownWords) {
 }
 
 // Add conversation history tracking
-const conversationHistory = new Map(); // Store conversation history per session
+const conversationHistory = new Map(); // Store conversation history per account
 
 // Function to get varied response based on repetition
-function getVariedResponse(message, sessionId) {
-    if (!conversationHistory.has(sessionId)) {
-        conversationHistory.set(sessionId, []);
+function getVariedResponse(message, accountId) {
+    if (!conversationHistory.has(accountId)) {
+        conversationHistory.set(accountId, []);
     }
     
-    const history = conversationHistory.get(sessionId);
+    const history = conversationHistory.get(accountId);
     const repeatedCount = history.filter(m => m.toLowerCase() === message.toLowerCase()).length;
     
     // Add message to history
@@ -769,20 +811,20 @@ function getCurrentGoal() {
     return goalData;
 }
 
-// Update the chat endpoint to use varied responses and isolate sessions
+// Update the chat endpoint to use varied responses and isolate accounts
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
         res.json({ response: "Chat is currently disabled while performing a search. Please try again in a moment." });
         return;
     }
     
-    const { message, sessionId = 'default' } = req.body;
+    const { message, accountId = 'default' } = req.body;
     const normalizedMessage = normalizeText(message.replace(/[,']/g, "").toLowerCase());
     let response = '';
 
     try {
         // Check for repeated messages first
-        const variedResponse = getVariedResponse(normalizedMessage, sessionId);
+        const variedResponse = getVariedResponse(normalizedMessage, accountId);
         if (variedResponse) {
             response = variedResponse;
         } else {
@@ -981,3 +1023,8 @@ app.on('window-all-closed', () => {
   }
 });
 console.log('Server.js loaded successfully, and has been initialized.');
+
+// Verification check to ensure all necessary variables and functions are initialized
+if (!expressApp || !PORT || !chatEnabled || !usersFile || !users || !knowledgeFile || !knowledge || !trainingDataFile || !trainingData || !vocab || !model || !data || !labels) {
+    console.error('Initialization error: One or more necessary variables or functions are not initialized.');
+}

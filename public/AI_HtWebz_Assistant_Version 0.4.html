@@ -656,6 +656,45 @@
 .chat-message + .chat-message {
     margin-top: 24px;  /* Add space between consecutive messages */
 }
+.login-container, .signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: aquamarine;
+}
+.login-form, .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.login-form input, .signup-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.login-form button, .signup-form button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: darkcyan;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.login-form button:hover, .signup-form button:hover {
+    background: cyan;
+}
+.error-message {
+    color: red;
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -773,487 +812,596 @@
     <button id="minimize-return-button-one">Show Toolbar</button>
     <h1 class="page-title">HtWebz Assistant</h1>
 
-<section id="chat-section">
-    <!-- Conversation List on Left -->
-    <div id="conversation-list">
-        <div class="notepad-icon" onclick="startNewChat()"><text class="notepad-image-text">📝</text> <text class="create-new-chat-text">Create New</text></div>
-    </div>
-    <!-- Chat Box -->
-    <div id="chat-box">
-        <div class="thinking-container">
-            <span class="thinking-text">AI is thinking</span>
-            <span class="thinking-dots">
-                <span class="thinking-dot">.</span>
-                <span class="thinking-dot">.</span>
-                <span class="thinking-dot">.</span>
-            </span>
-        </div>
-    </div>
-</section>
-
-    <!-- Input Area -->
-    <div id="chat-user-control-interface">
-        <form id="messaging" onsubmit="event.preventDefault(); sendMessage();">
-            <input 
-                type="text" 
-                id="user-input" 
-                placeholder="Type a message..." 
-                autocomplete="off" 
-                autofocus="onload"
-            />
-            <button class="send-button" type="submit">Send</button>
+    <div id="login-container" class="login-container">
+        <form id="login-form" class="login-form" onsubmit="event.preventDefault(); loginUser();">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username" required />
+            <input type="password" id="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+            <div id="error-message" class="error-message"></div>
+            <p>Don't have an account? <a href="#" onclick="showSignupForm()">Sign up</a></p>
         </form>
-        <style>
-            #command-container {
-                display: none;
-                pointer-events: none;
-                position: absolute;
-                margin-top: -50px;
-            }
-            .command {
-                position: relative;
-                display: inline-block;
-                pointer-events: all;
-                margin-top: 0;
-                margin-left: 0;
-                padding: 5px;
-                border: 2px solid black;
-                border-radius: 5px;
-                background-color: lightblue;
-                color: black;
-                font-weight: bold;
-                font-size: 1.25em;
-                cursor: pointer;
-                box-shadow: 0 0 2.75px rgba(0, 0, 0, 0.5);
-                transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
-            }
-        </style>
-        <div id="command-container">
-            <ul style="cursor: pointer;" class="command" onclick="">/start</ul>
-            <ul style="cursor: pointer;" class="command" onclick="">/stop</ul>
-            <ul style="cursor: pointer;" class="command" onclick="">/help</ul>
-            <ul style="cursor: pointer;" class="command" onclick="">/clear</ul>
-        </div>
-        <script>
-            const commands = document.querySelectorAll('.command');
-            const userInput = document.getElementById('user-input');
-            const commandContainer = document.getElementById('command-container');
+    </div>
 
-            // Function to highlight matching letters in commands
-            function highlightCommand(command, input) {
-                const commandText = command.innerText;
-                const regex = new RegExp(`(${input})`, 'gi');
-                command.innerHTML = commandText.replace(regex, '<span style="color: red;">$1</span>');
-            }
+    <div id="signup-container" class="signup-container" style="display: none;">
+        <form id="signup-form" class="signup-form" onsubmit="event.preventDefault(); signupUser();">
+            <h2>Sign Up</h2>
+            <input type="text" id="signup-username" placeholder="Username" required />
+            <input type="password" id="signup-password" placeholder="Password" required />
+            <button type="submit">Sign Up</button>
+            <div id="signup-error-message" class="error-message"></div>
+            <p>Already have an account? <a href="#" onclick="showLoginForm()">Login</a></p>
+        </form>
+    </div>
 
-            // Function to show or hide commands based on user input
-            function toggleCommands() {
-                const input = userInput.value;
-                if (input.startsWith('/')) {
-                    commandContainer.style.display = 'block';
-                    commands.forEach(command => {
-                        if (command.innerText.startsWith(input)) {
-                            command.style.display = 'inline-block';
-                            highlightCommand(command, input);
-                        } else {
-                            command.style.display = 'none';
-                        }
-                    });
-                } else {
-                    commandContainer.style.display = 'none';
+    <div id="main-container" style="display: none;">
+        <section id="chat-section">
+            <!-- Conversation List on Left -->
+            <div id="conversation-list">
+                <div class="notepad-icon" onclick="startNewChat()"><text class="notepad-image-text">📝</text> <text class="create-new-chat-text">Create New</text></div>
+            </div>
+            <!-- Chat Box -->
+            <div id="chat-box">
+                <div class="thinking-container">
+                    <span class="thinking-text">AI is thinking</span>
+                    <span class="thinking-dots">
+                        <span class="thinking-dot">.</span>
+                        <span class="thinking-dot">.</span>
+                        <span class="thinking-dot">.</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Input Area -->
+        <div id="chat-user-control-interface">
+            <form id="messaging" onsubmit="event.preventDefault(); sendMessage();">
+                <input 
+                    type="text" 
+                    id="user-input" 
+                    placeholder="Type a message..." 
+                    autocomplete="off" 
+                    autofocus="onload"
+                />
+                <button class="send-button" type="submit">Send</button>
+            </form>
+            <style>
+                #command-container {
+                    display: none;
+                    pointer-events: none;
+                    position: absolute;
+                    margin-top: -50px;
                 }
-            }
+                .command {
+                    position: relative;
+                    display: inline-block;
+                    pointer-events: all;
+                    margin-top: 0;
+                    margin-left: 0;
+                    padding: 5px;
+                    border: 2px solid black;
+                    border-radius: 5px;
+                    background-color: lightblue;
+                    color: black;
+                    font-weight: bold;
+                    font-size: 1.25em;
+                    cursor: pointer;
+                    box-shadow: 0 0 2.75px rgba(0, 0, 0, 0.5);
+                    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+                }
+            </style>
+            <div id="command-container">
+                <ul style="cursor: pointer;" class="command" onclick="">/start</ul>
+                <ul style="cursor: pointer;" class="command" onclick="">/stop</ul>
+                <ul style="cursor: pointer;" class="command" onclick="">/help</ul>
+                <ul style="cursor: pointer;" class="command" onclick="">/clear</ul>
+            </div>
+            <script>
+                const commands = document.querySelectorAll('.command');
+                const userInput = document.getElementById('user-input');
+                const commandContainer = document.getElementById('command-container');
 
-            // Event listener for user input
-            userInput.addEventListener('input', toggleCommands);
-
-            // Event listener for command click
-            commands.forEach(command => {
-                command.addEventListener('click', () => {
+                // Function to highlight matching letters in commands
+                function highlightCommand(command, input) {
                     const commandText = command.innerText;
-                    userInput.value = commandText;
-                    sendMessage();
+                    const regex = new RegExp(`(${input})`, 'gi');
+                    command.innerHTML = commandText.replace(regex, '<span style="color: red;">$1</span>');
+                }
+
+                // Function to show or hide commands based on user input
+                function toggleCommands() {
+                    const input = userInput.value;
+                    if (input.startsWith('/')) {
+                        commandContainer.style.display = 'block';
+                        commands.forEach(command => {
+                            if (command.innerText.startsWith(input)) {
+                                command.style.display = 'inline-block';
+                                highlightCommand(command, input);
+                            } else {
+                                command.style.display = 'none';
+                            }
+                        });
+                    } else {
+                        commandContainer.style.display = 'none';
+                    }
+                }
+
+                // Event listener for user input
+                userInput.addEventListener('input', toggleCommands);
+
+                // Event listener for command click
+                commands.forEach(command => {
+                    command.addEventListener('click', () => {
+                        const commandText = command.innerText;
+                        userInput.value = commandText;
+                        sendMessage();
+                    });
+                });
+            </script>
+            <button class="clear-button" id="clear-button" onclick="clearChat()">Clear Chat</button>
+            <button class="save-button" id="save-button" onclick="saveData()">Save Data</button>
+            <button class="load-button" id="load-button" onclick="document.getElementById('file-input').click();">Upload Data</button>
+            <input type="file" id="file-input" style="display: none;" onchange="loadData(event)" />
+            <text id="current-chat-display"></text>
+        </div>
+
+        <footer class="developer">Made by: Maximus Farvour</footer>
+
+        <script>
+            const usrIn = document.getElementById('user-input');
+            
+            usrIn.addEventListener('focus', () => {
+                usrIn.placeholder = 'Typing...';
+            });
+        
+            usrIn.addEventListener('blur', () => {
+                usrIn.placeholder = 'Type a message...';
+            });
+        </script>    
+        <style>
+            .chat-message {
+                font-family: Arial, sans-serif;
+                font-size: 18.5px;
+                line-height: 1.5;
+                margin-bottom: 10px;
+            }
+            #current-chat-display {
+                display: none;
+                font-weight: bold;
+                font-size: 1.45em;
+                margin-left: 10px;
+                margin-top: 8.75px;
+                color: black;
+                -webkit-text-stroke: 1px gray;
+                -webkit-text-fill-color: lightgray;
+            }
+        
+            .fade-in {
+                animation: fadeIn 0.5s ease-in;
+            }
+        
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        </style>    
+
+        <script src="button_effect.js"></script>
+
+        <!--<script>
+            document.body.addEventListener('mousedown', draggingScrollbar => {
+                if(document.body.style.curosr === 'grab' || document.body.style.cursor) {
+                    document.body.style.cursor = 'grabbing';
+                }
+            });
+        </script>-->
+
+        <script>
+            const returnButton = document.getElementById('return-to-homepage-button');
+
+            returnButton.addEventListener('click', navigateToPage => {
+                window.location.href = '../../index.html';
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const loginContainer = document.getElementById('login-container');
+                const signupContainer = document.getElementById('signup-container');
+                const mainContainer = document.getElementById('main-container');
+                const errorMessage = document.getElementById('error-message');
+                const signupErrorMessage = document.getElementById('signup-error-message');
+
+                // Verify initialization
+                if (!loginContainer || !signupContainer || !mainContainer || !errorMessage || !signupErrorMessage) {
+                    console.error('Initialization error: One or more elements are not found.');
+                    return;
+                }
+
+                function showSignupForm() {
+                    loginContainer.style.display = 'none';
+                    signupContainer.style.display = 'flex';
+                }
+
+                function showLoginForm() {
+                    signupContainer.style.display = 'none';
+                    loginContainer.style.display = 'flex';
+                }
+
+                function loginUser() {
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+
+                    fetch('/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            localStorage.setItem('accountId', data.accountId);
+                            loginContainer.style.display = 'none';
+                            mainContainer.style.display = 'block';
+                        } else {
+                            errorMessage.textContent = data.message;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        errorMessage.textContent = 'An error occurred. Please try again.';
+                    });
+                }
+
+                function signupUser() {
+                    const username = document.getElementById('signup-username').value;
+                    const password = document.getElementById('signup-password').value;
+
+                    fetch('/signup', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            localStorage.setItem('accountId', data.accountId);
+                            signupContainer.style.display = 'none';
+                            mainContainer.style.display = 'block';
+                        } else {
+                            signupErrorMessage.textContent = data.message;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        signupErrorMessage.textContent = 'An error occurred. Please try again.';
+                    });
+                }
+
+                function getAccountId() {
+                    return localStorage.getItem('accountId');
+                }
+
+                // Ensure the user is logged in before showing the main container
+                const accountId = getAccountId();
+                if (accountId) {
+                    loginContainer.style.display = 'none';
+                    mainContainer.style.display = 'block';
+                }
+
+                // Update the sendMessage function to include the accountId
+                const sendMessage = async () => {
+                    if (isSending) return;
+                    isSending = true;
+
+                    const userInput = document.getElementById('user-input');
+                    const message = userInput.value.trim();
+                    if (!message) {
+                        isSending = false;
+                        return;
+                    }
+
+                    if (!currentChatId) {
+                        startNewChat();
+                    }
+
+                    appendMessage('User', message);
+                    userInput.value = '';
+
+                    // Show thinking animation
+                    const thinkingContainer = document.createElement('div');
+                    thinkingContainer.className = 'thinking-container';
+                    thinkingContainer.style.display = 'flex'; // Ensure it is displayed
+                    thinkingContainer.innerHTML = `
+                        <span class="thinking-text">AI is thinking</span>
+                        <span class="thinking-dots">
+                            <span class="thinking-dot">.</span>
+                            <span class="thinking-dot">.</span>
+                            <span class="thinking-dot">.</span>
+                        </span>
+                    `;
+                    chatBox.appendChild(thinkingContainer);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+
+                    try {
+                        // Add minimum delay for thinking animation
+                        await new Promise(resolve => setTimeout(resolve, 750));
+
+                        const response = await fetch('/chat', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ message, accountId: getAccountId() })
+                        });
+
+                        if (!response.ok) throw new Error('Failed to get response');
+
+                        const data = await response.json();
+                        thinkingContainer.remove();
+                        
+                        if (data && data.response) {
+                            typeOutMessage('AI', data.response);
+                        } else {
+                            throw new Error('Invalid response format');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        thinkingContainer.remove();
+                        typeOutMessage('System', 'Error: Unable to process message. Please try again.');
+                    } finally {
+                        isSending = false;
+                    }
+                };
+
+                const chatBox = document.getElementById('chat-box');
+                const sendButton = document.getElementById('send-btn');
+                const clearButton = document.getElementById('clear-btn');
+                const conversationList = document.getElementById('conversation-list');
+                const ccd = document.getElementById('current-chat-display');
+                const cinf = document.getElementById('chat-user-control-interface');
+                let currentChatId = null;
+                let conversationData = JSON.parse(localStorage.getItem('conversations')) || {}; // Load conversations from localStorage
+                let isSending = false; // Flag to determine if a message is being sent
+                // Flag to determine if the chat box should be scrolled to the bottom
+                let isScrollLocked = true;
+
+                // Function to create a new chat and add it to the conversation list
+                function startNewChat() {
+                    const chatId = `Chat ${Object.keys(conversationData).length + 1}`;
+                    currentChatId = chatId;
+                    conversationData[chatId] = [];
+                    saveConversations();
+
+                    const conversationItem = document.createElement('div');
+                    conversationItem.classList.add('conversation-item');
+                    conversationItem.dataset.chatId = chatId;
+
+                    conversationItem.innerHTML = `
+                        <span>${chatId}</span>
+                        <div class="buttons">
+                            <button class="load-button" onclick="loadChat('${chatId}')">Load</button>
+                            <button class="deletion-button" onclick="deleteChat('${chatId}')">Delete</button>
+                        </div>
+                    `;
+                    conversationList.appendChild(conversationItem);
+                    loadChat(chatId);
+                }
+
+                // Load conversation based on the selected chat ID
+                function loadChat(chatId) {
+                    if (currentChatId === chatId) return; // Avoid duplicate loading
+                    currentChatId = chatId;
+
+                    // Clear the chat box
+                    chatBox.innerHTML = '';
+
+                    // Append all messages from the selected conversation without duplicating
+                    if (conversationData[chatId]) {
+                        conversationData[chatId].forEach((message, index) => {
+                            appendMessage(message.sender, message.text, false); // Prevent re-saving on load
+                        });
+                        ccd.style.display = 'block';
+                        ccd.innerText = `Current Chat: ${chatId}`;
+                        cinf.style.paddingRight = '10px';
+
+                        // Scroll to the bottom of the chat box
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }
+                }
+
+                // Delete a conversation from the list
+                function deleteChat(chatId) {
+                    delete conversationData[chatId];
+                    saveConversations();
+
+                    const chatItem = document.querySelector(`[data-chat-id="${chatId}"]`);
+                    conversationList.removeChild(chatItem);
+
+                    if (currentChatId === chatId) {
+                        chatBox.innerHTML = '';
+                        currentChatId = null;
+                    }
+                }
+
+                // Function to append message with proper positioning
+                function appendMessage(sender, message, saveToData = true) {
+                    const timestamp = new Date().getTime();
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('chat-message', sender.toLowerCase());
+                    
+                    if (sender.toLowerCase() === 'user') {
+                        messageDiv.innerHTML = `
+                            <div class="message-content">
+                                <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
+                            </div>
+                            <img src="Image_Assets/${sender.toLowerCase()}_profile.png?${timestamp}" alt="${sender} Profile">
+                        `;
+                    } else {
+                        messageDiv.innerHTML = `
+                            <img src="Image_Assets/${sender.toLowerCase()}_profile.png?${timestamp}" alt="${sender} Profile">
+                            <div class="message-content">
+                                <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
+                            </div>
+                        `;
+                    }
+
+                    // Insert message
+                    chatBox.appendChild(messageDiv);
+
+                    // Ensure smooth scroll
+                    setTimeout(() => {
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }, 100);
+
+                    if (saveToData && currentChatId) {
+                        conversationData[currentChatId].push({ sender, text: message });
+                        saveConversations();
+                    }
+                }
+
+                function typeOutMessage(sender, message) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('chat-message', sender.toLowerCase());
+                    
+                    messageDiv.innerHTML = `
+                        <img src="../Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+                        <div class="message-content">
+                            <strong>${sender}:</strong> <span class="fade-in"></span>
+                        </div>
+                    `;
+                    
+                    chatBox.appendChild(messageDiv);
+                    const messageSpan = messageDiv.querySelector('span');
+                    
+                    // Typing animation code, simulate typing effect
+                    let i = 0;
+                    let typingSpeed = message.length > 200 ? 6.35 : message.length > 100 ? 16.25 : message.length > 50 ? 19.5 : 22.5;
+
+                    function type() {
+                        if (i < message.length) {
+                            if (message.charAt(i) === '\n') {
+                                messageSpan.innerHTML += '<br>';
+                            } else {
+                                messageSpan.innerHTML += message.charAt(i);  // Use innerHTML to render HTML content
+                            }
+                            i++;
+                            setTimeout(type, typingSpeed);
+                            chatBox.scrollTop = chatBox.scrollHeight;
+                        } else if (currentChatId) {
+                            conversationData[currentChatId].push({ sender, text: message });
+                            saveConversations();
+                        }
+                    }
+
+                    type();
+                }
+
+                // Add a style to ensure proper message flow
+                const style = document.createElement('style');
+                style.textContent = `
+                    #chat-box {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    #chat-box::after {
+                        content: '';
+                        clear: both;
+                        display: table;
+                    }
+                    .chat-message {
+                        max-width: 80%;
+                        margin-bottom: 15px;
+                    }
+                `;
+                document.head.appendChild(style);
+
+                // Add event listener for Enter key
+                document.getElementById('user-input').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+
+                // Clear chat display without modifying stored data
+                function clearChat() {
+                    chatBox.innerHTML = '';
+                    chatBox.scrollTop = 0; // Reset scroll position
+                }
+
+                // Save conversations to localStorage
+                function saveConversations() {
+                    localStorage.setItem('conversations', JSON.stringify(conversationData));
+                }
+
+                // Initialize conversation list from localStorage
+                function initializeConversations() {
+                    for (const chatId in conversationData) {
+                        const conversationItem = document.createElement('div');
+                        conversationItem.classList.add('conversation-item');
+                        conversationItem.dataset.chatId = chatId;
+
+                        conversationItem.innerHTML = `
+                            <span>${chatId}</span>
+                            <div class="buttons">
+                                <button class="load-button" onclick="loadChat('${chatId}')">Load</button>
+                                <button class="deletion-button" onclick="deleteChat('${chatId}')">Delete</button>
+                            </div>
+                        `;
+                        conversationList.appendChild(conversationItem);
+                    }
+                }
+
+                // Initialize on page load
+                initializeConversations();
+
+                // Event listeners
+                sendButton.addEventListener('click', sendMessage);
+                clearButton.addEventListener('click', clearChat);
+
+                // Disable scroll lock when the user manually scrolls
+                chatBox.addEventListener('scroll', () => {
+                    if (chatBox.scrollTop + chatBox.clientHeight < chatBox.scrollHeight) {
+                        isScrollLocked = false;
+                    } else {
+                        isScrollLocked = true;
+                    }
                 });
             });
         </script>
-        <button class="clear-button" id="clear-button" onclick="clearChat()">Clear Chat</button>
-        <button class="save-button" id="save-button" onclick="saveData()">Save Data</button>
-        <button class="load-button" id="load-button" onclick="document.getElementById('file-input').click();">Upload Data</button>
-        <input type="file" id="file-input" style="display: none;" onchange="loadData(event)" />
-        <text id="current-chat-display"></text>
     </div>
-
-    <footer class="developer">Made by: Maximus Farvour</footer>
-
-    <script>
-        const usrIn = document.getElementById('user-input');
-        
-        usrIn.addEventListener('focus', () => {
-            usrIn.placeholder = 'Typing...';
-        });
-    
-        usrIn.addEventListener('blur', () => {
-            usrIn.placeholder = 'Type a message...';
-        });
-    </script>    
     <style>
-        .chat-message {
-            font-family: Arial, sans-serif;
-            font-size: 18.5px;
-            line-height: 1.5;
-            margin-bottom: 10px;
+        body {
+          background: aquamarine;
         }
-        #current-chat-display {
-            display: none;
-            font-weight: bold;
-            font-size: 1.45em;
-            margin-left: 10px;
-            margin-top: 8.75px;
-            color: black;
-            -webkit-text-stroke: 1px gray;
-            -webkit-text-fill-color: lightgray;
+        .context-menu {
+          display: none;
+          position: fixed;
+          background: radial-gradient(circle, #22c6e3, #077082);
+          border: 2px solid #ccc;
+          border-radius: 10px;
+          box-shadow: 0 1px 15px rgba(24, 188, 217, 0.95);
+          z-index: 1000;
         }
-    
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+      
+        .context-menu ul {
+          list-style: none;
+          font-family: Sans-Serif;
+          font-weight: bold;
+          -webkit-user-select: none;
+          user-select: none;
+          padding: 10px;
+          margin: 0;
         }
-    
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+      
+        .context-menu li {
+          padding: 8px 12px;
+          border-radius: 0.25cm;
+          cursor: pointer;
+          transition: all 0.15s ease;
         }
-    </style>    
-
-    <script src="button_effect.js"></script>
-
-    <!--<script>
-        document.body.addEventListener('mousedown', draggingScrollbar => {
-            if(document.body.style.curosr === 'grab' || document.body.style.cursor) {
-                document.body.style.cursor = 'grabbing';
-            }
-        });
-    </script>-->
-
-    <script>
-        const returnButton = document.getElementById('return-to-homepage-button');
-
-        returnButton.addEventListener('click', navigateToPage => {
-            window.location.href = '../../index.html';
-        });
-    </script>
-<script>
-const chatBox = document.getElementById('chat-box');
-const sendButton = document.getElementById('send-btn');
-const clearButton = document.getElementById('clear-btn');
-const conversationList = document.getElementById('conversation-list');
-const ccd = document.getElementById('current-chat-display');
-const cinf = document.getElementById('chat-user-control-interface');
-let currentChatId = null;
-let conversationData = JSON.parse(localStorage.getItem('conversations')) || {}; // Load conversations from localStorage
-// Flag to determine if the chat box should be scrolled to the bottom
-let isScrollLocked = true;
-
-// Function to create a new chat and add it to the conversation list
-function startNewChat() {
-    const chatId = `Chat ${Object.keys(conversationData).length + 1}`;
-    currentChatId = chatId;
-    conversationData[chatId] = [];
-    saveConversations();
-
-    const conversationItem = document.createElement('div');
-    conversationItem.classList.add('conversation-item');
-    conversationItem.dataset.chatId = chatId;
-
-    conversationItem.innerHTML = `
-        <span>${chatId}</span>
-        <div class="buttons">
-            <button class="load-button" onclick="loadChat('${chatId}')">Load</button>
-            <button class="deletion-button" onclick="deleteChat('${chatId}')">Delete</button>
-        </div>
-    `;
-    conversationList.appendChild(conversationItem);
-    loadChat(chatId);
-}
-
-// Load conversation based on the selected chat ID
-function loadChat(chatId) {
-    if (currentChatId === chatId) return; // Avoid duplicate loading
-    currentChatId = chatId;
-
-    // Clear the chat box
-    chatBox.innerHTML = '';
-
-    // Append all messages from the selected conversation without duplicating
-    if (conversationData[chatId]) {
-        conversationData[chatId].forEach((message, index) => {
-            appendMessage(message.sender, message.text, false); // Prevent re-saving on load
-        });
-        ccd.style.display = 'block';
-        ccd.innerText = `Current Chat: ${chatId}`;
-        cinf.style.paddingRight = '10px';
-
-        // Scroll to the bottom of the chat box
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-}
-
-// Delete a conversation from the list
-function deleteChat(chatId) {
-    delete conversationData[chatId];
-    saveConversations();
-
-    const chatItem = document.querySelector(`[data-chat-id="${chatId}"]`);
-    conversationList.removeChild(chatItem);
-
-    if (currentChatId === chatId) {
-        chatBox.innerHTML = '';
-        currentChatId = null;
-    }
-}
-
-// Function to append message with proper positioning
-function appendMessage(sender, message, saveToData = true) {
-    const timestamp = new Date().getTime();
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('chat-message', sender.toLowerCase());
-    
-    if (sender.toLowerCase() === 'user') {
-        messageDiv.innerHTML = `
-            <div class="message-content">
-                <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
-            </div>
-            <img src="Image_Assets/${sender.toLowerCase()}_profile.png?${timestamp}" alt="${sender} Profile">
-        `;
-    } else {
-        messageDiv.innerHTML = `
-            <img src="Image_Assets/${sender.toLowerCase()}_profile.png?${timestamp}" alt="${sender} Profile">
-            <div class="message-content">
-                <strong>${sender}:</strong> ${message.replace(/\n/g, '<br>')}
-            </div>
-        `;
-    }
-
-    // Insert message
-    chatBox.appendChild(messageDiv);
-
-    // Ensure smooth scroll
-    setTimeout(() => {
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }, 100);
-
-    if (saveToData && currentChatId) {
-        conversationData[currentChatId].push({ sender, text: message });
-        saveConversations();
-    }
-}
-
-function typeOutMessage(sender, message) {
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('chat-message', sender.toLowerCase());
-    
-    messageDiv.innerHTML = `
-        <img src="../Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
-        <div class="message-content">
-            <strong>${sender}:</strong> <span class="fade-in"></span>
-        </div>
-    `;
-    
-    chatBox.appendChild(messageDiv);
-    const messageSpan = messageDiv.querySelector('span');
-    
-    // Typing animation code, simulate typing effect
-    let i = 0;
-    let typingSpeed = message.length > 200 ? 6.35 : message.length > 100 ? 16.25 : message.length > 50 ? 19.5 : 22.5;
-
-    function type() {
-        if (i < message.length) {
-            if (message.charAt(i) === '\n') {
-                messageSpan.innerHTML += '<br>';
-            } else {
-                messageSpan.innerHTML += message.charAt(i);  // Use innerHTML to render HTML content
-            }
-            i++;
-            setTimeout(type, typingSpeed);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        } else if (currentChatId) {
-            conversationData[currentChatId].push({ sender, text: message });
-            saveConversations();
+      
+        .context-menu li:hover {
+          background-color: aqua;
         }
-    }
-
-    type();
-}
-
-// Add a style to ensure proper message flow
-const style = document.createElement('style');
-style.textContent = `
-    #chat-box {
-        display: flex;
-        flex-direction: column;
-    }
-    #chat-box::after {
-        content: '';
-        clear: both;
-        display: table;
-    }
-    .chat-message {
-        max-width: 80%;
-        margin-bottom: 15px;
-    }
-`;
-document.head.appendChild(style);
-
-// Send message to server
-let isSending = false;
-const sendMessage = async () => {
-    if (isSending) return;
-    isSending = true;
-
-    const userInput = document.getElementById('user-input');
-    const message = userInput.value.trim();
-    if (!message) {
-        isSending = false;
-        return;
-    }
-
-    if (!currentChatId) {
-        startNewChat();
-    }
-
-    appendMessage('User', message);
-    userInput.value = '';
-
-    // Show thinking animation
-    const thinkingContainer = document.createElement('div');
-    thinkingContainer.className = 'thinking-container';
-    thinkingContainer.style.display = 'flex'; // Ensure it is displayed
-    thinkingContainer.innerHTML = `
-        <span class="thinking-text">AI is thinking</span>
-        <span class="thinking-dots">
-            <span class="thinking-dot">.</span>
-            <span class="thinking-dot">.</span>
-            <span class="thinking-dot">.</span>
-        </span>
-    `;
-    chatBox.appendChild(thinkingContainer);
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    try {
-        // Add minimum delay for thinking animation
-        await new Promise(resolve => setTimeout(resolve, 750));
-
-        const response = await fetch('/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message })
-        });
-
-        if (!response.ok) throw new Error('Failed to get response');
-
-        const data = await response.json();
-        thinkingContainer.remove();
-        
-        if (data && data.response) {
-            typeOutMessage('AI', data.response);
-        } else {
-            throw new Error('Invalid response format');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        thinkingContainer.remove();
-        typeOutMessage('System', 'Error: Unable to process message. Please try again.');
-    } finally {
-        isSending = false;
-    }
-};
-
-// Add event listener for Enter key
-document.getElementById('user-input').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-    }
-});
-
-// Clear chat display without modifying stored data
-function clearChat() {
-    chatBox.innerHTML = '';
-    chatBox.scrollTop = 0; // Reset scroll position
-}
-
-// Save conversations to localStorage
-function saveConversations() {
-    localStorage.setItem('conversations', JSON.stringify(conversationData));
-}
-
-// Initialize conversation list from localStorage
-function initializeConversations() {
-    for (const chatId in conversationData) {
-        const conversationItem = document.createElement('div');
-        conversationItem.classList.add('conversation-item');
-        conversationItem.dataset.chatId = chatId;
-
-        conversationItem.innerHTML = `
-            <span>${chatId}</span>
-            <div class="buttons">
-                <button class="load-button" onclick="loadChat('${chatId}')">Load</button>
-                <button class="deletion-button" onclick="deleteChat('${chatId}')">Delete</button>
-            </div>
-        `;
-        conversationList.appendChild(conversationItem);
-    }
-}
-
-// Initialize on page load
-initializeConversations();
-
-// Event listeners
-sendButton.addEventListener('click', sendMessage);
-clearButton.addEventListener('click', clearChat);
-
-// Disable scroll lock when the user manually scrolls
-chatBox.addEventListener('scroll', () => {
-    if (chatBox.scrollTop + chatBox.clientHeight < chatBox.scrollHeight) {
-        isScrollLocked = false;
-    } else {
-        isScrollLocked = true;
-    }
-});
-</script>
+        .context-menu .disabled { color: #ccc; pointer-events: none; }  .context-menu .link-option { display: none; }      </style>  </head>  <body>      <div id="myMenu" class="context-menu">          <ul>              <li id="copy">Copy</li>              <li id="paste">Paste</li>              <li id="reload">Reload</li>              <li id="openNewTab" class="link-option">Open Link in New Tab</li>               <li id="openNewWindow" class="link-option">Open Link in New Window</li>              <li id="inspect">Inspect</li>              <li id="viewSource">View Page Source</li>          </ul>      </div>  <script src="context_menu.js"></script>
 </body>
-<style>
-    body {
-      background: aquamarine;
-    }
-    .context-menu {
-      display: none;
-      position: fixed;
-      background: radial-gradient(circle, #22c6e3, #077082);
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 1px 15px rgba(24, 188, 217, 0.95);
-      z-index: 1000;
-  }
-  
-  .context-menu ul {
-      list-style: none;
-      font-family: Sans-Serif;
-      font-weight: bold;
-      -webkit-user-select: none;
-      user-select: none;
-      padding: 10px;
-      margin: 0;
-  }
-  
-  .context-menu li {
-      padding: 8px 12px;
-      border-radius: 0.25cm;
-      cursor: pointer;
-      transition: all 0.15s ease;
-  }
-  
-  .context-menu li:hover {
-      background-color: aqua;
-  }
-  .context-menu .disabled { color: #ccc; pointer-events: none; }  .context-menu .link-option { display: none; }      </style>  </head>  <body>      <div id="myMenu" class="context-menu">          <ul>              <li id="copy">Copy</li>              <li id="paste">Paste</li>              <li id="reload">Reload</li>              <li id="openNewTab" class="link-option">Open Link in New Tab</li>               <li id="openNewWindow" class="link-option">Open Link in New Window</li>              <li id="inspect">Inspect</li>              <li id="viewSource">View Page Source</li>          </ul>      </div>  <script src="context_menu.js"></script>
 </html>
