@@ -1126,6 +1126,7 @@ const sendMessage = async () => {
     // Show thinking animation
     const thinkingContainer = document.createElement('div');
     thinkingContainer.className = 'thinking-container';
+    thinkingContainer.style.display = 'flex'; // Ensure it is displayed
     thinkingContainer.innerHTML = `
         <span class="thinking-text">AI is thinking</span>
         <span class="thinking-dots">
@@ -1173,12 +1174,6 @@ document.getElementById('user-input').addEventListener('keypress', (e) => {
         sendMessage();
     }
 });
-
-// Clear chat display without modifying stored data
-function clearChat() {
-    chatBox.innerHTML = '';
-    chatBox.scrollTop = 0; // Reset scroll position
-}
 
 // Clear chat display without modifying stored data
 function clearChat() {
