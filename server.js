@@ -758,6 +758,8 @@ function readGoalData() {
     if (fs.existsSync(goalDataFile)) {
         const rawData = fs.readFileSync(goalDataFile, 'utf8');
         goalData = JSON.parse(rawData);
+        console.log('Current Goal:', goalData.goal);
+        console.log('Priority:', goalData.priority);
     }
 }
 
@@ -767,7 +769,7 @@ function getCurrentGoal() {
     return goalData;
 }
 
-// Update the chat endpoint to use varied responses
+// Update the chat endpoint to use varied responses and isolate sessions
 expressApp.post('/chat', async (req, res) => {
     if (!chatEnabled) {
         res.json({ response: "Chat is currently disabled while performing a search. Please try again in a moment." });
@@ -829,6 +831,9 @@ expressApp.post('/chat', async (req, res) => {
         // Include the current goal and priority in the response
         const currentGoal = getCurrentGoal();
         response += `\n\nCurrent Goal: ${currentGoal.goal}\nPriority: ${currentGoal.priority}`;
+
+        // Output goal data to client console
+        response += `\n\nConsole Output:\nCurrent Goal: ${currentGoal.goal}\nPriority: ${currentGoal.priority}`;
 
         res.json({ response });
     } catch (error) {

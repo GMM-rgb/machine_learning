@@ -403,7 +403,7 @@
         }
 
         .thinking-container {
-            display: none;
+            display: flex;
             align-self: flex-start;
             margin-top: auto; /* Push to bottom of chat box */
             position: sticky; /* Keep visible while scrolling */
@@ -780,7 +780,7 @@
     </div>
     <!-- Chat Box -->
     <div id="chat-box">
-        <div class="thinking-container">
+        <div class="thinking-container" id="thinking-container">
             <span class="thinking-text">AI is thinking</span>
             <span class="thinking-dots">
                 <span class="thinking-dot">.</span>
@@ -1124,18 +1124,7 @@ const sendMessage = async () => {
     userInput.value = '';
 
     // Show thinking animation
-    const thinkingContainer = document.createElement('div');
-    thinkingContainer.className = 'thinking-container';
-    thinkingContainer.innerHTML = `
-        <span class="thinking-text">AI is thinking</span>
-        <span class="thinking-dots">
-            <span class="thinking-dot">.</span>
-            <span class="thinking-dot">.</span>
-            <span class="thinking-dot">.</span>
-        </span>
-    `;
-    chatBox.appendChild(thinkingContainer);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    showThinkingBox();
 
     try {
         // Add minimum delay for thinking animation
@@ -1150,7 +1139,7 @@ const sendMessage = async () => {
         if (!response.ok) throw new Error('Failed to get response');
 
         const data = await response.json();
-        thinkingContainer.remove();
+        hideThinkingBox();
         
         if (data && data.response) {
             typeOutMessage('AI', data.response);
@@ -1159,7 +1148,7 @@ const sendMessage = async () => {
         }
     } catch (error) {
         console.error('Error:', error);
-        thinkingContainer.remove();
+        hideThinkingBox();
         typeOutMessage('System', 'Error: Unable to process message. Please try again.');
     } finally {
         isSending = false;
@@ -1224,6 +1213,18 @@ chatBox.addEventListener('scroll', () => {
         isScrollLocked = true;
     }
 });
+
+const thinkingContainer = document.getElementById('thinking-container');
+
+// Function to show the thinking box
+function showThinkingBox() {
+    thinkingContainer.style.display = 'flex';
+}
+
+// Function to hide the thinking box
+function hideThinkingBox() {
+    thinkingContainer.style.display = 'none';
+}
 </script>
 </body>
 <style>
