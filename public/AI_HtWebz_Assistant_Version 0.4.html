@@ -163,6 +163,7 @@
             width: 635px;
             height: 372.5px;
             overflow-y: scroll;
+            overflow-y: scroll;
             margin-bottom: 10px;
             text-wrap: stable;
             -webkit-text-wrap-mode: auto;
@@ -402,36 +403,19 @@
         }
 
         .thinking-container {
-            float: left;
-            clear: both;
-            margin-right: auto;
-        }
-
-        /* Clear float after messages */
-        #chat-box::after {
-            content: '';
-            display: block;
-            clear: both;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .thinking-container {
-            display: none;
+            display: flex;
             align-self: flex-start;
+            margin-top: auto; /* Push to bottom of chat box */
+            position: sticky; /* Keep visible while scrolling */
+            bottom: 0;
+            width: calc(40% - 40px); /* Account for padding */
             margin: 10px;
             padding: 10px;
             background: radial-gradient(circle at center, #b3ffff, #80ffff);
             border-radius: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             animation: pulse 2s infinite;
+            z-index: 100; /* Ensure it stays on top */
         }
 
         .thinking-text {
@@ -796,7 +780,7 @@
     </div>
     <!-- Chat Box -->
     <div id="chat-box">
-        <div class="thinking-container">
+        <div class="thinking-container" id="thinking-container">
             <span class="thinking-text">AI is thinking</span>
             <span class="thinking-dots">
                 <span class="thinking-dot">.</span>
@@ -809,8 +793,14 @@
 
     <!-- Input Area -->
     <div id="chat-user-control-interface">
-        <form onsubmit="event.preventDefault(); sendMessage();" id="messaging">
-            <input type="text" id="user-input" placeholder="Type a message..." autocomplete="off" autofocus="onload" />
+        <form id="messaging" onsubmit="event.preventDefault(); sendMessage();">
+            <input 
+                type="text" 
+                id="user-input" 
+                placeholder="Type a message..." 
+                autocomplete="off" 
+                autofocus="onload"
+            />
             <button class="send-button" type="submit">Send</button>
         </form>
         <style>
@@ -1119,6 +1109,7 @@ const sendMessage = async () => {
     if (isSending) return;
     isSending = true;
 
+    const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
     if (!message) {
         isSending = false;
@@ -1132,64 +1123,51 @@ const sendMessage = async () => {
     appendMessage('User', message);
     userInput.value = '';
 
-    // Reset chat box HTML with thinking container
-    const thinkingContainer = document.querySelector('.thinking-container');
-    if (!thinkingContainer) {
-        chatBox.innerHTML += `
-            <div class="thinking-container">
-                <span class="thinking-text">AI is thinking</span>
-                <span class="thinking-dots">
-                    <span class="thinking-dot">.</span>
-                    <span class="thinking-dot">.</span>
-                    <span class="thinking-dot">.</span>
-                </span>
-            </div>
-        `;
-    }
-    const thinking = chatBox.querySelector('.thinking-container');
-    thinking.style.display = 'block';
-    chatBox.scrollTop = chatBox.scrollHeight;
+    // Show thinking animation
+    showThinkingBox();
 
     try {
         // Add minimum delay for thinking animation
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 750));
 
-        if (message === '/start') {
-            const response = await fetch('http://localhost/start', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-            });
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message })
+        });
 
-            if (!response.ok) throw new Error('Failed to start server');
+        if (!response.ok) throw new Error('Failed to get response');
 
-            const data = await response.json();
-            thinking.style.display = 'none';
-            typeOutMessage('System', data.response);
+        const data = await response.json();
+        hideThinkingBox();
+        
+        if (data && data.response) {
+            typeOutMessage('AI', data.response);
         } else {
-            const response = await fetch('http://localhost/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message }),
-            });
-
-            if (!response.ok) throw new Error('Failed to process message');
-
-            const data = await response.json();
-            thinking.style.display = 'none';
-            if (data && data.response) {
-                typeOutMessage('AI', data.response);
-            } else {
-                throw new Error('Invalid response from server');
-            }
+            throw new Error('Invalid response format');
         }
     } catch (error) {
         console.error('Error:', error);
-        thinking.style.display = 'none';
+        hideThinkingBox();
         typeOutMessage('System', 'Error: Unable to process message. Please try again.');
     } finally {
         isSending = false;
     }
 };
+
+// Add event listener for Enter key
+document.getElementById('user-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+// Clear chat display without modifying stored data
+function clearChat() {
+    chatBox.innerHTML = '';
+    chatBox.scrollTop = 0; // Reset scroll position
+}
 
 // Clear chat display without modifying stored data
 function clearChat() {
@@ -1235,6 +1213,18 @@ chatBox.addEventListener('scroll', () => {
         isScrollLocked = true;
     }
 });
+
+const thinkingContainer = document.getElementById('thinking-container');
+
+// Function to show the thinking box
+function showThinkingBox() {
+    thinkingContainer.style.display = 'flex';
+}
+
+// Function to hide the thinking box
+function hideThinkingBox() {
+    thinkingContainer.style.display = 'none';
+}
 </script>
 </body>
 <style>
@@ -1260,7 +1250,7 @@ chatBox.addEventListener('scroll', () => {
       padding: 10px;
       margin: 0;
   }
-  
+   
   .context-menu li {
       padding: 8px 12px;
       border-radius: 0.25cm;
@@ -1271,21 +1261,5 @@ chatBox.addEventListener('scroll', () => {
   .context-menu li:hover {
       background-color: aqua;
   }
-  .context-menu .disabled { color: #ccc; pointer-events: none; }
-  .context-menu .link-option { display: none; }
-      </style>
-  </head>
-  <body>
-      <div id="myMenu" class="context-menu">
-          <ul>
-              <li id="copy">Copy</li>
-              <li id="paste">Paste</li>
-              <li id="reload">Reload</li>
-              <li id="openNewTab" class="link-option">Open Link in New Tab</li> 
-              <li id="openNewWindow" class="link-option">Open Link in New Window</li>
-              <li id="inspect">Inspect</li>
-              <li id="viewSource">View Page Source</li>
-          </ul>
-      </div>
-  <script src="context_menu.js"></script>
+  .context-menu .disabled { color: #ccc; pointer-events: none; }  .context-menu .link-option { display: none; }      </style>  </head>  <body>      <div id="myMenu" class="context-menu">          <ul>              <li id="copy">Copy</li>              <li id="paste">Paste</li>              <li id="reload">Reload</li>              <li id="openNewTab" class="link-option">Open Link in New Tab</li>               <li id="openNewWindow" class="link-option">Open Link in New Window</li>              <li id="inspect">Inspect</li>              <li id="viewSource">View Page Source</li>          </ul>      </div>  <script src="context_menu.js"></script>
 </html>

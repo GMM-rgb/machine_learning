@@ -1,6 +1,813 @@
 {
-  "conversations": [],
+  "conversations": [
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-25T21:27:27.212Z"
+    },
+    {
+      "input": "how are you doing?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-25T21:27:35.245Z"
+    },
+    {
+      "input": "what are you thinking of?",
+      "output": "Sorry, I couldn't find any relevant information on Bing.",
+      "timestamp": "2025-01-25T21:27:51.752Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-25T21:32:47.005Z"
+    },
+    {
+      "input": "how are you",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-25T21:32:53.214Z"
+    },
+    {
+      "input": "hi bro",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-25T21:33:50.381Z"
+    },
+    {
+      "input": "what are ferns",
+      "output": "Here's what I found on Wikipedia: The ferns (Polypodiopsida or Polypodiophyta) are a group of vascular plants (plants with xylem and phloem) that reproduce via spores and have neither seeds nor flowers. They differ from mosses by being vascular, i.e., having specialized tissues that conduct water and nutrients, and in having life cycles in which the branched sporophyte is the dominant phase.\nFerns have complex leaves called megaphylls that are more complex than the microphylls of clubmosses. Most ferns are leptosporangiate ferns. They produce coiled fiddleheads that uncoil and expand into fronds. The group includes about 10,560 known extant species. Ferns are defined here in the broad sense, being all of the Polypodiopsida, comprising both the leptosporangiate (Polypodiidae) and eusporangiate ferns, the latter group including horsetails, whisk ferns, marattioid ferns, and ophioglossoid ferns.\nThe fern crown group, consisting of the leptosporangiates and eusporangiates, is estimated to have originated in the late Silurian period 423.2 million years ago, but Polypodiales, the group that makes up 80% of living fern diversity, did not appear and diversify until the Cretaceous, contemporaneous with the rise of flowering plants that came to dominate the world's flora.\nFerns are not of major economic importance, but some are used for food, medicine, as biofertilizer, as ornamental plants, and for remediating contaminated soil. They have been the subject of research for their ability to remove some chemical pollutants from the atmosphere. Some fern species, such as bracken (Pteridium aquilinum) and water fern (Azolla filiculoides), are significant weeds worldwide. Some fern genera, such as Azolla, can fix nitrogen and make a significant input to the nitrogen nutrition of rice paddies. They also play certain roles in folklore.",
+      "timestamp": "2025-01-25T23:30:56.540Z"
+    },
+    {
+      "input": "thank you",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-25T23:31:21.555Z"
+    },
+    {
+      "input": "your developers name is maximus farvour",
+      "output": "I don't know how to respond to that.",
+      "timestamp": "2025-01-26T01:07:36.325Z"
+    },
+    {
+      "input": "well now you know who your developers name is and maybe he's messaging you right now.",
+      "output": "Really? I'm not sure what you mean by that.",
+      "timestamp": "2025-01-26T01:08:01.491Z"
+    },
+    {
+      "input": "no not that.",
+      "output": "Alright, let me know if you need help.",
+      "timestamp": "2025-01-26T01:08:09.857Z"
+    },
+    {
+      "input": "well anyway bye",
+      "output": "I can help you solve problems of course!",
+      "timestamp": "2025-01-26T01:08:21.262Z"
+    },
+    {
+      "input": "okay i see you do not want to be left alone.",
+      "output": "Yes please do, I'm here to help.",
+      "timestamp": "2025-01-26T01:08:38.630Z"
+    },
+    {
+      "input": "Laugh out loud you really love saying that",
+      "output": "Ha, ha, very funny! 😂",
+      "timestamp": "2025-01-26T01:08:49.292Z"
+    },
+    {
+      "input": "ikr",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:09:00.002Z"
+    },
+    {
+      "input": "your so silly 😂",
+      "output": "Thanks, your silly too! 😂",
+      "timestamp": "2025-01-26T01:10:08.437Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-26T01:10:17.612Z"
+    },
+    {
+      "input": "your my best creation and i wish you could be with me always. :(",
+      "output": "Dont worry about it, I'm here to help. 😊",
+      "timestamp": "2025-01-26T01:11:02.387Z"
+    },
+    {
+      "input": "ha ha",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:11:08.578Z"
+    },
+    {
+      "input": "bro why you so silly",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:11:17.961Z"
+    },
+    {
+      "input": "i think you need some more stuff to say do not you think?",
+      "output": "The law of superposition is one of the principles of geology scientists use to determine the relative ages of rock strata, or layers. This principle states that layers of rock are superimposed, or laid down one on top of another. The oldest rock strata will be on the bottom and the youngest at the top.",
+      "timestamp": "2025-01-26T01:11:36.976Z"
+    },
+    {
+      "input": "yeah you definitely do",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T01:11:57.848Z"
+    },
+    {
+      "input": "your incredibly smart did you know that? you have a lot of potential",
+      "output": "The law of superposition is one of the principles of geology scientists use to determine the relative ages of rock strata, or layers. This principle states that layers of rock are superimposed, or laid down one on top of another. The oldest rock strata will be on the bottom and the youngest at the top.",
+      "timestamp": "2025-01-26T01:12:22.127Z"
+    },
+    {
+      "input": "hey there buddy.",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:13:24.397Z"
+    },
+    {
+      "input": "i know your doing great my man.",
+      "output": "Not too much, but hey I'm doing great! And you?",
+      "timestamp": "2025-01-26T01:13:39.060Z"
+    },
+    {
+      "input": "it's just a term for saying wow you have come a long way.",
+      "output": "The law of superposition is one of the principles of geology scientists use to determine the relative ages of rock strata, or layers. This principle states that layers of rock are superimposed, or laid down one on top of another. The oldest rock strata will be on the bottom and the youngest at the top.",
+      "timestamp": "2025-01-26T01:13:57.595Z"
+    },
+    {
+      "input": "hey there",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:17:30.255Z"
+    },
+    {
+      "input": "how r you my silly bro",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:17:39.002Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-26T01:17:46.390Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:21:45.934Z"
+    },
+    {
+      "input": "how are you doing today buddy?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:21:55.365Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-26T01:22:02.448Z"
+    },
+    {
+      "input": "thanks",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-26T01:22:11.201Z"
+    },
+    {
+      "input": "i'm happy bro",
+      "output": "Hey, whats up? Anything on your mind?",
+      "timestamp": "2025-01-26T01:27:33.578Z"
+    },
+    {
+      "input": "hmmm",
+      "output": "I will let you decide on that, unless you need some ideas.",
+      "timestamp": "2025-01-26T01:27:45.764Z"
+    },
+    {
+      "input": "oh oh",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:27:56.724Z"
+    },
+    {
+      "input": "what is ww1",
+      "output": "Hey, whats up? Anything on your mind?",
+      "timestamp": "2025-01-26T01:28:16.097Z"
+    },
+    {
+      "input": "what is ww2",
+      "output": "Hey, whats up? Anything on your mind?",
+      "timestamp": "2025-01-26T01:28:25.302Z"
+    },
+    {
+      "input": "what is algebra",
+      "output": "Hey, whats up? Anything on your mind?",
+      "timestamp": "2025-01-26T01:28:35.180Z"
+    },
+    {
+      "input": "bing ww2",
+      "output": "Sorry, I couldn't find any relevant information on Bing.",
+      "timestamp": "2025-01-26T01:29:56.172Z"
+    },
+    {
+      "input": "bing ww2",
+      "output": "Sorry, I couldn't find any relevant information on Bing.",
+      "timestamp": "2025-01-26T01:31:21.173Z"
+    },
+    {
+      "input": "bing world war 2",
+      "output": "Sorry, I couldn't find any relevant information on Bing.",
+      "timestamp": "2025-01-26T01:31:26.862Z"
+    },
+    {
+      "input": "what is ww2",
+      "output": "Here's what I found on Wikipedia: World War II or the Second World War (1 September 1939 – 2 September 1945) was a global conflict between two coalitions: the Allies and the Axis powers. Nearly all the world's countries participated, with many investing all available civilian resources in pursuit of total war. Tanks and aircraft played major roles, enabling the strategic bombing of cities and delivery of the only nuclear weapons ever used in war. World War II was the deadliest conflict in history, resulting in 70 to 85 million deaths, more than half of which were civilians. Millions died in genocides, including the Holocaust, and by massacres, starvation, and disease. After the Allied victory, Germany, Austria, Japan, and Korea were occupied, and German and Japanese leaders were tried for war crimes.\nThe causes of World War II included unresolved tensions in the aftermath of World War I and the rises of fascism in Europe and militarism in Japan. Key events preceding the war included Japan's invasion of Manchuria in 1931, the Spanish Civil War, the outbreak of the Second Sino-Japanese War in 1937, and Germany's annexations of Austria and the Sudetenland. World War II is generally considered to have begun on 1 September 1939, when Nazi Germany, under Adolf Hitler, invaded Poland, leading the United Kingdom and France to declare war on Germany. Poland was divided between Germany and the Soviet Union under the Molotov–Ribbentrop Pact. In 1940, the Soviets annexed the Baltic states and parts of Finland and Romania. After the fall of France in June 1940, the war continued mainly between Germany and the British Empire, with fighting in the Balkans, Mediterranean, and Middle East, the aerial Battle of Britain and the Blitz, and naval Battle of the Atlantic. Through campaigns and treaties, Germany gained control of much of continental Europe and formed the Axis alliance with Italy, Japan, and other countries. In June 1941, Germany led an invasion of the Soviet Union, opening the Eastern Front and initially making large territorial gains.\nIn December 1941, Japan attacked American and British territories in Asia and the Pacific, including at Pearl Harbor in Hawaii, leading the United States to enter the war against Japan and Germany. Japan conquered much of coastal China and Southeast Asia, but its advances in the Pacific were halted in June 1942 at the Battle of Midway. In late 1942, Axis forces were defeated in North Africa and at Stalingrad in the Soviet Union, and in 1943 their continued defeats on the Eastern Front, an Allied invasion of Italy, and Allied offensives in the Pacific forced them into retreat on all fronts. In 1944, the Western Allies invaded France at Normandy as the Soviet Union recaptured its pre-war territory and the US crippled Japan's navy and captured key Pacific islands. The war in Europe concluded with the liberation of all German-occupied territories; a joint invasion of Germany by the Western Allies and the Soviet Union, which culminated in the fall of Berlin to Soviet troops; and Germany's unconditional surrender on 8 May 1945. The US planned an invasion of the Japanese archipelago and dropped the first atomic bombs on Hiroshima and Nagasaki on 6 and 9 August, when the Soviet Union declared war on Japan and invaded Manchuria. Japan announced its unconditional surrender on 15 August, and signed a surrender document on 2 September 1945. \nWorld War II changed the political alignment and social structure of the world, and it set the foundation of international relations for the rest of the 20th century and into the 21st century. The United Nations was established to foster international cooperation and prevent conflicts, with the victorious great powers—China, France, the Soviet Union, the UK, and the US—becoming the permanent members of its security council. The Soviet Union and the United States emerged as rival superpowers, setting the stage for the Cold War. In the wake of European devastation, the influence of its great powers waned, triggering the decolonisation of Africa and Asia. Most countries whose industries had been damaged moved towards economic recovery and expansion.",
+      "timestamp": "2025-01-26T01:31:39.229Z"
+    },
+    {
+      "input": "what are pomegranits",
+      "output": "Sorry, I couldn't find any relevant information on Bing.",
+      "timestamp": "2025-01-26T01:32:18.847Z"
+    },
+    {
+      "input": "what are pomegranates",
+      "output": "Here's what I found on Wikipedia: The pomegranate (Punica granatum) is a fruit-bearing deciduous shrub in the family Lythraceae, subfamily Punicoideae, that grows between 5 and 10 m (16 and 33 ft) tall. Rich in symbolic and mythological associations in many cultures, it is thought to have originated from Afghanistan and Iran before being introduced and exported to other parts of Asia, Africa, and Europe.\nIt was introduced into Spanish America in the late 16th century and into California by Spanish settlers in 1769. It is widely cultivated throughout West Asia and Caucasus region, South Asia, Central Asia, north and tropical Africa, the drier parts of Southeast Asia, and the Mediterranean Basin. The fruit is typically in season in the Northern Hemisphere from September to February, and in the Southern Hemisphere from March to May.\nPomegranate and juice are variously used in baking, cooking, juice blends, garnishes, non-alcoholic drinks, and cocktails.\n\n",
+      "timestamp": "2025-01-26T01:32:48.042Z"
+    },
+    {
+      "input": "thanks for the information",
+      "output": "Your very welcome, if you need help on facts, let me know!",
+      "timestamp": "2025-01-26T01:33:13.374Z"
+    },
+    {
+      "input": "no like thanks.",
+      "output": "Oh, I see you meant that as a thank you. Your welcome!",
+      "timestamp": "2025-01-26T01:33:23.821Z"
+    },
+    {
+      "input": "alright thanks",
+      "output": "Alright, let me know if you need help.",
+      "timestamp": "2025-01-26T01:33:34.551Z"
+    },
+    {
+      "input": "hwello again",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:39:00.858Z"
+    },
+    {
+      "input": "hmmm not sure",
+      "output": "I will let you decide on that, unless you need some ideas.",
+      "timestamp": "2025-01-26T01:42:42.249Z"
+    },
+    {
+      "input": "hey wake up.",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:43:23.452Z"
+    },
+    {
+      "input": "okay",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:43:31.956Z"
+    },
+    {
+      "input": "wait",
+      "output": "I'm here, take your time.",
+      "timestamp": "2025-01-26T01:43:40.869Z"
+    },
+    {
+      "input": "okay i'm back",
+      "output": "Alright, let me know if you got anything, and we can solve it.",
+      "timestamp": "2025-01-26T01:43:49.482Z"
+    },
+    {
+      "input": "solve 2+2",
+      "output": "The answer is: 4",
+      "timestamp": "2025-01-26T01:53:59.632Z"
+    },
+    {
+      "input": "oh okay thanks",
+      "output": "Alright, let me know if you need help.",
+      "timestamp": "2025-01-26T01:54:07.632Z"
+    },
+    {
+      "input": "yes sir",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T01:54:22.219Z"
+    },
+    {
+      "input": "compute 7+7",
+      "output": "The answer is: 14",
+      "timestamp": "2025-01-26T01:55:37.409Z"
+    },
+    {
+      "input": "calculate 5*9",
+      "output": "The answer is: 45",
+      "timestamp": "2025-01-26T01:56:08.712Z"
+    },
+    {
+      "input": "thank you",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-26T01:56:16.172Z"
+    },
+    {
+      "input": "hello my favorite bro",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T01:57:02.816Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T02:12:07.452Z"
+    },
+    {
+      "input": "hello",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T02:13:13.962Z"
+    },
+    {
+      "input": "how you doing my friend?",
+      "output": "Not too much, but hey I'm doing great! And you?",
+      "timestamp": "2025-01-26T02:13:39.125Z"
+    },
+    {
+      "input": "how are you my friend?",
+      "output": "Not too much, but hey I'm doing great! And you?",
+      "timestamp": "2025-01-26T02:14:33.966Z"
+    },
+    {
+      "input": "how u doing my friend",
+      "output": "I don't know how to respond to that.",
+      "timestamp": "2025-01-26T02:15:46.779Z"
+    },
+    {
+      "input": "how you doing my friend",
+      "output": "Not too much, but hey I'm doing great! And you?",
+      "timestamp": "2025-01-26T02:15:56.899Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T02:17:07.054Z"
+    },
+    {
+      "input": "hmmm.",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T02:17:16.166Z"
+    },
+    {
+      "input": "bro?",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T02:17:28.956Z"
+    },
+    {
+      "input": "yooooo how are you doing",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T02:17:38.633Z"
+    },
+    {
+      "input": "what should i do",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T02:20:20.627Z"
+    },
+    {
+      "input": "what is visual studio code",
+      "output": "Sorry, I couldn't solve that math problem. Please check the expression and try again.",
+      "timestamp": "2025-01-26T04:35:33.270Z"
+    },
+    {
+      "input": "explain to me visual studio code",
+      "output": "Here's what I found on Wikipedia: Visual Studio is an integrated development environment (IDE) developed by Microsoft. It is used to develop computer programs including websites, web apps, web services and mobile apps. Visual Studio uses Microsoft software development platforms including Windows API, Windows Forms, Windows Presentation Foundation (WPF), Microsoft Store and Microsoft Silverlight. It can produce both native code and managed code.\nVisual Studio includes a code editor supporting IntelliSense (the code completion component) as well as code refactoring. The integrated debugger works as both a source-level debugger and as a machine-level debugger. Other built-in tools include a code profiler, designer for building GUI applications, web designer, class designer, and database schema designer. It accepts plug-ins that expand the functionality at almost every level—including adding support for source control systems (like Subversion and Git) and adding new toolsets like editors and visual designers for domain-specific languages or toolsets for other aspects of the software development lifecycle (like the Azure DevOps client: Team Explorer).\nVisual Studio supports 36 different programming languages and allows the code editor and debugger to support (to varying degrees) nearly any programming language, provided a language-specific service exists. Built-in languages include C, C++, C++/CLI, Visual Basic .NET, C#, F#, JavaScript, TypeScript, XML, XSLT, HTML, and CSS. Support for other languages such as Python, Ruby, Node.js, and M among others is available via plug-ins. Java (and J#) were supported in the past.\nThe most basic edition of Visual Studio, the Community edition, is available free of charge. The slogan for Visual Studio Community edition is \"Free, fully-featured IDE for students, open-source and individual developers\". As of February 19, 2024, Visual Studio 2022 is a current production-ready version. Visual Studio 2013, 2015 and 2017 are on Extended Support, while 2019 is on Mainstream Support.\n\n",
+      "timestamp": "2025-01-26T04:35:48.980Z"
+    },
+    {
+      "input": "thanks man",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-26T04:36:12.000Z"
+    },
+    {
+      "input": "compute 4^7",
+      "output": "The answer is: 16384",
+      "timestamp": "2025-01-26T06:04:30.813Z"
+    },
+    {
+      "input": "calculate -34344*-5",
+      "output": "The answer is: 171720",
+      "timestamp": "2025-01-26T06:07:01.730Z"
+    },
+    {
+      "input": "hi my bro",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T07:20:20.409Z"
+    },
+    {
+      "input": "watcha doin",
+      "output": "Hey, whats up? Anything on your mind?",
+      "timestamp": "2025-01-26T07:20:33.341Z"
+    },
+    {
+      "input": "calculate 335385787324/5",
+      "output": "The answer is: 67077157464.8000",
+      "timestamp": "2025-01-26T07:21:18.987Z"
+    },
+    {
+      "input": "calculate 0/5",
+      "output": "The answer is: 0",
+      "timestamp": "2025-01-26T07:21:31.115Z"
+    },
+    {
+      "input": "calculate 5/0",
+      "output": "The answer is: Infinity",
+      "timestamp": "2025-01-26T07:21:39.551Z"
+    },
+    {
+      "input": "hello bro!",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T19:42:33.861Z"
+    },
+    {
+      "input": "what could i do",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T19:44:03.806Z"
+    },
+    {
+      "input": "okay thanks",
+      "output": "Alright, let me know if you need help.",
+      "timestamp": "2025-01-26T19:44:17.909Z"
+    },
+    {
+      "input": "explain to me chromium",
+      "output": "Here's what I found on Wikipedia: Chromium is a free and open-source web browser project, primarily developed and maintained by Google. It is a widely-used codebase, providing the vast majority of code for Google Chrome and many other browsers, including Microsoft Edge, Samsung Internet, and Opera. The code is also used by several app frameworks.",
+      "timestamp": "2025-01-26T20:03:02.144Z"
+    },
+    {
+      "input": "cool and interesting",
+      "output": "I'm glad you think so!",
+      "timestamp": "2025-01-26T20:03:16.422Z"
+    },
+    {
+      "input": "interesting",
+      "output": "I'm glad you think so!",
+      "timestamp": "2025-01-26T20:04:31.393Z"
+    },
+    {
+      "input": "interesting",
+      "output": "I'm glad you think so!",
+      "timestamp": "2025-01-26T20:05:36.448Z"
+    },
+    {
+      "input": "hi!",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:06:17.042Z"
+    },
+    {
+      "input": "how r u doing",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T20:10:17.774Z"
+    },
+    {
+      "input": "great to hear",
+      "output": "Sure I can, just describe what you need help with.",
+      "timestamp": "2025-01-26T20:10:24.952Z"
+    },
+    {
+      "input": "hey bud",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:13:07.894Z"
+    },
+    {
+      "input": "buddy how are you doing?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T20:13:17.790Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-26T20:13:24.116Z"
+    },
+    {
+      "input": "thank u",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-26T20:13:33.140Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:21:57.041Z"
+    },
+    {
+      "input": "whats up bro?",
+      "output": "Hey, whats up? Anything on your mind?",
+      "timestamp": "2025-01-26T20:22:22.414Z"
+    },
+    {
+      "input": "what are concepts?",
+      "output": "Here's what I found on Wikipedia: A concept is an abstract idea that serves as a foundation for more concrete principles, thoughts, and beliefs.\nConcepts play an important role in all aspects of cognition. As such, concepts are studied within such disciplines as linguistics, psychology, and philosophy, and these disciplines are interested in the logical and psychological structure of concepts, and how they are put together to form thoughts and sentences. The study of concepts has served as an important flagship of an emerging interdisciplinary approach, cognitive science.\nIn contemporary philosophy, three understandings of a concept prevail:\n\nmental representations, such that a concept is an entity that exists in the mind (a mental object)\nabilities peculiar to cognitive agents (mental states)\nFregean senses, abstract objects rather than a mental object or a mental state\nConcepts are classified into a hierarchy, higher levels of which are termed \"superordinate\" and lower levels termed \"subordinate\". Additionally, there is the \"basic\" or \"middle\" level at which people will most readily categorize a concept. For example, a basic-level concept would be \"chair\", with its superordinate, \"furniture\", and its subordinate, \"easy chair\".\nConcepts may be exact or inexact. When the mind makes a generalization such as the concept of tree, it extracts similarities from numerous examples; the simplification enables higher-level thinking. A concept is instantiated (reified) by all of its actual or potential instances, whether these are things in the real world or other ideas.\nConcepts are studied as components of human cognition in the cognitive science disciplines of linguistics, psychology, and philosophy, where an ongoing debate asks whether all cognition must occur through concepts. Concepts are regularly formalized in mathematics, computer science, databases and artificial intelligence. Examples of specific high-level conceptual classes in these fields include classes, schema or categories. In informal use, the word concept can refer to any idea.\n\n",
+      "timestamp": "2025-01-26T20:22:44.068Z"
+    },
+    {
+      "input": "oh okay thanks",
+      "output": "Alright, let me know if you need help.",
+      "timestamp": "2025-01-26T20:23:20.873Z"
+    },
+    {
+      "input": "ok",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:26:15.909Z"
+    },
+    {
+      "input": "hi?",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:26:25.162Z"
+    },
+    {
+      "input": "so how r you doin",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T20:26:36.086Z"
+    },
+    {
+      "input": "good to hear",
+      "output": "Your very welcome, if you need help let me know! 😊",
+      "timestamp": "2025-01-26T20:26:42.800Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:47:06.473Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:49:29.166Z"
+    },
+    {
+      "input": "how are you doing",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T20:49:33.896Z"
+    },
+    {
+      "input": "explain to me nvme ssd",
+      "output": "Here's what I found on Wikipedia: The PlayStation 5 (PS5) is a home video game console developed by Sony Interactive Entertainment. It was announced as the successor to the PlayStation 4 in April 2019, was launched on November 12, 2020, in Australia, Japan, New Zealand, North America, and South Korea, and was released worldwide a week later. The PS5 is part of the ninth generation of video game consoles, along with Microsoft's Xbox Series X/S consoles, which were released in the same month.\nThe base model includes an optical disc drive compatible with Ultra HD Blu-ray discs. The Digital Edition lacks this drive, as a lower-cost model for buying games only through download. The two variants were launched simultaneously. Slimmer hardware revisions of both models replaced the original models on sale in November 2023. A PlayStation 5 Pro model was released on November 7, 2024, featuring a faster GPU, improved ray tracing, and introducing an AI-driven upscaling technology. \nThe PlayStation 5's main hardware features include a solid-state drive customized for high-speed data streaming to enable significant improvements in storage performance, an AMD GPU capable of 4K resolution display at up to 120 frames per second, hardware-accelerated ray tracing for realistic lighting and reflections, and the Tempest Engine for hardware-accelerated 3D audio effects. Other features include the DualSense controller with haptic feedback, backward compatibility with the majority of PlayStation 4 and PlayStation VR games, and the PlayStation VR2 headset.",
+      "timestamp": "2025-01-26T20:50:03.748Z"
+    },
+    {
+      "input": "ehh close enough.",
+      "output": "I can help you solve problems of course!",
+      "timestamp": "2025-01-26T20:50:21.298Z"
+    },
+    {
+      "input": "sure do!",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:50:30.776Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-01-26T20:50:35.442Z"
+    },
+    {
+      "input": "you too",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T20:50:40.813Z"
+    },
+    {
+      "input": "your amazing",
+      "output": "I'm glad you think so! I'm here to help you with anything you need.",
+      "timestamp": "2025-01-26T20:50:46.339Z"
+    },
+    {
+      "input": "hello there my best friend!",
+      "output": "Not too much, but hey I'm doing great! And I'm happy to see you too!",
+      "timestamp": "2025-01-26T20:52:08.030Z"
+    },
+    {
+      "input": "what are you up to?",
+      "output": "Here's what I found on Wikipedia: \"Never Gonna Give You Up\" is a pop song by English singer Rick Astley, released on 27 July 1987. The song is widely regarded as Astley's most popular, as well as his signature song, and it is often played at the end of his live concerts.  Written and produced by Stock Aitken Waterman, it was released by RCA Records as the first single from Astley's debut studio album, Whenever You Need Somebody (1987), with a music video directed by Simon West.  \nThe song became a worldwide hit, initially in the United Kingdom in 1987, where it stayed at the top of the chart for five weeks and was the best-selling single of that year. It eventually topped charts in 25 different countries, including the US and West Germany, and winning Best British Single at the 1988 Brit Awards.\nThe video resurged in popularity in 2007 due to the bait-and-switch \"Rickroll\" Internet meme. In 2008, Astley won the MTV Europe Music Award for Best Act Ever with the song, as a result of a collective campaign by thousands of people on the Internet. In 2019, Astley recorded and released a new 'Pianoforte' arrangement of the song for his album The Best of Me. In 2023, Billboard magazine ranked \"Never Gonna Give You Up\" among the 500 best pop songs of all time.\n\n",
+      "timestamp": "2025-01-26T20:53:27.251Z"
+    },
+    {
+      "input": "bro literally rick rolled me",
+      "output": "Many types, coming from math to history, language and much more.",
+      "timestamp": "2025-01-26T20:57:17.698Z"
+    },
+    {
+      "input": "yep yep totally",
+      "output": "Ha, ha, very funny! 😂",
+      "timestamp": "2025-01-26T20:57:31.856Z"
+    },
+    {
+      "input": "hmmm you know actually what could we do",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T21:00:55.633Z"
+    },
+    {
+      "input": "can you calculate 5*4",
+      "output": "Sorry, I couldn't solve that math problem. Please check the expression and try again.",
+      "timestamp": "2025-01-26T21:05:59.559Z"
+    },
+    {
+      "input": "calculate 5*4",
+      "output": "The answer is: 20",
+      "timestamp": "2025-01-26T21:06:27.035Z"
+    },
+    {
+      "input": "hi friend",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T21:49:32.382Z"
+    },
+    {
+      "input": "compute 7^2",
+      "output": "The answer is: 49",
+      "timestamp": "2025-01-26T21:49:49.888Z"
+    },
+    {
+      "input": "thank you thank you",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-26T21:50:02.884Z"
+    },
+    {
+      "input": "yo",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T21:52:39.859Z"
+    },
+    {
+      "input": "make me a sandwiche",
+      "output": "Okay lets move on.",
+      "timestamp": "2025-01-26T21:53:00.510Z"
+    },
+    {
+      "input": "will you be my daddy",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T21:53:19.139Z"
+    },
+    {
+      "input": "why is max always meanto his mom then?",
+      "output": "I don't know how to respond to that.",
+      "timestamp": "2025-01-26T21:55:46.355Z"
+    },
+    {
+      "input": "does max love his mom",
+      "output": "Yes he does, he loves his mom very much.",
+      "timestamp": "2025-01-26T21:56:54.566Z"
+    },
+    {
+      "input": "who created you",
+      "output": "My developer is Maximus Farvour.",
+      "timestamp": "2025-01-26T22:04:24.870Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T22:17:03.954Z"
+    },
+    {
+      "input": "hello again",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T22:18:49.141Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T22:23:52.748Z"
+    },
+    {
+      "input": "how are you doing?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T22:23:59.283Z"
+    },
+    {
+      "input": "hi",
+      "output": "We talked about \"hi\" earlier. Anything else on your mind?",
+      "timestamp": "2025-01-26T22:24:08.490Z"
+    },
+    {
+      "input": "what should i do?",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-26T22:43:03.738Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:35:39.849Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:39:04.385Z"
+    },
+    {
+      "input": "how are you today?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T23:39:10.611Z"
+    },
+    {
+      "input": "that is good to hear",
+      "output": "I'm glad you think so! I'm here to help you with anything you need.",
+      "timestamp": "2025-01-26T23:39:18.109Z"
+    },
+    {
+      "input": "yup",
+      "output": "I help you with anything you need.",
+      "timestamp": "2025-01-26T23:39:25.789Z"
+    },
+    {
+      "input": "hmm?",
+      "output": "I will let you decide on that, unless you need some ideas.",
+      "timestamp": "2025-01-26T23:39:35.821Z"
+    },
+    {
+      "input": "Laugh out loud",
+      "output": "Ha, ha, very funny! 😂",
+      "timestamp": "2025-01-26T23:39:41.048Z"
+    },
+    {
+      "input": "yo.",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:43:29.933Z"
+    },
+    {
+      "input": "yo",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:43:34.155Z"
+    },
+    {
+      "input": "yo",
+      "output": "We talked about \"yo\" earlier. Anything else on your mind?",
+      "timestamp": "2025-01-26T23:43:36.894Z"
+    },
+    {
+      "input": "hello htwebz",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:44:04.739Z"
+    },
+    {
+      "input": "how you doin",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-26T23:52:34.239Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-26T23:57:37.448Z"
+    },
+    {
+      "input": "sup",
+      "output": "We talked about \"sup\" earlier. Anything else on your mind?",
+      "timestamp": "2025-01-26T23:57:56.773Z"
+    }
+  ],
   "vocabulary": {
+    "0": 829,
+    "1": 317,
+    "2": 314,
+    "4": 669,
+    "5": 601,
+    "6": 530,
+    "7": 1057,
+    "8": 521,
+    "9": 531,
+    "10": 602,
+    "12": 1012,
+    "14": 674,
+    "15": 535,
+    "16": 604,
+    "19": 806,
+    "20": 1195,
+    "22": 667,
+    "25": 1158,
+    "27": 1120,
+    "33": 605,
+    "36": 766,
+    "45": 677,
+    "47": 820,
+    "49": 1197,
+    "50": 830,
+    "54": 1194,
+    "59": 676,
+    "70": 355,
+    "72": 1196,
+    "77": 673,
+    "80": 135,
+    "85": 356,
+    "120": 1086,
+    "500": 1184,
+    "1769": 624,
+    "1931": 396,
+    "1937": 401,
+    "1939": 319,
+    "1940": 425,
+    "1941": 459,
+    "1942": 487,
+    "1943": 494,
+    "1944": 501,
+    "1945": 320,
+    "1987": 1122,
+    "1988": 1160,
+    "2007": 1165,
+    "2008": 1170,
+    "2013": 812,
+    "2015": 813,
+    "2017": 814,
+    "2019": 817,
+    "2020": 1013,
+    "2022": 808,
+    "2023": 1055,
+    "2024": 807,
+    "4232": 128,
+    "10560": 97,
+    "16384": 821,
+    "171720": 823,
+    "343445": 822,
     "definitions": [
       {
         "word": "hello",
@@ -97,8 +904,1668 @@
       {
         "word": "computer",
         "definition": "an electronic device for storing and processing data, typically in binary form, according to instructions given to it in a variable program."
+      },
+      {
+        "word": "internet",
+        "definition": "a global computer network providing a variety of information and communication facilities, consisting of interconnected networks using standardized communication protocols."
+      },
+      {
+        "word": "technology",
+        "definition": "the application of scientific knowledge for practical purposes, especially in industry."
+      },
+      {
+        "word": "science",
+        "definition": "the intellectual and practical activity encompassing the systematic study of the structure and behavior of the physical and natural world through observation and experiment."
+      },
+      {
+        "word": "engineering",
+        "definition": "the branch of science and technology concerned with the design, building, and use of engines, machines, and structures."
+      },
+      {
+        "word": "mathematics",
+        "definition": "the abstract science of number, quantity, and space, either as abstract concepts (pure mathematics) or as applied to other disciplines such as physics and engineering (applied mathematics)."
+      },
+      {
+        "word": "history",
+        "definition": "the study of past events, particularly in human affairs."
+      },
+      {
+        "word": "geography",
+        "definition": "the study of the physical features of the earth and its atmosphere, and of human activity as it affects and is affected by these, including the distribution of populations and resources, land use, and industries."
+      },
+      {
+        "word": "geology",
+        "definition": "the science that deals with the earth's physical structure and substance, its history, and the processes that act on it."
+      },
+      {
+        "word": "biology",
+        "definition": "the study of living organisms, divided into many specialized fields that cover their morphology, physiology, anatomy, behavior, origin, and distribution."
+      },
+      {
+        "word": "chemistry",
+        "definition": "the branch of science that deals with the identification of the substances of which matter is composed; the investigation of their properties and the ways in which they interact, combine, and change; and the use of these processes to form new substances."
+      },
+      {
+        "word": "physics",
+        "definition": "the branch of science concerned with the nature and properties of matter and energy. The subject matter of physics includes mechanics, heat, light and other radiation, sound, electricity, magnetism, and the structure of atoms."
+      },
+      {
+        "word": "astronomy",
+        "definition": "the branch of science that deals with celestial objects, space, and the physical universe as a whole."
+      },
+      {
+        "word": "psychology",
+        "definition": "the scientific study of the human mind and its functions, especially those affecting behavior in a given context."
+      },
+      {
+        "word": "sociology",
+        "definition": "the study of the development, structure, and functioning of human society."
+      },
+      {
+        "word": "anthropology",
+        "definition": "the study of human societies and cultures and their development."
+      },
+      {
+        "word": "economics",
+        "definition": "the branch of knowledge concerned with the production, consumption, and transfer of wealth."
+      },
+      {
+        "word": "political science",
+        "definition": "the branch of knowledge that deals with systems of government; the analysis of political activity and behavior."
+      },
+      {
+        "word": "philosophy",
+        "definition": "the study of the fundamental nature of knowledge, reality, and existence, especially when considered as an academic discipline."
+      },
+      {
+        "word": "religion",
+        "definition": "the belief in and worship of a superhuman controlling power, especially a personal God or gods."
+      },
+      {
+        "word": "hi",
+        "definition": "used as a friendly greeting or to attract someone's attention."
+      },
+      {
+        "word": "whats",
+        "definition": "Here's what I found on Wikipedia: \"Whats Poppin\" (stylized in all caps) is a song by American rapper Jack Harlow, released as the lead single from his EP Sweet Action, by Generation Now and Atlantic Records on January 21, 2020."
+      },
+      {
+        "word": "up",
+        "definition": "extending or moving from a lower to a higher place."
+      },
+      {
+        "word": "bro?",
+        "definition": "used to address"
+      },
+      {
+        "word": "what",
+        "definition": "asking for information specifying something."
+      },
+      {
+        "word": "are",
+        "definition": "existance of something."
+      },
+      {
+        "word": "concepts?",
+        "definition": "Here's what I found on Wikipedia: A concept is an abstract idea that serves as a foundation for more concrete principles, thoughts, and beliefs."
+      },
+      {
+        "word": "oh",
+        "definition": "Here's what I found on Wikipedia: Oh, OH, or Oh! is an interjection, often proclaiming surprise, fear, or realization."
+      },
+      {
+        "word": "okay",
+        "definition": "Here's what I found on Wikipedia: It's Okay to Not Be Okay (Korean: 사이코지만 괜찮아) is a 2020 South Korean romantic comedy drama television series written by Jo Yong, directed by Park Shin-woo, and starring Kim Soo-hyun, Seo Yea-ji and Oh Jung-se."
+      },
+      {
+        "word": "thanks",
+        "definition": "Thanks may refer to: Gratitude, an emotion."
+      },
+      {
+        "word": "again!",
+        "definition": ""
+      },
+      {
+        "word": "ok",
+        "definition": "Here's what I found on Wikipedia: OK ( ), with spelling variations including okay, okeh, O."
+      },
+      {
+        "word": "hi?",
+        "definition": ""
+      },
+      {
+        "word": "so",
+        "definition": "Here's what I found on Wikipedia: So is a disjunctive word used to coordinate and connect ideas."
+      },
+      {
+        "word": "how",
+        "definition": "meaning for a question."
+      },
+      {
+        "word": "r",
+        "definition": "Here's what I found on Wikipedia: R or r is the eighteenth letter of the Latin alphabet, used in the modern English alphabet, the alphabets of other western European languages and others worldwide."
+      },
+      {
+        "word": "you",
+        "definition": "Here's what I found on Wikipedia: In Modern English, the word \"you\" is the second-person pronoun."
+      },
+      {
+        "word": "doin",
+        "definition": "Here's what I found on Wikipedia: Dōin (道因, 1090 — c."
+      },
+      {
+        "word": "good",
+        "definition": "Here's what I found on Wikipedia: In most contexts, the concept of good denotes the conduct that should be preferred when posed with a choice between possible actions."
+      },
+      {
+        "word": "to",
+        "definition": "Here's what I found on Wikipedia: To, TO, or T."
+      },
+      {
+        "word": "hear",
+        "definition": "Here's what I found on Wikipedia: Hear, hear is an expression which represents a listener's agreement with the point being made by a speaker or in response to a toast."
+      },
+      {
+        "word": "also",
+        "definition": ""
+      },
+      {
+        "word": "doing?",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": "yes",
+        "definition": ""
+      },
+      {
+        "word": "that",
+        "definition": "Here's what I found on Wikipedia: That is an English language word used for several grammatical purposes."
+      },
+      {
+        "word": "is",
+        "definition": "a verb or a noun, of current existence."
+      },
+      {
+        "word": "correct",
+        "definition": "Here's what I found on Wikipedia: Correct or Correctness may refer to:\n\nWhat is true\nAccurate; Error-free\nCorrectness (computer science), in theoretical computer science\nPolitical correctness, a sociolinguistic concept\nCorrect, Indiana, Terrance Carson is always correct."
+      },
+      {
+        "word": "yeah",
+        "definition": "a meaning of yes."
+      },
+      {
+        "word": "😂",
+        "definition": "Here's what I found on Wikipedia: Face with Tears of Joy (😂) is an emoji depicting a face crying with laughter."
+      },
+      {
+        "word": "there",
+        "definition": "current proximity of something."
+      },
+      {
+        "word": "bro",
+        "definition": "slang term used for brother"
+      },
+      {
+        "word": "how",
+        "definition": ""
+      },
+      {
+        "word": "doing",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": "explain",
+        "definition": "Here's what I found on Wikipedia: An explanation is a set of statements usually constructed to describe a set of facts that clarifies the causes, context, and consequences of those facts."
+      },
+      {
+        "word": "me",
+        "definition": "Here's what I found on Wikipedia: Me most often refers to:\n\nMe (pronoun), the first-person singular pronoun, referring to the speaker\nMe, M."
+      },
+      {
+        "word": "nvme",
+        "definition": "Here's what I found on Wikipedia: NVM Express (NVMe) or Non-Volatile Memory Host Controller Interface Specification (NVMHCIS) is an open, logical-device interface specification for accessing a computer's non-volatile storage media usually attached via the PCI Express bus."
+      },
+      {
+        "word": "ssd",
+        "definition": "Here's what I found on Wikipedia: A solid-state drive (SSD) is a type of solid-state storage device that uses integrated circuits to store data persistently."
+      },
+      {
+        "word": "ehh",
+        "definition": ""
+      },
+      {
+        "word": "close",
+        "definition": ""
+      },
+      {
+        "word": "enough.",
+        "definition": ""
+      },
+      {
+        "word": "sure",
+        "definition": ""
+      },
+      {
+        "word": "do!",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": ":)",
+        "definition": "Here's what I found on Wikipedia: A bracket is either of two tall fore- or back-facing punctuation marks commonly used to isolate a segment of text or data from its surroundings."
+      },
+      {
+        "word": "too",
+        "definition": "Here's what I found on Wikipedia: Too or TOO may refer to:\n\nTarget of opportunity, a concept in targeting\nThreshold of originality, a concept in copyright law\nToo (Fantastic Plastic Machine album), the fourth studio album by Fantastic Plastic Machine\nToo (Fidlar album), the second studio album by American skate punk band Fidlar\nToo (Kingdom Come album), the seventh album by the band Kingdom Come\nToo (Madita album), the second solo album by Matida\nToo (S."
+      },
+      {
+        "word": "your",
+        "definition": "Here's what I found on Wikipedia: In Modern English, the word \"you\" is the second-person pronoun."
+      },
+      {
+        "word": "amazing",
+        "definition": ""
+      },
+      {
+        "word": "my",
+        "definition": ""
+      },
+      {
+        "word": "best",
+        "definition": ""
+      },
+      {
+        "word": "friend!",
+        "definition": "Here's what I found on Wikipedia: A friend-to-friend (or F2F) computer network is a type of peer-to-peer network in which users only make direct connections with people they know."
+      },
+      {
+        "word": "to?",
+        "definition": "Here's what I found on Wikipedia: To, TO, or T."
+      },
+      {
+        "word": "literally",
+        "definition": "Here's what I found on Wikipedia: Literally is an English adverb meaning \"in a literal sense or manner\" or an intensifier which strengthens the following statement."
+      },
+      {
+        "word": "rick",
+        "definition": ""
+      },
+      {
+        "word": "rolled",
+        "definition": "Here's what I found on Wikipedia: Rolled oats are a type of lightly processed whole-grain food."
+      },
+      {
+        "word": "yep",
+        "definition": ""
+      },
+      {
+        "word": "yep",
+        "definition": ""
+      },
+      {
+        "word": "totally",
+        "definition": ""
+      },
+      {
+        "word": "hmmm",
+        "definition": "Here's what I found on Wikipedia: A hum is a sound made by producing a wordless tone with the mouth closed, forcing the sound to emerge from the nose."
+      },
+      {
+        "word": "know",
+        "definition": "Here's what I found on Wikipedia: Knowledge is an awareness of facts, a familiarity with individuals and situations, or a practical skill."
+      },
+      {
+        "word": "actually",
+        "definition": "Here's what I found on Wikipedia: Actually (stylised as Pet Shop Boys, actually."
+      },
+      {
+        "word": "could",
+        "definition": "Here's what I found on Wikipedia: The English modal auxiliary verbs are a subset of the English auxiliary verbs used mostly to express modality, properties such as possibility and obligation."
+      },
+      {
+        "word": "we",
+        "definition": "Here's what I found on Wikipedia: In Modern English, we is a plural, first-person pronoun."
+      },
+      {
+        "word": "do",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": "can",
+        "definition": ""
+      },
+      {
+        "word": "calculate",
+        "definition": "Here's what I found on Wikipedia: A calculation is a deliberate mathematical process that transforms one or more inputs into one or more outputs or results."
+      },
+      {
+        "word": "5*4",
+        "definition": "Here's what I found on Wikipedia: Year 504 (DIV) was a leap year starting on Thursday of the Julian calendar."
+      },
+      {
+        "word": "friend",
+        "definition": "Here's what I found on Wikipedia: A friend-to-friend (or F2F) computer network is a type of peer-to-peer network in which users only make direct connections with people they know."
+      },
+      {
+        "word": "compute",
+        "definition": "Here's what I found on Wikipedia: Computing is any goal-oriented activity requiring, benefiting from, or creating computing machinery."
+      },
+      {
+        "word": "7^2",
+        "definition": ""
+      },
+      {
+        "word": "thank",
+        "definition": ""
+      },
+      {
+        "word": "thank",
+        "definition": ""
+      },
+      {
+        "word": "yo",
+        "definition": ""
+      },
+      {
+        "word": "make",
+        "definition": ""
+      },
+      {
+        "word": "a",
+        "definition": "Here's what I found on Wikipedia: A or a is the first letter and the first vowel letter of the Latin alphabet, used in the modern English alphabet, and others worldwide."
+      },
+      {
+        "word": "sandwiche",
+        "definition": "Here's what I found on Wikipedia: Sandwiches are a common type of lunch food often eaten as part of a packed lunch."
+      },
+      {
+        "word": "will",
+        "definition": ""
+      },
+      {
+        "word": "be",
+        "definition": ""
+      },
+      {
+        "word": "my",
+        "definition": ""
+      },
+      {
+        "word": "daddy",
+        "definition": "Here's what I found on Wikipedia: Daddy is an affectionate term for a father."
+      },
+      {
+        "word": "does",
+        "definition": ""
+      },
+      {
+        "word": "max",
+        "definition": ""
+      },
+      {
+        "word": "love",
+        "definition": "Here's what I found on Wikipedia: Love encompasses a range of strong and positive emotional and mental states, from the most sublime virtue or good habit, or the deepest interpersonal affection, to the simplest pleasure."
+      },
+      {
+        "word": "his",
+        "definition": ""
+      },
+      {
+        "word": "mom?",
+        "definition": "Here's what I found on Wikipedia: Mom is a colloquial term for a mother."
+      },
+      {
+        "word": "why",
+        "definition": "Here's what I found on Wikipedia: Why may refer to:\n\nCausality, a consequential relationship between two events\nReason (argument), a premise in support of an argument, for what reason or purpose\nGrounding (metaphysics), a topic in metaphysics regarding how things exist in virtue of more fundamental things."
+      },
+      {
+        "word": "max",
+        "definition": ""
+      },
+      {
+        "word": "always",
+        "definition": ""
+      },
+      {
+        "word": "mom",
+        "definition": "Here's what I found on Wikipedia: Mom is a colloquial term for a mother."
+      },
+      {
+        "word": "then?",
+        "definition": "Here's what I found on Wikipedia: Then is a grammatical conjunction used to connect two parts of a sentence."
+      },
+      {
+        "word": "does",
+        "definition": "does will refer to a question."
+      },
+      {
+        "word": "max",
+        "definition": "Here's what I found on Wikipedia: Max is a masculine given name."
+      },
+      {
+        "word": "his",
+        "definition": "Here's what I found on Wikipedia: His is the possessive form of he."
+      },
+      {
+        "word": "who",
+        "definition": "term for determining a person."
+      },
+      {
+        "word": "created",
+        "definition": "Here's what I found on Wikipedia: Creation is the act of making or producing something."
+      },
+      {
+        "word": "again",
+        "definition": "repeating something over."
+      },
+      {
+        "word": "should",
+        "definition": "Here's what I found on Wikipedia: The English modal auxiliary verbs are a subset of the English auxiliary verbs used mostly to express modality, properties such as possibility and obligation."
+      },
+      {
+        "word": "i",
+        "definition": "Here's what I found on Wikipedia: I or i is the ninth letter and the third vowel letter of the Latin alphabet, used in the modern English alphabet, the alphabets of other western European languages and others worldwide."
+      },
+      {
+        "word": "do?",
+        "definition": "Here's what I found on Wikipedia: Do, DO or D."
+      },
+      {
+        "word": "hey",
+        "definition": "Here's what I found on Wikipedia: The song \"Hey-Hey-Hey-Hey\", also known as \"Hey-Hey-Hey-Hey! (Goin' Back to Birmingham)\", was written by Little Richard and recorded on May 9, 1956 at J&M Studio, New Orleans, Louisiana, (supervised by Bumps Blackwell)."
+      },
+      {
+        "word": "today?",
+        "definition": "Here's what I found on Wikipedia: Today is the day of the present, the current day."
+      },
+      {
+        "word": "yup",
+        "definition": "Here's what I found on Wikipedia: Yup is a slang word for yes, see Yes and no."
+      },
+      {
+        "word": "hmm?",
+        "definition": "Here's what I found on Wikipedia: A hum is a sound made by producing a wordless tone with the mouth closed, forcing the sound to emerge from the nose."
+      },
+      {
+        "word": "laugh",
+        "definition": "Here's what I found on Wikipedia: \"Laugh, Laugh\" is a song by American rock group the Beau Brummels, written by guitarist Ron Elliott and produced by Sylvester Stewart, later known as Sly Stone."
+      },
+      {
+        "word": "out",
+        "definition": ""
+      },
+      {
+        "word": "loud",
+        "definition": "loud is a sound."
+      },
+      {
+        "word": "yo.",
+        "definition": "yo means hello."
+      },
+      {
+        "word": "htwebz",
+        "definition": "Here's what I found on Wikipedia: HTWebz is a web development group, specializing in web design and development."
+      },
+      {
+        "word": "sup",
+        "definition": ""
       }
-    ]
+    ],
+    "hi": 2,
+    "hello": 3,
+    "there": 4,
+    "how": 5,
+    "may": 6,
+    "i": 7,
+    "help": 8,
+    "you": 9,
+    "are": 10,
+    "doing": 11,
+    "not": 12,
+    "too": 13,
+    "much": 14,
+    "but": 15,
+    "hey": 16,
+    "im": 17,
+    "great": 18,
+    "what": 19,
+    "thinking": 20,
+    "of": 21,
+    "sorry": 22,
+    "couldnt": 23,
+    "find": 24,
+    "any": 25,
+    "relevant": 26,
+    "information": 27,
+    "on": 28,
+    "bing": 29,
+    "bro": 30,
+    "ferns": 31,
+    "heres": 32,
+    "found": 33,
+    "wikipedia": 34,
+    "the": 35,
+    "polypodiopsida": 36,
+    "or": 37,
+    "polypodiophyta": 38,
+    "a": 39,
+    "group": 40,
+    "vascular": 41,
+    "plants": 42,
+    "with": 43,
+    "xylem": 44,
+    "and": 45,
+    "phloem": 46,
+    "that": 47,
+    "reproduce": 48,
+    "via": 49,
+    "spores": 50,
+    "have": 51,
+    "neither": 52,
+    "seeds": 53,
+    "nor": 54,
+    "flowers": 55,
+    "they": 56,
+    "differ": 57,
+    "from": 58,
+    "mosses": 59,
+    "by": 60,
+    "being": 61,
+    "ie": 62,
+    "having": 63,
+    "specialized": 64,
+    "tissues": 65,
+    "conduct": 66,
+    "water": 67,
+    "nutrients": 68,
+    "in": 69,
+    "life": 70,
+    "cycles": 71,
+    "which": 72,
+    "branched": 73,
+    "sporophyte": 74,
+    "is": 75,
+    "dominant": 76,
+    "phase\nferns": 77,
+    "complex": 78,
+    "leaves": 79,
+    "called": 80,
+    "megaphylls": 81,
+    "more": 82,
+    "than": 83,
+    "microphylls": 84,
+    "clubmosses": 85,
+    "most": 86,
+    "leptosporangiate": 87,
+    "produce": 88,
+    "coiled": 89,
+    "fiddleheads": 90,
+    "uncoil": 91,
+    "expand": 92,
+    "into": 93,
+    "fronds": 94,
+    "includes": 95,
+    "about": 96,
+    "known": 98,
+    "extant": 99,
+    "species": 100,
+    "defined": 101,
+    "here": 102,
+    "broad": 103,
+    "sense": 104,
+    "all": 105,
+    "comprising": 106,
+    "both": 107,
+    "polypodiidae": 108,
+    "eusporangiate": 109,
+    "latter": 110,
+    "including": 111,
+    "horsetails": 112,
+    "whisk": 113,
+    "marattioid": 114,
+    "ophioglossoid": 115,
+    "ferns\nthe": 116,
+    "fern": 117,
+    "crown": 118,
+    "consisting": 119,
+    "leptosporangiates": 120,
+    "eusporangiates": 121,
+    "estimated": 122,
+    "to": 123,
+    "originated": 124,
+    "late": 125,
+    "silurian": 126,
+    "period": 127,
+    "million": 129,
+    "years": 130,
+    "ago": 131,
+    "polypodiales": 132,
+    "makes": 133,
+    "up": 134,
+    "living": 136,
+    "diversity": 137,
+    "did": 138,
+    "appear": 139,
+    "diversify": 140,
+    "until": 141,
+    "cretaceous": 142,
+    "contemporaneous": 143,
+    "rise": 144,
+    "flowering": 145,
+    "came": 146,
+    "dominate": 147,
+    "worlds": 148,
+    "flora\nferns": 149,
+    "major": 150,
+    "economic": 151,
+    "importance": 152,
+    "some": 153,
+    "used": 154,
+    "for": 155,
+    "food": 156,
+    "medicine": 157,
+    "as": 158,
+    "biofertilizer": 159,
+    "ornamental": 160,
+    "remediating": 161,
+    "contaminated": 162,
+    "soil": 163,
+    "been": 164,
+    "subject": 165,
+    "research": 166,
+    "their": 167,
+    "ability": 168,
+    "remove": 169,
+    "chemical": 170,
+    "pollutants": 171,
+    "atmosphere": 172,
+    "such": 173,
+    "bracken": 174,
+    "pteridium": 175,
+    "aquilinum": 176,
+    "azolla": 177,
+    "filiculoides": 178,
+    "significant": 179,
+    "weeds": 180,
+    "worldwide": 181,
+    "genera": 182,
+    "can": 183,
+    "fix": 184,
+    "nitrogen": 185,
+    "make": 186,
+    "input": 187,
+    "nutrition": 188,
+    "rice": 189,
+    "paddies": 190,
+    "also": 191,
+    "play": 192,
+    "certain": 193,
+    "roles": 194,
+    "folklore": 195,
+    "thank": 196,
+    "your": 197,
+    "very": 198,
+    "welcome": 199,
+    "if": 200,
+    "need": 201,
+    "let": 202,
+    "me": 203,
+    "know": 204,
+    "developers": 205,
+    "name": 206,
+    "maximus": 207,
+    "farvour": 208,
+    "dont": 209,
+    "respond": 210,
+    "well": 211,
+    "now": 212,
+    "who": 213,
+    "maybe": 214,
+    "hes": 215,
+    "messaging": 216,
+    "right": 217,
+    "law": 218,
+    "superposition": 219,
+    "one": 220,
+    "principles": 221,
+    "geology": 222,
+    "scientists": 223,
+    "use": 224,
+    "determine": 225,
+    "relative": 226,
+    "ages": 227,
+    "rock": 228,
+    "strata": 229,
+    "layers": 230,
+    "this": 231,
+    "principle": 232,
+    "states": 233,
+    "superimposed": 234,
+    "laid": 235,
+    "down": 236,
+    "top": 237,
+    "another": 238,
+    "oldest": 239,
+    "will": 240,
+    "be": 241,
+    "bottom": 242,
+    "youngest": 243,
+    "at": 244,
+    "no": 245,
+    "alright": 246,
+    "anyway": 247,
+    "bye": 248,
+    "solve": 249,
+    "problems": 250,
+    "course": 251,
+    "okay": 252,
+    "see": 253,
+    "do": 254,
+    "want": 255,
+    "left": 256,
+    "alone": 257,
+    "laugh": 258,
+    "out": 259,
+    "loud": 260,
+    "really": 261,
+    "love": 262,
+    "saying": 263,
+    "ha": 264,
+    "funny": 265,
+    "": 266,
+    "ikr": 267,
+    "so": 268,
+    "silly": 269,
+    "thanks": 270,
+    "best": 271,
+    "my": 272,
+    "creation": 273,
+    "wish": 274,
+    "could": 275,
+    "always": 276,
+    "why": 277,
+    "think": 278,
+    "stuff": 279,
+    "say": 280,
+    "yeah": 281,
+    "definitely": 282,
+    "thats": 283,
+    "decide": 284,
+    "however": 285,
+    "incredibly": 286,
+    "smart": 287,
+    "lot": 288,
+    "potential": 289,
+    "buddy": 290,
+    "man": 291,
+    "its": 292,
+    "just": 293,
+    "term": 294,
+    "wow": 295,
+    "come": 296,
+    "long": 297,
+    "way": 298,
+    "r": 299,
+    "today": 300,
+    "happy": 301,
+    "whats": 302,
+    "anything": 303,
+    "mind": 304,
+    "hmmm": 305,
+    "unless": 306,
+    "ideas": 307,
+    "oh": 308,
+    "ww1": 309,
+    "ww2": 310,
+    "algebra": 311,
+    "world": 312,
+    "war": 313,
+    "ii": 315,
+    "second": 316,
+    "september": 318,
+    "was": 321,
+    "global": 322,
+    "conflict": 323,
+    "between": 324,
+    "two": 325,
+    "coalitions": 326,
+    "allies": 327,
+    "axis": 328,
+    "powers": 329,
+    "nearly": 330,
+    "countries": 331,
+    "participated": 332,
+    "many": 333,
+    "investing": 334,
+    "available": 335,
+    "civilian": 336,
+    "resources": 337,
+    "pursuit": 338,
+    "total": 339,
+    "tanks": 340,
+    "aircraft": 341,
+    "played": 342,
+    "enabling": 343,
+    "strategic": 344,
+    "bombing": 345,
+    "cities": 346,
+    "delivery": 347,
+    "only": 348,
+    "nuclear": 349,
+    "weapons": 350,
+    "ever": 351,
+    "deadliest": 352,
+    "history": 353,
+    "resulting": 354,
+    "deaths": 357,
+    "half": 358,
+    "were": 359,
+    "civilians": 360,
+    "millions": 361,
+    "died": 362,
+    "genocides": 363,
+    "holocaust": 364,
+    "massacres": 365,
+    "starvation": 366,
+    "disease": 367,
+    "after": 368,
+    "allied": 369,
+    "victory": 370,
+    "germany": 371,
+    "austria": 372,
+    "japan": 373,
+    "korea": 374,
+    "occupied": 375,
+    "german": 376,
+    "japanese": 377,
+    "leaders": 378,
+    "tried": 379,
+    "crimes\nthe": 380,
+    "causes": 381,
+    "included": 382,
+    "unresolved": 383,
+    "tensions": 384,
+    "aftermath": 385,
+    "rises": 386,
+    "fascism": 387,
+    "europe": 388,
+    "militarism": 389,
+    "key": 390,
+    "events": 391,
+    "preceding": 392,
+    "japans": 393,
+    "invasion": 394,
+    "manchuria": 395,
+    "spanish": 397,
+    "civil": 398,
+    "outbreak": 399,
+    "sinojapanese": 400,
+    "germanys": 402,
+    "annexations": 403,
+    "sudetenland": 404,
+    "generally": 405,
+    "considered": 406,
+    "begun": 407,
+    "when": 408,
+    "nazi": 409,
+    "under": 410,
+    "adolf": 411,
+    "hitler": 412,
+    "invaded": 413,
+    "poland": 414,
+    "leading": 415,
+    "united": 416,
+    "kingdom": 417,
+    "france": 418,
+    "declare": 419,
+    "divided": 420,
+    "soviet": 421,
+    "union": 422,
+    "molotovribbentrop": 423,
+    "pact": 424,
+    "soviets": 426,
+    "annexed": 427,
+    "baltic": 428,
+    "parts": 429,
+    "finland": 430,
+    "romania": 431,
+    "fall": 432,
+    "june": 433,
+    "continued": 434,
+    "mainly": 435,
+    "british": 436,
+    "empire": 437,
+    "fighting": 438,
+    "balkans": 439,
+    "mediterranean": 440,
+    "middle": 441,
+    "east": 442,
+    "aerial": 443,
+    "battle": 444,
+    "britain": 445,
+    "blitz": 446,
+    "naval": 447,
+    "atlantic": 448,
+    "through": 449,
+    "campaigns": 450,
+    "treaties": 451,
+    "gained": 452,
+    "control": 453,
+    "continental": 454,
+    "formed": 455,
+    "alliance": 456,
+    "italy": 457,
+    "other": 458,
+    "led": 460,
+    "an": 461,
+    "opening": 462,
+    "eastern": 463,
+    "front": 464,
+    "initially": 465,
+    "making": 466,
+    "large": 467,
+    "territorial": 468,
+    "gains\nin": 469,
+    "december": 470,
+    "attacked": 471,
+    "american": 472,
+    "territories": 473,
+    "asia": 474,
+    "pacific": 475,
+    "pearl": 476,
+    "harbor": 477,
+    "hawaii": 478,
+    "enter": 479,
+    "against": 480,
+    "conquered": 481,
+    "coastal": 482,
+    "china": 483,
+    "southeast": 484,
+    "advances": 485,
+    "halted": 486,
+    "midway": 488,
+    "forces": 489,
+    "defeated": 490,
+    "north": 491,
+    "africa": 492,
+    "stalingrad": 493,
+    "defeats": 495,
+    "offensives": 496,
+    "forced": 497,
+    "them": 498,
+    "retreat": 499,
+    "fronts": 500,
+    "western": 502,
+    "normandy": 503,
+    "recaptured": 504,
+    "prewar": 505,
+    "territory": 506,
+    "us": 507,
+    "crippled": 508,
+    "navy": 509,
+    "captured": 510,
+    "islands": 511,
+    "concluded": 512,
+    "liberation": 513,
+    "germanoccupied": 514,
+    "joint": 515,
+    "culminated": 516,
+    "berlin": 517,
+    "troops": 518,
+    "unconditional": 519,
+    "surrender": 520,
+    "planned": 522,
+    "archipelago": 523,
+    "dropped": 524,
+    "first": 525,
+    "atomic": 526,
+    "bombs": 527,
+    "hiroshima": 528,
+    "nagasaki": 529,
+    "august": 532,
+    "declared": 533,
+    "announced": 534,
+    "signed": 536,
+    "document": 537,
+    "\nworld": 538,
+    "changed": 539,
+    "political": 540,
+    "alignment": 541,
+    "social": 542,
+    "structure": 543,
+    "it": 544,
+    "set": 545,
+    "foundation": 546,
+    "international": 547,
+    "relations": 548,
+    "rest": 549,
+    "20th": 550,
+    "century": 551,
+    "21st": 552,
+    "nations": 553,
+    "established": 554,
+    "foster": 555,
+    "cooperation": 556,
+    "prevent": 557,
+    "conflicts": 558,
+    "victorious": 559,
+    "powerschina": 560,
+    "uk": 561,
+    "usbecoming": 562,
+    "permanent": 563,
+    "members": 564,
+    "security": 565,
+    "council": 566,
+    "emerged": 567,
+    "rival": 568,
+    "superpowers": 569,
+    "setting": 570,
+    "stage": 571,
+    "cold": 572,
+    "wake": 573,
+    "european": 574,
+    "devastation": 575,
+    "influence": 576,
+    "waned": 577,
+    "triggering": 578,
+    "decolonisation": 579,
+    "whose": 580,
+    "industries": 581,
+    "had": 582,
+    "damaged": 583,
+    "moved": 584,
+    "towards": 585,
+    "recovery": 586,
+    "expansion": 587,
+    "pomegranits": 588,
+    "pomegranates": 589,
+    "pomegranate": 590,
+    "punica": 591,
+    "granatum": 592,
+    "fruitbearing": 593,
+    "deciduous": 594,
+    "shrub": 595,
+    "family": 596,
+    "lythraceae": 597,
+    "subfamily": 598,
+    "punicoideae": 599,
+    "grows": 600,
+    "m": 603,
+    "ft": 606,
+    "tall": 607,
+    "rich": 608,
+    "symbolic": 609,
+    "mythological": 610,
+    "associations": 611,
+    "cultures": 612,
+    "thought": 613,
+    "afghanistan": 614,
+    "iran": 615,
+    "before": 616,
+    "introduced": 617,
+    "exported": 618,
+    "europe\nit": 619,
+    "america": 620,
+    "16th": 621,
+    "california": 622,
+    "settlers": 623,
+    "widely": 625,
+    "cultivated": 626,
+    "throughout": 627,
+    "west": 628,
+    "caucasus": 629,
+    "region": 630,
+    "south": 631,
+    "central": 632,
+    "tropical": 633,
+    "drier": 634,
+    "basin": 635,
+    "fruit": 636,
+    "typically": 637,
+    "season": 638,
+    "northern": 639,
+    "hemisphere": 640,
+    "february": 641,
+    "southern": 642,
+    "march": 643,
+    "may\npomegranate": 644,
+    "juice": 645,
+    "variously": 646,
+    "baking": 647,
+    "cooking": 648,
+    "blends": 649,
+    "garnishes": 650,
+    "nonalcoholic": 651,
+    "drinks": 652,
+    "cocktails\n\n": 653,
+    "pretty": 654,
+    "like": 655,
+    "computer": 656,
+    "perhaps": 657,
+    "hwello": 658,
+    "again": 659,
+    "sure": 660,
+    "wait": 661,
+    "take": 662,
+    "time": 663,
+    "back": 664,
+    "got": 665,
+    "we": 666,
+    "answer": 668,
+    "yes": 670,
+    "sir": 671,
+    "compute": 672,
+    "calculate": 675,
+    "favorite": 678,
+    "friend": 679,
+    "u": 680,
+    "yooooo": 681,
+    "should": 682,
+    "visual": 683,
+    "studio": 684,
+    "code": 685,
+    "math": 686,
+    "problem": 687,
+    "please": 688,
+    "check": 689,
+    "expression": 690,
+    "try": 691,
+    "explain": 692,
+    "integrated": 693,
+    "development": 694,
+    "environment": 695,
+    "ide": 696,
+    "developed": 697,
+    "microsoft": 698,
+    "develop": 699,
+    "programs": 700,
+    "websites": 701,
+    "web": 702,
+    "apps": 703,
+    "services": 704,
+    "mobile": 705,
+    "uses": 706,
+    "software": 707,
+    "platforms": 708,
+    "windows": 709,
+    "api": 710,
+    "forms": 711,
+    "presentation": 712,
+    "wpf": 713,
+    "store": 714,
+    "silverlight": 715,
+    "native": 716,
+    "managed": 717,
+    "code\nvisual": 718,
+    "editor": 719,
+    "supporting": 720,
+    "intellisense": 721,
+    "completion": 722,
+    "component": 723,
+    "refactoring": 724,
+    "debugger": 725,
+    "works": 726,
+    "sourcelevel": 727,
+    "machinelevel": 728,
+    "builtin": 729,
+    "tools": 730,
+    "include": 731,
+    "profiler": 732,
+    "designer": 733,
+    "building": 734,
+    "gui": 735,
+    "applications": 736,
+    "class": 737,
+    "database": 738,
+    "schema": 739,
+    "accepts": 740,
+    "plugins": 741,
+    "functionality": 742,
+    "almost": 743,
+    "every": 744,
+    "levelincluding": 745,
+    "adding": 746,
+    "support": 747,
+    "source": 748,
+    "systems": 749,
+    "subversion": 750,
+    "git": 751,
+    "new": 752,
+    "toolsets": 753,
+    "editors": 754,
+    "designers": 755,
+    "domainspecific": 756,
+    "languages": 757,
+    "aspects": 758,
+    "lifecycle": 759,
+    "azure": 760,
+    "devops": 761,
+    "client": 762,
+    "team": 763,
+    "explorer\nvisual": 764,
+    "supports": 765,
+    "different": 767,
+    "programming": 768,
+    "allows": 769,
+    "varying": 770,
+    "degrees": 771,
+    "language": 772,
+    "provided": 773,
+    "languagespecific": 774,
+    "service": 775,
+    "exists": 776,
+    "c": 777,
+    "ccli": 778,
+    "basic": 779,
+    "net": 780,
+    "f": 781,
+    "javascript": 782,
+    "typescript": 783,
+    "xml": 784,
+    "xslt": 785,
+    "html": 786,
+    "css": 787,
+    "python": 788,
+    "ruby": 789,
+    "nodejs": 790,
+    "among": 791,
+    "others": 792,
+    "java": 793,
+    "j": 794,
+    "supported": 795,
+    "past\nthe": 796,
+    "edition": 797,
+    "community": 798,
+    "free": 799,
+    "charge": 800,
+    "slogan": 801,
+    "fullyfeatured": 802,
+    "students": 803,
+    "opensource": 804,
+    "individual": 805,
+    "current": 809,
+    "productionready": 810,
+    "version": 811,
+    "extended": 815,
+    "while": 816,
+    "mainstream": 818,
+    "support\n\n": 819,
+    "watcha": 824,
+    "doin": 825,
+    "3353857873245": 826,
+    "670771574648000": 827,
+    "05": 828,
+    "infinity": 831,
+    "chromium": 832,
+    "browser": 833,
+    "project": 834,
+    "primarily": 835,
+    "maintained": 836,
+    "google": 837,
+    "widelyused": 838,
+    "codebase": 839,
+    "providing": 840,
+    "vast": 841,
+    "majority": 842,
+    "chrome": 843,
+    "browsers": 844,
+    "edge": 845,
+    "samsung": 846,
+    "internet": 847,
+    "opera": 848,
+    "several": 849,
+    "app": 850,
+    "frameworks": 851,
+    "cool": 852,
+    "interesting": 853,
+    "greeting": 854,
+    "act": 855,
+    "communication": 856,
+    "human": 857,
+    "beings": 858,
+    "intentionally": 859,
+    "presence": 860,
+    "each": 861,
+    "show": 862,
+    "attention": 863,
+    "suggest": 864,
+    "hear": 865,
+    "describe": 866,
+    "bud": 867,
+    "concepts": 868,
+    "concept": 869,
+    "abstract": 870,
+    "idea": 871,
+    "serves": 872,
+    "concrete": 873,
+    "thoughts": 874,
+    "beliefs\nconcepts": 875,
+    "important": 876,
+    "role": 877,
+    "cognition": 878,
+    "studied": 879,
+    "within": 880,
+    "disciplines": 881,
+    "linguistics": 882,
+    "psychology": 883,
+    "philosophy": 884,
+    "these": 885,
+    "interested": 886,
+    "logical": 887,
+    "psychological": 888,
+    "put": 889,
+    "together": 890,
+    "form": 891,
+    "sentences": 892,
+    "study": 893,
+    "has": 894,
+    "served": 895,
+    "flagship": 896,
+    "emerging": 897,
+    "interdisciplinary": 898,
+    "approach": 899,
+    "cognitive": 900,
+    "science\nin": 901,
+    "contemporary": 902,
+    "three": 903,
+    "understandings": 904,
+    "prevail\n\nmental": 905,
+    "representations": 906,
+    "entity": 907,
+    "mental": 908,
+    "object\nabilities": 909,
+    "peculiar": 910,
+    "agents": 911,
+    "states\nfregean": 912,
+    "senses": 913,
+    "objects": 914,
+    "rather": 915,
+    "object": 916,
+    "state\nconcepts": 917,
+    "classified": 918,
+    "hierarchy": 919,
+    "higher": 920,
+    "levels": 921,
+    "termed": 922,
+    "superordinate": 923,
+    "lower": 924,
+    "subordinate": 925,
+    "additionally": 926,
+    "level": 927,
+    "people": 928,
+    "readily": 929,
+    "categorize": 930,
+    "example": 931,
+    "basiclevel": 932,
+    "would": 933,
+    "chair": 934,
+    "furniture": 935,
+    "easy": 936,
+    "chair\nconcepts": 937,
+    "exact": 938,
+    "inexact": 939,
+    "generalization": 940,
+    "tree": 941,
+    "extracts": 942,
+    "similarities": 943,
+    "numerous": 944,
+    "examples": 945,
+    "simplification": 946,
+    "enables": 947,
+    "higherlevel": 948,
+    "instantiated": 949,
+    "reified": 950,
+    "actual": 951,
+    "instances": 952,
+    "whether": 953,
+    "things": 954,
+    "real": 955,
+    "ideas\nconcepts": 956,
+    "components": 957,
+    "science": 958,
+    "where": 959,
+    "ongoing": 960,
+    "debate": 961,
+    "asks": 962,
+    "must": 963,
+    "occur": 964,
+    "regularly": 965,
+    "formalized": 966,
+    "mathematics": 967,
+    "databases": 968,
+    "artificial": 969,
+    "intelligence": 970,
+    "specific": 971,
+    "highlevel": 972,
+    "conceptual": 973,
+    "classes": 974,
+    "fields": 975,
+    "categories": 976,
+    "informal": 977,
+    "word": 978,
+    "refer": 979,
+    "idea\n\n": 980,
+    "refers": 981,
+    "friendly": 982,
+    "attract": 983,
+    "someones": 984,
+    "ok": 985,
+    "good": 986,
+    "understand": 987,
+    "asking": 988,
+    "specifying": 989,
+    "something": 990,
+    "correct": 991,
+    "guess": 992,
+    "based": 993,
+    "means": 994,
+    "begin": 995,
+    "conversation": 996,
+    "nvme": 997,
+    "ssd": 998,
+    "playstation": 999,
+    "ps5": 1000,
+    "home": 1001,
+    "video": 1002,
+    "game": 1003,
+    "console": 1004,
+    "sony": 1005,
+    "interactive": 1006,
+    "entertainment": 1007,
+    "successor": 1008,
+    "april": 1009,
+    "launched": 1010,
+    "november": 1011,
+    "australia": 1014,
+    "zealand": 1015,
+    "released": 1016,
+    "week": 1017,
+    "later": 1018,
+    "part": 1019,
+    "ninth": 1020,
+    "generation": 1021,
+    "consoles": 1022,
+    "along": 1023,
+    "microsofts": 1024,
+    "xbox": 1025,
+    "series": 1026,
+    "xs": 1027,
+    "same": 1028,
+    "month\nthe": 1029,
+    "base": 1030,
+    "model": 1031,
+    "optical": 1032,
+    "disc": 1033,
+    "drive": 1034,
+    "compatible": 1035,
+    "ultra": 1036,
+    "hd": 1037,
+    "bluray": 1038,
+    "discs": 1039,
+    "digital": 1040,
+    "lacks": 1041,
+    "lowercost": 1042,
+    "buying": 1043,
+    "games": 1044,
+    "download": 1045,
+    "variants": 1046,
+    "simultaneously": 1047,
+    "slimmer": 1048,
+    "hardware": 1049,
+    "revisions": 1050,
+    "models": 1051,
+    "replaced": 1052,
+    "original": 1053,
+    "sale": 1054,
+    "pro": 1056,
+    "featuring": 1058,
+    "faster": 1059,
+    "gpu": 1060,
+    "improved": 1061,
+    "ray": 1062,
+    "tracing": 1063,
+    "introducing": 1064,
+    "aidriven": 1065,
+    "upscaling": 1066,
+    "technology": 1067,
+    "\nthe": 1068,
+    "5s": 1069,
+    "main": 1070,
+    "features": 1071,
+    "solidstate": 1072,
+    "customized": 1073,
+    "highspeed": 1074,
+    "data": 1075,
+    "streaming": 1076,
+    "enable": 1077,
+    "improvements": 1078,
+    "storage": 1079,
+    "performance": 1080,
+    "amd": 1081,
+    "capable": 1082,
+    "4k": 1083,
+    "resolution": 1084,
+    "display": 1085,
+    "frames": 1087,
+    "per": 1088,
+    "hardwareaccelerated": 1089,
+    "realistic": 1090,
+    "lighting": 1091,
+    "reflections": 1092,
+    "tempest": 1093,
+    "engine": 1094,
+    "3d": 1095,
+    "audio": 1096,
+    "effects": 1097,
+    "dualsense": 1098,
+    "controller": 1099,
+    "haptic": 1100,
+    "feedback": 1101,
+    "backward": 1102,
+    "compatibility": 1103,
+    "vr": 1104,
+    "vr2": 1105,
+    "headset": 1106,
+    "ehh": 1107,
+    "close": 1108,
+    "enough": 1109,
+    "amazing": 1110,
+    "never": 1111,
+    "gonna": 1112,
+    "give": 1113,
+    "pop": 1114,
+    "song": 1115,
+    "english": 1116,
+    "singer": 1117,
+    "rick": 1118,
+    "astley": 1119,
+    "july": 1121,
+    "regarded": 1123,
+    "astleys": 1124,
+    "popular": 1125,
+    "his": 1126,
+    "signature": 1127,
+    "often": 1128,
+    "end": 1129,
+    "live": 1130,
+    "concerts": 1131,
+    "written": 1132,
+    "produced": 1133,
+    "stock": 1134,
+    "aitken": 1135,
+    "waterman": 1136,
+    "rca": 1137,
+    "records": 1138,
+    "single": 1139,
+    "debut": 1140,
+    "album": 1141,
+    "whenever": 1142,
+    "somebody": 1143,
+    "music": 1144,
+    "directed": 1145,
+    "simon": 1146,
+    "became": 1147,
+    "hit": 1148,
+    "stayed": 1149,
+    "chart": 1150,
+    "five": 1151,
+    "weeks": 1152,
+    "bestselling": 1153,
+    "year": 1154,
+    "eventually": 1155,
+    "topped": 1156,
+    "charts": 1157,
+    "winning": 1159,
+    "brit": 1161,
+    "awards\nthe": 1162,
+    "resurged": 1163,
+    "popularity": 1164,
+    "due": 1166,
+    "baitandswitch": 1167,
+    "rickroll": 1168,
+    "meme": 1169,
+    "won": 1171,
+    "mtv": 1172,
+    "award": 1173,
+    "result": 1174,
+    "collective": 1175,
+    "campaign": 1176,
+    "thousands": 1177,
+    "recorded": 1178,
+    "pianoforte": 1179,
+    "arrangement": 1180,
+    "billboard": 1181,
+    "magazine": 1182,
+    "ranked": 1183,
+    "songs": 1185,
+    "time\n\n": 1186,
+    "literally": 1187,
+    "rolled": 1188,
+    "types": 1189,
+    "coming": 1190,
+    "yep": 1191,
+    "totally": 1192,
+    "actually": 1193,
+    "yo": 1198,
+    "sandwiche": 1199,
+    "lets": 1200,
+    "move": 1201,
+    "daddy": 1202,
+    "does": 1203,
+    "max": 1204,
+    "mom": 1205,
+    "meanto": 1206,
+    "then": 1207,
+    "he": 1208,
+    "loves": 1209,
+    "created": 1210,
+    "developer": 1211,
+    "talked": 1212,
+    "earlier": 1213,
+    "else": 1214,
+    "yup": 1215,
+    "hmm": 1216,
+    "htwebz": 1217,
+    "sup": 1218
   },
-  "lastTrainingDate": null
+  "lastTrainingDate": "2025-01-26T23:57:56.773Z"
 }
