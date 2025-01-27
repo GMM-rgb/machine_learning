@@ -832,9 +832,6 @@ expressApp.post('/chat', async (req, res) => {
         const currentGoal = getCurrentGoal();
         response += `\n\nCurrent Goal: ${currentGoal.goal}\nPriority: ${currentGoal.priority}`;
 
-        // Output goal data to client console
-        response += `\n\nConsole Output:\nCurrent Goal: ${currentGoal.goal}\nPriority: ${currentGoal.priority}`;
-
         res.json({ response });
     } catch (error) {
         console.error('Error in chat endpoint:', error);
