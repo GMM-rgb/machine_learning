@@ -749,6 +749,11 @@
       "input": "hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-27T00:28:43.277Z"
+    },
+    {
+      "input": "hello there my friend",
+      "output": "Not too much, but hey I'm doing great! And I'm happy to see you too!",
+      "timestamp": "2025-01-27T00:31:04.679Z"
     }
   ],
   "vocabulary": {
@@ -1412,6 +1417,10 @@
       },
       {
         "word": "sup",
+        "definition": ""
+      },
+      {
+        "word": "my",
         "definition": ""
       }
     ],
@@ -2572,5 +2581,5 @@
     "htwebz": 1217,
     "sup": 1218
   },
-  "lastTrainingDate": "2025-01-27T00:28:43.277Z"
+  "lastTrainingDate": "2025-01-27T00:31:05.671Z"
 }
