@@ -764,6 +764,11 @@
       "input": "how are you doing?",
       "output": "Not too much, but hey I'm doing great!",
       "timestamp": "2025-01-27T00:36:47.264Z"
+    },
+    {
+      "input": "how are you doing?",
+      "output": "We talked about \"how are you doing?\" earlier. Anything else on your mind?",
+      "timestamp": "2025-01-27T00:37:59.563Z"
     }
   ],
   "vocabulary": {
@@ -2591,5 +2596,5 @@
     "htwebz": 1217,
     "sup": 1218
   },
-  "lastTrainingDate": "2025-01-27T00:36:47.264Z"
+  "lastTrainingDate": "2025-01-27T00:37:59.563Z"
 }
