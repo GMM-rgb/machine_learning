@@ -1,0 +1,4 @@
+[submodule "tensorflow"]
+    path = tensorflow
+    url = <URL_OF_TENSORFLOW_REPOSITORY>
+    
