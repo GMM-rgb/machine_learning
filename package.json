@@ -24,6 +24,7 @@
         "display": "^0.2.0",
         "esbuild": "^0.24.2",
         "express": "^4.21.2",
+        "electron": "^33.3.1",
         "fs": "^0.0.1-security",
         "fs-extra": "^11.3.0",
         "fuse": "^0.12.1",
