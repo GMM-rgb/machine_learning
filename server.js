@@ -19,7 +19,7 @@ let chatEnabled = true; // Flag to control chat availability
 // Middleware to parse JSON and serve static files
 expressApp.use(bodyParser.json());
 expressApp.use(express.static(path.join(__dirname, 'public')));
-
+ 
 // Load or initialize user data
 const usersFile = path.join(__dirname, 'users.json');
 let users = {};
