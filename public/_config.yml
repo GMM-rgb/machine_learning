@@ -1,0 +1,8 @@
+title: HtWebz Asssisstant
+description: A short description of your site
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://gmm-rgb.github.io/trash_simulator/" # the base hostname & protocol for your site
+
+# Build settings
+source: .
+destination: ./_site
