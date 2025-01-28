@@ -6,3 +6,8 @@ url: "https://GMM-rgb.github.io/machine_learning/" # the base hostname & protoco
 # Build settings
 source: .
 destination: ./_site
+# _config.yml
+sass:
+  style: compressed
+exclude:
+  - assets/css/style.scss
