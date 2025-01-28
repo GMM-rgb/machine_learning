@@ -40,9 +40,6 @@ jobs:
       - name: Build site with Electron
         run: npm run build
 
-      - name: Run Server
-        run: node server.js
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
