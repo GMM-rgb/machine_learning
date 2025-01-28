@@ -41,7 +41,7 @@ jobs:
         run: npm audit fix --force
 
       - name: Build site with Electron
-        run: npm run build
+        run: npm run build -- --no-sandbox
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

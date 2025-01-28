@@ -5,7 +5,7 @@
     "module": "tensorflow.js",
     "displayName": "ai-project",
     "scripts": {
-      "build": "npm install && npm run test && electron-builder . --no-sandbox",
+      "build": "npm install && npm run test && electron-builder . -- --no-sandbox",
       "start": "node server.js",
       "test": "echo \"Error: no test specified\" && exit 1"
     },
