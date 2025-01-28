@@ -5,9 +5,10 @@
     "module": "tensorflow.js",
     "displayName": "ai-project",
     "scripts": {
-      "build": "npm install && npm run test && electron-builder . -- --no-sandbox",
+      "build": "npm install && npm run test && electron-builder .",
       "start": "node server.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "electron-no-sandbox": "electron . --no-sandbox"
     },
     "dependencies": {
       "@tensorflow-models/universal-sentence-encoder": "^1.3.3",
