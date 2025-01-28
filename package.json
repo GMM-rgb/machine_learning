@@ -21,6 +21,7 @@
         "body-parser": "^1.20.3",
         "dependency-manager": "^0.0.2",
         "display": "^0.2.0",
+        "electron": "^33.3.1",
         "esbuild": "^0.24.2",
         "express": "^4.21.2",
         "fs": "^0.0.1-security",
@@ -28,11 +29,10 @@
         "fuse": "^0.12.1",
         "fuse.js": "^7.0.0",
         "https": "^1.0.0",
-        "mathjs": "^10.0.0",
-        "electron": "^33.3.1"
+        "mathjs": "^10.0.0"
     },
     "devDependencies": {
-        "electron-builder": "^22.11.7",     
+        "electron-builder": "^25.1.8",
         "wikijs": "^6.4.1"
     },
     "engines": {
