@@ -1,14 +1,11 @@
 title: HtWebz Assistant
 description: A short description of your site
-baseurl: "" # the subpath of your site, e.g. /blog (leave empty if you serve your site from the root)
-url: "https://GMM-rgb.github.io/machine_learning/" # the base hostname & protocol for your site
-
-# Build settings
+baseurl: ""
+url: "https://GMM-rgb.github.io/machine_learning/"
 source: .
 destination: ./_site
 
 sass:
   style: compressed
-
 exclude:
   - assets/css/style.scss
