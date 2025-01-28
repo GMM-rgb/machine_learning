@@ -824,6 +824,21 @@
       "input": "calculate 500*2+5",
       "output": "The answer is: 1005",
       "timestamp": "2025-01-27T06:49:06.888Z"
+    },
+    {
+      "input": "hi bro",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-28T03:46:47.754Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-28T03:47:33.240Z"
+    },
+    {
+      "input": "hm how r u",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-28T03:47:42.763Z"
     }
   ],
   "vocabulary": {
@@ -1522,6 +1537,10 @@
       {
         "word": "500*2+5",
         "definition": "Here's what I found on Wikipedia: Bcl-2, encoded in humans by the BCL2 gene, is the founding member of the Bcl-2 family of regulator proteins."
+      },
+      {
+        "word": "hm",
+        "definition": ""
       }
     ],
     "hi": 2,
@@ -2681,7 +2700,8 @@
     "htwebz": 1217,
     "sup": 1218,
     "duing": 1219,
-    "brother": 1220
+    "brother": 1220,
+    "hm": 1223
   },
-  "lastTrainingDate": "2025-01-27T06:49:08.440Z"
+  "lastTrainingDate": "2025-01-28T03:47:43.535Z"
 }
