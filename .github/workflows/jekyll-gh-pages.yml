@@ -38,19 +38,19 @@ jobs:
         run: npm install
 
       - name: Audit fix
-        run: npm audit fix --force
+        run: npm audit fix & npm audit fix --force
 
       - name: Install xvfb
         run: sudo apt-get install -y xvfb
 
       - name: Start Xvfb
         run: |
-          sudo Xvfb :99 -screen 0 1024x768x16 &
+          sudo Xvfb :99 -screen 0 1024x768x16 --force &
           sleep 3
-          export DISPLAY=:99
+          export DISPLAY=:99 --force
 
       - name: Build site with Electron
-        run: xvfb-run --server-args="-screen 0 1024x768x16" npm run electron-no-sandbox
+        run: xvfb-run --server-args="-screen 0 1024x768x16" & npm run electron-no-sandbox
 
       - name: Log build directory
         run: ls -la public/
