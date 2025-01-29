@@ -39,21 +39,24 @@ jobs:
         
       - name: Audit fix
         run: npm audit fix & npm audit fix --force
+        
+      - name: Build Site With Node.js
+        run: npm run poststart
 
-      - name: Install xvfb
-        run: sudo apt-get install -y xvfb
+      #- name: Install xvfb
+       # run: sudo apt-get install -y xvfb
 
-      - name: Start Xvfb
-        run: |
-          sudo Xvfb :99 -screen 0 1024x768x16 &
-          sleep 3
-          export DISPLAY=:99 --force
+      #- name: Start Xvfb
+       # run: |
+        #  sudo Xvfb :99 -screen 0 1024x768x16 &
+         # sleep 3
+          #export DISPLAY=:99 --force
 
-      - name: Build site with Electron
-        run: xvfb-run --server-args="-screen 0 1024x768x16" & npm run electron-no-sandbox
+     # - name: Build site with Electron
+      #  run: xvfb-run --server-args="-screen 0 1024x768x16" & npm run electron-no-sandbox
 
-      - name: Log build directory
-        run: ls -la public/
+     # - name: Log build directory
+      #  run: ls -la public/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
