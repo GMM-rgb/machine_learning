@@ -19,6 +19,56 @@
         {
           "sender": "AI",
           "text": "Not too much, but hey I'm doing great!\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "1333443244*3445454355435+443535"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 4.594317832765176e+21\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "calculate 3443247384*343248/5"
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "what is hardware"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: Hardware may refer to:\n\n\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "what is machine learning"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: Machine learning (ML) is a field of study in artificial intelligence concerned with the development and study of statistical algorithms that can learn from data and generalize to unseen data, and thus perform tasks without explicit instructions. Within a subdiscipline in machine learning, advances in the field of deep learning have allowed neural networks, a class of statistical algorithms, to surpass many previous machine learning approaches in performance.\nML finds application in many fields, including natural language processing, computer vision, speech recognition, email filtering, agriculture, and medicine. The application of ML to business problems is known as predictive analytics.\nStatistics and mathematical optimization (mathematical programming) methods comprise the foundations of machine learning. Data mining is a related field of study, focusing on exploratory data analysis (EDA) via unsupervised learning. \nFrom a theoretical viewpoint, probably approximately correct learning provides a framework for describing machine learning.\n\n\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        }
+      ],
+      "Chat 2": [
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "We talked about \"hi\" earlier. Anything else on your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "what's up"
         }
       ]
     }
