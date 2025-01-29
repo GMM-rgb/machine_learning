@@ -889,6 +889,16 @@
       "input": "thnk you",
       "output": "Your very welcome, if you need help let me know!",
       "timestamp": "2025-01-29T22:15:19.710Z"
+    },
+    {
+      "input": "hmmm what could we do together?",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-01-29T22:19:40.834Z"
+    },
+    {
+      "input": "list 4 different native american tribes and where they lived",
+      "output": "The many groups Indigenous to the United States, the largest self-reported tribes were Cherokee, Navajo, Choctaw, Blackfeet, Sioux, and Apache, these were the four main American Tribes, during the wars.",
+      "timestamp": "2025-01-29T22:20:47.246Z"
     }
   ],
   "vocabulary": {
@@ -1616,6 +1626,10 @@
       {
         "word": "thnk",
         "definition": "Here's what I found on Wikipedia: \"Thnks fr th Mmrs\" (a disemvoweling of \"Thanks for the Memories\") is a song by American rock band Fall Out Boy."
+      },
+      {
+        "word": "together?",
+        "definition": ""
       }
     ],
     "hi": 2,
@@ -3022,7 +3036,12 @@
     "held": 1471,
     "illegal": 1472,
     "over": 1473,
-    "thnk": 1474
+    "thnk": 1474,
+    "tribes": 1475,
+    "lived": 1476,
+    "scientific": 1477,
+    "graphing": 1478,
+    "few": 1479
   },
-  "lastTrainingDate": "2025-01-29T22:15:20.203Z"
+  "lastTrainingDate": "2025-01-29T22:20:47.246Z"
 }

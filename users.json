@@ -93,6 +93,18 @@
         {
           "sender": "AI",
           "text": "Your very welcome, if you need help let me know!\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "hmmm, what could we do together?"
+        },
+        {
+          "sender": "AI",
+          "text": "That's up to you to decide, however, I'm always here to help!\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "List 4 different Native American tribes and where they lived"
         }
       ]
     }
