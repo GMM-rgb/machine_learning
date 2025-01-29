@@ -33,9 +33,9 @@ jobs:
         run: |
           git submodule sync --recursive
           git submodule update --init --recursive
-          
+
       - name: Enable env enviorment
-        run: env activate
+        run: env enable
 
       - name: Install dependencies
         run: npm install
