@@ -34,10 +34,7 @@ jobs:
           git submodule sync --recursive
           git submodule update --init --recursive
 
-      - name: Enable env enviorment
-        run: env enable
-
-      - name: Install dependencies
+          - name: Install dependencies
         run: npm install
         
       - name: Audit fix
