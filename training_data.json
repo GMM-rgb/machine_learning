@@ -914,6 +914,11 @@
       "input": "explain to me what animals did the plains indians depend on? how did they use those animals?",
       "output": "Here's what I found on Wikipedia: One of the major human migration events was the maritime settlement of the islands of the Indo-Pacific by the Austronesian peoples, believed to have started from at least 5,500 to 4,000 BP (3500 to 2000 BCE). These migrations were accompanied by a set of domesticated, semi-domesticated, and commensal plants and animals transported via outrigger ships and catamarans that enabled early Austronesians to thrive in the islands of Maritime Southeast Asia (also known as 'Island Southeast Asia'. e.g.: Philippines, Indonesia), Near Oceania (Melanesia), Remote Oceania (Micronesia and Polynesia), Madagascar, and the Comoros Islands.\nThey include crops and animals believed to have originated from the Hemudu and Majiabang cultures in the hypothetical pre-Austronesian homelands in mainland China, as well as other plants and animals believed to have been first domesticated from within Taiwan, Maritime Southeast Asia, and New Guinea. Some of these plants are sometimes also known as \"canoe plants\", especially in the context of the Polynesian migrations. Domesticated animals and plants introduced during historic times are not included.",
       "timestamp": "2025-01-29T22:35:29.968Z"
+    },
+    {
+      "input": "explain to me what did the early indian treaties (fort laramie and fort atkinson) do?",
+      "output": "Here's what I found on Wikipedia: Red Cloud (Lakota: Maȟpíya Lúta; c. 1822 – December 10, 1909) was a leader of the Oglala Lakota from 1865 to 1909. He was one of the most capable Native American opponents whom the United States Army faced in the western territories. He led the Lakota to victory over the United States during Red Cloud's War, establishing the Lakota as the only nation to defeat the United States on American soil. The largest action of the war was the 1866 Fetterman Fight, with 81 US soldiers killed; it was the worst military defeat suffered by the US Army on the Great Plains until the Battle of the Little Bighorn 10 years later.\nAfter signing the Treaty of Fort Laramie (1868), Red Cloud led his people in the transition to reservation life. Some of his opponents mistakenly thought of him as the overall leader of the Sioux groups (Dakota, Lakota, and Nakota), but the large tribe had several major divisions and was highly decentralized. Bands among the Oglala and other divisions operated independently, though some individual leaders were renowned as warriors and highly respected as leaders, such as Red Cloud.",
+      "timestamp": "2025-01-29T22:45:44.404Z"
     }
   ],
   "vocabulary": {
@@ -951,11 +956,16 @@
     "72": 1196,
     "77": 673,
     "80": 135,
+    "81": 1582,
     "85": 356,
     "120": 1086,
     "500": 1184,
     "1005": 1222,
     "1769": 624,
+    "1865": 1569,
+    "1866": 1579,
+    "1868": 1593,
+    "1909": 1566,
     "1931": 396,
     "1937": 401,
     "1939": 319,
@@ -1772,6 +1782,42 @@
       },
       {
         "word": "those",
+        "definition": ""
+      },
+      {
+        "word": "did",
+        "definition": ""
+      },
+      {
+        "word": "early",
+        "definition": ""
+      },
+      {
+        "word": "indian",
+        "definition": ""
+      },
+      {
+        "word": "treaties",
+        "definition": "Here's what I found on Wikipedia: A treaty is a formal, legally binding written agreement concluded by sovereign states in international law."
+      },
+      {
+        "word": "(fort",
+        "definition": "Here's what I found on Wikipedia: Fort Bridger was originally a 19th-century fur trading outpost established in 1842, on Blacks Fork of the Green River, in what is now Uinta County, Wyoming, United States."
+      },
+      {
+        "word": "laramie",
+        "definition": "Here's what I found on Wikipedia: Laramie () is a city in and the county seat of Albany County, Wyoming, United States, known for its high elevation at 7,200 feet (2,200 m), railroad history, and is the home of the University of Wyoming."
+      },
+      {
+        "word": "and",
+        "definition": ""
+      },
+      {
+        "word": "fort",
+        "definition": "Here's what I found on Wikipedia: A fortification (also called a fort, fortress, fastness, or stronghold) is a military construction designed for the defense of territories in warfare, and is used to establish rule in a region during peacetime."
+      },
+      {
+        "word": "atkinson)",
         "definition": ""
       }
     ],
@@ -3257,7 +3303,57 @@
     "context": 1553,
     "polynesian": 1554,
     "historic": 1555,
-    "times": 1556
+    "times": 1556,
+    "indian": 1557,
+    "fort": 1558,
+    "laramie": 1559,
+    "atkinson": 1560,
+    "red": 1561,
+    "lakota": 1562,
+    "mapya": 1563,
+    "lta": 1564,
+    "c 1822": 1565,
+    "leader": 1567,
+    "oglala": 1568,
+    "opponents": 1570,
+    "whom": 1571,
+    "army": 1572,
+    "faced": 1573,
+    "clouds": 1574,
+    "establishing": 1575,
+    "nation": 1576,
+    "defeat": 1577,
+    "action": 1578,
+    "fetterman": 1580,
+    "fight": 1581,
+    "soldiers": 1583,
+    "killed": 1584,
+    "worst": 1585,
+    "military": 1586,
+    "suffered": 1587,
+    "little": 1588,
+    "bighorn": 1589,
+    "later\nafter": 1590,
+    "signing": 1591,
+    "treaty": 1592,
+    "transition": 1594,
+    "reservation": 1595,
+    "mistakenly": 1596,
+    "him": 1597,
+    "overall": 1598,
+    "dakota": 1599,
+    "nakota": 1600,
+    "tribe": 1601,
+    "divisions": 1602,
+    "highly": 1603,
+    "decentralized": 1604,
+    "bands": 1605,
+    "operated": 1606,
+    "independently": 1607,
+    "though": 1608,
+    "renowned": 1609,
+    "warriors": 1610,
+    "respected": 1611
   },
-  "lastTrainingDate": "2025-01-29T22:35:33.304Z"
+  "lastTrainingDate": "2025-01-29T22:45:48.859Z"
 }
