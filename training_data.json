@@ -899,6 +899,11 @@
       "input": "list 4 different native american tribes and where they lived",
       "output": "The many groups Indigenous to the United States, the largest self-reported tribes were Cherokee, Navajo, Choctaw, Blackfeet, Sioux, and Apache, these were the four main American Tribes, during the wars.",
       "timestamp": "2025-01-29T22:20:47.246Z"
+    },
+    {
+      "input": "can you list 4 different native american tribes and where they lived",
+      "output": "The many groups Indigenous to the United States, the largest self-reported tribes were Cherokee, Navajo, Choctaw, Blackfeet, Sioux, and Apache, these were the four main American Tribes, during the wars.",
+      "timestamp": "2025-01-29T22:25:52.325Z"
     }
   ],
   "vocabulary": {
@@ -1629,6 +1634,50 @@
       },
       {
         "word": "together?",
+        "definition": ""
+      },
+      {
+        "word": "can",
+        "definition": ""
+      },
+      {
+        "word": "list",
+        "definition": "Here's what I found on Wikipedia: A list is a set of discrete items of information collected and set forth in some format for utility, entertainment, or other purposes."
+      },
+      {
+        "word": "4",
+        "definition": "Here's what I found on Wikipedia: 4 (four) is a number, numeral and digit."
+      },
+      {
+        "word": "different",
+        "definition": ""
+      },
+      {
+        "word": "native",
+        "definition": ""
+      },
+      {
+        "word": "american",
+        "definition": ""
+      },
+      {
+        "word": "tribes",
+        "definition": "Here's what I found on Wikipedia: The term tribe is used in many different contexts to refer to a category of human social group."
+      },
+      {
+        "word": "and",
+        "definition": ""
+      },
+      {
+        "word": "where",
+        "definition": "Here's what I found on Wikipedia: Where may refer to:\n\nWhere?, one of the Five Ws in journalism\nwhere (command), a shell command\nWhere."
+      },
+      {
+        "word": "they",
+        "definition": "Here's what I found on Wikipedia: In Modern English, they is a third-person pronoun relating to a grammatical subject."
+      },
+      {
+        "word": "lived",
         "definition": ""
       }
     ],
@@ -3041,7 +3090,19 @@
     "lived": 1476,
     "scientific": 1477,
     "graphing": 1478,
-    "few": 1479
+    "few": 1479,
+    "groups": 1480,
+    "indigenous": 1481,
+    "selfreported": 1482,
+    "cherokee": 1483,
+    "navajo": 1484,
+    "choctaw": 1485,
+    "blackfeet": 1486,
+    "sioux": 1487,
+    "apache": 1488,
+    "four": 1489,
+    "during": 1490,
+    "wars": 1491
   },
-  "lastTrainingDate": "2025-01-29T22:20:47.246Z"
+  "lastTrainingDate": "2025-01-29T22:25:58.775Z"
 }

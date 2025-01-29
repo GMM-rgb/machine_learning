@@ -105,6 +105,14 @@
         {
           "sender": "User",
           "text": "List 4 different Native American tribes and where they lived"
+        },
+        {
+          "sender": "User",
+          "text": "Can you list 4 different Native American tribes and where they lived"
+        },
+        {
+          "sender": "AI",
+          "text": "The many groups Indigenous to the United States, the largest self-reported tribes were Cherokee, Navajo, Choctaw, Blackfeet, Sioux, and Apache, these were the four main American Tribes, during the wars.\n\nCurrent Goal: Assist users with their queries\nPriority: High"
         }
       ]
     }
