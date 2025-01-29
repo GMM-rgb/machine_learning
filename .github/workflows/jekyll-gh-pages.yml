@@ -45,7 +45,7 @@ jobs:
 
       - name: Start Xvfb
         run: |
-          sudo Xvfb :99 -screen 0 1024x768x16 --force &
+          sudo Xvfb :99 -screen 0 1024x768x16 &
           sleep 3
           export DISPLAY=:99 --force
 
