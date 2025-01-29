@@ -39,8 +39,8 @@ jobs:
         
       - name: Audit fix
         run: npm audit fix & npm audit fix --force
-        
-      - name: Build Site With Node.js
+
+      - name: Fabricate Site With Node.js
         run: npm run poststart
 
       #- name: Install xvfb
@@ -55,8 +55,8 @@ jobs:
      # - name: Build site with Electron
       #  run: xvfb-run --server-args="-screen 0 1024x768x16" & npm run electron-no-sandbox
 
-     # - name: Log build directory
-      #  run: ls -la public/
+      - name: Log build directory
+        run: ls -la public/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
