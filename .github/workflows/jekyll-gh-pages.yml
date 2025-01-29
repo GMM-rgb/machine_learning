@@ -33,10 +33,13 @@ jobs:
         run: |
           git submodule sync --recursive
           git submodule update --init --recursive
+          
+      - name: Enable env enviorment
+        run: env activate
 
       - name: Install dependencies
         run: npm install
-
+        
       - name: Audit fix
         run: npm audit fix & npm audit fix --force
 
