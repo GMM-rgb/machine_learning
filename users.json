@@ -69,6 +69,30 @@
         {
           "sender": "User",
           "text": "what's up"
+        },
+        {
+          "sender": "User",
+          "text": "what's up"
+        },
+        {
+          "sender": "AI",
+          "text": "Hey, whats up? Anything on your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "what is google"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: Google LLC ( , GOO-gəl) is an American multinational corporation and technology company focusing on online advertising, search engine technology, cloud computing, computer software, quantum computing, e-commerce, consumer electronics, and artificial intelligence (AI). It has been referred to as \"the most powerful company in the world\" by the BBC and is one of the world's most valuable brands due to its market dominance, data collection, and technological advantages in the field of AI. Alongside Amazon, Apple, Meta, Microsoft, Google's parent company, Alphabet Inc. is one of the five Big Tech companies.\nGoogle was founded on September 4, 1998, by American computer scientists Larry Page and Sergey Brin while they were PhD students at Stanford University in California. Together, they own about 14% of its publicly listed shares and control 56% of its stockholder voting power through super-voting stock. The company went public via an initial public offering (IPO) in 2004. In 2015, Google was reorganized as a wholly owned subsidiary of Alphabet Inc. Google is Alphabet's largest subsidiary and is a holding company for Alphabet's internet properties and interests. Sundar Pichai was appointed CEO of Google on October 24, 2015, replacing Larry Page, who became the CEO of Alphabet. On December 3, 2019, Pichai also became the CEO of Alphabet.\nThe company has since rapidly grown to offer a multitude of products and services beyond Google Search, many of which hold dominant market positions. These products address a wide range of use cases, including email (Gmail), navigation and mapping (Waze, Maps and Earth), cloud computing (Cloud), web navigation (Chrome), video sharing (YouTube), productivity (Workspace), operating systems (Android), cloud storage (Drive), language translation (Translate), photo storage (Photos), videotelephony (Meet), smart home (Nest), smartphones (Pixel), wearable technology (Pixel Watch and Fitbit), music streaming (YouTube Music), video on demand (YouTube TV), AI (Google Assistant and Gemini), machine learning APIs (TensorFlow), AI chips (TPU), and more. Discontinued Google products include gaming (Stadia), Glass, Google+, Reader, Play Music, Nexus, Hangouts, and Inbox by Gmail. Google's other ventures outside of internet services and consumer electronics include quantum computing (Sycamore), self-driving cars (Waymo, formerly the Google Self-Driving Car Project), smart cities (Sidewalk Labs), and transformer models (Google DeepMind).\nGoogle Search and YouTube are the two most-visited websites worldwide followed by Facebook and Twitter (now known as X). Google is also the largest search engine, mapping and navigation application, email provider, office suite, online video platform, photo and cloud storage provider, mobile operating system, web browser, machine learning framework, and AI virtual assistant provider in the world as measured by market share. On the list of most valuable brands, Google is ranked second by Forbes as of January 2022 and fourth by Interbrand as of February 2022. \nThe company has received significant criticism involving issues such as privacy concerns, tax avoidance, censorship, search neutrality, antitrust and abuse of its monopoly position. On August 5, 2024, D.C. Circuit Court Judge Amit P. Mehta ruled that Google held an illegal monopoly over Internet search.\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "thnk you"
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help let me know!\n\nCurrent Goal: Assist users with their queries\nPriority: High"
         }
       ]
     }
