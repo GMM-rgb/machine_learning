@@ -113,6 +113,22 @@
         {
           "sender": "AI",
           "text": "The many groups Indigenous to the United States, the largest self-reported tribes were Cherokee, Navajo, Choctaw, Blackfeet, Sioux, and Apache, these were the four main American Tribes, during the wars.\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "search bing, What animals did the plains Indians depend on? How did they use those animals?"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, there's an issue with the Bing search authentication. Please check the API key.\n\nCurrent Goal: Assist users with their queries\nPriority: High"
+        },
+        {
+          "sender": "User",
+          "text": "Explain to me what animals did the plains Indians depend on? How did they use those animals?"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: One of the major human migration events was the maritime settlement of the islands of the Indo-Pacific by the Austronesian peoples, believed to have started from at least 5,500 to 4,000 BP (3500 to 2000 BCE). These migrations were accompanied by a set of domesticated, semi-domesticated, and commensal plants and animals transported via outrigger ships and catamarans that enabled early Austronesians to thrive in the islands of Maritime Southeast Asia (also known as 'Island Southeast Asia'. e.g.: Philippines, Indonesia), Near Oceania (Melanesia), Remote Oceania (Micronesia and Polynesia), Madagascar, and the Comoros Islands.\nThey include crops and animals believed to have originated from the Hemudu and Majiabang cultures in the hypothetical pre-Austronesian homelands in mainland China, as well as other plants and animals believed to have been first domesticated from within Taiwan, Maritime Southeast Asia, and New Guinea. Some of these plants are sometimes also known as \"canoe plants\", especially in the context of the Polynesian migrations. Domesticated animals and plants introduced during historic times are not included.\n\nCurrent Goal: Assist users with their queries\nPriority: High"
         }
       ]
     }

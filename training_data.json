@@ -904,6 +904,16 @@
       "input": "can you list 4 different native american tribes and where they lived",
       "output": "The many groups Indigenous to the United States, the largest self-reported tribes were Cherokee, Navajo, Choctaw, Blackfeet, Sioux, and Apache, these were the four main American Tribes, during the wars.",
       "timestamp": "2025-01-29T22:25:52.325Z"
+    },
+    {
+      "input": "search bing what animals did the plains indians depend on? how did they use those animals?",
+      "output": "Sorry, there's an issue with the Bing search authentication. Please check the API key.",
+      "timestamp": "2025-01-29T22:34:53.360Z"
+    },
+    {
+      "input": "explain to me what animals did the plains indians depend on? how did they use those animals?",
+      "output": "Here's what I found on Wikipedia: One of the major human migration events was the maritime settlement of the islands of the Indo-Pacific by the Austronesian peoples, believed to have started from at least 5,500 to 4,000 BP (3500 to 2000 BCE). These migrations were accompanied by a set of domesticated, semi-domesticated, and commensal plants and animals transported via outrigger ships and catamarans that enabled early Austronesians to thrive in the islands of Maritime Southeast Asia (also known as 'Island Southeast Asia'. e.g.: Philippines, Indonesia), Near Oceania (Melanesia), Remote Oceania (Micronesia and Polynesia), Madagascar, and the Comoros Islands.\nThey include crops and animals believed to have originated from the Hemudu and Majiabang cultures in the hypothetical pre-Austronesian homelands in mainland China, as well as other plants and animals believed to have been first domesticated from within Taiwan, Maritime Southeast Asia, and New Guinea. Some of these plants are sometimes also known as \"canoe plants\", especially in the context of the Polynesian migrations. Domesticated animals and plants introduced during historic times are not included.",
+      "timestamp": "2025-01-29T22:35:29.968Z"
     }
   ],
   "vocabulary": {
@@ -958,6 +968,7 @@
     "1987": 1122,
     "1988": 1160,
     "1998": 1325,
+    "2000": 1513,
     "2004": 1347,
     "2007": 1165,
     "2008": 1170,
@@ -969,7 +980,10 @@
     "2022": 808,
     "2023": 1055,
     "2024": 807,
+    "3500": 1512,
+    "4000": 1510,
     "4232": 128,
+    "5500": 1509,
     "10560": 97,
     "16384": 821,
     "50025": 1221,
@@ -1678,6 +1692,86 @@
       },
       {
         "word": "lived",
+        "definition": ""
+      },
+      {
+        "word": "search",
+        "definition": "Here's what I found on Wikipedia: A search engine is a software system that provides hyperlinks to web pages and other relevant information on the Web in response to a user's query."
+      },
+      {
+        "word": "bing",
+        "definition": ""
+      },
+      {
+        "word": "animals",
+        "definition": "Here's what I found on Wikipedia: Animals are multicellular, eukaryotic organisms in the biological kingdom Animalia ()."
+      },
+      {
+        "word": "did",
+        "definition": ""
+      },
+      {
+        "word": "the",
+        "definition": "Here's what I found on Wikipedia: The is a grammatical article in English, denoting persons or things that are already or about to be mentioned, under discussion, implied or otherwise presumed familiar to listeners, readers, or speakers."
+      },
+      {
+        "word": "plains",
+        "definition": "Here's what I found on Wikipedia: In geography, a plain, commonly known as flatland, is a flat expanse of land  that generally does not change much in elevation, and is primarily treeless."
+      },
+      {
+        "word": "indians",
+        "definition": ""
+      },
+      {
+        "word": "depend",
+        "definition": ""
+      },
+      {
+        "word": "on?",
+        "definition": ""
+      },
+      {
+        "word": "did",
+        "definition": ""
+      },
+      {
+        "word": "use",
+        "definition": ""
+      },
+      {
+        "word": "those",
+        "definition": ""
+      },
+      {
+        "word": "animals?",
+        "definition": "Here's what I found on Wikipedia: Animals are multicellular, eukaryotic organisms in the biological kingdom Animalia ()."
+      },
+      {
+        "word": "did",
+        "definition": ""
+      },
+      {
+        "word": "indians",
+        "definition": ""
+      },
+      {
+        "word": "depend",
+        "definition": ""
+      },
+      {
+        "word": "on?",
+        "definition": ""
+      },
+      {
+        "word": "did",
+        "definition": ""
+      },
+      {
+        "word": "use",
+        "definition": ""
+      },
+      {
+        "word": "those",
         "definition": ""
       }
     ],
@@ -3102,7 +3196,68 @@
     "apache": 1488,
     "four": 1489,
     "during": 1490,
-    "wars": 1491
+    "wars": 1491,
+    "animals": 1492,
+    "plains": 1493,
+    "indians": 1494,
+    "depend": 1495,
+    "those": 1496,
+    "theres": 1497,
+    "issue": 1498,
+    "authentication": 1499,
+    "migration": 1500,
+    "maritime": 1501,
+    "settlement": 1502,
+    "indopacific": 1503,
+    "austronesian": 1504,
+    "peoples": 1505,
+    "believed": 1506,
+    "started": 1507,
+    "least": 1508,
+    "bp": 1511,
+    "bce": 1514,
+    "migrations": 1515,
+    "accompanied": 1516,
+    "domesticated": 1517,
+    "semidomesticated": 1518,
+    "commensal": 1519,
+    "transported": 1520,
+    "outrigger": 1521,
+    "ships": 1522,
+    "catamarans": 1523,
+    "enabled": 1524,
+    "early": 1525,
+    "austronesians": 1526,
+    "thrive": 1527,
+    "island": 1528,
+    "eg": 1529,
+    "philippines": 1530,
+    "indonesia": 1531,
+    "near": 1532,
+    "oceania": 1533,
+    "melanesia": 1534,
+    "remote": 1535,
+    "micronesia": 1536,
+    "polynesia": 1537,
+    "madagascar": 1538,
+    "comoros": 1539,
+    "islands\nthey": 1540,
+    "crops": 1541,
+    "hemudu": 1542,
+    "majiabang": 1543,
+    "hypothetical": 1544,
+    "preaustronesian": 1545,
+    "homelands": 1546,
+    "mainland": 1547,
+    "taiwan": 1548,
+    "guinea": 1549,
+    "sometimes": 1550,
+    "canoe": 1551,
+    "especially": 1552,
+    "context": 1553,
+    "polynesian": 1554,
+    "historic": 1555,
+    "times": 1556
   },
-  "lastTrainingDate": "2025-01-29T22:25:58.775Z"
+  "lastTrainingDate": "2025-01-29T22:35:33.304Z"
 }
