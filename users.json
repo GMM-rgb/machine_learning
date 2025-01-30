@@ -300,6 +300,12 @@
           "sender": "AI",
           "text": "We talked about \"sup\" earlier. Anything else on your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
+      ],
+      "Chat 4": [
+        {
+          "sender": "User",
+          "text": "heyy"
+        }
       ]
     }
   }

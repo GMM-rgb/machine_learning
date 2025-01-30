@@ -42,7 +42,8 @@
         "fuse": "^0.12.1",
         "fuse.js": "^7.0.0",
         "https": "^1.0.0",
-        "mathjs": "^10.0.0"
+        "mathjs": "^10.0.0",
+        "portfinder": "^1.0.32"
     },
     "devDependencies": {
         "electron-builder": "^25.1.8",
