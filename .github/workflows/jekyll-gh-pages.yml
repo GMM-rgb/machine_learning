@@ -56,7 +56,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./public/_site"
-          name: "github-pages"
 
   deploy:
     environment:
