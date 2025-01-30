@@ -304,7 +304,87 @@
       "Chat 4": [
         {
           "sender": "User",
-          "text": "heyy"
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "We talked about \"hi\" earlier. Anything else on your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "what is the constitution?"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: A constitution is the aggregate of fundamental principles or established precedents that constitute the legal basis of a polity, organization or other type of entity, and commonly determines how that entity is to be governed.\nWhen these principles are written down into a single document or set of legal documents, those documents may be said to embody a written constitution; if they are encompassed in a single comprehensive document, it is said to embody a codified constitution. The Constitution of the United Kingdom is a notable example of an uncodified constitution; it is instead written in numerous fundamental acts of a legislature, court cases, and treaties.\nConstitutions concern different levels of organizations, from sovereign countries to companies and unincorporated associations. A treaty that establishes an international organization is also its constitution, in that it would define how that organization is constituted. Within states, a constitution defines the principles upon which the state is based, the procedure in which laws are made and by whom. Some constitutions, especially codified constitutions, also act as limiters of state power, by establishing lines which a state's rulers cannot cross, such as fundamental rights. Changes to constitutions frequently require consensus or supermajority.\nThe Constitution of India is the longest written constitution of any country in the world, with 146,385 words in its English-language version, while the Constitution of Monaco is the shortest written constitution with 3,814 words. The Constitution of San Marino might be the world's oldest active written constitution, since some of its core documents have been in operation since 1600, while the Constitution of the United States is the oldest active codified constitution. The historical life expectancy of a constitution since 1789 is approximately 19 years.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "thank u"
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help let me know!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "describe the programming language node.js"
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "what is the programming language node.js and what does it do?"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: Non-English-based programming languages are programming languages that do not use keywords taken from or inspired by English vocabulary.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "describe the United States constitution."
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: The Constitution of the United States is the supreme law of the United States. It superseded the Articles of Confederation, the nation's first constitution, on March 4, 1789. Originally including seven articles, the Constitution delineates the frame of the federal government. The Constitution's first three articles embody the doctrine of the separation of powers, in which the federal government is divided into three branches: the legislative, consisting of the bicameral Congress (Article I); the executive, consisting of the president and subordinate officers (Article II); and the judicial, consisting of the Supreme Court and other federal courts (Article III). Article IV, Article V, and Article VI embody concepts of federalism, describing the rights and responsibilities of state governments, the states in relationship to the federal government, and the shared process of constitutional amendment. Article VII establishes the procedure subsequently used by the 13 states to ratify it. The Constitution of the United States is the oldest and longest-standing written and codified national constitution in force in the world.\nThe drafting of the Constitution, often referred to as its framing, was completed at the Constitutional Convention, which assembled at Independence Hall in Philadelphia between May 25 and September 17, 1787. Delegates to the convention were chosen by the state legislatures of 12 of the 13 original states; Rhode Island refused to send delegates. The convention's initial mandate was limited to amending the Articles of Confederation, which had proven highly ineffective in meeting the young nation's needs. Almost immediately, however, delegates began considering measures to replace the Articles. The first proposal discussed, introduced by delegates from Virginia, called for a bicameral (two-house) Congress that was to be elected on a proportional basis based on state population, an elected chief executive, and an appointed judicial branch. An alternative to the Virginia Plan, known as the New Jersey Plan, also called for an elected executive but retained the legislative structure created by the Articles, a unicameral Congress where all states had one vote.\nOn June 19, 1787, delegates rejected the New Jersey Plan with three states voting in favor, seven against, and one divided. The plan's defeat led to a series of compromises centering primarily on two issues: slavery and proportional representation. The first of these pitted Northern states, where slavery was slowly being abolished, against Southern states, whose agricultural economies depended on slave labor. The issue of proportional representation was of similar concern to less populous states, which under the Articles had the same power as larger states. To satisfy interests in the South, particularly in Georgia and South Carolina, the delegates agreed to protect the slave trade, that is, the importation of slaves, for 20 years. Slavery was protected further by allowing states to count three-fifths of their slaves as part of their populations, for the purpose of representation in the federal government, and by requiring the return of escaped slaves to their owners, even if captured in states where slavery had been abolished. Finally, the delegates adopted the Connecticut Compromise, which proposed a Congress with proportional representation in the lower house and equal representation in the upper house (the Senate) giving each state two senators. While these compromises held the Union together and aided the Constitution's ratification, slavery continued for six more decades and the less populous states continue to have disproportional representation in the U.S. Senate and Electoral College.\nSince the Constitution became operational in 1789, it has been amended 27 times. The first ten amendments, known collectively as the Bill of Rights, offer specific protections of individual liberty and justice and place restrictions on the powers of government within the U.S. states. The majority of the 17 later amendments expand individual civil rights protections. Others address issues related to federal authority or modify government processes and procedures. Amendments to the United States Constitution, unlike ones made to many constitutions worldwide, are appended to the document. The original U.S. Constitution was handwritten on five pages of parchment by Jacob Shallus.\nThe first permanent constitution, it is interpreted, supplemented, and implemented by a large body of federal constitutional law and has influenced the constitutions of other nations.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "thanks for the info"
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help on facts, let me know!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "calculate 5^20"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 95367431640625\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "oh okay, ty"
+        },
+        {
+          "sender": "AI",
+          "text": "Alright, let me know if you need help.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
