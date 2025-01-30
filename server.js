@@ -878,10 +878,7 @@ function readGoalData() {
     goalInfo = JSON.parse(rawData);
     console.log("Current Goal:", goalData.goal);
     console.log("Priority:", goalData.priority);
-    console.log(
-      "Goal retrieval output: ",
-      goalInfo.schematic && goalInfo.schematic.priority
-    );
+    console.log("Goal retrieval output: ", goalInfo.schematic);
   }
 }
 

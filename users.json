@@ -205,16 +205,88 @@
         {
           "sender": "User",
           "text": "Explain to me What happened at the Massacre at Wounded Knee?"
+        },
+        {
+          "sender": "User",
+          "text": "Explain to me What happened at the Massacre at Wounded Knee?"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: The Wounded Knee Occupation, also known as Second Wounded Knee, began on February 27, 1973, when approximately 200 Oglala Lakota (sometimes referred to as Oglala Sioux) and followers of the American Indian Movement (AIM) seized and occupied the town of Wounded Knee, South Dakota, United States, on the Pine Ridge Indian Reservation. The protest followed the failure of an effort of the Oglala Sioux Civil Rights Organization (OSCRO) to use impeachment to remove tribal president Richard Wilson, whom they accused of corruption and abuse of opponents. Protesters also criticized the United States government's failure to fulfill treaties with Native American people, and demanded the reopening of treaty negotiations with the goal of fair and equitable treatment of Native Americans.\nOglala and AIM activists controlled the town for 71 days while the United States Marshals Service, FBI agents, and other law enforcement agencies cordoned off the area. The activists chose the site of the 1890 Wounded Knee Massacre for its symbolic value. In March, a U.S. Marshal was shot by gunfire coming from the town, which ultimately resulted in paralysis. Frank Clearwater (of Cherokee and Apache nations) was shot and wounded on April 17, dying 8 days later on April 25, 1973, and Lawrence \"Buddy\" Lamont (Oglala) was shot and killed on April 26, 1973. Ray Robinson, a civil rights activist who joined the protesters, disappeared during the events. It was later determined that he had been buried on the reservation after allegedly being killed during a confrontation with AIM members. \nFollowing Lamont's death the two sides agreed to a truce, which led to the end of the occupation.  Remedial steps were part of the negotiated resolution.\nThe occupation attracted wide media coverage, especially after the press accompanied two U.S. Senators from South Dakota to Wounded Knee. The events electrified Native Americans, and many Native American supporters traveled to Wounded Knee to join the protest. At the time there was widespread public sympathy for the goals of the occupation, as Americans were becoming more aware of longstanding issues of injustice related to Natives. Afterward AIM leaders Dennis Banks and Russell Means were indicted on charges related to the events, but their 1974 case was dismissed by the federal court for prosecutorial misconduct, a decision upheld on appeal.\nWilson stayed in office and in 1974 was re-elected amid charges of intimidation, voter fraud, and other abuses.  The rate of violence climbed on the reservation as conflict opened between political factions in the following three years; residents accused Wilson's private militia, Guardians of the Oglala Nation (GOONs), of much of it. According to AIM, there were 64 unsolved murders during these years, including opponents of the tribal government, such as Pedro Bissonette, director of the Oglala Sioux Civil Rights Organization (OSCRO), but this is disputed, with an FBI report in 2000 concluding that there were only four unsolved murders and that many of the deaths listed were not homicides or political.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "explain to me What happened during the conflict between the U.S. and the Navajo that started in 1863? How did it end?"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: The Apache Wars were a series of armed conflicts between the United States Army and various Apache tribal confederations fought in the southwest between 1849 and 1886, though minor hostilities continued until as late as 1924. After the Mexican–American War in 1846, the United States annexed conflicted territory from Mexico which was the home of both settlers and Apache tribes. Conflicts continued as American settlers came into traditional Apache lands to raise livestock and crops and to mine minerals.\nThe U.S. Army established forts to fight Apache tribal war parties and force Apaches to move to designated Indian reservations created by the U.S. in accordance with the Indian Removal Act. Some reservations were not on the traditional areas occupied by the Apache. In 1886, the U.S. Army put over 5,000 soldiers in the field to fight, which resulted in the surrender of Geronimo and 30 of his followers. This is generally considered the end of the Apache Wars, although conflicts continued between citizens and Apaches. The Confederate Army briefly participated in the wars during the early 1860s in Texas, before being diverted to action in the American Civil War in New Mexico and Arizona.\n\n\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "describe Where were the Nez Perce headed when they were surrounded by U.S. troops and sent to reservations?"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: The 7th Cavalry Regiment is a United States Army cavalry regiment formed in 1866. Its official nickname is \"Garryowen\", after the Irish air \"Garryowen\" that was adopted as its march tune. The regiment participated in some of the largest battles of the American Indian Wars, including its famous defeat at the Battle of the Little Bighorn, where its commander Lieutenant Colonel George Armstrong Custer was  killed. The regiment also committed the Wounded Knee Massacre, where more than 250 men, women and children of the Lakota were killed.\nThe 7th Cavalry became part of the 1st Cavalry Division in the 1920s, it went on to fight in the Pacific Theater of World War II and took part in the Admiralty Islands, Leyte and Luzon campaigns. It later participated several key battles of the Korean War. During the Korean War the unit committed the No Gun Ri massacre, in which between 250 and 300 South Korean refugees were killed, mostly women and children. The unit later participated in the Vietnam War. It distinguished itself in the Gulf War and in the Global War on Terror where its squadrons and battalions now serve as Combined Arms Battalions or as reconnaissance squadrons for Brigade Combat Teams in Iraq and Afghanistan.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Who was Geronimo? What did he do?"
+        },
+        {
+          "sender": "AI",
+          "text": "I don't know how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Explain to me Who was Geronimo? What did he do?"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: Gerónimo (Mescalero-Chiricahua: Goyaałé, lit. 'the one who yawns', Athapascan pronunciation: [kòjàːɬɛ́]; June 16, 1829 – February 17, 1909) was a military leader and medicine man from the Bedonkohe band of the Ndendahe Apache people. From 1850 to 1886, Geronimo joined with members of three other Central Apache bands –  the Tchihende, the Tsokanende (called Chiricahua by Americans) and the Nednhi – to carry out numerous raids, as well as fight against Mexican and U.S. military campaigns in the northern Mexico states of Chihuahua and Sonora and in the southwestern American territories of New Mexico and Arizona.\nGeronimo's raids and related combat actions were a part of the prolonged period of the Apache–United States conflict, which started with the Americans continuing to take land, including Apache lands, following the end of the war with Mexico in 1848. Reservation life was confining to the free-moving Apache people, and they resented restrictions on their customary way of life. Geronimo led breakouts from the reservations in attempts to return his people to their previous nomadic lifestyle. During Geronimo's final period of conflict from 1876 to 1909, he surrendered three times and eventually accepted life on the Apache reservations. While well-known, Geronimo was not a chief of the Bedonkohe band of the Central Apache but a shaman, as was Nokay-doklini among the Western Apache. However, since he was a superb leader in raiding and warfare, he frequently led large numbers of 30 to 50 Apache men.\nIn 1886, after an intense pursuit in northern Mexico by American forces that followed Geronimo's third 1885 reservation breakout, Geronimo surrendered for the last time to Lt. Charles Bare Gatewood. Geronimo and 27 other Apaches were later sent to join the rest of the Chiricahua tribe, which had been previously exiled to Florida. While holding him as a prisoner, the United States capitalized on Geronimo's fame among non-Indians by displaying him at various fairs and exhibitions. In 1898, for example, Geronimo was exhibited at the Trans-Mississippi Exposition in Omaha, Nebraska; seven years later, the Indian Office provided Geronimo for use in a parade at the second inauguration of President Theodore Roosevelt. He died at the Fort Sill hospital in 1909, as a prisoner of war, and was buried at the Fort Sill Indian Agency Cemetery, among the graves of relatives and other Apache prisoners of war.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "describe the ghost dance movement"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "describe the ghost dance movement"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: The Ghost Dance (Caddo: Nanissáanah, also called the Ghost Dance of 1890) is a ceremony incorporated into numerous Native American belief systems. According to the millenarian teachings of the Northern Paiute spiritual leader Wovoka (renamed Jack Wilson), proper practice of the dance would reunite the living with spirits of the dead, bring the spirits to fight on their behalf, end American Westward expansion, and bring peace, prosperity, and unity to Native American peoples throughout the region.\nThe basis for the Ghost Dance is the circle dance, a traditional Native American dance which involves moving in a circular formation in large groups. The Ghost Dance was first practiced by the Nevada Northern Paiute in 1889. The practice swept throughout much of the Western United States, quickly reaching areas of California and Oklahoma. As the Ghost Dance spread from its original source, different tribes synthesized selective aspects of the ritual with their own beliefs.\nThe Ghost Dance has been associated with Wovoka's prophecy of an end to colonial expansion while preaching goals of clean living, an honest life, and cross-cultural cooperation by Native Americans. Practice of the Ghost Dance movement was believed to have contributed to Lakota resistance to assimilation under the Dawes Act. The Lakota variation on the Ghost Dance tended towards millenarianism, an innovation that distinguished the Lakota interpretation from Jack Wilson's original teachings. The Caddo still practice the Ghost Dance today.\n\n\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "explain to me How did the U.S. government react to Ghost Dance?"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: Electronic dance music (EDM), also referred to as dance music or club music, is a broad range of percussive electronic music genres originally made for nightclubs, raves, and festivals. It is generally produced for playback by DJs who create seamless selections of tracks, called a DJ mix, by segueing from one recording to another. EDM producers also perform their music live in a concert or festival setting in what is sometimes called a live PA. Since its inception EDM has expanded to include a wide range of subgenres.\nIn the late 1980s and early 1990s, following the emergence of raving, pirate radio, Party crews, underground festivals, and an upsurge of interest in club culture, EDM achieved mainstream popularity in Europe. However, rave culture was not as broadly popular in the United States; it was not typically seen outside of the regional scenes in New York City, Florida, the Midwest, and California. Although the pioneer genres of electro, Chicago house and Detroit techno were influential both in Europe and the United States, mainstream media outlets and the record industry in the United States remained openly hostile to it until the 1990s and beyond. There was also a perceived association between EDM and drug culture, which led governments at state and city levels to enact laws and policies intended to halt the spread of rave culture.\nSubsequently, in the new millennium, the popularity of EDM increased globally, particularly in the United States and Australia. By the early 2010s, the term \"electronic dance music\" and the initialism \"EDM\" was being pushed by the American music industry and music press in an effort to rebrand American rave culture. Despite the industry's attempt to create a specific EDM brand, the acronym remains in use as an umbrella term for multiple genres, including dance-pop, house, techno, electro and trance, as well as their respective subgenres, which all predate the acronym.\n\n\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "thanks."
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help let me know!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ],
       "Chat 3": [
         {
           "sender": "User",
-          "text": "explain to me how do i add grammarly support for my html website"
+          "text": "wassup"
         },
         {
           "sender": "AI",
-          "text": "Here's what I found on Wikipedia: Google Docs is an online word processor and part of the free, web-based Google Docs Editors suite offered by Google. Google Docs is accessible via a web browser as a web-based application and is also available as a mobile app on Android and iOS and as a desktop application on Google's ChromeOS.\nGoogle Docs allows users to create and edit documents online while collaborating with users in real-time. Edits are tracked by the user making the edit, with a revision history presenting changes. An editor's position is highlighted with an editor-specific color and cursor, and a permissions system regulates what users can do. Updates have introduced features using machine learning, including \"Explore\", offering search results based on the contents of a document, and \"Action items\", allowing users to assign tasks to other users.\nGoogle Docs supports opening and saving documents in the standard OpenDocument format as well as in Rich text format, plain Unicode text, zipped HTML, and Microsoft Word. Exporting to PDF and EPUB formats is implemented.\n\n\n\nCurrent Goal: Assist users with their queries\nPriority: Very-High"
+          "text": "Hey, whats up? Anything on your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
