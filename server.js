@@ -523,7 +523,7 @@ async function trainTransformerModel(
     data.map((d) => d.map((v) => [v])),
     [data.length, data[0].length, 1]
   ); // Reshape to 3D tensor
-  const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensure labels have the correct shape
+  const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
   const dataset = tf.data
     .zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) })
     .batch(batchSize);

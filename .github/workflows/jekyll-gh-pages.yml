@@ -71,11 +71,11 @@ jobs:
         with:
           node-version: "18" 
 
-    finish build:
+    Finalize:
       enviorment:
         name: Fabricate Site With Node.js
 
         runs-on: ubuntu-latest
-        
+
       - name: Build Site
         run: npm run poststart
