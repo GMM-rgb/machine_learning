@@ -69,13 +69,13 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4/
         with:
-          node-version: "18" 
+          node-version: "18"
 
-    Finalize:
-      enviorment:
-        name: Fabricate Site With Node.js
+    #Finalize:
+    # enviorment:
+    #  name: Fabricate Site With Node.js
 
-        runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
 
-      - name: Build Site
-        run: npm run poststart
+    #- name: Build Site
+    # run: npm run poststart
