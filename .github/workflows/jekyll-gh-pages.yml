@@ -57,8 +57,8 @@ jobs:
         with:
           path: "./public/_site"
 
-      - name: Fabricate Site With Node.js
-        run: npm run poststart
+  ##- name: Fabricate Site With Node.js
+  ##run: npm run poststart
 
   deploy:
     environment:
@@ -70,3 +70,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        run: node server.js
