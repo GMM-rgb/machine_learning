@@ -281,12 +281,24 @@
       ],
       "Chat 3": [
         {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: A fossil (from Classical Latin fossilis, lit. 'obtained by digging') is any preserved remains, impression, or trace of any once-living thing from a past geological age. Examples include bones, shells, exoskeletons, stone imprints of animals or microbes, objects preserved in amber, hair, petrified wood and DNA remnants. The totality of fossils is known as the fossil record. Though the fossil record is incomplete, numerous studies have demonstrated that there is enough information available to give a good understanding of the pattern of diversification of life on Earth. In addition, the record can predict and fill gaps such as the discovery of Tiktaalik in the arctic of Canada.\nPaleontology includes the study of fossils: their age, method of formation, and evolutionary significance. Specimens are sometimes considered to be fossils if they are over 10,000 years old. The oldest fossils are around 3.48 billion years  to 4.1 billion years old. The observation in the 19th century that certain fossils were associated with certain rock strata led to the recognition of a geological timescale and the relative ages of different fossils. The development of radiometric dating techniques in the early 20th century allowed scientists to quantitatively measure the absolute ages of rocks and the fossils they host.\nThere are many processes that lead to fossilization, including permineralization, casts and molds, authigenic mineralization, replacement and recrystallization, adpression, carbonization, and bioimmuration.\nFossils vary in size from one-micrometre (1 μm) bacteria to dinosaurs and trees, many meters long and weighing many tons. A fossil normally preserves only a portion of the deceased organism, usually that portion that was partially mineralized during life, such as the bones and teeth of vertebrates, or the chitinous or calcareous exoskeletons of invertebrates. Fossils may also consist of the marks left behind by the organism while it was alive, such as animal tracks or feces (coprolites). These types of fossil are called trace fossils or ichnofossils, as opposed to body fossils. Some fossils are biochemical and are called chemofossils or biosignatures.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
           "sender": "User",
-          "text": "wassup"
+          "text": "sup"
         },
         {
           "sender": "AI",
-          "text": "Hey, whats up? Anything on your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "sup"
+        },
+        {
+          "sender": "AI",
+          "text": "We talked about \"sup\" earlier. Anything else on your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
