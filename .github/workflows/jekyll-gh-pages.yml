@@ -57,8 +57,8 @@ jobs:
         with:
           path: "./public/_site"
 
-  - name: Fabricate Site With Node.js
-    run: npm run poststart
+      - name: Fabricate Site With Node.js
+        run: npm run poststart
 
   deploy:
     environment:
