@@ -40,9 +40,6 @@ jobs:
       - name: Audit fix
         run: npm audit fix & npm audit fix --force
 
-      - name: Fabricate Site With Node.js
-        run: npm run poststart
-
       - name: Log build directory
         run: ls -la public/
 
@@ -59,6 +56,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./public/_site"
+
+      - name: Fabricate Site With Node.js
+        run: npm run poststart
 
   deploy:
     environment:
