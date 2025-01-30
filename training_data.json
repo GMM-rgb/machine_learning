@@ -1104,6 +1104,61 @@
       "input": "oh okay ty",
       "output": "Alright, let me know if you need help.",
       "timestamp": "2025-01-30T19:38:58.737Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-30T22:19:06.608Z"
+    },
+    {
+      "input": "describe mathmatics",
+      "output": "Here's what I found on Wikipedia: Mathematics is a field of study that discovers and organizes methods, theories and theorems that are developed and proved for the needs of empirical sciences and mathematics itself. There are many areas of mathematics, which include number theory (the study of numbers), algebra (the study of formulas and related structures), geometry (the study of shapes and spaces that contain them), analysis (the study of continuous changes), and set theory (presently used as a foundation for all mathematics).\nMathematics involves the description and manipulation of abstract objects that consist of either abstractions from nature or—in modern mathematics—purely abstract entities that are stipulated to have certain properties, called axioms.  Mathematics uses pure reason to prove properties of objects, a proof consisting of a succession of applications of deductive rules to already established results. These results include previously proved theorems, axioms, and—in case of abstraction from nature—some basic properties that are considered true starting points of the theory under consideration.\nMathematics is essential in the natural sciences, engineering, medicine, finance, computer science, and the social sciences. Although mathematics is extensively used for modeling phenomena, the fundamental truths of mathematics are independent of any scientific experimentation. Some areas of mathematics, such as statistics and game theory, are developed in close correlation with their applications and are often grouped under applied mathematics. Other areas are developed independently from any application (and are therefore called pure mathematics) but often later find practical applications.\nHistorically, the concept of a proof and its associated mathematical rigour first appeared in Greek mathematics, most notably in Euclid's Elements. Since its beginning, mathematics was primarily divided into geometry and arithmetic (the manipulation of natural numbers and fractions), until the 16th and 17th centuries, when algebra and infinitesimal calculus were introduced as new fields. Since then, the interaction between mathematical innovations and scientific discoveries has led to a correlated increase in the development of both. At the end of the 19th century, the foundational crisis of mathematics led to the systematization of the axiomatic method, which heralded a dramatic increase in the number of mathematical areas and their fields of application. The contemporary Mathematics Subject Classification lists more than sixty first-level areas of mathematics.",
+      "timestamp": "2025-01-30T22:30:08.363Z"
+    },
+    {
+      "input": "thank u bro",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-30T22:32:09.035Z"
+    },
+    {
+      "input": "sup.",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-30T22:33:08.293Z"
+    },
+    {
+      "input": "compute 0/5",
+      "output": "The answer is: 0",
+      "timestamp": "2025-01-30T22:34:10.338Z"
+    },
+    {
+      "input": "5/0",
+      "output": "The answer is: Infinity",
+      "timestamp": "2025-01-30T22:34:21.459Z"
+    },
+    {
+      "input": "54787284426*23u2847487482*32483247842/5",
+      "output": "Sorry, I couldn't solve that math problem. Please check the expression and try again.",
+      "timestamp": "2025-01-30T22:34:31.428Z"
+    },
+    {
+      "input": "342483748347873247238478*342482473847847234847834782748/5",
+      "output": "The answer is: 2.3458936277372638e+52",
+      "timestamp": "2025-01-30T22:34:41.519Z"
+    },
+    {
+      "input": "hey sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-30T23:24:25.119Z"
+    },
+    {
+      "input": "how r u doin",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-01-30T23:25:04.102Z"
+    },
+    {
+      "input": "oh okay good to hear from you",
+      "output": "Really? Thanks! 😄",
+      "timestamp": "2025-01-30T23:25:16.410Z"
     }
   ],
   "vocabulary": {
@@ -2518,6 +2573,26 @@
       },
       {
         "word": "ty",
+        "definition": ""
+      },
+      {
+        "word": "mathmatics",
+        "definition": "Here's what I found on Wikipedia: Mathematics is a field of study that discovers and organizes methods, theories and theorems that are developed and proved for the needs of empirical sciences and mathematics itself."
+      },
+      {
+        "word": "thank",
+        "definition": ""
+      },
+      {
+        "word": "0/5",
+        "definition": "Here's what I found on Wikipedia: 0 (zero) is a number representing an empty quantity."
+      },
+      {
+        "word": "5/0",
+        "definition": "Here's what I found on Wikipedia: 5."
+      },
+      {
+        "word": "from",
         "definition": ""
       }
     ],
@@ -5385,7 +5460,93 @@
     "info": 3010,
     "facts": 3011,
     "95367431640625": 3013,
-    "ty": 3014
+    "ty": 3014,
+    "mathmatics": 3015,
+    "discovers": 3016,
+    "organizes": 3017,
+    "theories": 3018,
+    "theorems": 3019,
+    "proved": 3020,
+    "empirical": 3021,
+    "sciences": 3022,
+    "number": 3023,
+    "theory": 3024,
+    "formulas": 3025,
+    "geometry": 3026,
+    "shapes": 3027,
+    "spaces": 3028,
+    "contain": 3029,
+    "continuous": 3030,
+    "presently": 3031,
+    "mathematics\nmathematics": 3032,
+    "description": 3033,
+    "manipulation": 3034,
+    "either": 3035,
+    "abstractions": 3036,
+    "nature": 3037,
+    "orin": 3038,
+    "modern": 3039,
+    "mathematicspurely": 3040,
+    "entities": 3041,
+    "stipulated": 3042,
+    "axioms": 3043,
+    "pure": 3044,
+    "reason": 3045,
+    "prove": 3046,
+    "proof": 3047,
+    "succession": 3048,
+    "deductive": 3049,
+    "rules": 3050,
+    "andin": 3051,
+    "abstraction": 3052,
+    "naturesome": 3053,
+    "true": 3054,
+    "starting": 3055,
+    "consideration\nmathematics": 3056,
+    "essential": 3057,
+    "engineering": 3058,
+    "finance": 3059,
+    "modeling": 3060,
+    "phenomena": 3061,
+    "truths": 3062,
+    "independent": 3063,
+    "experimentation": 3064,
+    "statistics": 3065,
+    "correlation": 3066,
+    "grouped": 3067,
+    "applied": 3068,
+    "therefore": 3069,
+    "practical": 3070,
+    "applications\nhistorically": 3071,
+    "rigour": 3072,
+    "appeared": 3073,
+    "greek": 3074,
+    "notably": 3075,
+    "euclids": 3076,
+    "elements": 3077,
+    "beginning": 3078,
+    "arithmetic": 3079,
+    "fractions": 3080,
+    "17th": 3081,
+    "infinitesimal": 3082,
+    "calculus": 3083,
+    "interaction": 3084,
+    "innovations": 3085,
+    "discoveries": 3086,
+    "correlated": 3087,
+    "increase": 3088,
+    "foundational": 3089,
+    "crisis": 3090,
+    "systematization": 3091,
+    "axiomatic": 3092,
+    "heralded": 3093,
+    "classification": 3094,
+    "lists": 3095,
+    "sixty": 3096,
+    "firstlevel": 3097,
+    "5478728442623u2847487482324832478425": 3098,
+    "3424837483478732472384783424824738478472348478347827485": 3099,
+    "23458936277372638e52": 3100
   },
-  "lastTrainingDate": "2025-01-30T19:38:59.331Z"
+  "lastTrainingDate": "2025-01-30T23:25:17.370Z"
 }
