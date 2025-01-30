@@ -875,8 +875,13 @@ function readGoalData() {
   if (fs.existsSync(goalDataFile)) {
     const rawData = fs.readFileSync(goalDataFile, "utf8");
     goalData = JSON.parse(rawData);
+    goalInfo = JSON.parse(rawData);
     console.log("Current Goal:", goalData.goal);
     console.log("Priority:", goalData.priority);
+    console.log(
+      "Goal retrieval output: ",
+      goalInfo.schematic && goalInfo.schematic.priority
+    );
   }
 }
 

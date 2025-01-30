@@ -1,4 +1,11 @@
 {
   "goal": "Assist users with their queries",
-  "priority": "High"
+  "priority": "Very-High",
+
+  "goalInfo": {
+    "Schematic": "Organizing output qeury, highlight important info, and cut down on the clutter", "priority": "High"
+  },
+  "otherInfo": {
+    "description": "Just optional stuff here.", "priority": "Low"
+  }
 }
