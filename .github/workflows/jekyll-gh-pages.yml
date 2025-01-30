@@ -70,6 +70,7 @@ jobs:
         uses: actions/deploy-pages@v3
         with:
           artifact_name: "github-pages"
+          path: ".public/_site"
 
     #Finalize:
     # enviorment:
