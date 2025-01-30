@@ -1,4 +1,24 @@
 {
+  "1012907": {
+    "password": "hs20110828a",
+    "accountId": "account_1738273051042",
+    "conversations": {
+      "Chat 1": [
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "explain to me What did the early Indian treaties (Fort Laramie and Fort Atkinson) do?"
+        }
+      ]
+    }
+  },
   "Maximus Farvour": {
     "password": "592011",
     "accountId": "7255dc937801efe02e86abfe00cba0e4",
@@ -385,6 +405,34 @@
         {
           "sender": "AI",
           "text": "Alright, let me know if you need help.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "compute 554535*43345345/34424^4"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 0.0000\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "43248434824732473724274*4394324732437242873/5^4"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 3.0407626686323532e+38\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "-5*3"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: -15\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "okay, thank u"
         }
       ]
     }

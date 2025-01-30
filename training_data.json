@@ -1104,6 +1104,36 @@
       "input": "oh okay ty",
       "output": "Alright, let me know if you need help.",
       "timestamp": "2025-01-30T19:38:58.737Z"
+    },
+    {
+      "input": "compute 554535*43345345/34424^4",
+      "output": "The answer is: 0.0000",
+      "timestamp": "2025-01-30T21:22:46.346Z"
+    },
+    {
+      "input": "43248434824732473724274*4394324732437242873/5^4",
+      "output": "The answer is: 3.0407626686323532e+38",
+      "timestamp": "2025-01-30T21:23:05.904Z"
+    },
+    {
+      "input": "-5*3",
+      "output": "The answer is: -15",
+      "timestamp": "2025-01-30T21:23:18.918Z"
+    },
+    {
+      "input": "okay thank u",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-01-30T21:27:53.275Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-30T21:37:55.088Z"
+    },
+    {
+      "input": "explain to me what did the early indian treaties (fort laramie and fort atkinson) do?",
+      "output": "Here's what I found on Wikipedia: The Cheyenne (  shy-AN) are an Indigenous people of the Great Plains. The Cheyenne comprise two Native American tribes, the Só'taeo'o or Só'taétaneo'o (more commonly spelled as Suhtai or Sutaio) and the Tsétsėhéstȧhese (also spelled Tsitsistas, [t͡sɪt͡shɪstʰɑs]); the tribes merged in the early 19th century. Today, the Cheyenne people are split into two federally recognized nations: the Southern Cheyenne, who are enrolled in the Cheyenne and Arapaho Tribes in Oklahoma, and the Northern Cheyenne, who are enrolled in the Northern Cheyenne Tribe of the Northern Cheyenne Indian Reservation in Montana. The Cheyenne language belongs to the Algonquian language family.\nOver the past 400 years, the Cheyenne have changed their lifestyles from Great Lakes woodlands to Northern Plains and by the mid-19th century, the US government forced them onto reservations. At the time of their first European contact in the 16th century, the Cheyenne lived in what is now Minnesota. They were close allies of the Arapaho and loosely aligned with the Lakota. By the early 18th century, they were forced west by other tribes across the Missouri River and into North and South Dakota, where they adopted the horse culture. Having settled the Black Hills of South Dakota and the Powder River Country of present-day Montana and Wyoming, they introduced the horse culture to Lakota people around 1730. The main group of Cheyenne, the Tsêhéstáno, was once composed of ten bands that spread across the Great Plains from southern Colorado to the Black Hills in South Dakota. They fought their historic enemies, the Crow and later (1856–79) the United States Army. In the mid-19th century, the bands began to split, with some bands choosing to remain near the Black Hills, while others chose to remain near the Platte Rivers of central Colorado. With the Arapaho, the Cheyenne pushed the Kiowa to the Southern Plains. In turn, they were pushed west by the more numerous Lakota.\nThe Northern Cheyenne, known in Cheyenne either as Notameohmésėhese, meaning \"Northern Eaters\" (or simply as Ohmésėhese meaning \"Eaters\"), live in southeastern Montana on the Northern Cheyenne Indian Reservation. Tribal enrollment figures, as of late 2014, indicate that there are approximately 10,840 members, of which about 4,939 reside on the reservation. Approximately 91% of the population are Native Americans (full or part race), with 72.8% identifying themselves as Cheyenne. Slightly more than one-quarter of the population five years or older spoke a language other than English. The Southern Cheyenne, known in Cheyenne as Heévâhetaneo'o meaning \"Roped People\", together with the Southern Arapaho, form the Cheyenne and Arapaho Tribes, in western Oklahoma. Their combined population is 12,130, as of 2008. In 2003, approximately 8,000 of these identified themselves as Cheyenne, although with continuing intermarriage it has become increasingly difficult to separate the tribes.",
+      "timestamp": "2025-01-30T21:39:24.589Z"
     }
   ],
   "vocabulary": {
@@ -1140,6 +1170,7 @@
     "47": 820,
     "49": 1197,
     "50": 830,
+    "53": 3019,
     "54": 1194,
     "55": 2053,
     "56": 1337,
@@ -1153,21 +1184,25 @@
     "81": 1582,
     "85": 356,
     "90": 2085,
+    "91": 3067,
     "120": 1086,
     "200": 2246,
     "250": 2412,
     "268": 2051,
     "300": 2425,
     "348": 2706,
+    "400": 3035,
     "500": 1184,
     "520": 3012,
     "700": 2033,
+    "728": 3070,
     "951": 1975,
     "1000": 1682,
     "1005": 1222,
     "1250": 1703,
     "1500": 1959,
     "1600": 2818,
+    "1730": 3045,
     "1769": 624,
     "1780": 1933,
     "1787": 2911,
@@ -1219,11 +1254,13 @@
     "1988": 1160,
     "1998": 1325,
     "2000": 1513,
+    "2003": 3080,
     "2004": 1347,
     "2007": 1165,
     "2008": 1170,
     "2012": 1784,
     "2013": 812,
+    "2014": 3062,
     "2015": 813,
     "2017": 814,
     "2018": 1894,
@@ -1239,13 +1276,16 @@
     "4000": 1510,
     "4232": 128,
     "4400": 1978,
+    "4939": 3065,
     "5000": 2389,
     "5500": 1509,
     "7763": 1963,
     "8000": 1659,
     "10000": 2704,
     "10560": 97,
+    "10840": 3064,
     "12000": 1642,
+    "12130": 3079,
     "15191": 1962,
     "16384": 821,
     "20000": 1640,
@@ -1253,6 +1293,7 @@
     "50025": 1221,
     "146385": 2807,
     "171720": 823,
+    "185679": 3049,
     "235000": 1974,
     "343445": 822,
     "definitions": [
@@ -2518,6 +2559,30 @@
       },
       {
         "word": "ty",
+        "definition": ""
+      },
+      {
+        "word": "-5*3",
+        "definition": "Here's what I found on Wikipedia: The apostrophe (’, ' ) is a punctuation mark, and sometimes a diacritical mark, in languages that use the Latin alphabet and some other alphabets."
+      },
+      {
+        "word": "did",
+        "definition": ""
+      },
+      {
+        "word": "early",
+        "definition": ""
+      },
+      {
+        "word": "indian",
+        "definition": ""
+      },
+      {
+        "word": "and",
+        "definition": ""
+      },
+      {
+        "word": "atkinson)",
         "definition": ""
       }
     ],
@@ -5385,7 +5450,67 @@
     "info": 3010,
     "facts": 3011,
     "95367431640625": 3013,
-    "ty": 3014
+    "ty": 3014,
+    "55453543345345344244": 3015,
+    "00000": 3016,
+    "43248434824732473724274439432473243724287354": 3017,
+    "30407626686323532e38": 3018,
+    "shyan": 3020,
+    "staeoo": 3021,
+    "stataneoo": 3022,
+    "spelled": 3023,
+    "suhtai": 3024,
+    "sutaio": 3025,
+    "tstshsthese": 3026,
+    "tsitsistas": 3027,
+    "tstshsts": 3028,
+    "split": 3029,
+    "federally": 3030,
+    "enrolled": 3031,
+    "belongs": 3032,
+    "algonquian": 3033,
+    "family\nover": 3034,
+    "lifestyles": 3036,
+    "mid19th": 3037,
+    "onto": 3038,
+    "minnesota": 3039,
+    "loosely": 3040,
+    "aligned": 3041,
+    "missouri": 3042,
+    "settled": 3043,
+    "presentday": 3044,
+    "tshstno": 3046,
+    "once": 3047,
+    "composed": 3048,
+    "choosing": 3050,
+    "remain": 3051,
+    "platte": 3052,
+    "rivers": 3053,
+    "turn": 3054,
+    "lakota\nthe": 3055,
+    "either": 3056,
+    "notameohmshese": 3057,
+    "meaning": 3058,
+    "eaters": 3059,
+    "simply": 3060,
+    "ohmshese": 3061,
+    "indicate": 3063,
+    "reside": 3066,
+    "full": 3068,
+    "race": 3069,
+    "identifying": 3071,
+    "themselves": 3072,
+    "slightly": 3073,
+    "onequarter": 3074,
+    "older": 3075,
+    "spoke": 3076,
+    "hevhetaneoo": 3077,
+    "roped": 3078,
+    "intermarriage": 3081,
+    "become": 3082,
+    "increasingly": 3083,
+    "difficult": 3084,
+    "separate": 3085
   },
-  "lastTrainingDate": "2025-01-30T19:38:59.331Z"
+  "lastTrainingDate": "2025-01-30T21:39:26.847Z"
 }
