@@ -49,12 +49,12 @@ jobs:
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
+          source: "./public"
           destination: "./public/_site"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          source: "./public/"
           path: "./public/_site"
 
   deploy:
