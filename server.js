@@ -11,6 +11,7 @@ const tf = require("@tensorflow/tfjs-node-gpu");
 const https = require("https");
 const ProgressBar = require("progress");
 const cors = require("cors");
+const os = require("os");
 
 const expressApp = express();
 const PORT = 3000;
