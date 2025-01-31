@@ -507,6 +507,22 @@
         {
           "sender": "User",
           "text": ":D"
+        },
+        {
+          "sender": "User",
+          "text": "hey there its me your developer Maximus Farvour"
+        },
+        {
+          "sender": "AI",
+          "text": "My developer is Maximus Farvour.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "yup"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ],
       "Chat 8": []

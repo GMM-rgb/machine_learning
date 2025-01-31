@@ -1174,6 +1174,16 @@
       "input": ":d",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-31T02:39:26.712Z"
+    },
+    {
+      "input": "hey there it's me your developer maximus farvour",
+      "output": "My developer is Maximus Farvour.",
+      "timestamp": "2025-01-31T03:02:46.780Z"
+    },
+    {
+      "input": "yup",
+      "output": "Okay, got it.",
+      "timestamp": "2025-01-31T03:02:56.576Z"
     }
   ],
   "vocabulary": {
@@ -2617,6 +2627,22 @@
       {
         "word": "welcome",
         "definition": "Here's what I found on Wikipedia: A welcome is a kind of greeting designed to introduce a person to a new place or situation, and to make them feel at ease."
+      },
+      {
+        "word": "it's",
+        "definition": "Here's what I found on Wikipedia: English auxiliary verbs are a small set of English verbs, which include the English modal auxiliary verbs and a few others."
+      },
+      {
+        "word": "developer",
+        "definition": ""
+      },
+      {
+        "word": "maximus",
+        "definition": "Here's what I found on Wikipedia: Maximus (Hellenised as Maximos) is the Latin term for \"greatest\" or \"largest\"."
+      },
+      {
+        "word": "farvour",
+        "definition": "Here's what I found on Wikipedia: Bull is a 2021 British crime thriller film written and directed by Paul Andrew Williams."
       }
     ],
     "hi": 2,
@@ -5572,5 +5598,5 @@
     "23458936277372638e52": 3100,
     "d": 3101
   },
-  "lastTrainingDate": "2025-01-31T02:39:26.712Z"
+  "lastTrainingDate": "2025-01-31T03:02:56.576Z"
 }
