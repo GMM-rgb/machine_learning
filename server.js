@@ -998,40 +998,40 @@ expressApp.post("/feedback", (req, res) => {
 });
 
 // Try to start local server for AI when /start is posted from HTML JavaScript
-const startManualPORT = 53483;
+//const startManualPORT = 53483;
 
 // Update the getLocalIpAddress function to highlight your specific IP
-function getLocalIpAddress() {
-  const { networkInterfaces } = require("os");
-  const nets = networkInterfaces();
-  const results = [];
-  const targetIP = "192.168.0.62";
-
-  for (const name of Object.keys(nets)) {
-    for (const net of nets[name]) {
-      // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-      if (net.family === "IPv4" && !net.internal) {
-        if (net.address === targetIP) {
-          console.log("\n=== Your Main Network Interface ===");
-          console.log(`Interface: ${name}`);
-          console.log(`IP Address: ${net.address} (This is your machine)`);
-          console.log(`Netmask: ${net.netmask}`);
-        }
-        results.push({
-          name: name,
-          address: net.address,
-          netmask: net.netmask,
-          isMain: net.address === targetIP,
-        });
-      }
-    }
-  }
+//function getLocalIpAddress() {
+//  const { networkInterfaces } = require("os");
+//  const nets = networkInterfaces();
+//  const results = [];
+//  const targetIP = "192.168.0.62";
+//
+///  for (const name of Object.keys(nets)) {
+/////    for (const net of nets[name]) {
+////      // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+///      if (net.family === "IPv4" && !net.internal) {
+ ////       if (net.address === targetIP) {
+ ///         console.log("\n=== Your Main Network Interface ===");
+ //         console.log(`Interface: ${name}`);
+ ///         console.log(`IP Address: ${net.address} (This is your machine)`);
+ //         console.log(`Netmask: ${net.netmask}`);
+ //       }
+ //       results.push({
+ //         name: name,
+ //         address: net.address,
+  //        netmask: net.netmask,
+  //        isMain: net.address === targetIP,
+ //       });
+ //     }
+   // }
+  ///}
 
   // Sort results to put your IP first
-  results.sort((a, b) => b.isMain - a.isMain);
-
-  return results;
-}
+ // results.sort((a, b) => b.isMain - a.isMain);
+///
+ // return results;
+//}
 
 // Move the route definition before the server startup
 expressApp.get("/", (req, res) => {
