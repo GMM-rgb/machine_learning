@@ -31,6 +31,7 @@
         "asynckit": "^0.4.0",
         "axios": "^1.7.9",
         "body-parser": "^1.20.3",
+        "cors": "^2.8.5",
         "crypto": "^1.0.1",
         "dependency-manager": "^0.0.2",
         "display": "^0.2.0",
