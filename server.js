@@ -105,6 +105,8 @@ function normalizeText(input) {
       tbh: "To be honest",
       yolo: "You only live once",
       nvm: "Never mind",
+      ty: "Thank you",
+      yw: "Your welcome",
     },
   };
 
