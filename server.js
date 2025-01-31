@@ -1081,25 +1081,35 @@ expressApp.use(bodyParser.json());
 expressApp.use(express.static(path.join(__dirname, "public")));
 
 // Function to get local IP address
-function getLocalIpAddress() {
-  const interfaces = os.networkInterfaces();
+function getLocalIpAddresses() {
+  const interfaces = require("os").networkInterfaces();
+  const results = [];
+
   for (const name of Object.keys(interfaces)) {
     for (const net of interfaces[name]) {
       if (net.family === "IPv4" && !net.internal) {
-        return net.address;
+        results.push({ name, address: net.address });
       }
     }
   }
-  return "localhost";
+
+  return results.length > 0 ? results : [{ name: "localhost", address: "127.0.0.1" }];
 }
 
 // Start server and allow external access
 expressApp.listen(PORT, "0.0.0.0", () => {
-  const localIp = getLocalIpAddress();
+  const localIps = getLocalIpAddresses();
+
   console.log(`Server running at:`);
   console.log(`- Local: http://localhost:${PORT}`);
-  console.log(`- Network: http://${localIp}:${PORT}`);
-  console.log(`- If using GitHub Codespaces, use: https://${process.env.CODESPACE_NAME}-${PORT}.githubpreview.dev`);
+
+  localIps.forEach(({ name, address }) => {
+    console.log(`- Network (${name}): http://${address}:${PORT}`);
+  });
+
+  if (process.env.CODESPACE_NAME) {
+    console.log(`- GitHub Codespaces: https://${process.env.CODESPACE_NAME}-${PORT}.githubpreview.dev`);
+  }
 });
 
 // Electron App Initialization
