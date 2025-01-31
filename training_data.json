@@ -1159,6 +1159,21 @@
       "input": "oh okay good to hear from you",
       "output": "Really? Thanks! 😄",
       "timestamp": "2025-01-30T23:25:16.410Z"
+    },
+    {
+      "input": "okay good to hear from you",
+      "output": "Really? Thanks! 😄",
+      "timestamp": "2025-01-31T02:38:59.609Z"
+    },
+    {
+      "input": "your welcome",
+      "output": "Thanks, your the best too!",
+      "timestamp": "2025-01-31T02:39:13.275Z"
+    },
+    {
+      "input": ":d",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-01-31T02:39:26.712Z"
     }
   ],
   "vocabulary": {
@@ -2594,6 +2609,14 @@
       {
         "word": "from",
         "definition": ""
+      },
+      {
+        "word": "from",
+        "definition": ""
+      },
+      {
+        "word": "welcome",
+        "definition": "Here's what I found on Wikipedia: A welcome is a kind of greeting designed to introduce a person to a new place or situation, and to make them feel at ease."
       }
     ],
     "hi": 2,
@@ -5546,7 +5569,8 @@
     "firstlevel": 3097,
     "5478728442623u2847487482324832478425": 3098,
     "3424837483478732472384783424824738478472348478347827485": 3099,
-    "23458936277372638e52": 3100
+    "23458936277372638e52": 3100,
+    "d": 3101
   },
-  "lastTrainingDate": "2025-01-30T23:25:17.370Z"
+  "lastTrainingDate": "2025-01-31T02:39:26.712Z"
 }

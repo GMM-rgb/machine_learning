@@ -487,6 +487,26 @@
         {
           "sender": "AI",
           "text": "I don't know how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "okay good to hear from you"
+        },
+        {
+          "sender": "AI",
+          "text": "Really? Thanks! 😄\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "your welcome"
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks, your the best too!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": ":D"
         }
       ],
       "Chat 8": []
