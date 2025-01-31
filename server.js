@@ -1073,6 +1073,33 @@ expressApp.post("/start", async (req, res) => {
 // Update main server startup with static file serving
 expressApp.use("/", express.static(path.join(__dirname, "public")));
 
+// Enable CORS for external access
+expressApp.use(cors());
+expressApp.use(bodyParser.json());
+expressApp.use(express.static(path.join(__dirname, "public")));
+
+// Function to get local IP address
+function getLocalIpAddress() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const net of interfaces[name]) {
+      if (net.family === "IPv4" && !net.internal) {
+        return net.address;
+      }
+    }
+  }
+  return "localhost";
+}
+
+// Start server and allow external access
+expressApp.listen(PORT, "0.0.0.0", () => {
+  const localIp = getLocalIpAddress();
+  console.log(`Server running at:`);
+  console.log(`- Local: http://localhost:${PORT}`);
+  console.log(`- Network: http://${localIp}:${PORT}`);
+  console.log(`- If using GitHub Codespaces, use: https://${process.env.CODESPACE_NAME}-${PORT}.githubpreview.dev`);
+});
+
 // Electron App Initialization
 //let win;
 
