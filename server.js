@@ -1095,20 +1095,20 @@ function getLocalIpAddresses() {
 
   return results.length > 0 ? results : [{ name: "localhost", address: "127.0.0.1" }];
 }
-
+const externalPort = 3001;
 // Start server and allow external access
 expressApp.listen(PORT, "0.0.0.0", () => {
   const localIps = getLocalIpAddresses();
 
   console.log(`Server running at:`);
-  console.log(`- Local: http://localhost:${PORT}`);
+  console.log(`- Local: http://localhost:${externalPort}`);
 
   localIps.forEach(({ name, address }) => {
-    console.log(`- Network (${name}): http://${address}:${PORT}`);
+    console.log(`- Network (${name}): http://${address}:${externalPort}`);
   });
 
   if (process.env.CODESPACE_NAME) {
-    console.log(`- GitHub Codespaces: https://${process.env.CODESPACE_NAME}-${PORT}.githubpreview.dev`);
+    console.log(`- GitHub Codespaces: https://${process.env.CODESPACE_NAME}-${externalPort}.githubpreview.dev`);
   }
 });
 
