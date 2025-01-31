@@ -1100,9 +1100,6 @@ const externalPort = 3001;
 expressApp.listen(PORT, "0.0.0.0", () => {
   const localIps = getLocalIpAddresses();
 
-  console.log(`Server running at:`);
-  console.log(`- Local: http://localhost:${externalPort}`);
-
   localIps.forEach(({ name, address }) => {
     console.log(`- Network (${name}): http://${address}:${externalPort}`);
   });
