@@ -1224,6 +1224,21 @@
       "input": "how are you doing today",
       "output": "Not too much, but hey I'm doing great!",
       "timestamp": "2025-02-01T19:58:04.525Z"
+    },
+    {
+      "input": "hey wassup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-01T20:01:17.507Z"
+    },
+    {
+      "input": "how u doin bro?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-02-01T20:01:36.189Z"
+    },
+    {
+      "input": "good to hear",
+      "output": "Your very welcome, if you need help let me know! 😊",
+      "timestamp": "2025-02-01T20:01:46.183Z"
     }
   ],
   "vocabulary": {
@@ -2694,6 +2709,10 @@
       },
       {
         "word": "but",
+        "definition": ""
+      },
+      {
+        "word": "wassup",
         "definition": ""
       }
     ],
@@ -5651,5 +5670,5 @@
     "d": 3101,
     "uh": 3102
   },
-  "lastTrainingDate": "2025-02-01T19:58:04.525Z"
+  "lastTrainingDate": "2025-02-01T20:01:46.183Z"
 }
