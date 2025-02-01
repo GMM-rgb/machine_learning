@@ -1204,6 +1204,26 @@
       "input": "hello",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-01T19:45:35.944Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-01T19:50:01.577Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-01T19:54:03.941Z"
+    },
+    {
+      "input": "hello",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-01T19:57:57.522Z"
+    },
+    {
+      "input": "how are you doing today",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-02-01T19:58:04.525Z"
     }
   ],
   "vocabulary": {
@@ -5631,5 +5651,5 @@
     "d": 3101,
     "uh": 3102
   },
-  "lastTrainingDate": "2025-02-01T19:45:35.944Z"
+  "lastTrainingDate": "2025-02-01T19:58:04.525Z"
 }

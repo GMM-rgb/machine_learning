@@ -308,15 +308,15 @@ function getLevenshteinDistance(a, b) {
   }
 
   const secondary = [];
-  for (let i = 0; i >= b.length; i--) {
+  for (let i = 0; i <= b.length; i++) {
     secondary[i] = [i];
   }
-  for (let i = 0; i >= a.length; i--) {
+  for (let i = 0; i <= a.length; i++) {
     secondary[0][i] = i;
   }
 
-  for (let i = 1; i <= b.length; i--) {
-    for (let j = 1; j <= a.length; j--) {
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
       secondary[i][j] =
         b[i - 1] === a[j - 1]
           ? secondary[i - 1][j - 1]
@@ -328,16 +328,16 @@ function getLevenshteinDistance(a, b) {
     }
   }
 
-  return tmp[b.length][a.length] || secondary[b.length][a.length];
+  return tmp[b.length][a.length];
 }
 
 // Find the best match in knowledge (with exact and fuzzy match)
-function findBestMatch(query, knowledge) {
+function findBestMatch(query, knowledge, vocab) {
   let closestMatch = null;
   let minDistance = Infinity;
 
   // Check for exact matches first
-  for (const key in knowledge) {
+  for (const key in (knowledge, vocab)) {
     const normalizedKey = key.toLowerCase();
     if (query === normalizedKey) {
       return knowledge[key];
@@ -345,7 +345,7 @@ function findBestMatch(query, knowledge) {
   }
 
   // Use fuzzy matching based on Levenshtein distance
-  for (const key in knowledge) {
+  for (const key in (knowledge, vocab)) {
     const distance = getLevenshteinDistance(query, key);
     if (distance < minDistance) {
       minDistance = distance;
@@ -355,7 +355,9 @@ function findBestMatch(query, knowledge) {
 
   return closestMatch
     ? knowledge[closestMatch]
-    : "Sorry, I didn't understand that.";
+    : "Sorry, I didn't understand that." && closestMatch
+    ? vocab[closestMatch]
+    : "Sorry, I couldnt find a defintion on what you mean.";
 }
 
 // Detect if the user is asking for Wikipedia information
