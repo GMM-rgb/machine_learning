@@ -525,7 +525,56 @@
           "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ],
-      "Chat 8": []
+      "Chat 8": [
+        {
+          "sender": "User",
+          "text": "hello there"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "uh, what do you think we could do?"
+        },
+        {
+          "sender": "AI",
+          "text": "That's up to you to decide, however, I'm always here to help!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "but, how are you"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "hey"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "hey again"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "hello"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        }
+      ]
     }
   }
 }

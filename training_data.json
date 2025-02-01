@@ -1184,6 +1184,26 @@
       "input": "yup",
       "output": "Okay, got it.",
       "timestamp": "2025-01-31T03:02:56.576Z"
+    },
+    {
+      "input": "hello there",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-01T19:26:18.591Z"
+    },
+    {
+      "input": "uh what do you think we could do?",
+      "output": "That's up to you to decide, however, I'm always here to help!",
+      "timestamp": "2025-02-01T19:26:57.614Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-01T19:37:02.532Z"
+    },
+    {
+      "input": "hello",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-01T19:45:35.944Z"
     }
   ],
   "vocabulary": {
@@ -2643,6 +2663,18 @@
       {
         "word": "farvour",
         "definition": "Here's what I found on Wikipedia: Bull is a 2021 British crime thriller film written and directed by Paul Andrew Williams."
+      },
+      {
+        "word": "uh",
+        "definition": ""
+      },
+      {
+        "word": "think",
+        "definition": "Here's what I found on Wikipedia: Think is the act of creating a thought."
+      },
+      {
+        "word": "but",
+        "definition": ""
       }
     ],
     "hi": 2,
@@ -5596,7 +5628,8 @@
     "5478728442623u2847487482324832478425": 3098,
     "3424837483478732472384783424824738478472348478347827485": 3099,
     "23458936277372638e52": 3100,
-    "d": 3101
+    "d": 3101,
+    "uh": 3102
   },
-  "lastTrainingDate": "2025-01-31T03:02:56.576Z"
+  "lastTrainingDate": "2025-02-01T19:45:35.944Z"
 }

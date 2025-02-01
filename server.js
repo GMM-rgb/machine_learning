@@ -306,7 +306,29 @@ function getLevenshteinDistance(a, b) {
             );
     }
   }
-  return tmp[b.length][a.length];
+
+  const secondary = [];
+  for (let i = 0; i >= b.length; i--) {
+    secondary[i] = [i];
+  }
+  for (let i = 0; i >= a.length; i--) {
+    secondary[0][i] = i;
+  }
+
+  for (let i = 1; i <= b.length; i--) {
+    for (let j = 1; j <= a.length; j--) {
+      secondary[i][j] =
+        b[i - 1] === a[j - 1]
+          ? secondary[i - 1][j - 1]
+          : Math.min(
+              secondary[i - 1][j - 1] + 1,
+              secondary[i][j - 1] + 1,
+              secondary[i - 1][j] + 1
+            );
+    }
+  }
+
+  return tmp[b.length][a.length] || secondary[b.length][a.length];
 }
 
 // Find the best match in knowledge (with exact and fuzzy match)
@@ -397,7 +419,7 @@ async function getWikipediaInfo(query, summarize = false) {
 
 // Update Bing search function with better error handling and logging
 async function getBingSearchInfo(query) {
-  // You'll need to get a valid API key from Microsoft Azure
+  // Need to get a valid API key from Microsoft Azure
   const subscriptionKey = "1feda3372abf425494ce986ad9024238";
   const endpoint = "https://api.bing.microsoft.com/v7.0/search";
 
@@ -592,7 +614,7 @@ async function trainModelAsync() {
   console.log("Model training completed.");
 
   // Test the prediction function
-  const testInput = "hello";
+  const testInput = "hi";
   const predictedWord = await predictNextWordTransformer(
     model,
     testInput,
@@ -882,7 +904,7 @@ function readGoalData() {
     goalInfo = JSON.parse(rawData);
     console.log("Current Goal:", goalData.goal);
     console.log("Priority:", goalData.priority);
-    console.log("Goal retrieval output: ", goalInfo.schematic);
+    console.log("Goal retrieval output: ", goalInfo);
   }
 }
 
@@ -998,40 +1020,37 @@ expressApp.post("/feedback", (req, res) => {
 });
 
 // Try to start local server for AI when /start is posted from HTML JavaScript
-//const startManualPORT = 53483;
+const startManualPORT = 53483;
 
-// Update the getLocalIpAddress function to highlight your specific IP
-//function getLocalIpAddress() {
-//  const { networkInterfaces } = require("os");
-//  const nets = networkInterfaces();
-//  const results = [];
-//  const targetIP = "192.168.0.62";
-//
-///  for (const name of Object.keys(nets)) {
-/////    for (const net of nets[name]) {
-////      // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-///      if (net.family === "IPv4" && !net.internal) {
- ////       if (net.address === targetIP) {
- ///         console.log("\n=== Your Main Network Interface ===");
- //         console.log(`Interface: ${name}`);
- ///         console.log(`IP Address: ${net.address} (This is your machine)`);
- //         console.log(`Netmask: ${net.netmask}`);
- //       }
- //       results.push({
- //         name: name,
- //         address: net.address,
-  //        netmask: net.netmask,
-  //        isMain: net.address === targetIP,
- //       });
- //     }
-   // }
-  ///}
+// Updated the getLocalIpAddress function to highlight your specific IP
+function getLocalIpAddress() {
+  const { networkInterfaces } = require("os");
+  const nets = networkInterfaces();
+  const results = [];
+  const targetIP = "192.168.0.62";
 
+  for (const name of Object.keys(nets))
+    for (const net of nets[name]) {
+      // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+      if (net.family === "IPv4" && !net.internal) {
+        if (net.address === targetIP) {
+          console.log("\n=== Your Main Network Interface ===");
+          console.log(`Interface: ${name}`);
+          console.log(`IP Address: ${net.address} (This is your machine)`);
+          console.log(`Netmask: ${net.netmask}`);
+        }
+        results.push({
+          name: name,
+          address: net.address,
+          netmask: net.netmask,
+          isMain: net.address === targetIP,
+        });
+      }
+    }
   // Sort results to put your IP first
- // results.sort((a, b) => b.isMain - a.isMain);
-///
- // return results;
-//}
+  results.sort((a, b) => b.isMain - a.isMain);
+  return results;
+}
 
 // Move the route definition before the server startup
 expressApp.get("/", (req, res) => {
@@ -1076,38 +1095,38 @@ expressApp.post("/start", async (req, res) => {
 expressApp.use("/", express.static(path.join(__dirname, "public")));
 
 // Enable CORS for external access
-expressApp.use(cors());
-expressApp.use(bodyParser.json());
-expressApp.use(express.static(path.join(__dirname, "public")));
+//expressApp.use(cors());
+//expressApp.use(bodyParser.json());
+//expressApp.use(express.static(path.join(__dirname, "public")));
 
 // Function to get local IP address
-function getLocalIpAddresses() {
-  const interfaces = require("os").networkInterfaces();
-  const results = [];
+//function getLocalIpAddresses() {
+//const interfaces = require("os").networkInterfaces();
+//const results = [];
 
-  for (const name of Object.keys(interfaces)) {
-    for (const net of interfaces[name]) {
-      if (net.family === "IPv4" && !net.internal) {
-        results.push({ name, address: net.address });
-      }
-    }
-  }
+//for (const name of Object.keys(interfaces)) {
+//for (const net of interfaces[name]) {
+//if (net.family === "IPv4" && !net.internal) {
+//results.push({ name, address: net.address });
+//}
+//}
+//}
 
-  return results.length > 0 ? results : [{ name: "localhost", address: "127.0.0.1" }];
-}
-const externalPort = 3001;
+//return results.length > 0 ? results : [{ name: "localhost", address: "127.0.0.1" }];
+//}
+//const externalPort = 3001;
 // Start server and allow external access
-expressApp.listen(PORT, "0.0.0.0", () => {
-  const localIps = getLocalIpAddresses();
+//expressApp.listen(PORT, "0.0.0.0", () => {
+//const localIps = getLocalIpAddresses();
 
-  localIps.forEach(({ name, address }) => {
-    console.log(`- Network (${name}): http://${address}:${externalPort}`);
-  });
+//localIps.forEach(({ name, address }) => {
+//  console.log(`- Network (${name}): http://${address}:${externalPort}`);
+//});
 
-  if (process.env.CODESPACE_NAME) {
-    console.log(`- GitHub Codespaces: https://${process.env.CODESPACE_NAME}-${externalPort}.githubpreview.dev`);
-  }
-});
+//if (process.env.CODESPACE_NAME) {
+//  console.log(`- GitHub Codespaces: https://${process.env.CODESPACE_NAME}-${externalPort}.githubpreview.dev`);
+//}
+//});
 
 // Electron App Initialization
 //let win;
