@@ -1274,6 +1274,226 @@
       "input": "how r ya doin",
       "output": "Not too much, but hey I'm doing great!",
       "timestamp": "2025-02-02T03:13:02.949Z"
+    },
+    {
+      "input": "how r ye doin",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-02-02T03:16:12.477Z"
+    },
+    {
+      "input": "that is great",
+      "output": "Something like that I guess",
+      "timestamp": "2025-02-02T03:16:23.207Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-02-02T03:16:40.194Z"
+    },
+    {
+      "input": "yeah I don't know though",
+      "output": "That's alright if you don't know, it happens to the best of us!",
+      "timestamp": "2025-02-02T03:17:11.061Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T03:56:28.674Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T04:38:42.836Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T04:49:15.750Z"
+    },
+    {
+      "input": "hey there",
+      "output": "Error generating response.",
+      "timestamp": "2025-02-02T04:57:11.527Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:00:47.670Z"
+    },
+    {
+      "input": "how r u doing?",
+      "output": "how r u doing? undefined undefined undefined undefined undefined undefined",
+      "timestamp": "2025-02-02T05:00:54.220Z"
+    },
+    {
+      "input": "how are you",
+      "output": "Error generating next word.",
+      "timestamp": "2025-02-02T05:01:07.783Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:03:23.684Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:03:31.508Z"
+    },
+    {
+      "input": "hi how are you",
+      "output": "Not too much, but hey I'm doing great! And I'm happy to see you!",
+      "timestamp": "2025-02-02T05:03:39.343Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:06:15.175Z"
+    },
+    {
+      "input": "so uh how are you",
+      "output": "so uh how are you are you are are how are",
+      "timestamp": "2025-02-02T05:06:23.958Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:10:34.740Z"
+    },
+    {
+      "input": "sup bro",
+      "output": "sup bro tired great okay good great good",
+      "timestamp": "2025-02-02T05:19:17.563Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:19:28.253Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:32:56.351Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:38:57.749Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:45:33.444Z"
+    },
+    {
+      "input": "how r u",
+      "output": "how r u okay fine fine tired tired fine",
+      "timestamp": "2025-02-02T05:45:39.058Z"
+    },
+    {
+      "input": "good",
+      "output": "good fine okay great well well good",
+      "timestamp": "2025-02-02T05:45:47.656Z"
+    },
+    {
+      "input": ":)",
+      "output": ":) busy okay great well well well",
+      "timestamp": "2025-02-02T05:46:00.513Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:53:54.196Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T05:59:04.267Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:06:30.934Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:08:30.799Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:10:46.200Z"
+    },
+    {
+      "input": "hello",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:14:36.400Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:18:00.560Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:20:26.812Z"
+    },
+    {
+      "input": "how are you",
+      "output": "Sorry, there was an issue generating a response.",
+      "timestamp": "2025-02-02T06:20:33.650Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:24:20.196Z"
+    },
+    {
+      "input": "how are you",
+      "output": "Sorry, there was an issue generating a response.",
+      "timestamp": "2025-02-02T06:24:23.968Z"
+    },
+    {
+      "input": "who created you",
+      "output": "My developer is Maximus Farvour.",
+      "timestamp": "2025-02-02T06:24:30.202Z"
+    },
+    {
+      "input": "describe mount everast",
+      "output": "Here's what I found on Wikipedia: Mount Everest, known locally as Sagarmatha or Qomolangma,  is Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas. The China–Nepal border runs across its summit point. Its elevation (snow height) of 8,848.86 m (29,031 ft 8+1⁄2 in) was most recently established in 2020 by the Chinese and Nepali authorities.\nMount Everest attracts many climbers, including highly experienced mountaineers. There are two main climbing routes, one approaching the summit from the southeast in Nepal (known as the \"standard route\") and the other from the north in Tibet. While not posing substantial technical climbing challenges on the standard route, Everest presents dangers such as altitude sickness, weather, and wind, as well as hazards from avalanches and the Khumbu Icefall. As of May 2024, 340 people have died on Everest. Over 200 bodies remain on the mountain and have not been removed due to the dangerous conditions.\nClimbers typically ascend only part of Mount Everest's elevation, as the mountain's full elevation is measured from the geoid, which approximates sea level. The closest sea to Mount Everest's summit is the Bay of Bengal, almost 700 km (430 mi) away. To approximate a climb of the entire height of Mount Everest, one would need to start from this coastline, a feat accomplished by Tim Macartney-Snape's team in 1990.\nClimbers usually begin their ascent from base camps above 5,000 m (16,404 ft). The amount of elevation climbed from below these camps varies. On the Tibetan side, most climbers drive directly to the North Base Camp. On the Nepalese side, climbers generally fly into Kathmandu, then Lukla, and trek to the South Base Camp, making the climb from Lukla to the summit about 6,000 m (19,685 ft) in elevation gain.\nThe first recorded efforts to reach Everest's summit were made by British mountaineers. As Nepal did not allow foreigners to enter the country at the time, the British made several attempts on the north ridge route from the Tibetan side. After the first reconnaissance expedition by the British in 1921 reached 7,000 m (22,970 ft) on the North Col, the 1922 expedition pushed the north ridge route up to 8,320 m (27,300 ft), marking the first time a human had climbed above 8,000 m (26,247 ft). The 1924 expedition resulted in one of the greatest mysteries on Everest to this day: George Mallory and Andrew Irvine made a final summit attempt on 8 June but never returned, sparking debate as to whether they were the first to reach the top. Tenzing Norgay and Edmund Hillary made the first documented ascent of Everest in 1953, using the southeast ridge route. Norgay had reached 8,595 m (28,199 ft) the previous year as a member of the 1952 Swiss expedition. The Chinese mountaineering team of Wang Fuzhou, Gonpo, and Qu Yinhua made the first reported ascent of the peak from the north ridge on 25 May 1960.",
+      "timestamp": "2025-02-02T06:25:10.102Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:28:21.423Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:38:43.832Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T06:59:33.053Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T07:20:56.030Z"
+    },
+    {
+      "input": "how are u",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-02-02T07:21:01.891Z"
+    },
+    {
+      "input": "that is great to hear",
+      "output": "I'm glad you think so! I'm here to help you with anything you need.",
+      "timestamp": "2025-02-02T07:21:14.798Z"
     }
   ],
   "vocabulary": {
@@ -1328,6 +1548,7 @@
     "250": 2412,
     "268": 2051,
     "300": 2425,
+    "340": 3181,
     "348": 2706,
     "500": 1184,
     "520": 3012,
@@ -1369,6 +1590,8 @@
     "1901": 2216,
     "1909": 1566,
     "1920": 1956,
+    "1921": 3242,
+    "1922": 3247,
     "1924": 2376,
     "1926": 2169,
     "1931": 396,
@@ -1381,6 +1604,7 @@
     "1943": 494,
     "1944": 501,
     "1945": 320,
+    "1952": 3272,
     "1973": 2245,
     "1974": 2335,
     "1975": 1760,
@@ -2752,6 +2976,82 @@
       },
       {
         "word": "again.",
+        "definition": ""
+      },
+      {
+        "word": "ye",
+        "definition": ""
+      },
+      {
+        "word": "great",
+        "definition": ""
+      },
+      {
+        "word": "don't",
+        "definition": ""
+      },
+      {
+        "word": "though",
+        "definition": "Here's what I found on Wikipedia: \"Even Though\" is a song by British trip hop band Morcheeba."
+      },
+      {
+        "word": "sup",
+        "definition": ""
+      },
+      {
+        "word": "uh",
+        "definition": ""
+      },
+      {
+        "word": "sup",
+        "definition": ""
+      },
+      {
+        "word": "don't",
+        "definition": ""
+      },
+      {
+        "word": "uh",
+        "definition": ""
+      },
+      {
+        "word": "you?",
+        "definition": "Here's what I found on Wikipedia: In Modern English, the word \"you\" is the second-person pronoun."
+      },
+      {
+        "word": "sup",
+        "definition": ""
+      },
+      {
+        "word": "sup",
+        "definition": ""
+      },
+      {
+        "word": "sup",
+        "definition": ""
+      },
+      {
+        "word": "sup",
+        "definition": ""
+      },
+      {
+        "word": "mount",
+        "definition": "Here's what I found on Wikipedia: Mount is often used as part of the name of specific mountains, e."
+      },
+      {
+        "word": "everast",
+        "definition": "Here's what I found on Wikipedia: Mount Everest, known locally as Sagarmatha or Qomolangma,  is Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas."
+      },
+      {
+        "word": "wassup",
+        "definition": ""
+      },
+      {
+        "word": "sup",
+        "definition": ""
+      },
+      {
+        "word": "sup",
         "definition": ""
       }
     ],
@@ -5711,7 +6011,186 @@
     "defintion": 3103,
     "mean": 3104,
     "didnt": 3105,
-    "ya": 3106
+    "ya": 3106,
+    "ye": 3107,
+    "happens": 3108,
+    "error": 3109,
+    "generating": 3110,
+    "undefined": 3111,
+    "next": 3112,
+    "tired": 3113,
+    "fine": 3114,
+    "there!": 3115,
+    "you?": 3116,
+    "response.": 3117,
+    ":)": 3118,
+    "busy": 3119,
+    "sorry,": 3120,
+    "farvour.": 3121,
+    "mount": 3122,
+    "everast": 3123,
+    "here's": 3124,
+    "wikipedia:": 3125,
+    "everest,": 3126,
+    "locally": 3127,
+    "sagarmatha": 3128,
+    "qomolangma,": 3129,
+    "earth's": 3130,
+    "highest": 3131,
+    "mountain": 3132,
+    "above": 3133,
+    "sea": 3134,
+    "level,": 3135,
+    "mahalangur": 3136,
+    "himal": 3137,
+    "sub-range": 3138,
+    "himalayas.": 3139,
+    "china–nepal": 3140,
+    "border": 3141,
+    "summit": 3142,
+    "point.": 3143,
+    "elevation": 3144,
+    "(snow": 3145,
+    "height)": 3146,
+    "8,848.86": 3147,
+    "(29,031": 3148,
+    "8+1⁄2": 3149,
+    "in)": 3150,
+    "recently": 3151,
+    "chinese": 3152,
+    "nepali": 3153,
+    "authorities.": 3154,
+    "everest": 3155,
+    "attracts": 3156,
+    "climbers,": 3157,
+    "mountaineers.": 3158,
+    "climbing": 3159,
+    "routes,": 3160,
+    "approaching": 3161,
+    "nepal": 3162,
+    "(known": 3163,
+    "\"standard": 3164,
+    "route\")": 3165,
+    "tibet.": 3166,
+    "posing": 3167,
+    "technical": 3168,
+    "route,": 3169,
+    "presents": 3170,
+    "dangers": 3171,
+    "altitude": 3172,
+    "sickness,": 3173,
+    "weather,": 3174,
+    "wind,": 3175,
+    "hazards": 3176,
+    "avalanches": 3177,
+    "khumbu": 3178,
+    "icefall.": 3179,
+    "2024,": 3180,
+    "everest.": 3182,
+    "bodies": 3183,
+    "remain": 3184,
+    "removed": 3185,
+    "dangerous": 3186,
+    "conditions.": 3187,
+    "climbers": 3188,
+    "ascend": 3189,
+    "everest's": 3190,
+    "elevation,": 3191,
+    "mountain's": 3192,
+    "full": 3193,
+    "geoid,": 3194,
+    "approximates": 3195,
+    "level.": 3196,
+    "closest": 3197,
+    "bay": 3198,
+    "bengal,": 3199,
+    "(430": 3200,
+    "mi)": 3201,
+    "away.": 3202,
+    "approximate": 3203,
+    "climb": 3204,
+    "entire": 3205,
+    "height": 3206,
+    "coastline,": 3207,
+    "feat": 3208,
+    "accomplished": 3209,
+    "tim": 3210,
+    "macartney-snape's": 3211,
+    "1990.": 3212,
+    "ascent": 3213,
+    "camps": 3214,
+    "5,000": 3215,
+    "(16,404": 3216,
+    "ft).": 3217,
+    "amount": 3218,
+    "below": 3219,
+    "varies.": 3220,
+    "tibetan": 3221,
+    "side,": 3222,
+    "directly": 3223,
+    "camp.": 3224,
+    "nepalese": 3225,
+    "fly": 3226,
+    "kathmandu,": 3227,
+    "lukla,": 3228,
+    "trek": 3229,
+    "camp,": 3230,
+    "lukla": 3231,
+    "6,000": 3232,
+    "(19,685": 3233,
+    "ft)": 3234,
+    "gain.": 3235,
+    "reach": 3236,
+    "allow": 3237,
+    "foreigners": 3238,
+    "time,": 3239,
+    "side.": 3240,
+    "expedition": 3241,
+    "reached": 3243,
+    "7,000": 3244,
+    "(22,970": 3245,
+    "col,": 3246,
+    "8,320": 3248,
+    "(27,300": 3249,
+    "ft),": 3250,
+    "8,000": 3251,
+    "(26,247": 3252,
+    "greatest": 3253,
+    "mysteries": 3254,
+    "day:": 3255,
+    "mallory": 3256,
+    "andrew": 3257,
+    "irvine": 3258,
+    "returned,": 3259,
+    "sparking": 3260,
+    "top.": 3261,
+    "tenzing": 3262,
+    "norgay": 3263,
+    "edmund": 3264,
+    "hillary": 3265,
+    "documented": 3266,
+    "1953,": 3267,
+    "route.": 3268,
+    "8,595": 3269,
+    "(28,199": 3270,
+    "member": 3271,
+    "swiss": 3273,
+    "expedition.": 3274,
+    "mountaineering": 3275,
+    "wang": 3276,
+    "fuzhou,": 3277,
+    "gonpo,": 3278,
+    "qu": 3279,
+    "yinhua": 3280,
+    "reported": 3281,
+    "peak": 3282,
+    "1960.": 3283,
+    "much,": 3284,
+    "i'm": 3285,
+    "great!": 3286,
+    "glad": 3287,
+    "so!": 3288,
+    "need.": 3289
   },
-  "lastTrainingDate": "2025-02-02T03:13:02.950Z"
+  "lastTrainingDate": "2025-02-02T07:21:14.798Z"
 }

@@ -7,11 +7,21 @@ const { app, BrowserWindow } = require("electron");
 const wiki = require("wikijs").default;
 const math = require("mathjs");
 const { ifError } = require("assert");
-const tf = require("@tensorflow/tfjs-node-gpu");
+const tf = require("@tensorflow/tfjs-node");
 const https = require("https");
 const ProgressBar = require("progress");
 const cors = require("cors");
 const os = require("os");
+const Fuse = require("fuse.js");
+const ResponseGenerator = require('./response_generator');
+
+// Model loaded from JSON (make sure 'model' is defined globally)
+let model; // Assuming model is loaded separately (e.g., `model = await tf.loadLayersModel('localstorage://my-model')`)
+
+// Initialize vocabulary or/and data
+const data = [];
+const labels = [];
+const vocab = {};
 
 const expressApp = express();
 const PORT = 3000;
@@ -31,6 +41,49 @@ if (fs.existsSync(usersFile)) {
 } else {
   fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
 }
+
+// Load the model (ensure this is called when needed)
+async function loadModel() {
+  try {
+    // Use the correct file:// path for Node.js
+    const model = await tf.loadLayersModel('file://D:/machine_learning/model.json');
+    console.log("Model loaded successfully.");
+    return model;
+  } catch (error) {
+    console.log("Error loading model:", error);
+    // Optionally, handle model initialization or fallbacks here
+    return null;
+  }
+}
+
+// Load model when the server starts
+loadModel().catch(err => {
+  console.error("Error loading the model during server startup:", err);
+});
+
+// Load the model at the start of the server
+loadModel().then(() => {
+  console.log('Model is ready!');
+}).catch((err) => {
+  console.error('Model load failed:', err);
+});
+
+expressApp.post('/generate-response', async (req, res) => {
+  try {
+    const inputText = req.body.inputText;
+    
+    // Make sure model is loaded before trying to generate response
+    if (!model) {
+      return res.status(500).send('Model is not loaded yet.');
+    }
+
+    const response = await generateResponse(inputText, vocab, model);
+    res.send(response);
+  } catch (error) {
+    console.error("Error during response generation:", error);
+    res.status(500).send("Internal server error.");
+  }
+});
 
 // Function to save user data
 function saveUserData() {
@@ -217,71 +270,116 @@ function readTrainingData() {
   }
 }
 
-// Initialize vocabulary and model
-const vocab = {};
-let model;
-const data = [];
-const labels = [];
+// Function to preprocess text (convert to indices)
+function preprocessText(text) {
+  const words = text.toLowerCase().split(/\s+/);  // Tokenize the sentence
+  return words.map(word => vocab[word] || 0);  // Map each word to its index in the vocab
+}
 
-// Train the model with existing knowledge
-async function initializeModel() {
-  readTrainingData();
+// Convert text data into sequences of indices
+function convertDataToSequences() {
+  const inputSequences = data.map(sentence => sentence.map(word => vocab[word] || 0));
+  const labelSequences = inputSequences.map(seq => seq.slice(1).concat([vocab["<EOS>"]]));
+  
+  console.log(inputSequences);  // Example: [[0, 1, 2, 3], [4, 5, 6, 7]]
+  console.log(labelSequences);  // Example: [[1, 2, 3, 8], [5, 6, 7, 8]]
+  return { inputSequences, labelSequences };
+}
 
-  // Add knowledge base data
-  for (const key in knowledge) {
-    const words = preprocessText(key);
-    words.forEach((word, index) => {
-      if (!vocab[word]) {
-        vocab[word] = Object.keys(vocab).length + 1;
-      }
-      if (index < words.length - 1) {
-        data.push(words.slice(0, index + 1).map((w) => vocab[w]));
-        labels.push([vocab[words[index + 1]]]);
-      }
-    });
+// Initialize the model with existing knowledge
+async function initializeModel(useTransformerModel = true) {
+  try {
+    // Load the model if previously saved
+    await loadModel();  // Ensure model is loaded before proceeding
+    console.log("Model loaded.");
+
+    readTrainingData();  // Read any existing training data, if needed
+
+    // Add knowledge base data
+    for (const key in knowledge) {
+      const words = preprocessText(key);
+      words.forEach((word, index) => {
+        if (!vocab[word]) {
+          vocab[word] = Object.keys(vocab).length + 1;  // Ensure unique index for each word
+        }
+        if (index < words.length - 1) {
+          data.push(words.slice(0, index + 1).map((w) => vocab[w]));  // Input sequence
+          labels.push([vocab[words[index + 1]]]);  // Label is the next word
+        }
+      });
+    }
+
+    // Convert the data into sequences of indices and labels
+    const { inputSequences, labelSequences } = convertDataToSequences();
+
+    // Choose model type
+    if (useTransformerModel) {
+      model = createTransformerModel(Object.keys(vocab).length);
+      await trainTransformerModel(model, inputSequences, labelSequences);  // Train the Transformer model
+    } else {
+      model = createModel(Object.keys(vocab).length);
+      await trainModel(model, inputSequences, labelSequences);  // Train the TensorFlow model
+    }
+
+    // Save the model after training
+    await saveModel();
+    console.log("Model trained and saved.");
+  } catch (error) {
+    console.error("Error during model initialization:", error);
   }
-
-  model = createTransformerModel(Object.keys(vocab).length);
-  await trainTransformerModel(model, data, labels);
 }
 
 // Function to retrain the model with accumulated data
 async function retrainModel() {
-  const data = [];
-  const labels = [];
+  try {
+    const newData = [];
+    const newLabels = [];
 
-  // Process all conversations for training
-  trainingData.conversations.forEach((conversation) => {
-    const inputWords = preprocessText(conversation.input);
-    const outputWords = preprocessText(conversation.output);
+    // Process all conversations for training
+    trainingData.conversations.forEach((conversation) => {
+      const inputWords = preprocessText(conversation.input);
+      const outputWords = preprocessText(conversation.output);
 
-    // Create training pairs
-    inputWords.forEach((word, index) => {
-      if (!vocab[word]) {
-        vocab[word] = Object.keys(vocab).length + 1;
-      }
-      if (index < inputWords.length - 1) {
-        data.push(inputWords.slice(0, index + 1).map((w) => vocab[w]));
-        labels.push([vocab[inputWords[index + 1]]]);
-      }
+      // Create training pairs for input
+      inputWords.forEach((word, index) => {
+        if (!vocab[word]) {
+          vocab[word] = Object.keys(vocab).length + 1;
+        }
+        if (index < inputWords.length - 1) {
+          newData.push(inputWords.slice(0, index + 1).map((w) => vocab[w]));
+          newLabels.push([vocab[inputWords[index + 1]]]);
+        }
+      });
+
+      // Create training pairs for output
+      outputWords.forEach((word, index) => {
+        if (!vocab[word]) {
+          vocab[word] = Object.keys(vocab).length + 1;
+        }
+        if (index < outputWords.length - 1) {
+          newData.push(outputWords.slice(0, index + 1).map((w) => vocab[w]));
+          newLabels.push([vocab[outputWords[index + 1]]]);
+        }
+      });
     });
 
-    // Also learn from AI responses
-    outputWords.forEach((word, index) => {
-      if (!vocab[word]) {
-        vocab[word] = Object.keys(vocab).length + 1;
-      }
-      if (index < outputWords.length - 1) {
-        data.push(outputWords.slice(0, index + 1).map((w) => vocab[w]));
-        labels.push([vocab[outputWords[index + 1]]]);
-      }
-    });
-  });
+    // Check if data and labels are available
+    if (newData.length === 0 || newLabels.length === 0) {
+      console.log("No new training data to process.");
+      return;
+    }
 
-  // Retrain the model
-  model = createModel(Object.keys(vocab).length);
-  await trainModel(model, data, labels);
-  console.log("Model retrained with accumulated data");
+    // Retrain the model with the accumulated data
+    console.log("Retraining model...");
+    model = createTransformerModel(Object.keys(vocab).length);
+    await trainTransformerModel(model, newData, newLabels);
+
+    // Save the retrained model
+    await saveModel();
+    console.log("Model retrained and saved with accumulated data.");
+  } catch (error) {
+    console.error("Error during model retraining:", error);
+  }
 }
 
 function getLevenshteinDistance(a, b) {
@@ -500,7 +598,7 @@ function createModel(vocabSize) {
 }
 
 // Function to train the TensorFlow (AI) model
-async function trainModel(model, data, labels, epochs = 5, batchSize = 32) {
+async function trainModel(model, data, labels, epochs = 15, batchSize = 48) {
 // Ensure 'data' is properly formatted
 const xs = tf.tensor3d(
   data.map(seq => seq.map(step => [step])), // Reshape to (batch_size, timesteps, features)
@@ -523,23 +621,14 @@ function createTransformerModel(vocabSize) {
   return model;
 }
 
-// Function to train the Transformer model
-async function trainTransformerModel(model, data, labels, epochs = 5, batchSize = 16) {
+// Function to train the Transformer model without EarlyStopping
+async function trainTransformerModel(model, data, labels, epochs = 15, batchSize = 64) {
   console.log("Validating training data...");
 
-  // Ensure data is correctly formatted as [batch_size, timesteps, features]
   const reshapedData = data.map(seq => seq.map(step => [step])); // Wrap each number in an array
 
   if (!Array.isArray(reshapedData) || reshapedData.length === 0) {
     throw new Error("Invalid data format: Data must be a non-empty array.");
-  }
-
-  if (!Array.isArray(reshapedData[0]) || reshapedData[0].length === 0) {
-    throw new Error("Invalid data format: Each data entry must be a non-empty array.");
-  }
-
-  if (!Array.isArray(reshapedData[0][0]) || typeof reshapedData[0][0][0] !== "number") {
-    throw new Error("Invalid data format: Each inner element must be an array of numbers.");
   }
 
   console.log(`Data shape: [${reshapedData.length}, ${reshapedData[0].length}, 1]`);
@@ -547,53 +636,151 @@ async function trainTransformerModel(model, data, labels, epochs = 5, batchSize 
 
   // Convert data to tensors
   const xs = tf.tensor3d(reshapedData, [reshapedData.length, reshapedData[0].length, 1]);
-  const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensure correct shape
+  const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
 
-  // Create dataset
-  const dataset = tf.data
-    .zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) })
-    .batch(batchSize);
+  const dataset = tf.data.zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) }).batch(batchSize);
 
   console.log("Starting model training...");
 
-  const bar = new ProgressBar("Training [:bar] :percent :etas", {
-    total: epochs,
-    width: 30,
-  });
+  try {
+    await model.fitDataset(dataset, {
+      epochs,
+      batchSize,
+      callbacks: {
+        onEpochBegin: (epoch) => {
+        //  console.log(`Epoch ${epoch + 1}: started...`);
+        },
+        onEpochEnd: (epoch, logs) => {
+        //  console.log(`Epoch ${epoch + 1}: Ended. Loss: ${logs.loss}`);
+        },
+        onBatchEnd: (batch, logs) => {
+        //  console.log(`Batch ${batch}: Loss: ${logs.loss}`);
+        },
+      },
+    });
+  } catch (err) {
+    console.error("Error during model training:", err);
+  }
 
-  await model.fitDataset(dataset, {
-    epochs,
-    callbacks: {
-      onEpochBegin: (epoch) => {
-        console.log(`Epoch ${epoch + 1} / ${epochs} started...`);
-        global.epochStartTime = Date.now();
-      },
-      onEpochEnd: (epoch, logs) => {
-        const epochTime = (Date.now() - global.epochStartTime) / 1000; // Converts to seconds
-        console.log(`Epoch ${epoch + 1}: loss=${logs.loss.toFixed(6)}, Time=${epochTime}s`);
-        bar.tick();
-      },
-    },
-  });
-  
   console.log("Model training complete.");
 }
 
-// Function to predict the next word using the Transformer model
-async function predictNextWordTransformer(model, inputText, vocab) {
-  const input = preprocessText(inputText);
-  const inputTensor = tf.tensor3d(
-    [input.map((word) => [vocab[word] || 0])],
-    [1, input.length, 1] // Ensure 3D shape
-  );
-  const prediction = model.predict(inputTensor);
-  const predictedIndex = prediction.argMax(-1).dataSync()[0];
-  return Object.keys(vocab).find((key) => vocab[key] === predictedIndex);
+// Function to generate a response based on the trained model
+// Vocabulary and unwanted words
+const unwantedWords = ["black", "illegal", "fuck", "shit"];  // Add words you want to filter out
+const neutralWord = "*Censored*";  // Neutral fallback word if unwanted word is detected
+
+// Sample allowed words and common fallback words
+const commonWords = ["hello", "there", "how", "are", "you", "good", "okay"];
+const allowedWords = ["good", "fine", "okay", "well", "great", "tired", "busy"];
+
+// Function to process the input text
+function preprocessText(text) {
+  return text.toLowerCase().split(/\s+/);  // Split by whitespace and convert to lowercase
+}
+
+// Function to pick a word based on probabilities (for randomness in generation)
+function weightedRandomChoice(probabilities) {
+  let sum = 0;
+  const r = Math.random();
+  for (let i = 0; i < probabilities.length; i++) {
+    sum += probabilities[i];
+    if (r < sum) return i;
+  }
+  return probabilities.length - 1;
+}
+
+// Load the model (use for checking model before predictions)
+async function loadModel() {
+  try {
+    const model = await tf.loadLayersModel('localstorage://my-model');  // Load model from local storage
+    console.log("Model loaded:", model);  // Log the model to ensure it's correctly loaded
+    return model;
+  } catch (error) {
+    console.error("Error loading model:", error);
+    return null;
+  }
+}
+// Function to generate a response based on the trained model
+async function generateResponse(inputText, vocab, model, knowledge, temperature = 0.6) {
+  console.log("Generating response for:", inputText);  // Debug log
+
+  if (!model || typeof model.predict !== 'function') {
+    console.error("Model is not loaded correctly or is not a valid TensorFlow model.");
+    return "Error: Invalid model.";
+  }
+
+  const vocabReverse = Object.fromEntries(Object.entries(vocab).map(([word, idx]) => [idx, word]));
+  const input = preprocessText(inputText);  // Process input text
+  const inputTensor = tf.tensor2d([input.map((word) => vocab[word] || 0)], [1, input.length]);
+
+  console.log("Input Tensor:", inputTensor.toString());
+
+  let prediction;
+  try {
+    prediction = model.predict(inputTensor);  // Get prediction from the model
+    console.log("Model prediction:", prediction);
+  } catch (error) {
+    console.error("Error during prediction:", error);
+    return "Error generating response.";
+  }
+
+  let predictedArray = prediction.arraySync()[0];  // Convert prediction tensor to array
+  console.log("Predicted array:", predictedArray);  // Log the predicted output
+
+  let logits = tf.div(tf.sub(predictedArray, tf.min(predictedArray)), temperature);  // Apply temperature scaling
+  let probabilities = tf.softmax(logits).dataSync();  // Apply softmax for probabilities
+  let predictedIndex = weightedRandomChoice(probabilities);  // Get index of predicted word
+
+  let predictedWord = vocabReverse[predictedIndex] || "hello";  // Default to "hello" if prediction fails
+  console.log("Predicted word:", predictedWord);
+
+  let matchedWord = fuzzyMatch(predictedWord, knowledge);  // Match against knowledge base
+
+  let generatedText = `${inputText} ${matchedWord}`;  // Construct response with matched word
+  console.log("Generated Text:", generatedText);  // Log the generated text
+
+  return generatedText;  // Return the final generated text
+}
+
+async function run() {
+  const model = await loadModel();  // Load the model
+
+  if (model) {
+    const response = await generateResponse('how are you', vocab, model, knowledge);
+    console.log("Final Generated Response:", response);
+  } else {
+    console.log("Model loading failed.");
+  }
+}
+
+run();
+
+// Preprocess text (convert to lowercase and split by whitespace)
+function preprocessText(text) {
+  return text.toLowerCase().split(/\s+/);
+}
+
+// Generate a response (assuming you have a trained model)
+generateResponse("Hello", model).then(response => {
+  console.log("Generated Response:", response);
+});
+
+// Save the model after training or retraining
+async function saveModel(model) {
+  try {
+    await model.save('file://D:/machine_learning/my-model');  // Saves model to the file system
+    console.log("Model saved successfully.");
+  } catch (error) {
+    console.error("Error saving model:", error);
+  }
 }
 
 // Train the model with existing knowledge
 async function initializeModel() {
-  readTrainingData();
+  await loadModel();  // Load the model if previously saved
+
+  readTrainingData();  // Read any existing training data, if needed
 
   // Add knowledge base data
   for (const key in knowledge) {
@@ -609,25 +796,34 @@ async function initializeModel() {
     });
   }
 
+  // Convert the data into sequences of indices and labels
+  const { inputSequences, labelSequences } = convertDataToSequences();
+
+  // Create and train the model
   model = createTransformerModel(Object.keys(vocab).length);
-  await trainTransformerModel(model, data, labels);
+  await trainTransformerModel(model, inputSequences, labelSequences);
+
+  // Save the model after training
+  await saveModel();
 }
 
 // Function to train the model asynchronously
 async function trainModelAsync() {
-  console.log("Training model asynchronously...");
-  console.log(tf.memory());
-  await initializeModel();
-  console.log("Model training completed.");
+  try {
+    console.log("Training model asynchronously...");
+    console.log(tf.memory());
 
-  // Test the prediction function
-  const testInput = "hello";
-  const predictedWord = await predictNextWordTransformer(
-    model,
-    testInput,
-    vocab
-  );
-  console.log(`Predicted next word for "${testInput}": ${predictedWord}`);
+    // Initialize the model with the training data
+    await initializeModel();
+    console.log("Model training completed.");
+
+    // Test the generation function
+    const testInput = "hello";
+    const generatedResponse = await generateResponse(testInput, vocab);
+    console.log(`Generated response for "${testInput}": ${generatedResponse}`);
+  } catch (error) {
+    console.error("Error during model training:", error);
+  }
 }
 
 // Main server startup
@@ -928,14 +1124,15 @@ function getCurrentGoal() {
   return goalData;
 }
 
-// Update the chat endpoint to use varied responses and isolate accounts
+// Updated the chat endpoint to use varied responses and isolate accounts
+const responseGenerator = new ResponseGenerator();
+
 expressApp.post("/chat", async (req, res) => {
   if (!chatEnabled) {
-    res.json({
+    return res.json({
       response:
         "Chat is currently disabled while performing a search. Please try again in a moment.",
     });
-    return;
   }
 
   const { message, accountId = "default" } = req.body;
@@ -945,64 +1142,26 @@ expressApp.post("/chat", async (req, res) => {
   let response = "";
 
   try {
-    // Check for repeated messages first
-    const variedResponse = getVariedResponse(normalizedMessage, accountId);
-    if (variedResponse) {
-      response = variedResponse;
+    // Check for special queries first (math, bing, wikipedia)
+    if (isMathQuery(message)) {
+      response = await solveMathProblem(message);
+    } else if (normalizedMessage.startsWith("search bing") || normalizedMessage.startsWith("bing")) {
+      response = await handleUserInput(message);
+    } else if (isWikipediaQuery(message)) {
+      response = await getWikipediaInfo(message);
     } else {
-      // Original response logic
-      const understanding = understandInput(normalizedMessage);
-      console.log("Understanding:", understanding);
-
-      if (understanding.unknownWords.length > 0) {
-        learnInBackground(understanding.unknownWords);
-      }
-
-      if (isMathQuery(message)) {
-        console.log("Math query detected:", message);
-        response = await solveMathProblem(message);
-      } else if (
-        ["search bing", "bing"].some((keyword) =>
-          normalizedMessage.startsWith(keyword)
-        )
-      ) {
-        console.log("Bing search requested:", message);
-        response = await handleUserInput(message);
-      } else if (isWikipediaQuery(message)) {
-        console.log("Wikipedia query detected:", message);
-        const summarize = /summarize|summary|bullet points/i.test(message);
-        response = await getWikipediaInfo(message, summarize);
-
-        if (
-          response.includes(
-            "Sorry, I couldn't find any relevant information on Wikipedia"
-          )
-        ) {
-          console.log("Wikipedia failed, trying Bing fallback");
-          response = await getBingSearchInfo(message);
-        }
-      } else if (
-        ["hi", "hello", "hey", "yo", "sup"].includes(normalizedMessage)
-      ) {
-        response = "Hello there! How may I help you?";
-      } else if (
-        normalizedMessage.includes("who is your developer") ||
-        normalizedMessage.includes("who created you")
-      ) {
-        response = "My developer is Maximus Farvour.";
-      } else {
-        response = getResponse(normalizedMessage);
-      }
+      // Use template matching for normal conversation
+      response = responseGenerator.generateResponse(normalizedMessage);
     }
 
-    // Add the interaction to training data if it's not a command
+    // Add the interaction to training data
     if (!message.startsWith("/")) {
       addTrainingData(normalizedMessage, response);
     }
 
     // Include the current goal and priority in the response
     const currentGoal = getCurrentGoal();
-    response += `\n\nCurrent Goal: ${currentGoal.goal}\nPriority: ${currentGoal.priority}`;
+    response += `\n\nCurrent Goal: ${currentGoal.goal || "No current goal"}\nPriority: ${currentGoal.priority || "No priority set"}`;
 
     res.json({ response });
   } catch (error) {
