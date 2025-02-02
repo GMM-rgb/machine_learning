@@ -1242,12 +1242,12 @@
     },
     {
       "input": "hi again.",
-      "output": "Sorry, I couldnt find a defintion on what you mean.",
+      "output": "Hello there again! How may I help you?",
       "timestamp": "2025-02-02T01:46:55.626Z"
     },
     {
       "input": "hi again",
-      "output": "Sorry, I couldnt find a defintion on what you mean.",
+      "output": "Hello there again! How may I help you?",
       "timestamp": "2025-02-02T01:47:09.832Z"
     },
     {
@@ -1262,7 +1262,7 @@
     },
     {
       "input": "thanks bro",
-      "output": "Sorry, I didn't understand that.",
+      "output": "No problem, let me know if you need help! 😊",
       "timestamp": "2025-02-02T02:29:15.799Z"
     }
   ],
