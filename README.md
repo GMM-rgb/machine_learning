@@ -2,7 +2,7 @@
 
 ## Overview
 
-This AI companion is designed to assist users in various tasks, provide information, and engage in light-hearted conversations. It uses advanced natural language processing to understand and respond to user queries.
+This AI companion is designed to assist users in various tasks, provide information, and engage in light-hearted conversations. It uses advanced natural language processing in node.js to understand and respond to user queries.
 
 ## Features
 
