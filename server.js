@@ -284,14 +284,16 @@ async function retrainModel() {
   console.log("Model retrained with accumulated data");
 }
 
-// Levenshtein distance for closest match
 function getLevenshteinDistance(a, b) {
-  const tmp = [];
+  const tmp = Array(b.length + 1)
+    .fill(null)
+    .map(() => Array(a.length + 1).fill(0));
+
   for (let i = 0; i <= b.length; i++) {
-    tmp[i] = [i];
+    tmp[i][0] = i;
   }
-  for (let i = 0; i <= a.length; i++) {
-    tmp[0][i] = i;
+  for (let j = 0; j <= a.length; j++) {
+    tmp[0][j] = j;
   }
 
   for (let i = 1; i <= b.length; i++) {
@@ -299,45 +301,24 @@ function getLevenshteinDistance(a, b) {
       tmp[i][j] =
         b[i - 1] === a[j - 1]
           ? tmp[i - 1][j - 1]
-          : Math.min(
-              tmp[i - 1][j - 1] + 1,
-              tmp[i][j - 1] + 1,
-              tmp[i - 1][j] + 1
-            );
+          : Math.min(tmp[i - 1][j - 1] + 1, tmp[i][j - 1] + 1, tmp[i - 1][j] + 1);
     }
   }
-
-  //const secondary = [];
-  //for (let i = 0; i <= b.length; i++) {
-  //  secondary[i] = [i];
-  //}
-  //for (let i = 0; i <= a.length; i++) {
-  //  secondary[0][i] = i;
-  //}
-
-  //for (let i = 1; i <= b.length; i++) {
-  //  for (let j = 1; j <= a.length; j++) {
-  //    secondary[i][j] =
-  //      b[i - 1] === a[j - 1]
-  //        ? secondary[i - 1][j - 1]
-  //        : Math.min(
-  //            secondary[i - 1][j - 1] + 1,
-  //            secondary[i][j - 1] + 1,
-  //            secondary[i - 1][j] + 1
-  //          );
-  //  }
-  //}
-
-  return tmp[b.length][a.length];
+  tmp[b.length][a.length]; // Final distance
+  console.log("Levenshtein Distance:", tmp[b.length][a.length]);
+  if (a.length > 1000 || b.length > 1000) {
+    console.warn("Strings are too long, skipping computation.");
+    return -1;
+  }
 }
 
 // Find the best match in knowledge (with exact and fuzzy match)
-function findBestMatch(query, knowledge, vocab) {
+function findBestMatch(query, knowledge) {
   let closestMatch = null;
   let minDistance = Infinity;
 
   // Check for exact matches first
-  for (const key in (knowledge, vocab)) {
+  for (const key in (knowledge)) {
     const normalizedKey = key.toLowerCase();
     if (query === normalizedKey) {
       return knowledge[key];
@@ -345,7 +326,7 @@ function findBestMatch(query, knowledge, vocab) {
   }
 
   // Use fuzzy matching based on Levenshtein distance
-  for (const key in (knowledge, vocab)) {
+  for (const key in (knowledge)) {
     const distance = getLevenshteinDistance(query, key);
     if (distance < minDistance) {
       minDistance = distance;
@@ -516,10 +497,11 @@ function createModel(vocabSize) {
 
 // Function to train the TensorFlow (AI) model
 async function trainModel(model, data, labels, epochs = 10, batchSize = 32) {
-  const xs = tf.tensor3d(
-    data,
-    [data.length, data[0].length, 1] // Ensure 3D shape: (batch, timesteps, features)
-  );
+// Ensure 'data' is properly formatted
+const xs = tf.tensor3d(
+  data.map(seq => seq.map(step => [step])), // Reshape to (batch_size, timesteps, features)
+  [data.length, data[0].length, 1]
+);
   const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
   const dataset = tf.data
     .zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) })
@@ -538,25 +520,41 @@ function createTransformerModel(vocabSize) {
 }
 
 // Function to train the Transformer model
-async function trainTransformerModel(
-  model,
-  data,
-  labels,
-  epochs = 10,
-  batchSize = 32
-) {
-  const xs = tf.tensor3d(
-    data,
-    [data.length, data[0].length, 1] // Ensure 3D shape
-  );
-  const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
+async function trainTransformerModel(model, data, labels, epochs = 10, batchSize = 32) {
+  console.log("Validating training data...");
+
+  // Ensure data is correctly formatted as [batch_size, timesteps, features]
+  const reshapedData = data.map(seq => seq.map(step => [step])); // Wrap each number in an array
+
+  if (!Array.isArray(reshapedData) || reshapedData.length === 0) {
+    throw new Error("Invalid data format: Data must be a non-empty array.");
+  }
+
+  if (!Array.isArray(reshapedData[0]) || reshapedData[0].length === 0) {
+    throw new Error("Invalid data format: Each data entry must be a non-empty array.");
+  }
+
+  if (!Array.isArray(reshapedData[0][0]) || typeof reshapedData[0][0][0] !== "number") {
+    throw new Error("Invalid data format: Each inner element must be an array of numbers.");
+  }
+
+  console.log(`Data shape: [${reshapedData.length}, ${reshapedData[0].length}, 1]`);
+  console.log(`Labels shape: [${labels.length}, ${labels[0].length}]`);
+
+  // Convert data to tensors
+  const xs = tf.tensor3d(reshapedData, [reshapedData.length, reshapedData[0].length, 1]);
+  const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensure correct shape
+
+  // Create dataset
   const dataset = tf.data
     .zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) })
     .batch(batchSize);
 
+  console.log("Starting model training...");
+
   const bar = new ProgressBar("Training [:bar] :percent :etas", {
     total: epochs,
-    width: 40,
+    width: 30,
   });
 
   await model.fitDataset(dataset, {
@@ -571,6 +569,8 @@ async function trainTransformerModel(
       },
     },
   });
+
+  console.log("Model training complete.");
 }
 
 // Function to predict the next word using the Transformer model
@@ -614,7 +614,7 @@ async function trainModelAsync() {
   console.log("Model training completed.");
 
   // Test the prediction function
-  const testInput = "hi";
+  const testInput = "hello";
   const predictedWord = await predictNextWordTransformer(
     model,
     testInput,
@@ -650,6 +650,12 @@ expressApp.listen(PORT, "0.0.0.0", () => {
   // Train the model asynchronously
   trainModelAsync().catch((error) => {
     console.error("Error during model training:", error);
+    console.log("Data Type:", typeof data); // Should be 'object'
+    console.log("Data Length:", data.length); // Should be greater than 0
+    console.log("First element type:", typeof data[0]); // Should be 'object'
+    console.log("First element length:", data[0]?.length); // Should be greater than 0
+    console.log("First sub-element type:", typeof data[0]?.[0]); // Should be 'object'
+    console.log("First sub-sub-element type:", typeof data[0]?.[0]?.[0]); // Should be 'number'
   });
 });
 
