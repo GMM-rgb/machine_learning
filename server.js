@@ -1061,8 +1061,8 @@ async function learnInBackground(unknownWords) {
 // Add conversation history tracking
 const conversationHistory = new Map(); // Store conversation history per account
 
-// Function to get varied response based on repetition
-function getVariedResponse(message, accountId) {
+  // Function to get varied response based on repetition
+  function getVariedResponse(message, accountId) {
   if (!conversationHistory.has(accountId)) {
     conversationHistory.set(accountId, []);
   }
@@ -1130,19 +1130,15 @@ const responseGenerator = new ResponseGenerator();
 expressApp.post("/chat", async (req, res) => {
   if (!chatEnabled) {
     return res.json({
-      response:
-        "Chat is currently disabled while performing a search. Please try again in a moment.",
+      response: "Chat is currently disabled while performing a search. Please try again in a moment.",
     });
   }
 
   const { message, accountId = "default" } = req.body;
-  const normalizedMessage = normalizeText(
-    message.replace(/[,']/g, "").toLowerCase()
-  );
+  const normalizedMessage = normalizeText(message.replace(/[,']/g, "").toLowerCase());
   let response = "";
 
   try {
-    // Check for special queries first (math, bing, wikipedia)
     if (isMathQuery(message)) {
       response = await solveMathProblem(message);
     } else if (normalizedMessage.startsWith("search bing") || normalizedMessage.startsWith("bing")) {
@@ -1150,25 +1146,26 @@ expressApp.post("/chat", async (req, res) => {
     } else if (isWikipediaQuery(message)) {
       response = await getWikipediaInfo(message);
     } else {
-      // Use template matching for normal conversation
-      response = responseGenerator.generateResponse(normalizedMessage);
+      // Use the response generator with background learning
+      response = await responseGenerator.generateResponse(normalizedMessage);
     }
 
-    // Add the interaction to training data
-    if (!message.startsWith("/")) {
-      addTrainingData(normalizedMessage, response);
+    // Add the interaction to training data for future learning
+    addTrainingData(normalizedMessage, response);
+
+    // Trigger model retraining if needed
+    if (trainingData.conversations.length % 5 === 0) {
+      console.log("Triggering model retraining...");
+      retrainModel();
     }
 
-    // Include the current goal and priority in the response
     const currentGoal = getCurrentGoal();
     response += `\n\nCurrent Goal: ${currentGoal.goal || "No current goal"}\nPriority: ${currentGoal.priority || "No priority set"}`;
 
     res.json({ response });
   } catch (error) {
     console.error("Error in chat endpoint:", error);
-    res
-      .status(500)
-      .json({ response: "An error occurred while processing your message." });
+    res.status(500).json({ response: "An error occurred while processing your message." });
   }
 });
 

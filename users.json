@@ -565,6 +565,38 @@
         {
           "sender": "AI",
           "text": "I'm glad you think so! I'm here to help you with anything you need.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "wassup"
+        },
+        {
+          "sender": "AI",
+          "text": "0\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "how r u"
+        },
+        {
+          "sender": "AI",
+          "text": "how r u okay fine fine tired tired fine\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "thats nice to hear"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm glad you think so! I'm here to help you with anything you need.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }

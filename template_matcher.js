@@ -1,4 +1,5 @@
 const fs = require('fs');
+const Fuse = require('fuse.js');
 const { levenshteinDistance } = require('./utils/string_distance');
 
 class TemplateMatcher {
