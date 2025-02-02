@@ -1509,6 +1509,16 @@
       "input": "that is nice to hear",
       "output": "I'm glad you think so! I'm here to help you with anything you need.",
       "timestamp": "2025-02-02T07:33:29.909Z"
+    },
+    {
+      "input": "hey again",
+      "output": "Hello there again! How may I help you?",
+      "timestamp": "2025-02-02T08:23:30.381Z"
+    },
+    {
+      "input": "so whats up with you?",
+      "output": "Not too much, but hey I'm doing great! And I'm happy to see you! 😊 What do you need help with?",
+      "timestamp": "2025-02-02T08:24:41.613Z"
     }
   ],
   "vocabulary": {
@@ -6206,7 +6216,9 @@
     "glad": 3287,
     "so!": 3288,
     "need.": 3289,
-    "nice": 3290
+    "nice": 3290,
+    "again!": 3291,
+    "that.": 3292
   },
-  "lastTrainingDate": "2025-02-02T07:33:29.909Z"
+  "lastTrainingDate": "2025-02-02T08:24:41.613Z"
 }
