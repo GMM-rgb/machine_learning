@@ -1264,6 +1264,16 @@
       "input": "thanks bro",
       "output": "No problem, let me know if you need help! 😊",
       "timestamp": "2025-02-02T02:29:15.799Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T03:12:55.782Z"
+    },
+    {
+      "input": "how r ya doin",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-02-02T03:13:02.949Z"
     }
   ],
   "vocabulary": {
@@ -5700,7 +5710,8 @@
     "uh": 3102,
     "defintion": 3103,
     "mean": 3104,
-    "didnt": 3105
+    "didnt": 3105,
+    "ya": 3106
   },
-  "lastTrainingDate": "2025-02-02T02:29:15.799Z"
+  "lastTrainingDate": "2025-02-02T03:13:02.950Z"
 }

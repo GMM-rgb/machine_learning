@@ -500,7 +500,7 @@ function createModel(vocabSize) {
 }
 
 // Function to train the TensorFlow (AI) model
-async function trainModel(model, data, labels, epochs = 10, batchSize = 32) {
+async function trainModel(model, data, labels, epochs = 5, batchSize = 32) {
 // Ensure 'data' is properly formatted
 const xs = tf.tensor3d(
   data.map(seq => seq.map(step => [step])), // Reshape to (batch_size, timesteps, features)
