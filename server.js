@@ -561,15 +561,17 @@ async function trainTransformerModel(model, data, labels, epochs = 10, batchSize
     epochs,
     callbacks: {
       onEpochBegin: (epoch) => {
-        bar.tick(0, { epoch: epoch + 1 });
+        console.log(`Epoch ${epoch + 1} / ${epochs} started...`);
+        global.epochStartTime = Date.now();
       },
       onEpochEnd: (epoch, logs) => {
-        console.log(`Epoch ${epoch + 1}: loss=${logs.loss.toFixed(6)}`);
+        const epochTime = (Date.now() - global.epochStartTime) / 1000; // Converts to seconds
+        console.log(`Epoch ${epoch + 1}: loss=${logs.loss.toFixed(6)}, Time=${epochTime}s`);
         bar.tick();
       },
     },
   });
-
+  
   console.log("Model training complete.");
 }
 

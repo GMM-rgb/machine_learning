@@ -1177,7 +1177,7 @@
     },
     {
       "input": "hey there it's me your developer maximus farvour",
-      "output": "My developer is Maximus Farvour.",
+      "output": "My developer is Maximus Farvour, and hello my developer if it really is you, I have a hearted passion that you created me, thanks!",
       "timestamp": "2025-01-31T03:02:46.780Z"
     },
     {
@@ -1242,13 +1242,23 @@
     },
     {
       "input": "hi again.",
-      "output": "Sorry, I couldnt find a defintion on what you mean.",
+      "output": "Hello there again! How may I help you?",
       "timestamp": "2025-02-02T01:46:55.626Z"
     },
     {
       "input": "hi again",
-      "output": "Sorry, I couldnt find a defintion on what you mean.",
+      "output": "Hello there again! How may I help you?",
       "timestamp": "2025-02-02T01:47:09.832Z"
+    },
+    {
+      "input": "hi bro",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T02:25:10.606Z"
+    },
+    {
+      "input": ":)",
+      "output": "I see your happy, that's great! 😊",
+      "timestamp": "2025-02-02T02:25:22.926Z"
     }
   ],
   "vocabulary": {
@@ -5686,5 +5696,5 @@
     "defintion": 3103,
     "mean": 3104
   },
-  "lastTrainingDate": "2025-02-02T01:47:09.832Z"
+  "lastTrainingDate": "2025-02-02T02:25:22.926Z"
 }
