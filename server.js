@@ -307,26 +307,26 @@ function getLevenshteinDistance(a, b) {
     }
   }
 
-  const secondary = [];
-  for (let i = 0; i <= b.length; i++) {
-    secondary[i] = [i];
-  }
-  for (let i = 0; i <= a.length; i++) {
-    secondary[0][i] = i;
-  }
+  //const secondary = [];
+  //for (let i = 0; i <= b.length; i++) {
+  //  secondary[i] = [i];
+  //}
+  //for (let i = 0; i <= a.length; i++) {
+  //  secondary[0][i] = i;
+  //}
 
-  for (let i = 1; i <= b.length; i++) {
-    for (let j = 1; j <= a.length; j++) {
-      secondary[i][j] =
-        b[i - 1] === a[j - 1]
-          ? secondary[i - 1][j - 1]
-          : Math.min(
-              secondary[i - 1][j - 1] + 1,
-              secondary[i][j - 1] + 1,
-              secondary[i - 1][j] + 1
-            );
-    }
-  }
+  //for (let i = 1; i <= b.length; i++) {
+  //  for (let j = 1; j <= a.length; j++) {
+  //    secondary[i][j] =
+  //      b[i - 1] === a[j - 1]
+  //        ? secondary[i - 1][j - 1]
+  //        : Math.min(
+  //            secondary[i - 1][j - 1] + 1,
+  //            secondary[i][j - 1] + 1,
+  //            secondary[i - 1][j] + 1
+  //          );
+  //  }
+  //}
 
   return tmp[b.length][a.length];
 }
@@ -355,9 +355,7 @@ function findBestMatch(query, knowledge, vocab) {
 
   return closestMatch
     ? knowledge[closestMatch]
-    : "Sorry, I didn't understand that." && closestMatch
-    ? vocab[closestMatch]
-    : "Sorry, I couldnt find a defintion on what you mean.";
+    : "Sorry, I didn't understand that.";
 }
 
 // Detect if the user is asking for Wikipedia information
@@ -519,9 +517,9 @@ function createModel(vocabSize) {
 // Function to train the TensorFlow (AI) model
 async function trainModel(model, data, labels, epochs = 10, batchSize = 32) {
   const xs = tf.tensor3d(
-    data.map((d) => d.map((v) => [v])),
-    [data.length, data[0].length, 1]
-  ); // Reshape to 3D tensor
+    data,
+    [data.length, data[0].length, 1] // Ensure 3D shape: (batch, timesteps, features)
+  );
   const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
   const dataset = tf.data
     .zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) })
@@ -548,9 +546,9 @@ async function trainTransformerModel(
   batchSize = 32
 ) {
   const xs = tf.tensor3d(
-    data.map((d) => d.map((v) => [v])),
-    [data.length, data[0].length, 1]
-  ); // Reshape to 3D tensor
+    data,
+    [data.length, data[0].length, 1] // Ensure 3D shape
+  );
   const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
   const dataset = tf.data
     .zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) })
@@ -578,9 +576,9 @@ async function trainTransformerModel(
 // Function to predict the next word using the Transformer model
 async function predictNextWordTransformer(model, inputText, vocab) {
   const input = preprocessText(inputText);
-  const inputTensor = tf.tensor2d(
-    [input.map((word) => vocab[word] || 0)],
-    [1, input.length]
+  const inputTensor = tf.tensor3d(
+    [input.map((word) => [vocab[word] || 0])],
+    [1, input.length, 1] // Ensure 3D shape
   );
   const prediction = model.predict(inputTensor);
   const predictedIndex = prediction.argMax(-1).dataSync()[0];

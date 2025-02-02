@@ -1239,6 +1239,16 @@
       "input": "good to hear",
       "output": "Your very welcome, if you need help let me know! 😊",
       "timestamp": "2025-02-01T20:01:46.183Z"
+    },
+    {
+      "input": "hi again.",
+      "output": "Sorry, I couldnt find a defintion on what you mean.",
+      "timestamp": "2025-02-02T01:46:55.626Z"
+    },
+    {
+      "input": "hi again",
+      "output": "Sorry, I couldnt find a defintion on what you mean.",
+      "timestamp": "2025-02-02T01:47:09.832Z"
     }
   ],
   "vocabulary": {
@@ -2713,6 +2723,10 @@
       },
       {
         "word": "wassup",
+        "definition": ""
+      },
+      {
+        "word": "again.",
         "definition": ""
       }
     ],
@@ -5668,7 +5682,9 @@
     "3424837483478732472384783424824738478472348478347827485": 3099,
     "23458936277372638e52": 3100,
     "d": 3101,
-    "uh": 3102
+    "uh": 3102,
+    "defintion": 3103,
+    "mean": 3104
   },
-  "lastTrainingDate": "2025-02-01T20:01:46.183Z"
+  "lastTrainingDate": "2025-02-02T01:47:09.832Z"
 }
