@@ -304,12 +304,12 @@ function getLevenshteinDistance(a, b) {
           : Math.min(tmp[i - 1][j - 1] + 1, tmp[i][j - 1] + 1, tmp[i - 1][j] + 1);
     }
   }
-  tmp[b.length][a.length]; // Final distance
   console.log("Levenshtein Distance:", tmp[b.length][a.length]);
   if (a.length > 1000 || b.length > 1000) {
     console.warn("Strings are too long, skipping computation.");
     return -1;
   }
+  return tmp[b.length][a.length]; // Final distance
 }
 
 // Find the best match in knowledge (with exact and fuzzy match)
@@ -488,10 +488,14 @@ function preprocessText(text) {
 function createModel(vocabSize) {
   const model = tf.sequential();
   model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
-  model.add(tf.layers.lstm({ units: 128, returnSequences: true }));
-  model.add(tf.layers.lstm({ units: 128 }));
+  model.add(tf.layers.lstm({ units: 64, returnSequences: true }));
+  model.add(tf.layers.lstm({ units: 64 }));
   model.add(tf.layers.dense({ units: vocabSize, activation: "softmax" }));
-  model.compile({ optimizer: "adam", loss: "sparseCategoricalCrossentropy" });
+  const optimizer = tf.train.adam(0.01); // Increasing the learning rate to 0.01
+  model.compile({
+    optimizer: optimizer,
+    loss: "sparseCategoricalCrossentropy",
+  });
   return model;
 }
 
@@ -520,7 +524,7 @@ function createTransformerModel(vocabSize) {
 }
 
 // Function to train the Transformer model
-async function trainTransformerModel(model, data, labels, epochs = 10, batchSize = 32) {
+async function trainTransformerModel(model, data, labels, epochs = 5, batchSize = 16) {
   console.log("Validating training data...");
 
   // Ensure data is correctly formatted as [batch_size, timesteps, features]
@@ -612,6 +616,7 @@ async function initializeModel() {
 // Function to train the model asynchronously
 async function trainModelAsync() {
   console.log("Training model asynchronously...");
+  console.log(tf.memory());
   await initializeModel();
   console.log("Model training completed.");
 
@@ -913,6 +918,7 @@ function readGoalData() {
     console.log("Current Goal:", goalData.goal);
     console.log("Priority:", goalData.priority);
     console.log("Goal retrieval output: ", goalInfo);
+    console.log(tf.memory());
   }
 }
 
