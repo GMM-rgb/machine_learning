@@ -95,6 +95,22 @@
             flex-direction: column;
             justify-content: flex-start;
         }
+        #conversation-list::-webkit-scrollbar {
+            width: 11.5px;
+        }
+        #conversation-list::-webkit-scrollbar-track {
+            background-color: darkcyan;
+            border-radius: 35px;
+            -webkit-transition: all 0.15s ease-in-out;
+            transition: all 0.15s ease-in-out;
+        }
+        #conversation-list::-webkit-scrollbar-thumb {
+            cursor: pointer;
+            background-color: aqua;
+            border-radius: 35px;
+            -webkit-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+        }
 
         .conversation-item {
             display: flex;
