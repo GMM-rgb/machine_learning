@@ -701,7 +701,7 @@ async function loadModel() {
   }
 }
 // Function to generate a response based on the trained model
-async function generateResponse(inputText, vocab, model, knowledge, temperature = 0.6) {
+async function generateResponse(inputText, vocab, model, knowledge, temperature = 0.4) {
   console.log("Generating response for:", inputText);  // Debug log
 
   if (!model || typeof model.predict !== 'function') {
@@ -1032,7 +1032,7 @@ function understandInput(input) {
 
   return understanding;
 }
-
+learnInBackground();
 // Background learning function
 async function learnInBackground(unknownWords) {
   for (const word of unknownWords) {
