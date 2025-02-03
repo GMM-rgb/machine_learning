@@ -1032,7 +1032,7 @@ function understandInput(input) {
 
   return understanding;
 }
-learnInBackground(unknownWords);
+
 // Background learning function
 async function learnInBackground(unknownWords) {
   for (const word of unknownWords) {
