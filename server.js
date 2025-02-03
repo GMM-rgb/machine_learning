@@ -15,8 +15,7 @@ const os = require("os");
 const Fuse = require("fuse.js");
 const ResponseGenerator = require('./response_generator');
 
-// Model loaded from JSON (make sure 'model' is defined globally)
-let model; // Assuming model is loaded separately (e.g., `model = await tf.loadLayersModel('localstorage://my-model')`)
+let model; // model is loaded separately (e.g., `model = await tf.loadLayersModel('localstorage://my-model')`)
 
 // Initialize vocabulary or/and data
 const data = [];
