@@ -72,7 +72,7 @@
     },
     {
       "input": "ikr",
-      "output": "Hello there! How may I help you?",
+      "output": "I cant't quite understand what your trying to say, but okay.",
       "timestamp": "2025-01-26T01:09:00.002Z"
     },
     {
@@ -1441,19 +1441,9 @@
       "timestamp": "2025-02-02T06:20:26.812Z"
     },
     {
-      "input": "how are you",
-      "output": "Sorry, there was an issue generating a response.",
-      "timestamp": "2025-02-02T06:20:33.650Z"
-    },
-    {
       "input": "hey",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-02T06:24:20.196Z"
-    },
-    {
-      "input": "how are you",
-      "output": "Sorry, there was an issue generating a response.",
-      "timestamp": "2025-02-02T06:24:23.968Z"
     },
     {
       "input": "who created you",
@@ -1579,6 +1569,26 @@
       "input": "hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-03T00:54:39.066Z"
+    },
+    {
+      "input": "hi there",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-03T02:55:14.713Z"
+    },
+    {
+      "input": "how u doin",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-02-03T02:55:22.200Z"
+    },
+    {
+      "input": "that is great",
+      "output": "Something like that I guess",
+      "timestamp": "2025-02-03T02:55:30.929Z"
+    },
+    {
+      "input": "yeah",
+      "output": "Okay, got it.",
+      "timestamp": "2025-02-03T02:55:41.540Z"
     }
   ],
   "vocabulary": {
@@ -6294,5 +6304,5 @@
     "👋": 3301,
     "what’s": 3302
   },
-  "lastTrainingDate": "2025-02-03T00:54:39.066Z"
+  "lastTrainingDate": "2025-02-03T02:55:41.541Z"
 }
