@@ -1539,6 +1539,21 @@
       "input": "could you help me?",
       "output": "Sure I can, just describe what you need help with.",
       "timestamp": "2025-02-03T00:11:34.396Z"
+    },
+    {
+      "input": "hello again bro",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-03T00:20:10.336Z"
+    },
+    {
+      "input": "compute 5*4",
+      "output": "The answer is: 20",
+      "timestamp": "2025-02-03T00:22:25.602Z"
+    },
+    {
+      "input": "thank u",
+      "output": "Your very welcome, if you need help let me know!",
+      "timestamp": "2025-02-03T00:22:43.207Z"
     }
   ],
   "vocabulary": {
@@ -6246,7 +6261,11 @@
     "u?": 3293,
     "ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh": 3294,
     "again.": 3295,
-    "me?": 3296
+    "me?": 3296,
+    "5*4": 3297,
+    "is:": 3298,
+    "welcome,": 3299,
+    "know!": 3300
   },
-  "lastTrainingDate": "2025-02-03T00:11:34.396Z"
+  "lastTrainingDate": "2025-02-03T00:22:43.207Z"
 }

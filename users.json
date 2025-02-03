@@ -653,6 +653,30 @@
         {
           "sender": "AI",
           "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Hello again bro"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Compute 5*4"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 20\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Thank u"
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help let me know!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
