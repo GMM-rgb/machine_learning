@@ -1531,9 +1531,14 @@
       "timestamp": "2025-02-02T23:00:28.255Z"
     },
     {
-      "input": "ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-      "output": "I'm not sure how to respond to that.",
-      "timestamp": "2025-02-02T23:48:02.061Z"
+      "input": "hey again.",
+      "output": "Hello there again! How may I help you?",
+      "timestamp": "2025-02-03T00:10:43.807Z"
+    },
+    {
+      "input": "could you help me?",
+      "output": "Sure I can, just describe what you need help with.",
+      "timestamp": "2025-02-03T00:11:34.396Z"
     }
   ],
   "vocabulary": {
@@ -6235,7 +6240,9 @@
     "again!": 3291,
     "that.": 3292,
     "u?": 3293,
-    "ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh": 3294
+    "ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh": 3294,
+    "again.": 3295,
+    "me?": 3296
   },
-  "lastTrainingDate": "2025-02-02T23:48:02.062Z"
+  "lastTrainingDate": "2025-02-03T00:11:34.396Z"
 }
