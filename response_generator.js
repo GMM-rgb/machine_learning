@@ -86,7 +86,8 @@ class ResponseGenerator {
                 
                 try {
                     // Simulate getting definition or information about the word
-                    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+                    //const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+                    const response = await getWikipediaInfo(word);
                     const data = await response.json();
                     
                     if (data && data[0] && data[0].meanings) {
