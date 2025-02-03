@@ -1158,7 +1158,7 @@ expressApp.post("/chat", async (req, res) => {
     addTrainingData(normalizedMessage, response);
 
     // Trigger model retraining if needed
-    if (trainingData.conversations.length % 5 === 0) {
+    if (Array.isArray(trainingData.conversations) && trainingData.conversations.length % 5 === 0) {
       console.log("Triggering model retraining...");
       retrainModel();
     }

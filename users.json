@@ -722,31 +722,7 @@
       "Chat 9": [
         {
           "sender": "User",
-          "text": "hi there"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
           "text": "hey"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "hi"
-        },
-        {
-          "sender": "System",
-          "text": "Error: Unable to process message. Please try again."
-        },
-        {
-          "sender": "User",
-          "text": "hi there"
         },
         {
           "sender": "AI",
@@ -754,7 +730,7 @@
         },
         {
           "sender": "User",
-          "text": "how u doin"
+          "text": "how are you doing?"
         },
         {
           "sender": "AI",
@@ -762,19 +738,11 @@
         },
         {
           "sender": "User",
-          "text": "that's great"
+          "text": "that's great to hear"
         },
         {
           "sender": "AI",
-          "text": "Something like that I guess\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "yeah"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+          "text": "I'm glad you think so! I'm here to help you with anything you need.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }

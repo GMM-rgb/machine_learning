@@ -1589,6 +1589,26 @@
       "input": "yeah",
       "output": "Okay, got it.",
       "timestamp": "2025-02-03T02:55:41.540Z"
+    },
+    {
+      "input": "yeah",
+      "output": "Okay, got it.",
+      "timestamp": "2025-02-03T02:59:25.984Z"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-03T03:24:18.688Z"
+    },
+    {
+      "input": "how are you doing?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-02-03T03:24:52.530Z"
+    },
+    {
+      "input": "that is great to hear",
+      "output": "I'm glad you think so! I'm here to help you with anything you need.",
+      "timestamp": "2025-02-03T03:25:00.990Z"
     }
   ],
   "vocabulary": {
@@ -6302,7 +6322,10 @@
     "welcome,": 3299,
     "know!": 3300,
     "👋": 3301,
-    "what’s": 3302
+    "what’s": 3302,
+    "okay,": 3303,
+    "it.": 3304,
+    "doing?": 3305
   },
-  "lastTrainingDate": "2025-02-03T02:55:41.541Z"
+  "lastTrainingDate": "2025-02-03T03:25:00.990Z"
 }
