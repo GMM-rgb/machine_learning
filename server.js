@@ -48,7 +48,7 @@ if (fs.existsSync(usersFile)) {
 async function loadModel() {
   try {
     // Use the correct file:// path for Node.js
-    const model = await tf.loadLayersModel('file://D:/machine_learning/model.json');
+    const model = await tf.loadLayersModel('/mnt/d/machine_learning/node_modules/model.json');
     console.log("Model loaded successfully.");
     return model;
   } catch (error) {
@@ -268,7 +268,7 @@ function readTrainingData() {
       });
     });
 
-    trainingData = parsedData;
+    return trainingData = parsedData;
   }
 }
 
@@ -615,57 +615,76 @@ const xs = tf.tensor3d(
 
 // Function to create a Transformer model
 function createTransformerModel(vocabSize) {
-  const model = tf.sequential();
-  model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
-  model.add(tf.layers.dense({ units: 128, activation: "relu" }));
-  model.add(tf.layers.dense({ units: vocabSize, activation: "softmax" }));
-  model.compile({ optimizer: "adam", loss: "sparseCategoricalCrossentropy" });
-  return model;
+    const model = tf.sequential();
+    model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
+    model.add(tf.layers.dense({ units: 128, activation: "relu" }));
+    model.add(tf.layers.dense({ units: vocabSize, activation: "softmax" }));
+    model.compile({ optimizer: tf.train.adam(0.001), loss: "sparseCategoricalCrossentropy" }); // Lower learning rate to stabilize
+    return model;
 }
 
-// Function to train the Transformer model without EarlyStopping
-async function trainTransformerModel(model, data, labels, epochs = 15, batchSize = 64) {
-  console.log("Validating training data...");
+// Function to train the Transformer model with a timer to avoid infinite epochs
+async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchSize = 64, timeout = 30000) {
+    console.log("Validating training data...");
 
-  const reshapedData = data.map(seq => seq.map(step => [step])); // Wrap each number in an array
+    const reshapedData = data.map(seq => seq.map(step => [step])); 
 
-  if (!Array.isArray(reshapedData) || reshapedData.length === 0) {
-    throw new Error("Invalid data format: Data must be a non-empty array.");
-  }
+    if (!Array.isArray(reshapedData) || reshapedData.length === 0) {
+        throw new Error("Invalid data format: Data must be a non-empty array.");
+    }
 
-  console.log(`Data shape: [${reshapedData.length}, ${reshapedData[0].length}, 1]`);
-  console.log(`Labels shape: [${labels.length}, ${labels[0].length}]`);
+    console.log(`Data shape: [${reshapedData.length}, ${reshapedData[0].length}, 1]`);
+    console.log(`Labels shape: [${labels.length}, ${labels[0].length}]`);
 
-  // Convert data to tensors
-  const xs = tf.tensor3d(reshapedData, [reshapedData.length, reshapedData[0].length, 1]);
-  const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
+    const xs = tf.tensor3d(reshapedData, [reshapedData.length, reshapedData[0].length, 1]);
+    const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
 
-  const dataset = tf.data.zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) }).batch(batchSize);
+    const dataset = tf.data.zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) }).batch(batchSize);
 
-  console.log("Starting model training...");
+    console.log("⏳ Training model...");
 
-  try {
-    await model.fitDataset(dataset, {
-      epochs,
-      batchSize,
-      callbacks: {
-        onEpochBegin: (epoch) => {
-        //  console.log(`Epoch ${epoch + 1}: started...`);
-        },
-        onEpochEnd: (epoch, logs) => {
-        //  console.log(`Epoch ${epoch + 1}: Ended. Loss: ${logs.loss}`);
-        },
-        onBatchEnd: (batch, logs) => {
-        //  console.log(`Batch ${batch}: Loss: ${logs.loss}`);
-        },
-      },
-    });
-  } catch (err) {
-    console.error("Error during model training:", err);
-  }
+    let trainingComplete = false;
 
-  console.log("Model training complete.");
+    setTimeout(() => {
+        if (!trainingComplete) {
+            console.log("⏳ Training timed out. Stopping early.");
+            trainingComplete = true;
+        }
+    }, timeout);
+
+    try {
+        await model.fitDataset(dataset, {
+            epochs: maxEpochs,
+            batchSize,
+            callbacks: {
+                onEpochEnd: (epoch, logs) => {
+                    console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
+                    if (trainingComplete) {
+                        console.log("⏹️ Stopping training early due to timeout.");
+                        return false;
+                    }
+                },
+            },
+        });
+    } catch (err) {
+        console.error("❌ Error during training:", err);
+    }
+
+    console.log("📦 Saving trained model...");
+    await model.save('mnt/d/machine_learning/model.json'); // Save model after training
+    console.log("✅ Model saved successfully.");
+
+    trainingComplete = true;
 }
+
+// Function to retrain for 1 epoch when user messages
+async function retrainOnMessage(model, data, labels) {
+    console.log("🔄 Retraining for 1 epoch...");
+    await trainTransformerModel(model, data, labels, 1, 64);
+    console.log("✅ Retraining complete.");
+}
+
+module.exports = { createTransformerModel, trainTransformerModel, retrainOnMessage };
 
 // Function to generate a response based on the trained model
 // Vocabulary and unwanted words
@@ -695,7 +714,7 @@ function weightedRandomChoice(probabilities) {
 // Load the model (use for checking model before predictions)
 async function loadModel() {
   try {
-    const model = await tf.loadLayersModel('localstorage://my-model');  // Load model from local storage
+    const model = await tf.loadLayersModel('/mnt/d/machine_learning/model.json');  // Load model from local storage
     console.log("Model loaded:", model);  // Log the model to ensure it's correctly loaded
     return model;
   } catch (error) {
@@ -771,20 +790,20 @@ generateResponse("Hello", model).then(response => {
 });
 
 // Save the model after training or retraining
-async function saveModel(model) {
-  try {
-    await model.save('file://D:/machine_learning/my-model');  // Saves model to the file system
-    console.log("Model saved successfully.");
-  } catch (error) {
-    console.error("Error saving model:", error);
-  }
-}
+//async function saveModel(model) {
+//  try {
+//    await model.save('file://D:/machine_learning/my-model');  // Saves model to the file system
+//    console.log("Model saved successfully.");
+//  } catch (error) {
+//    console.error("Error saving model:", error);
+//  }
+//}
 
 // Train the model with existing knowledge
 async function initializeModel() {
   await loadModel();  // Load the model if previously saved
 
-  readTrainingData();  // Read any existing training data, if needed
+  readTrainingData(key);  // Read any existing training data, if needed // Added key remove if error
 
   // Add knowledge base data
   for (const key in knowledge) {

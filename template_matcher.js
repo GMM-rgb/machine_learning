@@ -14,11 +14,11 @@ class TemplateMatcher {
     }
 
     _extractTemplates() {
-        const templates = [];
-        for (const conversation of this.trainingData.conversations) {
+        const templates = {};
+        for (const conversation of this.trainingData) {
             const input = conversation.input.toLowerCase();
             const output = conversation.output;
-            templates.push({ input, output });
+    //        templates.push({ input, output });
         }
         return templates;
     }

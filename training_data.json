@@ -2,5 +2,9 @@
   {
     "input": "nothing",
     "response": "Nothing, no-thing, or no thing, is the complete absence of anything as the opposite of something and an antithesis of everything"
+  },
+  {
+    "input": "hi",
+    "response": "HI or Hi may refer to: Hello there! How may I help you?"
   }
 ]

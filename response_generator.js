@@ -13,7 +13,7 @@ class ResponseGenerator {
         this.trainingDataPath = trainingDataPath;
         this.trainingData = []; // Initialize as an empty array
         this.loadModel();
-        this.loadTrainingData(); // Ensures training data will
+        this.loadTrainingData(); // Ensures training data will be properly loaded
     }
 
     async loadModel() {
