@@ -14,6 +14,9 @@ const cors = require("cors");
 const os = require("os");
 const Fuse = require("fuse.js");
 const ResponseGenerator = require('./response_generator');
+const templateMatch = require('./template_matcher');
+const { text } = require("stream/consumers");
+const { Response } = require("@whatwg-node/node-fetch");
 
 let model; // model is loaded separately (e.g., `model = await tf.loadLayersModel('localstorage://my-model')`)
 
@@ -737,6 +740,8 @@ async function generateResponse(inputText, vocab, model, knowledge, temperature 
   let matchedWord = fuzzyMatch(predictedWord, knowledge);  // Match against knowledge base
 
   let generatedText = `${inputText} ${matchedWord}`;  // Construct response with matched word
+  learnInBackground(ResponseGenerator, generatedText);
+  understandInput(generatedText = input);
   console.log("Generated Text:", generatedText);  // Log the generated text
 
   return generatedText;  // Return the final generated text

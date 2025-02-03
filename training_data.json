@@ -1554,6 +1554,31 @@
       "input": "thank u",
       "output": "Your very welcome, if you need help let me know!",
       "timestamp": "2025-02-03T00:22:43.207Z"
+    },
+    {
+      "input": "hi there 👋",
+      "output": "I'm not sure how to respond to that.",
+      "timestamp": "2025-02-03T00:36:20.609Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-03T00:42:10.576Z"
+    },
+    {
+      "input": "hey what’s up",
+      "output": "I'm not sure how to respond to that.",
+      "timestamp": "2025-02-03T00:47:13.849Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-03T00:54:29.816Z"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-03T00:54:39.066Z"
     }
   ],
   "vocabulary": {
@@ -6265,7 +6290,9 @@
     "5*4": 3297,
     "is:": 3298,
     "welcome,": 3299,
-    "know!": 3300
+    "know!": 3300,
+    "👋": 3301,
+    "what’s": 3302
   },
-  "lastTrainingDate": "2025-02-03T00:22:43.207Z"
+  "lastTrainingDate": "2025-02-03T00:54:39.066Z"
 }

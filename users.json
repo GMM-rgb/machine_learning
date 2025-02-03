@@ -677,6 +677,46 @@
         {
           "sender": "AI",
           "text": "Your very welcome, if you need help let me know!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Hi there 👋"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Hey what’s up"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
