@@ -1609,6 +1609,11 @@
       "input": "that is great to hear",
       "output": "I'm glad you think so! I'm here to help you with anything you need.",
       "timestamp": "2025-02-03T03:25:00.990Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-03T23:57:40.724Z"
     }
   ],
   "vocabulary": {
@@ -6331,5 +6336,5 @@
     "it.": 3304,
     "doing?": 3305
   },
-  "lastTrainingDate": "2025-02-03T03:25:00.990Z"
+  "lastTrainingDate": "2025-02-03T23:57:40.724Z"
 }

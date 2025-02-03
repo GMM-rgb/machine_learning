@@ -11,17 +11,17 @@ class ResponseGenerator {
         this.vocab = {};
         this.conversations = {};
         this.trainingDataPath = trainingDataPath;
-        this.trainingData = []; // Initialize as an empty array
+        this.trainingData = [];
         this.loadModel();
-        this.loadTrainingData(); // Ensures training data will be properly loaded
+        this.loadTrainingData();
     }
 
     async loadModel() {
         try {
             this.model = await tf.loadLayersModel('file://D:/machine_learning/model.json');
-            console.log("Model loaded successfully in ResponseGenerator");
+            console.log("✅ Model loaded successfully in ResponseGenerator");
         } catch (error) {
-            console.error("Error loading model in ResponseGenerator:", error);
+            console.error("❌ Error loading model in ResponseGenerator:", error);
         }
     }
 
@@ -31,11 +31,12 @@ class ResponseGenerator {
                 const data = fs.readFileSync(this.trainingDataPath, 'utf8');
                 this.trainingData = JSON.parse(data);
 
-                if(!Array.isArray(this.trainingData)) {
-                  console.warn("Warning: training_data.json is not an array. Attempting reset.");
+                if (!Array.isArray(this.trainingData)) {
+                    console.warn("⚠️ Warning: training_data.json is not an array. Resetting.");
+                    this.trainingData = [];
                 }
             } catch (error) {
-                console.error("Error loading training data:", error);
+                console.error("❌ Error loading training data:", error);
                 this.trainingData = [];
             }
         } else {
@@ -69,7 +70,7 @@ class ResponseGenerator {
                     return response;
                 }
             } catch (error) {
-                console.error("Error generating model response:", error);
+                console.error("❌ Error generating model response:", error);
             }
         }
 
@@ -101,19 +102,22 @@ class ResponseGenerator {
         const unknownWords = words.filter(word => !this.vocab[word]);
 
         if (unknownWords.length > 0) {
-            console.log("Learning new words in background:", unknownWords);
+            console.log("📚 Learning new words in background:", unknownWords);
 
             for (const word of unknownWords) {
-                this.vocab[word] = Object.keys(this.vocab).length + 1;
+                if (this.vocab[word]) continue; // Skip if already learned
+                this.vocab[word] = Object.keys(this.vocab).length + 1; // Assign an index
 
                 try {
                     const definition = await this.getWikipediaInfo(word);
                     if (definition) {
                         this.updateTrainingData(word, definition, false);
-                        console.log(`Learned new word: ${word}`);
+                        console.log(`✅ Learned new word: ${word} -> ${definition}`);
+                    } else {
+                        console.log(`⚠️ No Wikipedia definition found for word: ${word}`);
                     }
                 } catch (error) {
-                    console.log(`Failed to learn about word: ${word}`);
+                    console.error(`❌ Error learning word '${word}':`, error);
                 }
             }
         }
@@ -122,19 +126,29 @@ class ResponseGenerator {
     async getWikipediaInfo(word) {
         try {
             const response = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`);
+
+            if (response.data.type === "disambiguation") {
+                console.warn(`⚠️ Wikipedia returned a disambiguation page for ${word}. Skipping.`);
+                return null;
+            }
+
             if (response.data.extract) {
-                return response.data.extract.split('. ')[0];  
+                return response.data.extract.split('. ')[0]; // Take the first sentence
+            } else {
+                console.warn(`⚠️ Wikipedia has no summary for ${word}`);
+                return null;
             }
         } catch (error) {
-            console.error(`Wikipedia fetch failed for ${word}`);
+            console.error(`❌ Wikipedia fetch failed for ${word}:`, error.response?.status || error.message);
+            return null;
         }
-        return null;
     }
 
     findClosestMatch(inputText) {
-      if(!Array.isArray(this.trainingData) || this.trainingData.length === 0) {
-        return null; // No training data was yet initialized
-      }
+        if (!Array.isArray(this.trainingData) || this.trainingData.length === 0) {
+            return null;
+        }
+
         let bestMatch = null;
         let lowestDistance = Infinity;
 
@@ -146,7 +160,7 @@ class ResponseGenerator {
             }
         }
 
-        return lowestDistance < 5 ? bestMatch : null;  
+        return lowestDistance < 5 ? bestMatch : null;
     }
 
     refineResponse(existingResponse, inputText) {
@@ -193,8 +207,12 @@ class ResponseGenerator {
             this.trainingData.push({ input, response });
         }
 
-        fs.writeFileSync(this.trainingDataPath, JSON.stringify(this.trainingData, null, 2));
-        console.log(`Updated training data: ${input} -> ${response}`);
+        try {
+            fs.writeFileSync(this.trainingDataPath, JSON.stringify(this.trainingData, null, 2));
+            console.log(`📚 Updated training data: ${input} -> ${response}`);
+        } catch (error) {
+            console.error("❌ Failed to write training data:", error);
+        }
     }
 }
 
