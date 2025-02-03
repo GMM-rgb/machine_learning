@@ -1519,6 +1519,21 @@
       "input": "so whats up with you?",
       "output": "Not too much, but hey I'm doing great! And I'm happy to see you! 😊 What do you need help with?",
       "timestamp": "2025-02-02T08:24:41.613Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-02T23:00:17.814Z"
+    },
+    {
+      "input": "how are u?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-02-02T23:00:28.255Z"
+    },
+    {
+      "input": "ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
+      "output": "I'm not sure how to respond to that.",
+      "timestamp": "2025-02-02T23:48:02.061Z"
     }
   ],
   "vocabulary": {
@@ -6218,7 +6233,9 @@
     "need.": 3289,
     "nice": 3290,
     "again!": 3291,
-    "that.": 3292
+    "that.": 3292,
+    "u?": 3293,
+    "ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh": 3294
   },
-  "lastTrainingDate": "2025-02-02T08:24:41.613Z"
+  "lastTrainingDate": "2025-02-02T23:48:02.062Z"
 }
