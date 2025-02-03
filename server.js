@@ -1007,60 +1007,60 @@ async function solveMathProblem(input) {
 }
 
 // Add definitions lookup and processing
-function findDefinitionInTrainingData(word) {
-  if (trainingData.vocabulary.definitions) {
-    const definition = trainingData.vocabulary.definitions.find(
-      (def) => def.word.toLowerCase() === word.toLowerCase()
-    );
-    return definition ? definition.definition : null;
-  }
-  return null;
-}
+//function findDefinitionInTrainingData(word) {
+//  if (trainingData.vocabulary.definitions) {
+//    const definition = trainingData.vocabulary.definitions.find(
+//      (def) => def.word.toLowerCase() === word.toLowerCase()
+//    );
+//    return definition ? definition.definition : null;
+//  }
+//  return null;
+//}
 
 // Enhanced understanding using definitions
-function understandInput(input) {
-  const words = input.toLowerCase().split(/\s+/);
-  const understanding = {
-    definitions: [],
-    unknownWords: [],
-    context: {},
-  };
+//function understandInput(input) {
+//  const words = input.toLowerCase().split(/\s+/);
+//  const understanding = {
+//    definitions: [],
+//    unknownWords: [],
+//    context: {},
+//  };
 
-  words.forEach((word) => {
-    const definition = findDefinitionInTrainingData(word);
-    if (definition) {
-      understanding.definitions.push({ word, definition });
-    } else {
-      understanding.unknownWords.push(word);
-    }
-  });
+//  words.forEach((word) => {
+//    const definition = findDefinitionInTrainingData(word);
+//    if (definition) {
+//      understanding.definitions.push({ word, definition });
+//    } else {
+//      understanding.unknownWords.push(word);
+//    }
+//  });
 
-  return understanding;
-}
+//  return understanding;
+//}
 
 // Background learning function
-async function learnInBackground(unknownWords) {
-  for (const word of unknownWords) {
-    try {
-      // Try to find information about unknown words
-      const info = await getWikipediaInfo(word);
-      if (!info.includes("Sorry")) {
-        // Add new definition to training data
-        if (!trainingData.vocabulary.definitions) {
-          trainingData.vocabulary.definitions = [];
-        }
-        trainingData.vocabulary.definitions.push({
-          word: word,
-          definition: info.substring(0, info.indexOf(".") + 1),
-        });
-        saveTrainingData();
-        console.log(`Learned new word: ${word}`);
-      }
-    } catch (error) {
-      console.log(`Failed to learn about: ${word}`);
-    }
-  }
-}
+//async function learnInBackground(unknownWords) {
+//  for (const word of unknownWords) {
+//    try {
+//      // Try to find information about unknown words
+//      const info = await getWikipediaInfo(word);
+//      if (!info.includes("Sorry")) {
+//        // Add new definition to training data
+//        if (!trainingData.vocabulary.definitions) {
+//          trainingData.vocabulary.definitions = [];
+//        }
+//        trainingData.vocabulary.definitions.push({
+//          word: word,
+//          definition: info.substring(0, info.indexOf(".") + 1),
+//        });
+//        saveTrainingData();
+//        console.log(`Learned new word: ${word}`);
+//      }
+//    } catch (error) {
+//      console.log(`Failed to learn about: ${word}`);
+//    }
+//  }
+//}
 
 // Add conversation history tracking
 const conversationHistory = new Map(); // Store conversation history per account
