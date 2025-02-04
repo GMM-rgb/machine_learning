@@ -55,9 +55,9 @@ class ResponseGenerator {
                 this.trainingData = JSON.parse(data);
 
                 // Initialize if structure is missing
-                if (!this.trainingData.conversations) {
-                    this.trainingData.conversations = [];
-                }
+                //if (!this.trainingData.conversations) {
+                //    this.trainingData.conversations = [];
+                //}
                 if (!this.trainingData.definitions) {
                     this.trainingData.definitions = [];
                 }

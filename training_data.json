@@ -1731,7 +1731,7 @@
     },
     {
       "input": "I'm glad to see you",
-      "output": "i'm glad to see you to to you see help with anything?",
+      "output": "i'm glad to see you to! do you need help with anything?",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     },
@@ -1767,7 +1767,19 @@
     },
     {
       "input": "Anyway, I’m glad to see you",
-      "output": "i’m glad to see you to to you see help with anything?",
+      "output": "i'm glad to see you to! do you need help with anything?",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "I'm so glad to see you",
+      "output": "i'm glad to see you to! do you need help with anything?",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "I'm happy to see you",
+      "output": "i'm glad to see you to! do you need help with anything?",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     }
@@ -6834,6 +6846,10 @@
     {
       "word": "tacos",
       "definition": "A taco is a traditional Mexican dish consisting of a small hand-sized corn- or wheat-based tortilla topped with a filling"
+    },
+    {
+      "word": "happy",
+      "definition": "Happiness is a complex and multifaceted emotion that encompasses a range of positive feelings, from contentment to intense joy"
     }
   ]
 }
