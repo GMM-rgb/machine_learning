@@ -353,7 +353,7 @@ class ResponseGenerator {
                     const keyTermBoost = Array.from(context.keyTerms).reduce((boost, term) => {
                         if (conversation.input.toLowerCase().includes(term) || 
                             conversation.output.toLowerCase().includes(term)) {
-                            return boost + 0.1; // Boost for each matching key term
+                            return boost + 0.1; // Boost for each matching key term for better stability
                         }
                         return boost;
                     }, 0);
