@@ -1205,6 +1205,8 @@ expressApp.post("/chat", async (req, res) => {
         } else if (messageForChecks.includes("wiki") || 
                    messageForChecks.includes("what is") || 
                    messageForChecks.includes("who is") ||
+                   messageForChecks.includes("explain to me") ||
+                   messageForChecks.includes("explain") ||
                    messageForChecks.includes("what are") ||
                    messageForChecks.includes("describe")) {
             // Remove information request prefixes

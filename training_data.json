@@ -8,8 +8,9 @@
     },
     {
       "input": "how are you doing?",
-      "output": "Not too much, but hey I'm doing great!",
-      "timestamp": "2025-01-25T21:27:35.245Z"
+      "output": "how how much, but how i'm doing? great!",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "what are you thinking of?",
@@ -320,7 +321,7 @@
     {
       "input": "hello",
       "output": "hello there! how may i hello you?",
-      "timestamp": "2025-02-04T12:42:51.000Z",
+      "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     },
     {
@@ -1689,9 +1690,19 @@
     },
     {
       "input": "that's great to hear from you",
-      "output": "really? thanks! to Really? Thanks! 😄",
+      "output": "really? thanks! to really? thanks! to",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "ok, thanks",
+      "output": "alright, let me know if you need help.",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "okay got it",
+      "output": "Alright, tell me if you will need any more help, and we can do it."
     }
   ],
   "vocabulary": {
@@ -6728,6 +6739,14 @@
     {
       "word": "hear",
       "definition": "Hearing, or auditory perception, is the ability to perceive sounds through an organ, such as an ear, by detecting vibrations as periodic changes in the pressure of a surrounding medium"
+    },
+    {
+      "word": "lol",
+      "definition": "LOL, or lol, is an initialism for laughing out loud, and a popular element of Internet slang, which can be used to indicate amusement, irony, or double meanings"
+    },
+    {
+      "word": "being",
+      "definition": "Existence is the state of having being or reality in contrast to nonexistence and nonbeing"
     }
   ]
 }

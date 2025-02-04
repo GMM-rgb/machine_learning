@@ -3,6 +3,9 @@ const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
 const axios = require('axios');
 const levenshtein = require('fast-levenshtein');
+const { ifError } = require('assert');
+const path = require('path');
+const { isArray } = require('mathjs');
 
 // TensorFlow setup - Ensures this is only done once
 if (!global.tfSetup) {
@@ -14,7 +17,7 @@ const model = {};
 class ResponseGenerator {
     constructor(knowledgePath = 'knowledge.json', trainingDataPath = 'training_data.json') {
         this.matcher = new TemplateMatcher(knowledgePath, trainingDataPath);
-        this.model = null;
+        this.model = null
         this.vocab = {};
         this.trainingDataPath = trainingDataPath;
         this.trainingData = {
@@ -31,17 +34,17 @@ class ResponseGenerator {
 
     async loadModel() {
         try {
-            this.model = await tf.loadLayersModel('file://D:/machine_learning/model.json');
+            this.model = await tf.loadLayersModel("file://D:/machine_learning/model.json");
             console.log("✅ Model loaded successfully in ResponseGenerator");
+            if(ifError) {
+                console.warn(`Model not found, creating file for data...`);
+                model.createModel(toString());
+                this.model.parse(model);
+                let model = toString();
+                return model;
+            }
         } catch (error) {
             console.error("❌ Error loading model in ResponseGenerator:", error);
-        }
-        if(!model) {
-            console.warn(`Model not found, creating file for data...`);
-            model.createModel(toString());
-            model.parse();
-            let model = {};
-            return model;
         }
     }
 
