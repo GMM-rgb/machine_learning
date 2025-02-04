@@ -7,7 +7,6 @@ const levenshtein = require('fast-levenshtein');
 // TensorFlow setup - Ensure this is only done once
 if (!global.tfSetup) {
     global.tfSetup = true;
-    // Any additional TensorFlow setup code
 }
 
 class ResponseGenerator {
@@ -20,8 +19,10 @@ class ResponseGenerator {
             conversations: [],
             definitions: [],
             vocabulary: {},
-            lastTrainingDate: ""
+            lastTrainingDate: '2025-02-04 02:34:09'
         };
+        this.currentUser = 'GMM-rgb';
+        this.currentDateTime = '2025-02-04 02:34:09';
         this.loadModel();
         this.loadTrainingData();
     }
@@ -74,31 +75,25 @@ class ResponseGenerator {
             lastTrainingDate: this.currentDateTime
         };
     }
-
+    
     async generateResponse(inputText) {
         await this.learnInBackground(inputText);
 
-        // First, check for definitions
-        const words = inputText.toLowerCase().split(/\s+/);
-        for (const word of words) {
-            const definition = this.findDefinition(word);
-            if (definition) {
-                return definition;
-            }
-        }
-
-        // Try to find a similar conversation
-        let closestMatch = this.findClosestMatch(inputText);
+        // First, try to find similar conversations and context
+        const context = this.buildResponseContext(inputText);
+        
+        // Try to find a similar conversation with context
+        let closestMatch = this.findClosestMatch(inputText, context);
         if (closestMatch && closestMatch.confidence > 0.7) {
-            let refinedResponse = this.refineResponse(closestMatch.output, inputText);
+            let refinedResponse = this.refineResponse(closestMatch.output, inputText, context);
             this.updateTrainingData(inputText, refinedResponse, true);
             return refinedResponse;
         }
 
-        // Try template matching
+        // Try template matching with context
         const { bestMatch, score } = this.matcher.findBestTemplate(inputText);
         if (bestMatch && score < 3) {
-            let response = bestMatch.output;
+            let response = this.enhanceResponse(bestMatch.output, context);
             this.updateTrainingData(inputText, response, false);
             return response;
         }
@@ -108,6 +103,7 @@ class ResponseGenerator {
             try {
                 let response = await this.generateModelResponse(inputText);
                 if (response) {
+                    response = this.enhanceResponse(response, context);
                     this.updateTrainingData(inputText, response, false);
                     return response;
                 }
@@ -117,6 +113,29 @@ class ResponseGenerator {
         }
 
         return "I'm not sure how to respond to that.";
+    }
+
+    buildResponseContext(inputText) {
+        const words = inputText.toLowerCase().split(/\s+/);
+        const context = {
+            definitions: {},
+            relatedConversations: [],
+            keyTerms: new Set()
+        };
+
+        // Gather definitions for context
+        for (const word of words) {
+            const definition = this.findDefinition(word);
+            if (definition) {
+                context.definitions[word] = definition;
+                context.keyTerms.add(word);
+            }
+        }
+
+        // Find related conversations
+        context.relatedConversations = this.findRelatedConversations(inputText, Array.from(context.keyTerms));
+
+        return context;
     }
 
     async generateModelResponse(inputText) {
@@ -137,6 +156,32 @@ class ResponseGenerator {
         );
 
         return responseIndices.map(index => reverseVocab[index]).filter(word => word).join(' ');
+    }
+
+    findRelatedConversations(inputText, keyTerms) {
+        return this.trainingData.conversations
+            .filter(conv => {
+                // Check if conversation contains any key terms
+                const containsKeyTerm = keyTerms.some(term => 
+                    conv.input.toLowerCase().includes(term) || 
+                    conv.output.toLowerCase().includes(term)
+                );
+
+                // Calculate similarity
+                const inputSimilarity = levenshtein.get(
+                    inputText.toLowerCase(), 
+                    conv.input.toLowerCase()
+                );
+
+                return containsKeyTerm || inputSimilarity < 10;
+            })
+            .map(conv => ({
+                ...conv,
+                similarity: 1 - (levenshtein.get(inputText.toLowerCase(), conv.input.toLowerCase()) / 
+                              Math.max(inputText.length, conv.input.length))
+            }))
+            .sort((a, b) => b.similarity - a.similarity)
+            .slice(0, 5); // Get top 5 related conversations
     }
 
     async learnInBackground(inputText) {
@@ -211,7 +256,7 @@ class ResponseGenerator {
         }
     }
 
-    findClosestMatch(inputText) {
+    findClosestMatch(inputText, context) {
         if (!this.trainingData.conversations || this.trainingData.conversations.length === 0) {
             return null;
         }
@@ -219,10 +264,26 @@ class ResponseGenerator {
         let bestMatch = null;
         let highestConfidence = 0;
 
+        // Consider both direct matches and context-enhanced matches
         for (const conversation of this.trainingData.conversations) {
+            let confidence = 0;
+            
+            // Basic text similarity
             const distance = levenshtein.get(inputText.toLowerCase(), conversation.input.toLowerCase());
             const maxLength = Math.max(inputText.length, conversation.input.length);
-            const confidence = 1 - (distance / maxLength);
+            confidence = 1 - (distance / maxLength);
+
+            // Boost confidence if conversation contains key terms from context
+            if (context.keyTerms.size > 0) {
+                const keyTermBoost = Array.from(context.keyTerms).reduce((boost, term) => {
+                    if (conversation.input.toLowerCase().includes(term) || 
+                        conversation.output.toLowerCase().includes(term)) {
+                        return boost + 0.1; // Boost for each matching key term
+                    }
+                    return boost;
+                }, 0);
+                confidence += keyTermBoost;
+            }
 
             if (confidence > highestConfidence) {
                 highestConfidence = confidence;
@@ -236,7 +297,29 @@ class ResponseGenerator {
         return bestMatch;
     }
 
-    refineResponse(existingResponse, inputText) {
+    enhanceResponse(response, context) {
+        // Don't return definitions directly, but use them to enhance the response
+        let enhancedResponse = response;
+
+        // Use context to make response more relevant
+        if (context.relatedConversations.length > 0) {
+            const relevantPhrases = context.relatedConversations
+                .map(conv => conv.output)
+                .filter(output => output !== response);
+
+            // Incorporate relevant phrases if they exist
+            if (relevantPhrases.length > 0) {
+                const relevantPhrase = relevantPhrases[0]; // Use the most relevant one
+                if (response.length < 50) { // Only enhance short responses
+                    enhancedResponse = `${response} ${relevantPhrase}`;
+                }
+            }
+        }
+
+        return enhancedResponse;
+    }
+
+    refineResponse(existingResponse, inputText, context) {
         const inputWords = inputText.toLowerCase().split(/\s+/);
         const responseWords = existingResponse.toLowerCase().split(/\s+/);
 
@@ -246,6 +329,11 @@ class ResponseGenerator {
             }
             return this.findSimilarWord(word, inputWords);
         }).join(' ');
+
+        // Enhance with context if the response is too short or generic
+        if (refinedResponse.split(' ').length < 5) {
+            refinedResponse = this.enhanceResponse(refinedResponse, context);
+        }
 
         return refinedResponse;
     }
@@ -273,7 +361,8 @@ class ResponseGenerator {
         const newEntry = {
             input,
             output: response,
-            timestamp: new Date(this.currentDateTime).toISOString()
+            timestamp: new Date(this.currentDateTime).toISOString(),
+            user: this.currentUser
         };
 
         if (existingIndex === -1) {
