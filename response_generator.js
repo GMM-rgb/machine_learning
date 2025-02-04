@@ -105,13 +105,25 @@ class ResponseGenerator {
             console.log("📚 Learning new words in background:", unknownWords);
 
             for (const word of unknownWords) {
-                if (this.vocab[word]) continue; // Skip if already learned
+                // Check if the word already exists in training data
+                const existingEntry = this.trainingData.find(entry => 
+                    entry.input.toLowerCase() === word.toLowerCase()
+                );
+
+                if (existingEntry) {
+                    console.log(`ℹ️ Word '${word}' already exists in training data, skipping...`);
+                    this.vocab[word] = Object.keys(this.vocab).length + 1; // Still add to vocab
+                    continue;
+                }
+
+                if (this.vocab[word]) continue; // Skip if already in vocab
                 this.vocab[word] = Object.keys(this.vocab).length + 1; // Assign an index
 
                 try {
                     const definition = await this.getWikipediaInfo(word);
                     if (definition) {
-                        this.updateTrainingData(word, definition, false);
+                        // Add new entry instead of updating existing one
+                        this.addNewTrainingEntry(word, definition);
                         console.log(`✅ Learned new word: ${word} -> ${definition}`);
                     } else {
                         console.log(`⚠️ No Wikipedia definition found for word: ${word}`);
@@ -133,7 +145,7 @@ class ResponseGenerator {
             }
 
             if (response.data.extract) {
-                return response.data.extract.split('. ')[0]; // Take the first sentence (later add a check to make sure the sentence has meaning.)
+                return response.data.extract.split('. ')[0]; // Take the first sentence
             } else {
                 console.warn(`⚠️ Wikipedia has no summary for ${word}`);
                 return null;
@@ -141,6 +153,25 @@ class ResponseGenerator {
         } catch (error) {
             console.error(`❌ Wikipedia fetch failed for ${word}:`, error.response?.status || error.message);
             return null;
+        }
+    }
+
+    addNewTrainingEntry(input, response) {
+        // Check if entry already exists
+        const exists = this.trainingData.some(entry => 
+            entry.input.toLowerCase() === input.toLowerCase()
+        );
+
+        if (!exists) {
+            this.trainingData.push({ input, response });
+            try {
+                fs.writeFileSync(this.trainingDataPath, JSON.stringify(this.trainingData, null, 2));
+                console.log(`📚 Added new training entry: ${input} -> ${response}`);
+            } catch (error) {
+                console.error("❌ Failed to write training data:", error);
+            }
+        } else {
+            console.log(`ℹ️ Training entry for '${input}' already exists, preserving existing data`);
         }
     }
 
@@ -193,23 +224,22 @@ class ResponseGenerator {
     }
 
     updateTrainingData(input, response, isRefinement) {
-        let updated = false;
+        // Only update if it's a refinement or the entry doesn't exist
+        const existingEntryIndex = this.trainingData.findIndex(entry => 
+            levenshtein.get(input.toLowerCase(), entry.input.toLowerCase()) < 3
+        );
 
-        for (let entry of this.trainingData) {
-            if (levenshtein.get(input.toLowerCase(), entry.input.toLowerCase()) < 3) {
-                entry.response = response;
-                updated = true;
-                break;
-            }
-        }
-
-        if (!updated) {
+        if (existingEntryIndex === -1) {
+            // Entry doesn't exist, add it
             this.trainingData.push({ input, response });
+        } else if (isRefinement) {
+            // Only update if it's a refinement
+            this.trainingData[existingEntryIndex].response = response;
         }
 
         try {
             fs.writeFileSync(this.trainingDataPath, JSON.stringify(this.trainingData, null, 2));
-            console.log(`📚 Updated training data: ${input} -> ${response}`);
+            console.log(`📚 ${existingEntryIndex === -1 ? 'Added new' : 'Updated'} training data: ${input} -> ${response}`);
         } catch (error) {
             console.error("❌ Failed to write training data:", error);
         }
