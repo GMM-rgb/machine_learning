@@ -982,6 +982,16 @@
           "sender": "AI",
           "text": "hey, whats up? anything on your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
+      ],
+      "Chat 13": [
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "hello there! hi may hi help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        }
       ]
     }
   }
