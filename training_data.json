@@ -1702,7 +1702,19 @@
     },
     {
       "input": "okay got it",
-      "output": "Alright, tell me if you will need any more help, and we can do it."
+      "output": "Alright, tell me if you will need any more help, and we can do it.",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "okay I got it",
+      "output": "alright, tell i i got will need any more help, and i can i it",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "ehh close enough.",
+      "output": "Thanks for your confidence in me, I'm trying my best.",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {

@@ -1087,6 +1087,22 @@
         {
           "sender": "AI",
           "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "okay I got it"
+        },
+        {
+          "sender": "AI",
+          "text": "alright, tell i i got will need any more help, and i can i it\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "close enough but your doing great"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
