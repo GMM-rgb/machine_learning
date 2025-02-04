@@ -326,17 +326,12 @@
       "timestamp": "2025-01-26T02:14:33.966Z"
     },
     {
-      "input": "how u doing my friend",
-      "output": "I don't know how to respond to that.",
-      "timestamp": "2025-01-26T02:15:46.779Z"
-    },
-    {
       "input": "how you doing my friend",
       "output": "Not too much, but hey I'm doing great! And you?",
       "timestamp": "2025-01-26T02:15:56.899Z"
     },
     {
-      "input": "hi",
+      "input": "Hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-26T02:17:07.054Z"
     },
@@ -532,8 +527,9 @@
     },
     {
       "input": "how are you doing",
-      "output": "Not too much, but hey I'm doing great!",
-      "timestamp": "2025-01-26T20:49:33.896Z"
+      "output": "how how much, but how i'm doing great!",
+      "timestamp": "2025-02-04T10:34:09.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "explain to me nvme ssd",
@@ -6626,8 +6622,20 @@
     "excellence.": 3533
   },
   "lastTrainingDate": "2025-02-04 02:34:09",
-  "definitions": [],
-    "orbes.": 3526,
+  "definitions": [
+    {
+      "word": "you",
+      "definition": "In Modern English, the word \"you\" is the second-person pronoun"
+    },
+    {
+    "no.": 3519,
+    "fortune": 3520,
+    "rankings": 3521,
+    "corporations": 3522,
+    "revenue.": 3523,
+    "likewise,": 3524,
+    "done": 3525,
+    "forbes.": 3526,
     "\"world's": 3527,
     "bank\"": 3528,
     "euromoney": 3529,
@@ -6636,3 +6644,5 @@
     "awards": 3532,
     "excellence.": 3533
   }
+  ]
+}
