@@ -18,6 +18,7 @@ const templateMatch = require('./template_matcher');
 const { text } = require("stream/consumers");
 const { Response } = require("@whatwg-node/node-fetch");
 const { error, warn } = require("console");
+const { any } = require("async");
 
 let model; // model is loaded separately (e.g., `model = await tf.loadLayersModel('localstorage://my-model')`)
 
@@ -651,12 +652,20 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchS
           console.log("⌛ Training timed out. Stopping early.");
           trainingComplete = true;
           console.warn("❗⚠️ Moving to next Epoch...", warn);
-      (epoch, logs) => {
-        console.log(`⏳ Starting next Epoch...`);
-        console.log("✅ Succesfully started next Epoch.");
-        console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
-      }; {
-        console.error(`❌ Unsuccesfully started next Epoch.`, error)
+          console.log(`⏳ Starting next Epoch...`);
+          console.log("✅ Succesfully started next Epoch.");  
+      try {
+        model.fitDataset(dataset, {
+            epochs: maxEpochs,
+            batchSize,
+            callbacks: {
+            onEpochEnd: (epoch, logs) => {
+              console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
+            },
+          },
+      });
+      } catch (err) {
+        console.error("❌ Error during training:", err);
       }
     }
   }, timeout);
