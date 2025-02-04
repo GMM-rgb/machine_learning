@@ -627,12 +627,12 @@ function createTransformerModel(vocabSize) {
   model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
   model.add(tf.layers.dense({ units: 128, activation: "relu" }));
   model.add(tf.layers.dense({ units: vocabSize, activation: "softmax" }));
-  model.compile({ optimizer: tf.train.adam(1.00), loss: "sparseCategoricalCrossentropy" }); // Lower learning rate to stabilize (stable value: 0.001)
+  model.compile({ optimizer: tf.train.adam(1.05), loss: "sparseCategoricalCrossentropy" }); // Lower learning rate to stabilize (stable value: 0.001)
   return model;
 }
 
 // Function to train the Transformer model with a timer to avoid infinite epochs
-async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchSize = 64, timeout = 37500) {
+async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 128, timeout = 37500) {
   console.log("Validating training data...");
 
   const reshapedData = data.map(seq => seq.map(step => [step])); 
