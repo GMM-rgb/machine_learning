@@ -608,7 +608,7 @@ function createModel(vocabSize) {
 }
 
 // Function to train the TensorFlow (AI) model
-async function trainModel(model, data, labels, epochs = 15, batchSize = 8) {
+async function trainModel(model, data, labels, epochs = 15, batchSize = 4) {
 // Ensure 'data' is properly formatted
 const xs = tf.tensor3d(
   data.map(seq => seq.map(step => [step])), // Reshape to (batch_size, timesteps, features)
@@ -632,7 +632,7 @@ function createTransformerModel(vocabSize) {
 }
 
 // Function to train the Transformer model with a timer to avoid infinite epochs
-async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 8, timeout = 30000) {
+async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 4, timeout = 30000) {
   console.log("Validating training data...");
 
   const reshapedData = data.map(seq => seq.map(step => [step])); 
