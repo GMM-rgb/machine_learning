@@ -4,10 +4,12 @@ const fs = require('fs');
 const axios = require('axios');
 const levenshtein = require('fast-levenshtein');
 
-// TensorFlow setup - Ensure this is only done once
+// TensorFlow setup - Ensures this is only done once
 if (!global.tfSetup) {
     global.tfSetup = true;
 }
+
+const model = {};
 
 class ResponseGenerator {
     constructor(knowledgePath = 'knowledge.json', trainingDataPath = 'training_data.json') {
@@ -33,6 +35,13 @@ class ResponseGenerator {
             console.log("✅ Model loaded successfully in ResponseGenerator");
         } catch (error) {
             console.error("❌ Error loading model in ResponseGenerator:", error);
+        }
+        if(!model) {
+            console.warn(`Model not found, creating file for data...`);
+            model.createModel(toString());
+            model.parse();
+            let model = {};
+            return model;
         }
     }
 

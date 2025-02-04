@@ -690,16 +690,8 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchS
   //
   if(trainingComplete === true ? trainingComplete === false: null) {
     console.log("📦 ⏳ Saving trained model...");
-    await model.location(model.parse());
-    let model;
-    await model.save(toString, 'file://D:/machine_learning/model.json'); // Save model after training
-    if(!model) {
-      console.warn(`Model not found, creating file for data...`);
-      model.createModel(toString());
-      // Save the created file and ensure its loaded
-      saveModel().then
-      loadModel();
-    }
+    await model.location(path.parse.model);
+    await model.path.save('file://D:/machine_learning/model.json'); // Save model after training
     console.log("✅ 💾 Model saved successfully."); // Log that model has been successfully saved
   }
   return trainingComplete = true; // Checks to make sure the trainingComplete variable is true
