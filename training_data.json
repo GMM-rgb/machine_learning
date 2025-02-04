@@ -1674,6 +1674,11 @@
       "input": "well bye",
       "output": "See you later, maybe tommorow perhaps? 😊",
       "timestamp": "2025-02-04T02:46:27.332Z"
+    },
+    {
+      "input": "bye",
+      "output": "See you later, maybe tommorow perhaps? 😊",
+      "timestamp": "2025-02-04T02:49:20.245Z"
     }
   ],
   "vocabulary": {
@@ -6624,5 +6629,5 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-04T02:46:27.332Z"
+  "lastTrainingDate": "2025-02-04T02:49:20.245Z"
 }
