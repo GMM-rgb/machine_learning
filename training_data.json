@@ -1747,8 +1747,10 @@
       "user": "GMM-rgb"
     },
     {
-      "input": "Hey what's up",
-      "output": "Hey, whats up? Anything on your mind?"
+      "input": "hey what's up",
+      "output": "hey what's up anything up your mind?",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
