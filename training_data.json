@@ -312,8 +312,9 @@
     },
     {
       "input": "hello",
-      "output": "Hello there! How may I help you?",
-      "timestamp": "2025-01-26T02:13:13.962Z"
+      "output": "hello there! how may i hello you?",
+      "timestamp": "2025-02-04T12:42:51.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "how you doing my friend?",
@@ -6621,28 +6622,32 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-04 02:34:09",
+  "lastTrainingDate": "2025-02-04 04:48:22",
   "definitions": [
     {
       "word": "you",
       "definition": "In Modern English, the word \"you\" is the second-person pronoun"
     },
     {
-    "no.": 3519,
-    "fortune": 3520,
-    "rankings": 3521,
-    "corporations": 3522,
-    "revenue.": 3523,
-    "likewise,": 3524,
-    "done": 3525,
-    "forbes.": 3526,
-    "\"world's": 3527,
-    "bank\"": 3528,
-    "euromoney": 3529,
-    "institutional": 3530,
-    "investor": 3531,
-    "awards": 3532,
-    "excellence.": 3533
-  }
+      "no.": 3519,
+      "fortune": 3520,
+      "rankings": 3521,
+      "corporations": 3522,
+      "revenue.": 3523,
+      "likewise,": 3524,
+      "done": 3525,
+      "forbes.": 3526,
+      "\"world's": 3527,
+      "bank\"": 3528,
+      "euromoney": 3529,
+      "institutional": 3530,
+      "investor": 3531,
+      "awards": 3532,
+      "excellence.": 3533
+    },
+    {
+      "word": "hello",
+      "definition": "Hello is a salutation or greeting in the English language"
+    }
   ]
 }

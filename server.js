@@ -1170,46 +1170,71 @@ function getCurrentGoal() {
 // Updated the chat endpoint to use varied responses and isolate accounts
 const responseGenerator = new ResponseGenerator();
 
+// Set current date/time and user
+responseGenerator.currentDateTime = '2025-02-04 04:42:51';
+responseGenerator.currentUser = 'GMM-rgb';
+
 expressApp.post("/chat", async (req, res) => {
-  if (!chatEnabled) {
-    return res.json({
-      response: "Chat is currently disabled while performing a search. Please try again in a moment.",
-    });
-  }
-
-  const { message, accountId = "default" } = req.body;
-  const normalizedMessage = normalizeText(message.replace(/[,']/g, "").toLowerCase());
-  let response = "";
-
-  try {
-    if (isMathQuery(message)) {
-      response = await solveMathProblem(message);
-    } else if (normalizedMessage.startsWith("search bing") || normalizedMessage.startsWith("bing")) {
-      response = await handleUserInput(message);
-    } else if (isWikipediaQuery(message)) {
-      response = await getWikipediaInfo(message);
-    } else {
-      // Use the response generator with background learning
-      response = await responseGenerator.generateResponse(normalizedMessage);
+    if (!chatEnabled) {
+        return res.json({
+            response: "Chat is currently disabled while performing a search. Please try again in a moment.",
+        });
     }
 
-    // Add the interaction to training data for future learning
-    addTrainingData(normalizedMessage, response);
-
-    // Trigger model retraining if needed
-    if (Array.isArray(trainingData.conversations) && trainingData.conversations.length % 5 === 0) {
-      console.log("Triggering model retraining...");
-      retrainModel();
+    const { message, accountId = "default" } = req.body;
+    
+    // Basic validation
+    if (!message) {
+        return res.status(400).json({
+            response: "Please provide a message."
+        });
     }
 
-    const currentGoal = getCurrentGoal();
-    response += `\n\nCurrent Goal: ${currentGoal.goal || "No current goal"}\nPriority: ${currentGoal.priority || "No priority set"}`;
+    try {
+        // Keep original message for special queries
+        const messageForChecks = message.trim().toLowerCase();
+        let response = "";
 
-    res.json({ response });
-  } catch (error) {
-    console.error("Error in chat endpoint:", error);
-    res.status(500).json({ response: "An error occurred while processing your message." });
-  }
+        if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
+            response = await solveMathProblem(message);
+        } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
+            response = await handleUserInput(message);
+        } else if (messageForChecks.includes("wiki") || 
+                   messageForChecks.includes("what is") || 
+                   messageForChecks.includes("who is")) {
+            response = await getWikipediaInfo(message);
+        } else {
+            // Pass the original message to response generator
+            response = await responseGenerator.generateResponse(message);
+        }
+
+        // Only add to training data if we got a response
+        if (response) {
+            if (!trainingData.conversations) {
+                trainingData.conversations = [];
+            }
+
+            trainingData.conversations.push({
+                input: message,
+                output: response,
+                timestamp: '2025-02-04 04:42:51'
+            });
+
+            // Trigger model retraining if needed
+            if (trainingData.conversations.length % 5 === 0) {
+                console.log("Triggering model retraining...");
+                retrainModel();
+            }
+        }
+
+        const currentGoal = getCurrentGoal();
+        response += `\n\nCurrent Goal: ${currentGoal.goal || "No current goal"}\nPriority: ${currentGoal.priority || "No priority set"}`;
+
+        res.json({ response });
+    } catch (error) {
+        console.error("Error in chat endpoint:", error);
+        res.status(500).json({ response: "An error occurred while processing your message." });
+    }
 });
 
 // Feedback API endpoint
