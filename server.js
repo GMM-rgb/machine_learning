@@ -649,6 +649,11 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchS
       if (!trainingComplete) {
           console.log("⏳ Training timed out. Stopping early.");
           trainingComplete = true;
+
+          (epoch, logs) => {
+            console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
+          }
+          console.log("❗ Moving to next Epoch...");
       }
   }, timeout);
 
@@ -659,7 +664,7 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchS
           callbacks: {
               onEpochEnd: (epoch, logs) => {
                   console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
-                  if (trainingComplete) {
+                  if (!trainingComplete) {
                       console.log("⏹️ Stopping training early due to timeout.");
                       return false;
                   }
