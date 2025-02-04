@@ -1616,11 +1616,6 @@
       "timestamp": "2025-02-04T01:19:24.568Z"
     },
     {
-      "input": "how can you help me",
-      "output": "Here's what I found on Wikipedia: \"Can You Help Me\" is a song written and performed by American contemporary R&B musician Jesse Johnson, issued as the second single from his debut studio album Jesse Johnson's Revue. The song peaked at #3 on the Billboard R&B chart in 1985.\n\n",
-      "timestamp": "2025-02-04T01:20:43.803Z"
-    },
-    {
       "input": "no no",
       "output": "Okay, got it, I will make sure to remember that.",
       "timestamp": "2025-02-04T01:22:21.099Z"
