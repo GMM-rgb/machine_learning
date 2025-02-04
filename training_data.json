@@ -1619,6 +1619,16 @@
       "input": "no no",
       "output": "Okay, got it, I will make sure to remember that.",
       "timestamp": "2025-02-04T01:22:21.099Z"
+    },
+    {
+      "input": "so whats up with you",
+      "output": "Not too much, but hey I'm doing great! And I'm happy to see you! 😊 What do you need help with?",
+      "timestamp": "2025-02-04T01:35:17.455Z"
+    },
+    {
+      "input": "hmm i'm not sure what i should do",
+      "output": "That's up to you to decide, however, I'm always here to help! You could maybe do something that's on your agenda, that's what I would suggest! 😊",
+      "timestamp": "2025-02-04T01:35:44.774Z"
     }
   ],
   "vocabulary": {
@@ -6352,7 +6362,10 @@
     "revue.": 3315,
     "peaked": 3316,
     "#3": 3317,
-    "1985.": 3318
+    "1985.": 3318,
+    "you!": 3319,
+    "😊": 3320,
+    "with?": 3321
   },
-  "lastTrainingDate": "2025-02-04T01:22:21.099Z"
+  "lastTrainingDate": "2025-02-04T01:35:44.774Z"
 }

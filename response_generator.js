@@ -160,7 +160,7 @@ class ResponseGenerator {
             }
         }
 
-        return lowestDistance < 5 ? bestMatch : null;
+        return lowestDistance < 10 ? bestMatch : null;
     }
 
     refineResponse(existingResponse, inputText) {
