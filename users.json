@@ -997,6 +997,62 @@
         {
           "sender": "AI",
           "text": "hello there! how may i hello you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "what's up"
+        },
+        {
+          "sender": "AI",
+          "text": "hey, what's up anything up your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "what could we do"
+        },
+        {
+          "sender": "AI",
+          "text": "that's we do do do decide, however, i'm always here do help!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "okay"
+        },
+        {
+          "sender": "AI",
+          "text": "hello there! how okay i help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "what?"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "hmm"
+        },
+        {
+          "sender": "AI",
+          "text": "i will let you decide on that, unless you need some ideas.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "wait hold on"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "wait"
+        },
+        {
+          "sender": "AI",
+          "text": "i'm here, take your time.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }

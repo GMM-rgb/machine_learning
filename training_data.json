@@ -257,13 +257,15 @@
     },
     {
       "input": "okay",
-      "output": "Hello there! How may I help you?",
-      "timestamp": "2025-01-26T01:43:31.956Z"
+      "output": "hello there! how okay i help you?",
+      "timestamp": "2025-02-04T12:42:51.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "wait",
-      "output": "I'm here, take your time.",
-      "timestamp": "2025-01-26T01:43:40.869Z"
+      "output": "i'm here, take your time.",
+      "timestamp": "2025-02-04T12:42:51.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "okay i'm back",
@@ -1672,6 +1674,24 @@
       "input": "well bye",
       "output": "See you later, maybe tommorow perhaps? 😊",
       "timestamp": "2025-02-04T02:46:27.332Z"
+    },
+    {
+      "input": "what's up",
+      "output": "hey, what's up anything up your mind?",
+      "timestamp": "2025-02-04T12:42:51.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "what could we do",
+      "output": "that's we do do do decide, however, i'm always here do help!",
+      "timestamp": "2025-02-04T12:42:51.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "hmm",
+      "output": "i will let you decide on that, unless you need some ideas.",
+      "timestamp": "2025-02-04T12:42:51.000Z",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
@@ -6648,6 +6668,18 @@
     {
       "word": "hello",
       "definition": "Hello is a salutation or greeting in the English language"
+    },
+    {
+      "word": "could",
+      "definition": "The English modal auxiliary verbs are a subset of the English auxiliary verbs used mostly to express modality, properties such as possibility and obligation"
+    },
+    {
+      "word": "we",
+      "definition": "In Modern English, we is a plural, first-person pronoun."
+    },
+    {
+      "word": "okay",
+      "definition": "OK, with spelling variations including okay, okeh, O.K"
     }
   ]
 }
