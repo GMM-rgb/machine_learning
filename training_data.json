@@ -1169,8 +1169,9 @@
     },
     {
       "input": "your welcome",
-      "output": "Thanks, your the best too!",
-      "timestamp": "2025-01-31T02:39:13.275Z"
+      "output": "thanks, your the best too!",
+      "timestamp": "2025-02-04T12:42:51.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": ":d",
@@ -6715,6 +6716,10 @@
     {
       "word": "your",
       "definition": "In Modern English, the word \"you\" is the second-person pronoun"
+    },
+    {
+      "word": "welcome",
+      "definition": "A welcome is a kind of greeting designed to introduce a person to a new place or situation, and to make them feel at ease"
     }
   ]
 }
