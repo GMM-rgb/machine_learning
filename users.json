@@ -883,6 +883,30 @@
         {
           "sender": "AI",
           "text": "hello there! how may i hello you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "what is the capital of America"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: The Bank of America Corporation (often abbreviated BofA or BoA) is an American multinational investment bank and financial services holding company headquartered at the Bank of America Corporate Center in Charlotte, North Carolina, with investment banking and auxiliary headquarters in Manhattan. The bank was founded by the merger of NationsBank and Bank of America in 1998. It is the second-largest banking institution in the United States and the second-largest bank in the world by market capitalization, both after JPMorgan Chase. Bank of America is one of the Big Four banking institutions of the United States. It serves about 10 percent of all American bank deposits, in direct competition with JPMorgan Chase, Citigroup, and Wells Fargo. Its primary financial services revolve around commercial banking, wealth management, and investment banking.\nThrough mergers, the oldest branch of the Bank of America franchise can be traced to 1784, when Massachusetts Bank was chartered, the first federally chartered joint-stock owned bank in the United States. Another branch of its history goes back to the U.S.-based Bank of Italy, founded by Amadeo Pietro Giannini in 1904, which provided various banking options to Italian immigrants who faced service discrimination. Headquartered in San Francisco, California, Giannini acquired Banca d'America e d'Italia, in 1922.\nIn the 1950s, passage of landmark federal banking legislation facilitated rapid growth, quickly establishing a prominent market share. After suffering a significant loss after the 1998 Russian bond default, BankAmerica, as it was then known, was acquired by the Charlotte-based NationsBank for US$62 billion. Following what was then the largest bank acquisition in history, the Bank of America Corporation was founded. Through a series of mergers and acquisitions, it built upon its commercial banking business by establishing Merrill Lynch for wealth management and Bank of America Merrill Lynch for investment banking in 2008 and 2009, respectively, and since renamed BofA Securities.\nBoth Bank of America and Merrill Lynch Wealth Management retain large market shares in their respective offerings. The investment bank is considered within the \"Bulge Bracket\" as the third largest investment bank in the world, as of 2018. Its wealth management side manages US$1.081 trillion in assets under management (AUM) as the second largest wealth manager in the world, after UBS. In commercial banking, Bank of America has operations, but does not necessarily maintain retail branches in all 50 states of the United States, Washington, D.C., and over 40 other countries. Its commercial banking footprint encapsulates 46 million consumer and small business relationships at 4,600 banking centers and 16,000 automated teller machines (ATMs).\nThe bank's large market share, business activities, and economic impact has led to numerous lawsuits and investigations regarding both mortgages and financial disclosures dating back to the 2008 financial crisis. Its corporate practices of servicing the middle class and wider banking community have yielded a substantial market share since the early 20th century. As of August 2018, Bank of America has a $313.5 billion market capitalization, making it the 13th largest company in the world. As the sixth largest American public company, it garnered $102.98 billion in sales as of June 2018. Bank of America was ranked No. 25 on the 2020 Fortune 500 rankings of the largest US corporations by total revenue. Likewise, Bank of America was also ranked No. 6 on the 2023 Global 2000 rankings done by Forbes. Bank of America was named the \"World's Best Bank\" by the Euromoney Institutional Investor in its 2018 Awards for Excellence.\n\n\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "thanks"
+        },
+        {
+          "sender": "AI",
+          "text": "your very welcome, if you need help let me know!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "well bye"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
