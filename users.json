@@ -794,6 +794,32 @@
           "sender": "AI",
           "text": "Hello there! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
+      ],
+      "Chat 11": [
+        {
+          "sender": "User",
+          "text": "hey again"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there again! How may I help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "how can you help me"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: \"Can You Help Me\" is a song written and performed by American contemporary R&B musician Jesse Johnson, issued as the second single from his debut studio album Jesse Johnson's Revue. The song peaked at #3 on the Billboard R&B chart in 1985.\n\n\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "no no"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        }
       ]
     }
   }

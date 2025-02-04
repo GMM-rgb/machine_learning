@@ -626,7 +626,7 @@ function createTransformerModel(vocabSize) {
 }
 
 // Function to train the Transformer model with a timer to avoid infinite epochs
-async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchSize = 64, timeout = 30000) {
+async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchSize = 64, timeout = 37500) {
   console.log("Validating training data...");
 
   const reshapedData = data.map(seq => seq.map(step => [step])); 
@@ -642,7 +642,7 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchS
   const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
 
   const dataset = tf.data.zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) }).batch(batchSize);
-  // ☢ //
+  // 📦 Apply data 📦 //
   console.log("⏳ Training model... ⏳");
 
   let trainingComplete = false;
@@ -686,9 +686,9 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchS
   trainingComplete = true;
   //
   if(trainingComplete === true ? trainingComplete === false: null) {
-    console.log("📦 Saving trained model...");
+    console.log("📦 ⏳ Saving trained model...");
     await model.save('file://D:/machine_learning'); // Save model after training
-    console.log("✅ Model saved successfully."); // Log that model has been successfully saved
+    console.log("✅ 💾 Model saved successfully."); // Log that model has been successfully saved
   }
   return trainingComplete = true; // Check to make sure the trainingComplete variable is true
 }

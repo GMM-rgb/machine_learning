@@ -1547,18 +1547,13 @@
     },
     {
       "input": "hi there 👋",
-      "output": "I'm not sure how to respond to that.",
+      "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-03T00:36:20.609Z"
     },
     {
       "input": "hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-03T00:42:10.576Z"
-    },
-    {
-      "input": "hey what’s up",
-      "output": "I'm not sure how to respond to that.",
-      "timestamp": "2025-02-03T00:47:13.849Z"
     },
     {
       "input": "hi",
@@ -1614,6 +1609,21 @@
       "input": "sup",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-03T23:57:40.724Z"
+    },
+    {
+      "input": "hey again",
+      "output": "Hello there again! How may I help you?",
+      "timestamp": "2025-02-04T01:19:24.568Z"
+    },
+    {
+      "input": "how can you help me",
+      "output": "Here's what I found on Wikipedia: \"Can You Help Me\" is a song written and performed by American contemporary R&B musician Jesse Johnson, issued as the second single from his debut studio album Jesse Johnson's Revue. The song peaked at #3 on the Billboard R&B chart in 1985.\n\n",
+      "timestamp": "2025-02-04T01:20:43.803Z"
+    },
+    {
+      "input": "no no",
+      "output": "Okay, got it, I will make sure to remember that.",
+      "timestamp": "2025-02-04T01:22:21.099Z"
     }
   ],
   "vocabulary": {
@@ -6334,7 +6344,20 @@
     "what’s": 3302,
     "okay,": 3303,
     "it.": 3304,
-    "doing?": 3305
+    "doing?": 3305,
+    "\"can": 3306,
+    "me\"": 3307,
+    "performed": 3308,
+    "r&b": 3309,
+    "musician": 3310,
+    "jesse": 3311,
+    "johnson,": 3312,
+    "issued": 3313,
+    "johnson's": 3314,
+    "revue.": 3315,
+    "peaked": 3316,
+    "#3": 3317,
+    "1985.": 3318
   },
-  "lastTrainingDate": "2025-02-03T23:57:40.724Z"
+  "lastTrainingDate": "2025-02-04T01:22:21.099Z"
 }
