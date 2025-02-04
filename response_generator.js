@@ -191,7 +191,7 @@ class ResponseGenerator {
             const responseIndices = probabilities[0]
                 .map((prob, index) => ({ prob, index }))
                 .sort((a, b) => b.prob - a.prob)
-                .slice(0, 20)
+                .slice(4, 20)
                 .map(item => item.index);
 
             const reverseVocab = Object.fromEntries(
@@ -227,7 +227,7 @@ class ResponseGenerator {
                         conv.input.toLowerCase()
                     );
 
-                    return containsKeyTerm || inputSimilarity < 10;
+                    return containsKeyTerm || inputSimilarity < 25;
                 })
                 .map(conv => ({
                     ...conv,
@@ -235,7 +235,7 @@ class ResponseGenerator {
                                   Math.max(inputText.length, conv.input.length))
                 }))
                 .sort((a, b) => b.similarity - a.similarity)
-                .slice(0, 5);
+                .slice(0, 35);
         } catch (error) {
             console.error("❌ Error finding related conversations:", error);
             return [];
@@ -365,7 +365,7 @@ class ResponseGenerator {
                     const keyTermBoost = Array.from(context.keyTerms).reduce((boost, term) => {
                         if (conversation.input.toLowerCase().includes(term) || 
                             conversation.output.toLowerCase().includes(term)) {
-                            return boost + 0.1; // Boost for each matching key term for better stability
+                            return boost + 0.15; // Boost for each matching key term for better stability
                         }
                         return boost;
                     }, 0);
