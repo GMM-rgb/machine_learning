@@ -1007,6 +1007,14 @@
         {
           "sender": "AI",
           "text": "hey, what's up anything up your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "hey again"
+        },
+        {
+          "sender": "AI",
+          "text": "hello there again hey hey i hey you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
