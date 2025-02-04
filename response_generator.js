@@ -9,9 +9,15 @@ class ResponseGenerator {
         this.matcher = new TemplateMatcher(knowledgePath, trainingDataPath);
         this.model = null;
         this.vocab = {};
-        this.conversations = {};
         this.trainingDataPath = trainingDataPath;
-        this.trainingData = [];
+        this.trainingData = {
+            conversations: [],
+            definitions: [],
+            vocabulary: {},
+            lastTrainingDate: '2025-02-04 02:11:28'
+        };
+        this.currentUser = 'GMM-rgb';
+        this.currentDateTime = '2025-02-04 02:11:28';
         this.loadModel();
         this.loadTrainingData();
     }
@@ -31,26 +37,56 @@ class ResponseGenerator {
                 const data = fs.readFileSync(this.trainingDataPath, 'utf8');
                 this.trainingData = JSON.parse(data);
 
-                if (!Array.isArray(this.trainingData)) {
-                    console.warn("⚠️ Warning: training_data.json is not an array. Resetting.");
-                    this.trainingData = [];
+                // Initialize if structure is missing
+                if (!this.trainingData.conversations) {
+                    this.trainingData.conversations = [];
                 }
+                if (!this.trainingData.definitions) {
+                    this.trainingData.definitions = [];
+                }
+                if (!this.trainingData.vocabulary) {
+                    this.trainingData.vocabulary = {};
+                }
+                if (!this.trainingData.lastTrainingDate) {
+                    this.trainingData.lastTrainingDate = this.currentDateTime;
+                }
+
+                // Load vocabulary into vocab object
+                this.vocab = { ...this.trainingData.vocabulary };
             } catch (error) {
                 console.error("❌ Error loading training data:", error);
-                this.trainingData = [];
+                this.initializeEmptyTrainingData();
             }
         } else {
-            this.trainingData = [];
+            this.initializeEmptyTrainingData();
         }
     }
 
-    async generateResponse(inputText) {
-        this.learnInBackground(inputText);
+    initializeEmptyTrainingData() {
+        this.trainingData = {
+            conversations: [],
+            definitions: [],
+            vocabulary: {},
+            lastTrainingDate: this.currentDateTime
+        };
+    }
 
-        // Find a similar past conversation
+    async generateResponse(inputText) {
+        await this.learnInBackground(inputText);
+
+        // First, check for definitions
+        const words = inputText.toLowerCase().split(/\s+/);
+        for (const word of words) {
+            const definition = this.findDefinition(word);
+            if (definition) {
+                return definition;
+            }
+        }
+
+        // Try to find a similar conversation
         let closestMatch = this.findClosestMatch(inputText);
-        if (closestMatch) {
-            let refinedResponse = this.refineResponse(closestMatch.response, inputText);
+        if (closestMatch && closestMatch.confidence > 0.7) {
+            let refinedResponse = this.refineResponse(closestMatch.output, inputText);
             this.updateTrainingData(inputText, refinedResponse, true);
             return refinedResponse;
         }
@@ -58,7 +94,9 @@ class ResponseGenerator {
         // Try template matching
         const { bestMatch, score } = this.matcher.findBestTemplate(inputText);
         if (bestMatch && score < 3) {
-            return bestMatch.output;
+            let response = bestMatch.output;
+            this.updateTrainingData(inputText, response, false);
+            return response;
         }
 
         // Use AI model as a last resort
@@ -99,31 +137,22 @@ class ResponseGenerator {
 
     async learnInBackground(inputText) {
         const words = inputText.toLowerCase().split(/\s+/);
-        const unknownWords = words.filter(word => !this.vocab[word]);
+        const unknownWords = words.filter(word => !this.findDefinition(word));
 
         if (unknownWords.length > 0) {
             console.log("📚 Learning new words in background:", unknownWords);
 
             for (const word of unknownWords) {
-                // Check if the word already exists in training data
-                const existingEntry = this.trainingData.find(entry => 
-                    entry.input.toLowerCase() === word.toLowerCase()
-                );
-
-                if (existingEntry) {
-                    console.log(`ℹ️ Word '${word}' already exists in training data, skipping...`);
-                    this.vocab[word] = Object.keys(this.vocab).length + 1; // Still add to vocab
+                // Skip if word already exists in definitions
+                if (this.findDefinition(word)) {
+                    console.log(`ℹ️ Word '${word}' already exists in definitions, skipping...`);
                     continue;
                 }
-
-                if (this.vocab[word]) continue; // Skip if already in vocab
-                this.vocab[word] = Object.keys(this.vocab).length + 1; // Assign an index
 
                 try {
                     const definition = await this.getWikipediaInfo(word);
                     if (definition) {
-                        // Add new entry instead of updating existing one
-                        this.addNewTrainingEntry(word, definition);
+                        await this.addNewDefinition(word, definition);
                         console.log(`✅ Learned new word: ${word} -> ${definition}`);
                     } else {
                         console.log(`⚠️ No Wikipedia definition found for word: ${word}`);
@@ -140,7 +169,7 @@ class ResponseGenerator {
             const response = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`);
 
             if (response.data.type === "disambiguation") {
-                console.warn(`⚠️ Wikipedia returned a disambiguation (not available) page for ${word}. Skipping.`);
+                console.warn(`⚠️ Wikipedia returned a disambiguation page for ${word}. Skipping.`);
                 return null;
             }
 
@@ -156,42 +185,51 @@ class ResponseGenerator {
         }
     }
 
-    addNewTrainingEntry(input, response) {
-        // Check if entry already exists
-        const exists = this.trainingData.some(entry => 
-            entry.input.toLowerCase() === input.toLowerCase()
+    findDefinition(word) {
+        const definition = this.trainingData.definitions.find(
+            def => def.word.toLowerCase() === word.toLowerCase()
+        );
+        return definition ? definition.definition : null;
+    }
+
+    async addNewDefinition(word, definition) {
+        const existingDefIndex = this.trainingData.definitions.findIndex(
+            def => def.word.toLowerCase() === word.toLowerCase()
         );
 
-        if (!exists) {
-            this.trainingData.push({ input, response });
-            try {
-                fs.writeFileSync(this.trainingDataPath, JSON.stringify(this.trainingData, null, 2));
-                console.log(`📚 Added new training entry: ${input} -> ${response}`);
-            } catch (error) {
-                console.error("❌ Failed to write training data:", error);
-            }
-        } else {
-            console.log(`ℹ️ Training entry for '${input}' already exists, preserving existing data`);
+        if (existingDefIndex === -1) {
+            this.trainingData.definitions.push({
+                word: word,
+                definition: definition
+            });
+            await this.saveTrainingData();
+            console.log(`📚 Added new definition: ${word} -> ${definition}`);
         }
     }
 
     findClosestMatch(inputText) {
-        if (!Array.isArray(this.trainingData) || this.trainingData.length === 0) {
+        if (!this.trainingData.conversations || this.trainingData.conversations.length === 0) {
             return null;
         }
 
         let bestMatch = null;
-        let lowestDistance = Infinity;
+        let highestConfidence = 0;
 
-        for (const entry of this.trainingData) {
-            const distance = levenshtein.get(inputText.toLowerCase(), entry.input.toLowerCase());
-            if (distance < lowestDistance) {
-                lowestDistance = distance;
-                bestMatch = entry;
+        for (const conversation of this.trainingData.conversations) {
+            const distance = levenshtein.get(inputText.toLowerCase(), conversation.input.toLowerCase());
+            const maxLength = Math.max(inputText.length, conversation.input.length);
+            const confidence = 1 - (distance / maxLength);
+
+            if (confidence > highestConfidence) {
+                highestConfidence = confidence;
+                bestMatch = {
+                    ...conversation,
+                    confidence
+                };
             }
         }
 
-        return lowestDistance < 10 ? bestMatch : null;
+        return bestMatch;
     }
 
     refineResponse(existingResponse, inputText) {
@@ -224,24 +262,41 @@ class ResponseGenerator {
     }
 
     updateTrainingData(input, response, isRefinement) {
-        // Only update if it's a refinement or the entry doesn't exist
-        const existingEntryIndex = this.trainingData.findIndex(entry => 
-            levenshtein.get(input.toLowerCase(), entry.input.toLowerCase()) < 3
+        const existingIndex = this.trainingData.conversations.findIndex(conv => 
+            conv.input.toLowerCase() === input.toLowerCase()
         );
 
-        if (existingEntryIndex === -1) {
-            // Entry doesn't exist, add it
-            this.trainingData.push({ input, response });
+        const newEntry = {
+            input,
+            output: response,
+            timestamp: new Date(this.currentDateTime).toISOString()
+        };
+
+        if (existingIndex === -1) {
+            // New conversation
+            this.trainingData.conversations.push(newEntry);
         } else if (isRefinement) {
-            // Only update if it's a refinement
-            this.trainingData[existingEntryIndex].response = response;
+            // Update existing conversation only if it's a refinement
+            this.trainingData.conversations[existingIndex] = newEntry;
         }
 
+        // Update last training date
+        this.trainingData.lastTrainingDate = this.currentDateTime;
+        this.saveTrainingData();
+    }
+
+    async saveTrainingData() {
         try {
-            fs.writeFileSync(this.trainingDataPath, JSON.stringify(this.trainingData, null, 2));
-            console.log(`📚 ${existingEntryIndex === -1 ? 'Added new' : 'Updated'} training data: ${input} -> ${response}`);
+            // Update last training date before saving
+            this.trainingData.lastTrainingDate = this.currentDateTime;
+            
+            await fs.promises.writeFile(
+                this.trainingDataPath,
+                JSON.stringify(this.trainingData, null, 2)
+            );
+            console.log('📝 Training data saved successfully');
         } catch (error) {
-            console.error("❌ Failed to write training data:", error);
+            console.error('❌ Error saving training data:', error);
         }
     }
 }
