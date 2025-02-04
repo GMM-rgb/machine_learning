@@ -17,7 +17,7 @@ const ResponseGenerator = require('./response_generator');
 const templateMatch = require('./template_matcher');
 const { text } = require("stream/consumers");
 const { Response } = require("@whatwg-node/node-fetch");
-const { error, warn } = require("console");
+const { error, warn, log } = require("console");
 const { any } = require("async");
 
 let model; // model is loaded separately (e.g., `model = await tf.loadLayersModel('localstorage://my-model')`)
@@ -649,25 +649,21 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchS
 
   setTimeout(() => {
       if (!trainingComplete, timeout = 575) {
+          function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+          }
           console.log("⌛ Training timed out. Stopping early.");
           trainingComplete = true;
           console.warn("❗⚠️ Moving to next Epoch...", warn);
           console.log(`⏳ Starting next Epoch...`);
-          console.log("✅ Succesfully started next Epoch.");  
-      try {
-        model.fitDataset(dataset, {
-            epochs: maxEpochs,
-            batchSize,
-            callbacks: {
-            onEpochEnd: (epoch, logs) => {
-              console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
-            },
-          },
-      });
-      } catch (err) {
-        console.error("❌ Error during training:", err);
+          wait(185).then(() => {
+            console.log("✅ Succesfully started next Epoch.", log);
+            return log;
+          });
+          (epoch, logs) => {
+            console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
+          }
       }
-    }
   }, timeout);
 
   try {
@@ -687,12 +683,14 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchS
   } catch (err) {
       console.error("❌ Error during training:", err);
   }
-
-  console.log("📦 Saving trained model...");
-  await model.save('file://D:/machine_learning'); // Save model after training
-  console.log("✅ Model saved successfully.");
-
   trainingComplete = true;
+  //
+  if(trainingComplete === true ? trainingComplete === false: null) {
+    console.log("📦 Saving trained model...");
+    await model.save('file://D:/machine_learning'); // Save model after training
+    console.log("✅ Model saved successfully."); // Log that model has been successfully saved
+  }
+  return trainingComplete = true; // Check to make sure the trainingComplete variable is true
 }
 
 // Function to retrain for 1 epoch when user messages
