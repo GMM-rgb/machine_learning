@@ -4,6 +4,12 @@ const fs = require('fs');
 const axios = require('axios');
 const levenshtein = require('fast-levenshtein');
 
+// TensorFlow setup - Ensure this is only done once
+if (!global.tfSetup) {
+    global.tfSetup = true;
+    // Any additional TensorFlow setup code
+}
+
 class ResponseGenerator {
     constructor(knowledgePath = 'knowledge.json', trainingDataPath = 'training_data.json') {
         this.matcher = new TemplateMatcher(knowledgePath, trainingDataPath);
@@ -14,10 +20,8 @@ class ResponseGenerator {
             conversations: [],
             definitions: [],
             vocabulary: {},
-            lastTrainingDate: '2025-02-04 02:11:28'
+            lastTrainingDate: ""
         };
-        this.currentUser = 'GMM-rgb';
-        this.currentDateTime = '2025-02-04 02:11:28';
         this.loadModel();
         this.loadTrainingData();
     }
