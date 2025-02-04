@@ -986,14 +986,6 @@
                 usrIn.placeholder = 'Typing...';
             });
 
-            if(isSending === true) {
-                usrIn.placeholder = 'HtWebz is Responding...';
-            } else if(isSending === false) {
-                return usrIn.placeholder = 'Type a message...';
-            } else {
-                return console.warn(`AI, is not responding, or message was not found.`);
-            }
-
             usrIn.addEventListener('blur', () => {
                 usrIn.placeholder = 'Type a message...';
             });
@@ -1262,6 +1254,14 @@
 
                     type();
                 }
+
+                if(isSending === true) {
+                    usrIn.placeholder = 'AI is Responding...';
+                } else if(isSending === false) {
+                    return usrIn.placeholder = 'Type a message...';
+                } else {
+                    return console.error(`AI, is not responding, or message was not found.`);
+                }    
 
                 // Send message to server
                 let isSending = false;

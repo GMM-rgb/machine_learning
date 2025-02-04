@@ -494,7 +494,7 @@ class ResponseGenerator {
     async saveTrainingData() {
         try {
             // Update last training date before saving
-            this.trainingData.lastTrainingDate = '2025-02-04 04:48:22';
+            this.trainingData.lastTrainingDate = 'n/a';
             
             await fs.promises.writeFile(
                 this.trainingDataPath,

@@ -663,7 +663,7 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchS
           console.warn("❗⚠️  Moving to next Epoch...", warn);
           console.log(`⏳ Starting next Epoch...`);
           wait(185).then(() => {
-            console.log("✅ Succesfully started next Epoch.", log);
+            console.log("✅ Succesfully prepared next Epoch.", log);
             return log;
           });
           (epoch, logs) => {
