@@ -1171,7 +1171,7 @@ function getCurrentGoal() {
 const responseGenerator = new ResponseGenerator();
 
 // Set current date/time and user
-responseGenerator.currentDateTime = '2025-02-04 04:42:51';
+responseGenerator.currentDateTime = '2025-02-04 05:22:05';
 responseGenerator.currentUser = 'GMM-rgb';
 
 expressApp.post("/chat", async (req, res) => {
@@ -1194,15 +1194,27 @@ expressApp.post("/chat", async (req, res) => {
         // Keep original message for special queries
         const messageForChecks = message.trim().toLowerCase();
         let response = "";
+        let cleanedMessage = "";
 
         if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
-            response = await solveMathProblem(message);
+            // Remove math-related keywords
+            cleanedMessage = message.replace(/(math|calculate|solve)/gi, '').trim();
+            response = await solveMathProblem(cleanedMessage);
         } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
-            response = await handleUserInput(message);
+            // Remove search prefixes
+            cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
+            response = await handleUserInput(cleanedMessage);
         } else if (messageForChecks.includes("wiki") || 
                    messageForChecks.includes("what is") || 
-                   messageForChecks.includes("who is")) {
-            response = await getWikipediaInfo(message);
+                   messageForChecks.includes("who is") ||
+                   messageForChecks.includes("what are") ||
+                   messageForChecks.includes("describe")) {
+            // Remove information request prefixes
+            cleanedMessage = message
+                .replace(/^(wiki|what is|who is|what are|describe)\s*/i, '')
+                .replace(/\?+$/, '') // Remove trailing question marks
+                .trim();
+            response = await getWikipediaInfo(cleanedMessage);
         } else {
             // Pass the original message to response generator
             response = await responseGenerator.generateResponse(message);
@@ -1214,10 +1226,13 @@ expressApp.post("/chat", async (req, res) => {
                 trainingData.conversations = [];
             }
 
+            // Store the cleaned message or original message as appropriate
+            const storedMessage = cleanedMessage || message;
+            
             trainingData.conversations.push({
-                input: message,
+                input: storedMessage,
                 output: response,
-                timestamp: '2025-02-04 04:42:51'
+                timestamp: '2025-02-04 05:22:05'
             });
 
             // Trigger model retraining if needed
