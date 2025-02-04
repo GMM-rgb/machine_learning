@@ -658,8 +658,9 @@
     },
     {
       "input": "hello again",
-      "output": "Hello there! How may I help you?",
-      "timestamp": "2025-01-26T22:18:49.141Z"
+      "output": "hello there! how may i hello you?",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "hi",
@@ -1720,6 +1721,11 @@
       "input": "You're amazing!",
       "output": "i'm glad you think so! i'm here to help you with anything you need.",
       "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "glad to see you",
+      "output": "I'm glad to see you too! Do you need help with anything?",
       "user": "GMM-rgb"
     }
   ],

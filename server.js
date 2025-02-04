@@ -1198,7 +1198,7 @@ expressApp.post("/chat", async (req, res) => {
             // Remove math-related keywords
             cleanedMessage = message.replace(/(math|calculate|solve)/gi, '').trim();
             response = await solveMathProblem(cleanedMessage);
-        } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
+        } else if(messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
             // Remove search prefixes
             cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
             response = await handleUserInput(cleanedMessage);
@@ -1211,7 +1211,7 @@ expressApp.post("/chat", async (req, res) => {
                    messageForChecks.includes("describe")) {
             // Remove information request prefixes
             cleanedMessage = message
-                .replace(/^(wiki|what is|who is|what are|describe)\s*/i, '')
+                .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me)\s*/i, '')
                 .replace(/\?+$/, '') // Remove trailing question marks
                 .trim();
             response = await getWikipediaInfo(cleanedMessage);
@@ -1255,20 +1255,20 @@ expressApp.post("/chat", async (req, res) => {
 // Feedback API endpoint
 expressApp.post("/feedback", (req, res) => {
   const { message, correctResponse } = req.body;
-
-  const normalizedInput = normalizeText(
-    message.replace(/[,']/g, "").toLowerCase()
-  );
-  knowledge[normalizedInput] = correctResponse;
-  knowledge[message.toLowerCase()] = correctResponse;
-
-  try {
-    fs.writeFileSync(knowledgeFile, JSON.stringify(knowledge, null, 2));
-    console.log("Knowledge data saved!");
-  } catch (err) {
-    console.error("Error saving knowledge:", err);
+  if(message === ('correction:').toLowerCase()) {
+    const normalizedInput = normalizeText(
+      message.replace(/[,'](correction: )/g, "").toLowerCase()
+    );
+    knowledge[normalizedInput] = correctResponse;
+    knowledge[message.toLowerCase()] = correctResponse;
+  
+    try {
+      fs.writeFileSync(knowledgeFile, JSON.stringify(knowledge, null, 2));
+      console.log("Knowledge data saved!");
+    } catch (err) {
+      console.error("Error saving knowledge:", err);
+    }  
   }
-
   res.json({ response: "Thank you for your feedback!" });
 });
 
