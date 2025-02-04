@@ -1207,6 +1207,14 @@
         {
           "sender": "AI",
           "text": "i'm glad to see you to to you see help with anything?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "no."
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }

@@ -1733,6 +1733,16 @@
       "output": "i'm glad to see you to to you see help with anything?",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "no",
+      "output": "Okay, got it, I will make sure to remember that.",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "no thanks",
+      "output": "Okay, got it, I will make sure to remember that.",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
@@ -6785,6 +6795,10 @@
     {
       "word": "you're",
       "definition": "In Modern English, the word \"you\" is the second-person pronoun"
+    },
+    {
+      "word": "no.",
+      "definition": "The numero sign or numero symbol, № (also represented as Nº, No̱, №, No., or no.), is a typographic abbreviation of the word number(s) indicating ordinal numeration, especially in names and titles"
     }
   ]
 }
