@@ -973,6 +973,14 @@
         {
           "sender": "AI",
           "text": "really? thanks! to Really? Thanks! 😄\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "wassup"
+        },
+        {
+          "sender": "AI",
+          "text": "hey, whats up? anything on your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
