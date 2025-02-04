@@ -608,7 +608,7 @@ function createModel(vocabSize) {
 }
 
 // Function to train the TensorFlow (AI) model
-async function trainModel(model, data, labels, epochs = 15, batchSize = 48) {
+async function trainModel(model, data, labels, epochs = 15, batchSize = 8) {
 // Ensure 'data' is properly formatted
 const xs = tf.tensor3d(
   data.map(seq => seq.map(step => [step])), // Reshape to (batch_size, timesteps, features)
@@ -632,7 +632,7 @@ function createTransformerModel(vocabSize) {
 }
 
 // Function to train the Transformer model with a timer to avoid infinite epochs
-async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 6, timeout = 37500) {
+async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 8, timeout = 30000) {
   console.log("Validating training data...");
 
   const reshapedData = data.map(seq => seq.map(step => [step])); 
@@ -666,9 +666,6 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchS
             console.log("✅ Succesfully prepared next Epoch.", log);
             return log;
           });
-          (epoch, logs) => {
-            console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
-          }
       }
   }, timeout);
 
@@ -693,7 +690,16 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchS
   //
   if(trainingComplete === true ? trainingComplete === false: null) {
     console.log("📦 ⏳ Saving trained model...");
-    await model.save('file://D:/machine_learning/model.json'); // Save model after training
+    await model.location(model.parse());
+    let model;
+    await model.save(toString, 'file://D:/machine_learning/model.json'); // Save model after training
+    if(!model) {
+      console.warn(`Model not found, creating file for data...`);
+      model.createModel(toString());
+      // Save the created file and ensure its loaded
+      saveModel().then
+      loadModel();
+    }
     console.log("✅ 💾 Model saved successfully."); // Log that model has been successfully saved
   }
   return trainingComplete = true; // Checks to make sure the trainingComplete variable is true
