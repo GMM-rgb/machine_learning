@@ -1232,6 +1232,16 @@
           "sender": "AI",
           "text": "okay, no it, no will make sure no remember that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
+      ],
+      "Chat 14": [
+        {
+          "sender": "User",
+          "text": "hey what's up"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        }
       ]
     }
   }

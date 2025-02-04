@@ -1745,6 +1745,10 @@
       "output": "Okay then, I will make sure to remember that.",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "Hey what's up",
+      "output": "Hey, whats up? Anything on your mind?"
     }
   ],
   "vocabulary": {
