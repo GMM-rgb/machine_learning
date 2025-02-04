@@ -22,8 +22,9 @@
     },
     {
       "input": "how are you",
-      "output": "Not too much, but hey I'm doing great!",
-      "timestamp": "2025-01-25T21:32:53.214Z"
+      "output": "how how much, but how i'm doing great!",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "hi bro",
@@ -132,8 +133,9 @@
     },
     {
       "input": "hey there",
-      "output": "Hello there! How may I help you?",
-      "timestamp": "2025-01-26T01:17:30.255Z"
+      "output": "hello there hey hey i hey you?",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "how r you my silly bro",
@@ -740,7 +742,7 @@
     {
       "input": "sup",
       "output": "hello there! how may i help you?",
-      "timestamp": "2025-02-04T10:34:09.000Z",
+      "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     },
     {
@@ -1316,19 +1318,9 @@
       "timestamp": "2025-02-02T04:49:15.750Z"
     },
     {
-      "input": "hey there",
-      "output": "Error generating response.",
-      "timestamp": "2025-02-02T04:57:11.527Z"
-    },
-    {
       "input": "hey",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-02T05:00:47.670Z"
-    },
-    {
-      "input": "how r u doing?",
-      "output": "how r u doing? undefined undefined undefined undefined undefined undefined",
-      "timestamp": "2025-02-02T05:00:54.220Z"
     },
     {
       "input": "how are you",
@@ -1479,11 +1471,6 @@
       "input": "hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-02T07:33:12.344Z"
-    },
-    {
-      "input": "how r u",
-      "output": "how r u okay fine fine tired tired fine",
-      "timestamp": "2025-02-02T07:33:17.319Z"
     },
     {
       "input": "that is nice to hear",
@@ -1695,6 +1682,12 @@
       "input": "I think your amazing",
       "output": "i glad your think so! i here i help your with anything your need.",
       "timestamp": "2025-02-04T12:42:51.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "that's great to hear from you",
+      "output": "really? thanks! to Really? Thanks! 😄",
+      "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     }
   ],
@@ -6720,6 +6713,18 @@
     {
       "word": "u",
       "definition": "U, or u, is the twenty-first letter and the fifth vowel letter of the Latin alphabet, used in the modern English alphabet and the alphabets of other western European languages and others worldwide"
+    },
+    {
+      "word": "good",
+      "definition": "In most contexts, the concept of good denotes the conduct that should be preferred when posed with a choice between possible actions"
+    },
+    {
+      "word": "that's",
+      "definition": "That's is a brand name used by a set of English-language listings magazines in the People's Republic of China"
+    },
+    {
+      "word": "hear",
+      "definition": "Hearing, or auditory perception, is the ability to perceive sounds through an organ, such as an ear, by detecting vibrations as periodic changes in the pressure of a surrounding medium"
     }
   ]
 }

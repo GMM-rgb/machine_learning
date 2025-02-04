@@ -944,87 +944,15 @@
       "Chat 12": [
         {
           "sender": "User",
-          "text": "hi"
+          "text": "hey there"
         },
         {
           "sender": "AI",
-          "text": "I'm having trouble understanding that. Could you try rephrasing?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+          "text": "hello there hey hey i hey you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         },
         {
           "sender": "User",
-          "text": "hi"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm having trouble processing that message. Could you try rephrasing?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "hi"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm having trouble processing that message. Could you try rephrasing?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "sup"
-        },
-        {
-          "sender": "System",
-          "text": "Error: Unable to process message. Please try again."
-        },
-        {
-          "sender": "User",
-          "text": "sup"
-        },
-        {
-          "sender": "System",
-          "text": "Error: Unable to process message. Please try again."
-        },
-        {
-          "sender": "User",
-          "text": "hi"
-        },
-        {
-          "sender": "System",
-          "text": "Error: Unable to process message. Please try again."
-        },
-        {
-          "sender": "User",
-          "text": "hello"
-        },
-        {
-          "sender": "AI",
-          "text": "hello there! how may i hello you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "what's up"
-        },
-        {
-          "sender": "AI",
-          "text": "hey, what's up anything up your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "what could we do"
-        },
-        {
-          "sender": "AI",
-          "text": "that's we do do do decide, however, i'm always here do help!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "okay"
-        },
-        {
-          "sender": "AI",
-          "text": "hello there! how okay i help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "what?"
+          "text": "yes your good"
         },
         {
           "sender": "AI",
@@ -1032,115 +960,19 @@
         },
         {
           "sender": "User",
-          "text": "hmm"
+          "text": "how are you"
         },
         {
           "sender": "AI",
-          "text": "i will let you decide on that, unless you need some ideas.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+          "text": "how how much, but how i'm doing great!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         },
         {
           "sender": "User",
-          "text": "wait hold on"
+          "text": "that's great to hear from you"
         },
         {
           "sender": "AI",
-          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "wait"
-        },
-        {
-          "sender": "AI",
-          "text": "i'm here, take your time.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "okay I'm back"
-        },
-        {
-          "sender": "AI",
-          "text": "alright, let me know i'm you got anything, and we can solve i'm\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "okay, thanks"
-        },
-        {
-          "sender": "AI",
-          "text": "alright, let me know if you need help.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "hi again"
-        },
-        {
-          "sender": "AI",
-          "text": "hello there again hi may hi help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "what should I do"
-        },
-        {
-          "sender": "AI",
-          "text": "that's i do do do decide, however, i always here do help!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "I think your amazing"
-        },
-        {
-          "sender": "AI",
-          "text": "i glad your think so! i here i help your with anything your need.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "your welcome"
-        },
-        {
-          "sender": "AI",
-          "text": "thanks, your the best too!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "wiki supercomputer"
-        },
-        {
-          "sender": "AI",
-          "text": "Here's what I found on Wikipedia: The TOP500 project ranks and details the 500 most powerful non-distributed computer systems in the world. The project was started in 1993 and publishes an updated list of the supercomputers twice a year. The first of these updates always coincides with the International Supercomputing Conference in June, and the second is presented at the ACM/IEEE Supercomputing Conference in November. The project aims to provide a reliable basis for tracking and detecting trends in high-performance computing and bases rankings on HPL benchmarks, a portable implementation of the high-performance LINPACK benchmark written in Fortran for distributed-memory computers.\nThe most recent edition of TOP500 was published in November 2024 as the 64th edition of TOP500, while the next edition of TOP500 will be published in June 2025 as the 65th edition of TOP500. As of November 2024, the United States' El Capitan is the most powerful supercomputer in the TOP500, reaching 1742 petaFlops (1.742 exaFlops) on the LINPACK benchmarks. As of 2018, the United States has by far the highest share of total computing power on the list (nearly 50%). As of 2024, the United States has the highest number of systems with 173 supercomputers; China is in second place with 63, and Germany is third at 40.\nThe 59th edition of TOP500, published in June 2022, was the first edition of TOP500 to feature only 64-bit supercomputers; as of June 2022, 32-bit supercomputers are no longer listed. The TOP500 list is compiled by Jack Dongarra of the University of Tennessee, Knoxville, Erich Strohmaier and Horst Simon of the National Energy Research Scientific Computing Center (NERSC) and Lawrence Berkeley National Laboratory (LBNL), and, until his death in 2014, Hans Meuer of the University of Mannheim, Germany. The TOP500 project also includes lists such as Green500 (measuring energy efficiency) and HPCG (measuring I/O bandwidth).\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "thanks"
-        },
-        {
-          "sender": "AI",
-          "text": "your very welcome, if you need help let me know!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "well bye"
-        },
-        {
-          "sender": "AI",
-          "text": "bye you later, maybe tommorow perhaps? 😊\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "hey again"
-        },
-        {
-          "sender": "AI",
-          "text": "hello there again hey hey i hey you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
-        },
-        {
-          "sender": "User",
-          "text": "how r u"
-        },
-        {
-          "sender": "AI",
-          "text": "how r u okay fine fine tired tired fine\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+          "text": "really? thanks! to Really? Thanks! 😄\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
