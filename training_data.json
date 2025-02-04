@@ -1,4 +1,5 @@
-{
+[
+ {
   "conversations": [
     {
       "input": "hi",
@@ -1629,6 +1630,21 @@
       "input": "hmm i'm not sure what i should do",
       "output": "That's up to you to decide, however, I'm always here to help! You could maybe do something that's on your agenda, that's what I would suggest! 😊",
       "timestamp": "2025-02-04T01:35:44.774Z"
+    },
+    {
+      "input": "i'm not really sure what i should do",
+      "output": "I'm not sure how to respond to that.",
+      "timestamp": "2025-02-04T01:43:06.466Z"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-02-04T01:46:24.584Z"
+    },
+    {
+      "input": "wut your developer?",
+      "output": "My developer is Maximus Farvour.",
+      "timestamp": "2025-02-04T01:47:03.825Z"
     }
   ],
   "vocabulary": {
@@ -6365,7 +6381,10 @@
     "1985.": 3318,
     "you!": 3319,
     "😊": 3320,
-    "with?": 3321
+    "with?": 3321,
+    "wut": 3322,
+    "developer?": 3323
   },
-  "lastTrainingDate": "2025-02-04T01:35:44.774Z"
-}
+  "lastTrainingDate": "2025-02-04T01:47:03.825Z"
+ }
+]
