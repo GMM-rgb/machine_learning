@@ -1,5 +1,4 @@
-[
- {
+{
   "conversations": [
     {
       "input": "hi",
@@ -6386,5 +6385,4 @@
     "developer?": 3323
   },
   "lastTrainingDate": "2025-02-04T01:47:03.825Z"
- }
-]
+}
