@@ -87,7 +87,7 @@ class ResponseGenerator {
         const responseIndices = probabilities[0]
             .map((prob, index) => ({ prob, index }))
             .sort((a, b) => b.prob - a.prob)
-            .slice(0, 5)
+            .slice(0, 20)
             .map(item => item.index);
 
         const reverseVocab = Object.fromEntries(
@@ -128,12 +128,12 @@ class ResponseGenerator {
             const response = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`);
 
             if (response.data.type === "disambiguation") {
-                console.warn(`⚠️ Wikipedia returned a disambiguation page for ${word}. Skipping.`);
+                console.warn(`⚠️ Wikipedia returned a disambiguation (not available) page for ${word}. Skipping.`);
                 return null;
             }
 
             if (response.data.extract) {
-                return response.data.extract.split('. ')[0]; // Take the first sentence
+                return response.data.extract.split('. ')[0]; // Take the first sentence (later add a check to make sure the sentence has meaning.)
             } else {
                 console.warn(`⚠️ Wikipedia has no summary for ${word}`);
                 return null;

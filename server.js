@@ -621,7 +621,7 @@ function createTransformerModel(vocabSize) {
   model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
   model.add(tf.layers.dense({ units: 128, activation: "relu" }));
   model.add(tf.layers.dense({ units: vocabSize, activation: "softmax" }));
-  model.compile({ optimizer: tf.train.adam(0.001), loss: "sparseCategoricalCrossentropy" }); // Lower learning rate to stabilize
+  model.compile({ optimizer: tf.train.adam(1.00), loss: "sparseCategoricalCrossentropy" }); // Lower learning rate to stabilize (stable value: 0.001)
   return model;
 }
 
@@ -654,7 +654,7 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchS
           }
           console.log("⌛ Training timed out. Stopping early.");
           trainingComplete = true;
-          console.warn("❗⚠️ Moving to next Epoch...", warn);
+          console.warn("❗⚠️  Moving to next Epoch...", warn);
           console.log(`⏳ Starting next Epoch...`);
           wait(185).then(() => {
             console.log("✅ Succesfully started next Epoch.", log);
