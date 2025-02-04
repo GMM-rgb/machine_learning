@@ -312,8 +312,9 @@
     },
     {
       "input": "hello",
-      "output": "Hello there! How may I help you?",
-      "timestamp": "2025-01-26T02:13:13.962Z"
+      "output": "hello there! how may i hello you?",
+      "timestamp": "2025-02-04T10:34:09.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "how you doing my friend?",
@@ -6442,5 +6443,11 @@
     "second-person": 3370,
     "pronoun": 3371
   },
-  "lastTrainingDate": "2025-02-04T02:31:08.133Z"
+  "lastTrainingDate": "2025-02-04 02:34:09",
+  "definitions": [
+    {
+      "word": "hello",
+      "definition": "Hello is a salutation or greeting in the English language"
+    }
+  ]
 }

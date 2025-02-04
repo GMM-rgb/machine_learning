@@ -875,6 +875,14 @@
         {
           "sender": "AI",
           "text": "In Modern English, the word \"you\" is the second-person pronoun\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "hello"
+        },
+        {
+          "sender": "AI",
+          "text": "hello there! how may i hello you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
