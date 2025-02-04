@@ -506,7 +506,7 @@ class ResponseGenerator {
     async saveTrainingData() {
         try {
             // Update last training date before saving
-            this.trainingData.lastTrainingDate = 'n/a';
+            this.trainingData.lastTrainingDate = this.currentDateTime;
             
             await fs.promises.writeFile(
                 this.trainingDataPath,
