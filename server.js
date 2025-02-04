@@ -696,7 +696,7 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 15, batchS
     await model.save('file://D:/machine_learning/model.json'); // Save model after training
     console.log("✅ 💾 Model saved successfully."); // Log that model has been successfully saved
   }
-  return trainingComplete = true; // Check to make sure the trainingComplete variable is true
+  return trainingComplete = true; // Checks to make sure the trainingComplete variable is true
 }
 
 // Function to retrain for 1 epoch when user messages
