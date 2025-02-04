@@ -1125,6 +1125,22 @@
         {
           "sender": "AI",
           "text": "bye you later, maybe tommorow perhaps? 😊\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "hey again"
+        },
+        {
+          "sender": "AI",
+          "text": "hello there again hey hey i hey you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "how r u"
+        },
+        {
+          "sender": "AI",
+          "text": "how r u okay fine fine tired tired fine\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
