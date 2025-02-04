@@ -915,6 +915,14 @@
         {
           "sender": "AI",
           "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "sup"
+        },
+        {
+          "sender": "AI",
+          "text": "hello there! how may i help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }

@@ -737,8 +737,9 @@
     },
     {
       "input": "sup",
-      "output": "Hello there! How may I help you?",
-      "timestamp": "2025-01-26T23:57:37.448Z"
+      "output": "hello there! how may i help you?",
+      "timestamp": "2025-02-04T10:34:09.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "sup",
@@ -1674,11 +1675,6 @@
       "input": "well bye",
       "output": "See you later, maybe tommorow perhaps? 😊",
       "timestamp": "2025-02-04T02:46:27.332Z"
-    },
-    {
-      "input": "bye",
-      "output": "See you later, maybe tommorow perhaps? 😊",
-      "timestamp": "2025-02-04T02:49:20.245Z"
     }
   ],
   "vocabulary": {
@@ -6629,5 +6625,14 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-04T02:49:20.245Z"
-}
+  "lastTrainingDate": "2025-02-04 02:34:09",
+  "definitions": [],
+    "orbes.": 3526,
+    "\"world's": 3527,
+    "bank\"": 3528,
+    "euromoney": 3529,
+    "institutional": 3530,
+    "investor": 3531,
+    "awards": 3532,
+    "excellence.": 3533
+  }
