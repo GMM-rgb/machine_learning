@@ -1,5 +1,5 @@
 const TemplateMatcher = require('./template_matcher');
-const tf = require('@tensorflow/tfjs-node');
+const tf = require('@tensorflow/tfjs-node-gpu');
 const fs = require('fs');
 const axios = require('axios');
 const levenshtein = require('fast-levenshtein');

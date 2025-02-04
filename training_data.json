@@ -319,7 +319,7 @@
       "timestamp": "2025-01-26T02:12:07.452Z"
     },
     {
-      "input": "hello",
+      "input": "Hello",
       "output": "hello there! how may i hello you?",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
@@ -688,9 +688,10 @@
       "timestamp": "2025-01-26T23:35:39.849Z"
     },
     {
-      "input": "hey",
-      "output": "Hello there! How may I help you?",
-      "timestamp": "2025-01-26T23:39:04.385Z"
+      "input": "Hey",
+      "output": "hello there! hey hey i hey you?",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
     },
     {
       "input": "how are you today?",
@@ -1749,6 +1750,24 @@
     {
       "input": "hey what's up",
       "output": "hey what's up anything up your mind?",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "What’s up",
+      "output": "hey, what’s up anything up your mind?",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "How are you?",
+      "output": "how how much, but how i'm doing great!",
+      "timestamp": "2025-02-04T13:22:05.000Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "Anyway, I’m glad to see you",
+      "output": "i’m glad to see you to to you see help with anything?",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     }
@@ -6701,7 +6720,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "n/a",
+  "lastTrainingDate": "2025-02-04 05:22:05",
   "definitions": [
     {
       "word": "you",
@@ -6807,6 +6826,14 @@
     {
       "word": "no.",
       "definition": "The numero sign or numero symbol, № (also represented as Nº, No̱, №, No., or no.), is a typographic abbreviation of the word number(s) indicating ordinal numeration, especially in names and titles"
+    },
+    {
+      "word": "opinion",
+      "definition": "An opinion is a judgement, viewpoint, or statement that is not conclusive, as opposed to facts, which are true statements."
+    },
+    {
+      "word": "tacos",
+      "definition": "A taco is a traditional Mexican dish consisting of a small hand-sized corn- or wheat-based tortilla topped with a filling"
     }
   ]
 }

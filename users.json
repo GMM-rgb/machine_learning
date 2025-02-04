@@ -1267,6 +1267,62 @@
         {
           "sender": "AI",
           "text": "hello there! how may i help you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "What’s up"
+        },
+        {
+          "sender": "AI",
+          "text": "hey, what’s up anything up your mind?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Hello"
+        },
+        {
+          "sender": "AI",
+          "text": "hello there! how may i hello you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "How are you?"
+        },
+        {
+          "sender": "AI",
+          "text": "how how much, but how i'm doing great!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Anyway, I’m glad to see you"
+        },
+        {
+          "sender": "AI",
+          "text": "i’m glad to see you to to you see help with anything?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "Hey"
+        },
+        {
+          "sender": "AI",
+          "text": "hello there! hey hey i hey you?\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "opinion on tacos"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm not sure how to respond to that.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "what is a taco"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: Taco Bell Corp. is an American multinational chain of fast food restaurants founded in 1962 by Glen Bell (1923–2010) in Downey, California. Taco Bell is a subsidiary of Yum! Brands, Inc. The restaurants serve a variety of Mexican-inspired foods, including tacos, burritos, quesadillas, nachos, novelty, and specialty items, and a variety of \"value menu\" items. As of 2023, Taco Bell serves over two billion customers each year, at 8,212 restaurants, more than 94 percent of which are owned and operated by independent franchisees and licensees.\nPepsiCo purchased Taco Bell in 1978, and later spun off its restaurants division as Tricon Global Restaurants, which later changed its name to Yum! Brands.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
