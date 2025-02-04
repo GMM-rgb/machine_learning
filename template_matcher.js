@@ -23,7 +23,7 @@ class TemplateMatcher {
         return templates;
     }
 
-    findBestTemplate(inputText, threshold = 0.7) {
+    findBestTemplate(inputText, threshold = 0.8) {
         let bestMatch = null;
         let bestScore = Infinity;
         
