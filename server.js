@@ -632,7 +632,7 @@ function createTransformerModel(vocabSize) {
 }
 
 // Function to train the Transformer model with a timer to avoid infinite epochs
-async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 128, timeout = 37500) {
+async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 32, timeout = 37500) {
   console.log("Validating training data...");
 
   const reshapedData = data.map(seq => seq.map(step => [step])); 
