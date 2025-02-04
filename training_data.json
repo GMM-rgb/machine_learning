@@ -1655,7 +1655,7 @@
     },
     {
       "input": "hello",
-      "output": "hello there! how may i hello you?",
+      "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-04T02:39:41.548Z"
     },
     {
