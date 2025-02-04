@@ -1085,6 +1085,14 @@
         {
           "sender": "AI",
           "text": "that's i do do do decide, however, i always here do help!\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
+        },
+        {
+          "sender": "User",
+          "text": "I think your amazing"
+        },
+        {
+          "sender": "AI",
+          "text": "i glad your think so! i here i help your with anything your need.\n\nCurrent Goal: Assist users with their queries\nPriority: Very High"
         }
       ]
     }
