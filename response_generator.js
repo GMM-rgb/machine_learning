@@ -598,6 +598,16 @@ async learnFromInteraction(input, output) {
         const similarResponses = await this.findSimilarResponsesWithContext(inputText, context, understanding);
         possibilities.push(...similarResponses);
 
+        // Simulate internal dialogue
+        const internalDialogue = await this.simulateInternalDialogue(inputText);
+        internalDialogue.forEach(turn => {
+            possibilities.push({
+                response: this.properlyCapitalize(turn.text),
+                confidence: 0.5,
+                source: 'internal_dialogue'
+            });
+        });
+
         // Generate model response with context
         const modelResponse = await this.generateModelResponseWithContext(inputText, understanding, chatHistory);
         if (modelResponse) {
@@ -1252,6 +1262,7 @@ async learnFromInteraction(input, output) {
                 
                 return definition;
             }
+
         } catch (error) {
             console.error(`❌ Error getting definition for "${word}":`, error);
         }

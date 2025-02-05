@@ -70,3 +70,16 @@
     padding: 10px;
     border-radius: 4px;
 }
+
+.internal-dialogue {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: rgba(0, 255, 0, 0.1);
+    border-left: 3px solid green;
+    font-style: italic;
+}
+
+.dialogue-turn {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}

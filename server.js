@@ -1270,16 +1270,17 @@ expressApp.post("/chat", async (req, res) => {
             possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
             if (possibilities && possibilities.length > 0) {
                 response = possibilities[0].response;
-                htmlResponse = `<div class='ai-response'>
-                    <div class='response-text'>${response}</div>
-                    ${possibilities[0].confidence ? 
-                        `<div class='confidence'>Confidence: ${(possibilities[0].confidence * 100).toFixed(1)}%</div>` : ''}
-                    ${possibilities[0].source ? 
-                        `<div class='source'>Source: ${possibilities[0].source}</div>` : ''}
-                </div>`;
-            } else {
-                response = "I'm not sure how to respond to that.";
-                htmlResponse = "<div class='uncertain-response'>I'm not sure how to respond to that.</div>";
+                
+                // Build HTML response with internal dialogue
+                let html = `<div class='ai-response'>${response}</div>`;
+                if (possibilities.length > 1) {
+                    html += "<div class='internal-dialogue'>";
+                    possibilities.slice(1).forEach(p => {
+                        html += `<div class='dialogue-turn'>${p.response}</div>`;
+                    });
+                    html += "</div>";
+                }
+                htmlResponse = html;
             }
         }
 
@@ -1291,23 +1292,13 @@ expressApp.post("/chat", async (req, res) => {
         conversationData.set(chatId, chatHistory);
 
         const currentGoal = getCurrentGoal();
-        res.json({
-            response,
-            html: htmlResponse,
-            timestamp: new Date().toISOString(),
-            user: 'GMM-rgb',
-            goal: currentGoal.goal || "No current goal",
-            priority: currentGoal.priority || "No priority set"
-        });
+
+        // Send the response back to the client
+        res.json({ response, html: htmlResponse });
 
     } catch (error) {
-        console.error("Error in chat endpoint:", error);
-        res.status(500).json({ 
-            response: "An error occurred while processing your message.",
-            html: "<div class='error-message'>An error occurred while processing your message.</div>",
-            timestamp: new Date().toISOString(),
-            user: 'GMM-rgb'
-        });
+        console.error("Chat error:", error);
+        res.status(500).json({ response: "Sorry, I encountered an error.", html: "<div class='error-message'>Sorry, I encountered an error.</div>" });
     }
 });
 
