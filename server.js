@@ -1174,6 +1174,7 @@ responseGenerator.currentUser = 'GMM-rgb';
 
 // Chat state
 const accountStates = new Map();
+const conversationData = new Map(); // Store conversations by chatId
 
 expressApp.post("/chat", async (req, res) => {
     if (!chatEnabled) {
@@ -1193,8 +1194,13 @@ expressApp.post("/chat", async (req, res) => {
     }
 
     try {
-        // Get chat history for context
-        const chatHistory = conversationData[chatId] || [];
+        // Initialize conversation data for this chat if it doesn't exist
+        if (!conversationData.has(chatId)) {
+            conversationData.set(chatId, []);
+        }
+
+        // Get chat history
+        const chatHistory = conversationData.get(chatId) || [];
         
         const messageForChecks = message.trim().toLowerCase();
         let response = "";
@@ -1202,18 +1208,65 @@ expressApp.post("/chat", async (req, res) => {
         let possibilities = null;
         let htmlResponse = "";
 
-        // Handle different types of queries with context
+        // Enhanced query type detection
         if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
-            // ... existing math handling ...
-        } else if(messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
-            // ... existing search handling ...
+            // Math handling
+            cleanedMessage = message.replace(/(math|calculate|solve)/gi, '').trim();
+            response = await solveMathProblem(cleanedMessage);
+            htmlResponse = `<div class='math-response'>${response}</div>`;
+            
+        } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
+            // Bing search handling
+            cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
+            response = await getBingSearchInfo(cleanedMessage);
+            htmlResponse = `<div class='search-response'>
+                <div class='search-title'>Search Results:</div>
+                <div class='search-content'>${response}</div>
+            </div>`;
+            
         } else if (messageForChecks.includes("wiki") || 
                    messageForChecks.includes("what is") || 
                    messageForChecks.includes("who is") ||
-                   messageForChecks.includes("explain")) {
-            // ... existing wiki handling ...
+                   messageForChecks.includes("explain to me") ||
+                   messageForChecks.includes("explain") ||
+                   messageForChecks.includes("what are") ||
+                   messageForChecks.includes("when did") ||
+                   messageForChecks.includes("where is") ||
+                   messageForChecks.includes("how did") ||
+                   messageForChecks.includes("describe")) {
+            
+            // Wikipedia handling with context
+            cleanedMessage = message
+                .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
+                .replace(/\?+$/, '')
+                .trim();
+            
+            try {
+                const previousContext = chatHistory.length > 0 ? 
+                    chatHistory[chatHistory.length - 1].text : null;
+                
+                response = await getWikipediaInfo(cleanedMessage, previousContext);
+                
+                // Add related articles if available
+                const relatedArticles = await findRelatedWikiArticles(cleanedMessage);
+                if (relatedArticles && relatedArticles.length > 0) {
+                    response += "\n\nRelated topics:\n" + relatedArticles
+                        .slice(0, 3)
+                        .map(article => `• ${article}`)
+                        .join("\n");
+                }
+
+                htmlResponse = `<div class='wiki-response'>
+                    <div class='wiki-content'>${response}</div>
+                </div>`;
+                
+            } catch (wikiError) {
+                console.error("Wikipedia search error:", wikiError);
+                response = "I couldn't find relevant information about that.";
+                htmlResponse = "<div class='error-message'>No Wikipedia results found.</div>";
+            }
         } else {
-            // Generate response with context
+            // Normal chat handling with context
             possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
             if (possibilities && possibilities.length > 0) {
                 response = possibilities[0].response;
@@ -1230,25 +1283,12 @@ expressApp.post("/chat", async (req, res) => {
             }
         }
 
-        // Save conversation with context
+        // Store the new messages in conversation history
+        chatHistory.push({ sender: 'User', text: message });
         if (response) {
-            if (!trainingData.conversations) {
-                trainingData.conversations = [];
-            }
-
-            const storedMessage = cleanedMessage || message;
-            
-            // Store message with context
-            trainingData.conversations.push({
-                input: storedMessage,
-                output: response,
-                timestamp: new Date().toISOString(),
-                user: 'GMM-rgb',
-                context: chatHistory
-            });
-
-            await responseGenerator.updateTrainingData(storedMessage, response);
+            chatHistory.push({ sender: 'AI', text: response });
         }
+        conversationData.set(chatId, chatHistory);
 
         const currentGoal = getCurrentGoal();
         res.json({
@@ -1362,6 +1402,60 @@ expressApp.post("/start", async (req, res) => {
 
   res.json({ status: "Manual server started" });
 });
+
+// Add these new helper functions
+async function findRelatedWikiArticles(topic) {
+  try {
+      const searchResults = await wiki().search(topic, 5);
+      return searchResults.results.map(result => result.title);
+  } catch (error) {
+      console.error("Error finding related articles:", error);
+      return null;
+  }
+}
+
+async function getWikipediaInfo(query, previousContext = null) {
+  const sanitizedQuery = query
+      .toLowerCase()
+      .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
+      .replace(/[?.,!]/g, '')
+      .trim();
+
+  try {
+      // If there's previous context, try to use it for better search
+      let searchQuery = sanitizedQuery;
+      if (previousContext) {
+          const contextWords = previousContext.split(' ')
+              .filter(word => word.length > 3)
+              .slice(-3)
+              .join(' ');
+          searchQuery = `${contextWords} ${sanitizedQuery}`;
+      }
+
+      const searchResults = await wiki().search(searchQuery);
+      if (!searchResults.results || !searchResults.results.length) {
+          return `Sorry, I couldn't find any relevant information about ${query}.`;
+      }
+
+      const page = await wiki().page(searchResults.results[0]);
+      const [summary, references] = await Promise.all([
+          page.summary(),
+          page.references()
+      ]);
+
+      let response = summary;
+
+      // Add a reference if available
+      if (references && references.length > 0) {
+          response += `\n\nSource: ${references[0]}`;
+      }
+
+      return response;
+  } catch (error) {
+      console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
+      return `Sorry, I couldn't find any relevant information about ${query}.`;
+  }
+}
 
 // Add styles route
 expressApp.get("/styles.css", (req, res) => {
