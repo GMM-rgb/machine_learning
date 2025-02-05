@@ -3330,6 +3330,10 @@
       {
         "word": "microsoft",
         "definition": "Microsoft Corporation is an American multinational technology conglomerate headquartered in Redmond, Washington."
+      },
+      {
+        "word": "the company youtube",
+        "definition": "YouTube  is an American social media and online video sharing platform owned by Google."
       }
     ],
     "hi": 2,
@@ -6711,7 +6715,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-05T23:23:54.388Z",
+  "lastTrainingDate": "2025-02-05T23:31:41.809Z",
   "definitions": [
     {
       "word": "you",
