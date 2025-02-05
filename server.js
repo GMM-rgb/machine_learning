@@ -28,7 +28,7 @@ const labels = [];
 const vocab = {};
 
 const expressApp = express();
-const PORT = 3001;
+const PORT = 3002;
 
 let chatEnabled = true; // Flag to control chat availability
 
@@ -1179,33 +1179,34 @@ expressApp.post("/chat", async (req, res) => {
     if (!chatEnabled) {
         return res.json({
             response: "Chat is currently disabled while performing a search. Please try again in a moment.",
+            html: "<div class='system-message'>Chat is currently disabled while performing a search. Please try again in a moment.</div>"
         });
     }
 
     const { message, accountId = "default" } = req.body;
     
-    // Basic validation
     if (!message) {
         return res.status(400).json({
-            response: "Please provide a message."
+            response: "Please provide a message.",
+            html: "<div class='error-message'>Please provide a message.</div>"
         });
     }
 
     try {
-        // Keep original message for special queries
         const messageForChecks = message.trim().toLowerCase();
         let response = "";
         let cleanedMessage = "";
         let possibilities = null;
+        let htmlResponse = "";
 
         if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
-            // Remove math-related keywords
             cleanedMessage = message.replace(/(math|calculate|solve)/gi, '').trim();
             response = await solveMathProblem(cleanedMessage);
+            htmlResponse = `<div class='math-response'>${response}</div>`;
         } else if(messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
-            // Remove search prefixes
             cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
             response = await handleUserInput(cleanedMessage);
+            htmlResponse = `<div class='search-response'>${response}</div>`;
         } else if (messageForChecks.includes("wiki") || 
                    messageForChecks.includes("what is") || 
                    messageForChecks.includes("who is") ||
@@ -1213,36 +1214,37 @@ expressApp.post("/chat", async (req, res) => {
                    messageForChecks.includes("explain") ||
                    messageForChecks.includes("what are") ||
                    messageForChecks.includes("describe")) {
-            // Remove information request prefixes
             cleanedMessage = message
                 .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me)\s*/i, '')
-                .replace(/\?+$/, '') // Remove trailing question marks
+                .replace(/\?+$/, '')
                 .trim();
             response = await getWikipediaInfo(cleanedMessage);
+            htmlResponse = `<div class='wiki-response'>${response}</div>`;
         } else {
-            // Use the new enhanced response generation
             possibilities = await responseGenerator.generateEnhancedResponse(message);
             if (possibilities && possibilities.length > 0) {
                 response = possibilities[0].response;
+                htmlResponse = `<div class='ai-response'>
+                    <div class='response-text'>${response}</div>
+                    <div class='confidence'>Confidence: ${(possibilities[0].confidence * 100).toFixed(1)}%</div>
+                    <div class='source'>Source: ${possibilities[0].source}</div>
+                </div>`;
                 
-                // Learn from this interaction in the background
                 responseGenerator.learnFromInteraction(message, response)
                     .catch(error => console.error("Learning error:", error));
             } else {
                 response = "I'm not sure how to respond to that.";
+                htmlResponse = "<div class='uncertain-response'>I'm not sure how to respond to that.</div>";
             }
         }
 
-        // Only add to training data if we got a response
         if (response) {
             if (!trainingData.conversations) {
                 trainingData.conversations = [];
             }
 
-            // Store the cleaned message or original message as appropriate
             const storedMessage = cleanedMessage || message;
             
-            // Add to training data with current timestamp
             trainingData.conversations.push({
                 input: storedMessage,
                 output: response,
@@ -1250,13 +1252,10 @@ expressApp.post("/chat", async (req, res) => {
                 user: 'GMM-rgb'
             });
 
-            // Update response generator's training data
             await responseGenerator.updateTrainingData(storedMessage, response);
 
-            // Trigger model retraining if needed
             if (trainingData.conversations.length % 5 === 0) {
                 console.log("Triggering model retraining...");
-                // The model will automatically retrain through the ResponseGenerator
                 await responseGenerator.saveTrainingData();
             }
         }
@@ -1264,13 +1263,13 @@ expressApp.post("/chat", async (req, res) => {
         const currentGoal = getCurrentGoal();
         const responseObject = {
             response,
+            html: htmlResponse, // Add HTML formatted response
             timestamp: '2025-02-05 04:49:50',
             user: 'GMM-rgb',
             goal: currentGoal.goal || "No current goal",
             priority: currentGoal.priority || "No priority set"
         };
 
-        // Add confidence if available
         if (possibilities && possibilities[0]) {
             responseObject.confidence = possibilities[0].confidence;
             responseObject.source = possibilities[0].source;
@@ -1282,6 +1281,7 @@ expressApp.post("/chat", async (req, res) => {
         console.error("Error in chat endpoint:", error);
         res.status(500).json({ 
             response: "An error occurred while processing your message.",
+            html: "<div class='error-message'>An error occurred while processing your message.</div>",
             timestamp: '2025-02-05 04:49:50',
             user: 'GMM-rgb'
         });
@@ -1378,6 +1378,11 @@ expressApp.post("/start", async (req, res) => {
   });
 
   res.json({ status: "Manual server started" });
+});
+
+// Add styles route
+expressApp.get("/styles.css", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "styles.css"));
 });
 
 // Update main server startup with static file serving

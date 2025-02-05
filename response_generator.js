@@ -516,60 +516,56 @@ async learnFromInteraction(input, output) {
     try {
         if (!input || !output) return;
 
-        // Tokenize and process input
+        // Convert tokens to numeric indices
         const inputTokens = this.tokenizer.tokenize(input.toLowerCase());
         const inputIndices = inputTokens.map(token => {
             if (!this.vocab[token]) {
-                // Add new token to vocabulary
                 this.vocab[token] = Object.keys(this.vocab).length + 1;
             }
-            return this.vocab[token];
+            return parseInt(this.vocab[token]); // Ensure numeric
         });
 
-        // Create padded input sequence
+        // Create padded numeric input sequence
         const paddedInput = [...inputIndices.slice(0, 50), ...Array(Math.max(0, 50 - inputIndices.length)).fill(0)];
 
-        // Process output tokens
+        // Convert output tokens to numeric indices
         const outputTokens = this.tokenizer.tokenize(output.toLowerCase());
         const outputIndices = outputTokens.map(token => {
             if (!this.vocab[token]) {
                 this.vocab[token] = Object.keys(this.vocab).length + 1;
             }
-            return this.vocab[token];
+            return parseInt(this.vocab[token]); // Ensure numeric
         });
 
+        // Create padded numeric output sequence
+        const paddedOutput = [...outputIndices.slice(0, 16), ...Array(Math.max(0, 16 - outputIndices.length)).fill(0)];
+
+        // Create tensors with numeric values
+        const inputTensor = tf.tensor2d([paddedInput], [1, 50]);
+        
         // Create one-hot encoded output
-        const outputSize = Math.max(...Object.values(this.vocab)) + 1;
-        const oneHotOutput = tf.zeros([1, outputSize]);
-        outputIndices.forEach(index => {
-            oneHotOutput.bufferSync().set(1, 0, index);
-        });
+        const oneHotOutput = tf.oneHot(tf.tensor1d(paddedOutput, 'int32'), Math.max(...Object.values(this.vocab)) + 1);
 
         // Train for one step
-        const inputTensor = tf.tensor2d([paddedInput], [1, 50]);
         await this.model.trainOnBatch(inputTensor, oneHotOutput);
 
-        // Update training data
-        this.trainingData.conversations.push({
-            input,
-            output,
-            timestamp: this.currentDateTime,
-            user: this.currentUser
-        });
-
-        // Save to disk periodically (every 10 interactions)
-        if (this.trainingData.conversations.length % 10 === 0) {
-            await this.saveTrainingData();
-        }
-
-        // Cleanup
+        // Cleanup tensors
         inputTensor.dispose();
         oneHotOutput.dispose();
 
-        console.log(chalk.green("✅ Successfully learned from interaction"));
+        // Update training data
+        await this.updateTrainingData(input, output);
+
+        // Update cache
+        globalCache.lastUpdate = this.currentDateTime;
+
+        console.log(chalk.green("✅ Learned from interaction"));
     } catch (error) {
         console.error(chalk.red("❌ Learning error:"), error);
-        // Continue execution even if learning fails
+        // Log additional debug info
+        console.log("Vocab:", this.vocab);
+        console.log("Input:", input);
+        console.log("Output:", output);
     }
 }
 
@@ -620,32 +616,6 @@ async learnFromInteraction(input, output) {
             .sort((a, b) => b.confidence - a.confidence)
             .slice(0, 3);
     }
-
-async learnFromInteraction(input, output) {
-    try {
-        const inputTokens = this.tokenizer.tokenize(input.toLowerCase());
-        const paddedInput = [...inputTokens.slice(0, 50), ...Array(Math.max(0, 50 - inputTokens.length)).fill(0)];
-        const inputTensor = tf.tensor2d([paddedInput.map(token => this.vocab[token] || 0)], [1, 50]); // Ensure numeric
-        
-        const outputTokens = this.tokenizer.tokenize(output.toLowerCase());
-        const paddedOutput = [...outputTokens.slice(0, 16), ...Array(Math.max(0, 16 - outputTokens.length)).fill(0)];
-        const outputTensor = tf.tensor2d([paddedOutput], [1, 16]); // Make sure this is 16        
-        
-        // Train for one step
-        await this.model.trainOnBatch(inputTensor, outputTensor); // Use correct variable names
-
-        // Cleanup
-        inputTensor.dispose();
-        outputTensor.dispose();
-
-        // Update cache
-        globalCache.lastUpdate = this.currentDateTime;
-
-        console.log(chalk.green("✅ Learned from interaction"));
-    } catch (error) {
-        console.error(chalk.red("❌ Learning error:"), error);
-    }
-}
 
     buildResponseContext(inputText) {
         return {
