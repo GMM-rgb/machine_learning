@@ -2026,6 +2026,32 @@
           "sender": "AI",
           "text": "JavaScript (), often abbreviated as JS, is a programming language and core technology of the Web, alongside HTML and CSS.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
         }
+      ],
+      "Chat 23": [
+        {
+          "sender": "User",
+          "text": "Hello my bro"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "How are you doing today?"
+        },
+        {
+          "sender": "AI",
+          "text": "Not too much, but hey I'm doing great! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "What is Microsoft"
+        },
+        {
+          "sender": "AI",
+          "text": "Microsoft Corporation is an American multinational technology conglomerate headquartered in Redmond, Washington.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
+        }
       ]
     }
   }

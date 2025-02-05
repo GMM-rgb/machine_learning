@@ -1285,19 +1285,30 @@ expressApp.post("/chat", async (req, res) => {
         }
 
         // Add this inside the try block where responses are generated
-        if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i)) {
+        if (messageForChecks.match(/^(what|how|why|who|when|where|explain|tell me about)/i) || 
+            messageForChecks.includes('?')) {
+            
             const webArticles = await responseGenerator.fetchWebArticles(message);
             if (webArticles.length > 0) {
                 htmlResponse = `
                     <div class='ai-response'>
                         ${response}
                         <div class='web-references'>
-                            <h4>Related Articles:</h4>
-                            ${webArticles.map(article => `
+                            <h4>📚 Related Articles:</h4>
+                            ${webArticles.map((article, index) => `
                                 <div class='article-reference'>
-                                    <a href="${article.url}" target="_blank">${article.title}</a>
-                                    <span class='source'>(${article.source})</span>
+                                    <div class='article-title'>
+                                        ${index + 1}. <a href="${article.url}" target="_blank" rel="noopener noreferrer">
+                                            ${article.title}
+                                        </a>
+                                        <span class='source'>(${article.source})</span>
+                                    </div>
                                     <p class='snippet'>${article.snippet}</p>
+                                    <div class='article-link'>
+                                        <small>🔗 <a href="${article.url}" target="_blank" rel="noopener noreferrer">
+                                            Read more
+                                        </a></small>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>

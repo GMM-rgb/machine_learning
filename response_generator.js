@@ -767,17 +767,19 @@ async learnFromInteraction(input, output) {
     }
 
     async generateModelResponseWithContext(input, understanding, history) {
-        const contextInput = this.prepareContextInput(input, understanding, history);
-        let response = await this.generateModelResponse(contextInput);
+        // Add enhanced question detection
+        const shouldAddReferences = 
+            this.detectUserIntent(input).type === 'QUESTION' ||
+            /^(what|how|why|who|when|where|which|explain|tell me about)/i.test(input) ||
+            input.includes('?');
+
+        let response = await this.generateModelResponse(input);
         
-        // Add web references if it's a question or knowledge-seeking input
-        if (this.detectUserIntent(input).type === 'QUESTION' || 
-            input.toLowerCase().includes('what') || 
-            input.toLowerCase().includes('how') ||
-            input.toLowerCase().includes('why')) {
+        // Add web references for questions and knowledge requests
+        if (shouldAddReferences) {
             response = await this.addWebReferences(response, input);
         }
-        
+
         return this.addContextToResponse(response, understanding);
     }
 
@@ -1303,24 +1305,46 @@ async learnFromInteraction(input, output) {
 
     async fetchWebArticles(query) {
         try {
-            // Use DuckDuckGo or similar API to search for relevant articles
-            const response = await axios.get('https://api.duckduckgo.com/', {
-                params: {
-                    q: query,
-                    format: 'json'
-                }
-            });
+            // Use multiple sources for better results
+            const [duckResults, googleResults] = await Promise.all([
+                // DuckDuckGo search
+                axios.get('https://api.duckduckgo.com/', {
+                    params: {
+                        q: query,
+                        format: 'json'
+                    }
+                }),
+                // Google Custom Search (you'll need to add your API key)
+                axios.get('https://www.googleapis.com/customsearch/v1', {
+                    params: {
+                        key: 'YOUR_GOOGLE_API_KEY',
+                        cx: 'YOUR_SEARCH_ENGINE_ID',
+                        q: query
+                    }
+                }).catch(() => ({ data: { items: [] } })) // Fallback if Google API fails
+            ]);
 
-            // Filter and format results
-            const articles = response.data.RelatedTopics
-                .filter(topic => topic.FirstURL && topic.Text)
-                .map(topic => ({
-                    url: topic.FirstURL,
-                    title: topic.Text.split(' - ')[0],
-                    snippet: topic.Text,
-                    source: new URL(topic.FirstURL).hostname
-                }))
-                .slice(0, 3); // Limit to top 3 results
+            // Combine and format results
+            const articles = [
+                // Format DuckDuckGo results
+                ...duckResults.data.RelatedTopics
+                    .filter(topic => topic.FirstURL && topic.Text)
+                    .map(topic => ({
+                        url: topic.FirstURL,
+                        title: topic.Text.split(' - ')[0],
+                        snippet: topic.Text,
+                        source: 'DuckDuckGo'
+                    })),
+                // Format Google results
+                ...(googleResults.data.items || [])
+                    .map(item => ({
+                        url: item.link,
+                        title: item.title,
+                        snippet: item.snippet,
+                        source: new URL(item.link).hostname
+                    }))
+            ]
+            .slice(0, 5); // Limit to top 5 most relevant results
 
             return articles;
         } catch (error) {
@@ -1333,9 +1357,12 @@ async learnFromInteraction(input, output) {
         const articles = await this.fetchWebArticles(query);
         
         if (articles.length > 0) {
-            response += '\n\nRelated articles:\n';
-            articles.forEach(article => {
-                response += `• ${article.title} - ${article.source}\n  ${article.url}\n`;
+            response += '\n\nRelated Articles:\n\n';
+            articles.forEach((article, index) => {
+                response += `${index + 1}. "${article.title}"\n`;
+                response += `   ${article.snippet}\n`;
+                response += `   🔗 ${article.url}\n`;
+                response += `   Source: ${article.source}\n\n`;
             });
         }
 
