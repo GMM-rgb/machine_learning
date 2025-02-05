@@ -1093,7 +1093,7 @@ async learnFromInteraction(input, output) {
 
         // Try to infer intent from context if no pattern matches
         if (chatHistory && chatHistory.length > 0) {
-            const lastMessage = chatHistory[chatHistory.length - 1];
+            const lastMessage = chatHistory[chatHistory.length - 2];
             if (lastMessage.sender === 'AI' && lastMessage.text.endsWith('?')) {
                 return {
                     type: 'RESPONSE_TO_QUESTION',
