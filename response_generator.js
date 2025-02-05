@@ -1127,6 +1127,82 @@ async learnFromInteraction(input, output) {
 
         return response;
     }
+
+    // Replace the existing trainTransformerModel method with this enhanced version:
+    async trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 4) {
+        console.log("Starting staged training process...");
+        
+        const reshapedData = data.map(seq => seq.map(step => [step]));
+        const xs = tf.tensor3d(reshapedData, [reshapedData.length, reshapedData[0].length, 1]);
+        const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
+        const dataset = tf.data.zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) }).batch(batchSize);
+    
+        let currentEpoch = 0;
+        const TIMEOUT_PER_EPOCH = 30000; // 30 seconds
+        
+        while (currentEpoch < maxEpochs) {
+            console.log(`\n📊 Starting Epoch ${currentEpoch + 1}/${maxEpochs}`);
+            
+            try {
+                // Create a promise that either resolves with training or rejects after timeout
+                await Promise.race([
+                    // Training promise
+                    model.fitDataset(dataset, {
+                        epochs: 1,
+                        callbacks: {
+                            onBatchEnd: (batch, logs) => {
+                                console.log(`  ▸ Batch ${batch}: loss = ${logs.loss.toFixed(4)}`);
+                            },
+                            onEpochEnd: (epoch, logs) => {
+                                console.log(`✅ Epoch ${currentEpoch + 1} completed - Loss: ${logs.loss.toFixed(4)}`);
+                            }
+                        }
+                    }),
+                    
+                    // Timeout promise
+                    new Promise((_, reject) => {
+                        setTimeout(() => {
+                            reject(new Error('Epoch timeout'));
+                        }, TIMEOUT_PER_EPOCH);
+                    })
+                ]);
+    
+            } catch (error) {
+                if (error.message === 'Epoch timeout') {
+                    console.warn(`⚠️ Epoch ${currentEpoch + 1} timed out after ${TIMEOUT_PER_EPOCH/1000}s`);
+                } else {
+                    console.error(`❌ Error in epoch ${currentEpoch + 1}:`, error);
+                }
+            }
+    
+            // Small delay between epochs to prevent system overload
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            currentEpoch++;
+            
+            // Save intermediate model state every 3 epochs
+            if (currentEpoch % 3 === 0) {
+                try {
+                    await this.saveIntermediateModel(currentEpoch);
+                    console.log(`💾 Saved intermediate model at epoch ${currentEpoch}`);
+                } catch (error) {
+                    console.warn(`⚠️ Failed to save intermediate model:`, error);
+                }
+            }
+        }
+    
+        // Cleanup tensors
+        xs.dispose();
+        ys.dispose();
+    
+        console.log("\n🏁 Training completed!");
+        return model;
+    }
+    
+    // Add this helper method to the class:
+    async saveIntermediateModel(epoch) {
+        const savePath = `${this.modelPath}/intermediate_epoch_${epoch}`;
+        await this.model.save(`file://${savePath}`);
+    }
 }
 
 module.exports = ResponseGenerator;
