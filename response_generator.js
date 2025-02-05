@@ -456,52 +456,122 @@ async exportTrainingData() {
     }
 
     async generateModelResponse(inputText) {
-        // Check cache first
-        const cacheKey = inputText.toLowerCase().trim();
-        if (this.responseCache.has(cacheKey)) {
-            const cached = this.responseCache.get(cacheKey);
-            if (new Date().getTime() - cached.timestamp < 3600000) { // 1 hour cache
-                return cached.response;
-            }
-        }
-
-        try {
-            // Prepare input
-            const tokens = this.tokenizer.tokenize(inputText.toLowerCase());
-            const paddedTokens = [...tokens.slice(0, 50), ...Array(Math.max(0, 50 - tokens.length)).fill(0)];
-
-            // Convert to tensor
-            const inputTensor = tf.tensor2d([paddedTokens], [1, 50]); // Updated batch size to 1  
-            
-            // Get prediction
-            const prediction = this.model.predict(inputTensor);
-            const responseIndex = tf.argMax(prediction, 1).dataSync()[0];
-            
-            // Get response from training data
-            let response = "I'm learning to respond to that.";
-            if (this.trainingData.conversations.length > 0) {
-                response = this.trainingData.conversations[
-                    responseIndex % this.trainingData.conversations.length
-                ]?.output || response;
-            }
-
-            // Cache the response
-            this.responseCache.set(cacheKey, {
-                response,
-                timestamp: new Date().getTime()
-            });
-
-            // Cleanup
-            inputTensor.dispose();
-            prediction.dispose();
-
-            return response;
-
-        } catch (error) {
-            console.error(chalk.red("❌ Model response error:"), error);
-            return null;
+    // Check cache first
+    const cacheKey = inputText.toLowerCase().trim();
+    if (this.responseCache.has(cacheKey)) {
+        const cached = this.responseCache.get(cacheKey);
+        if (new Date().getTime() - cached.timestamp < 3600000) { // 1 hour cache
+            return cached.response;
         }
     }
+
+    try {
+        // Prepare input - ensure we have a valid vocabulary mapping
+        const tokens = this.tokenizer.tokenize(inputText.toLowerCase());
+        
+        // Map tokens to vocabulary indices, using 0 for unknown tokens
+        const tokenIndices = tokens.map(token => this.vocab[token] || 0);
+        
+        // Pad or truncate to fixed length (50)
+        const paddedTokens = [...tokenIndices.slice(0, 50), ...Array(Math.max(0, 50 - tokenIndices.length)).fill(0)];
+
+        // Convert to tensor with proper shape
+        const inputTensor = tf.tensor2d([paddedTokens], [1, 50]);
+        
+        // Get prediction
+        const prediction = this.model.predict(inputTensor);
+        
+        // Get response from training data
+        let response;
+        if (prediction.shape[1] === this.trainingData.conversations.length) {
+            const responseIndex = tf.argMax(prediction, 1).dataSync()[0];
+            response = this.trainingData.conversations[responseIndex]?.output;
+        }
+        
+        if (!response) {
+            // Fallback to closest matching response
+            const { bestMatch } = this.matcher.findBestTemplate(inputText);
+            response = bestMatch?.output || "I'm still learning how to respond to that.";
+        }
+
+        // Cache the response
+        this.responseCache.set(cacheKey, {
+            response,
+            timestamp: new Date().getTime()
+        });
+
+        // Cleanup tensors
+        inputTensor.dispose();
+        prediction.dispose();
+
+        return response;
+
+    } catch (error) {
+        console.error(chalk.red("❌ Model response error:"), error);
+        return "I encountered an error while processing your message.";
+    }
+}
+
+async learnFromInteraction(input, output) {
+    try {
+        if (!input || !output) return;
+
+        // Tokenize and process input
+        const inputTokens = this.tokenizer.tokenize(input.toLowerCase());
+        const inputIndices = inputTokens.map(token => {
+            if (!this.vocab[token]) {
+                // Add new token to vocabulary
+                this.vocab[token] = Object.keys(this.vocab).length + 1;
+            }
+            return this.vocab[token];
+        });
+
+        // Create padded input sequence
+        const paddedInput = [...inputIndices.slice(0, 50), ...Array(Math.max(0, 50 - inputIndices.length)).fill(0)];
+
+        // Process output tokens
+        const outputTokens = this.tokenizer.tokenize(output.toLowerCase());
+        const outputIndices = outputTokens.map(token => {
+            if (!this.vocab[token]) {
+                this.vocab[token] = Object.keys(this.vocab).length + 1;
+            }
+            return this.vocab[token];
+        });
+
+        // Create one-hot encoded output
+        const outputSize = Math.max(...Object.values(this.vocab)) + 1;
+        const oneHotOutput = tf.zeros([1, outputSize]);
+        outputIndices.forEach(index => {
+            oneHotOutput.bufferSync().set(1, 0, index);
+        });
+
+        // Train for one step
+        const inputTensor = tf.tensor2d([paddedInput], [1, 50]);
+        await this.model.trainOnBatch(inputTensor, oneHotOutput);
+
+        // Update training data
+        this.trainingData.conversations.push({
+            input,
+            output,
+            timestamp: this.currentDateTime,
+            user: this.currentUser
+        });
+
+        // Save to disk periodically (every 10 interactions)
+        if (this.trainingData.conversations.length % 10 === 0) {
+            await this.saveTrainingData();
+        }
+
+        // Cleanup
+        inputTensor.dispose();
+        oneHotOutput.dispose();
+
+        console.log(chalk.green("✅ Successfully learned from interaction"));
+    } catch (error) {
+        console.error(chalk.red("❌ Learning error:"), error);
+        // Continue execution even if learning fails
+    }
+}
 
     async generateEnhancedResponse(inputText) {
         if (!inputText) return null;
