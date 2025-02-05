@@ -1763,6 +1763,30 @@
         {
           "sender": "AI",
           "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "that's okay"
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks for your confidence in me, I'm trying my best. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "thanks though for trying"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"thanks for your confidence in me, I'm trying my best. Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Explain when World War Two happened"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
         }
       ]
     }
