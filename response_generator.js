@@ -1,5 +1,6 @@
 const TemplateMatcher = require('./template_matcher');
-const tf = require('@tensorflow/tfjs-node-gpu');
+const startConsoleInterface = require('./training_terminal_ui');
+const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
 const axios = require('axios');
 const levenshtein = require('fast-levenshtein');
@@ -11,7 +12,6 @@ const chalk = require('chalk');
 const natural = require('natural');
 const tokenizer = new natural.WordTokenizer();
 
-// TensorFlow setup - Ensures this is only done once
 if (!global.tfSetup) {
     global.tfSetup = true;
 }
@@ -28,14 +28,13 @@ class ResponseGenerator {
             conversations: [],
             definitions: [],
             vocabulary: {},
-            lastTrainingDate: '2025-02-05 03:56:37'
+            lastTrainingDate: '2025-02-05 04:12:18'
         };
         this.currentUser = 'GMM-rgb';
-        this.currentDateTime = '2025-02-05 03:56:37';
+        this.currentDateTime = '2025-02-05 04:12:18';
         this.loadModel();
         this.loadTrainingData();
         
-        // Initialize Natural Language Processing tools
         this.tokenizer = new natural.WordTokenizer();
         this.sentenceTokenizer = new natural.SentenceTokenizer();
         this.tfidf = new natural.TfIdf();
@@ -44,7 +43,7 @@ class ResponseGenerator {
     async loadModel() {
         try {
             this.model = await tf.loadLayersModel("file://D:/machine_learning/model.json");
-            console.log(chalk.green("✅ Model loaded successfully in ResponseGenerator"));
+            console.log(chalk.green("✅ Model loaded successfully"));
             if(ifError) {
                 console.warn(chalk.yellow(`Model not found, creating file for data...`));
                 model.createModel(toString());
@@ -53,7 +52,7 @@ class ResponseGenerator {
                 return model;
             }
         } catch (error) {
-            console.error(chalk.red("❌ Error loading model in ResponseGenerator:"), error);
+            console.error(chalk.red("❌ Error loading model:"), error);
         }
     }
 
@@ -63,7 +62,6 @@ class ResponseGenerator {
                 const data = fs.readFileSync(this.trainingDataPath, 'utf8');
                 this.trainingData = JSON.parse(data);
 
-                // Initialize if structure is missing
                 if (!this.trainingData.conversations) {
                     this.trainingData.conversations = [];
                 }
@@ -77,15 +75,11 @@ class ResponseGenerator {
                     this.trainingData.lastTrainingDate = this.currentDateTime;
                 }
 
-                // Load vocabulary into vocab object
                 this.vocab = { ...this.trainingData.vocabulary };
-                
-                // Initialize TF-IDF with existing conversations
                 this.initializeTFIDF();
-                
-                console.log(chalk.green("✅ Training data loaded successfully"));
+                console.log(chalk.green("✅ Training data loaded"));
             } catch (error) {
-                console.error(chalk.red("❌ Error loading training data:"), error);
+                console.error(chalk.red("❌ Error loading data:"), error);
                 this.initializeEmptyTrainingData();
             }
         } else {
@@ -100,7 +94,6 @@ class ResponseGenerator {
             vocabulary: {},
             lastTrainingDate: this.currentDateTime
         };
-        console.log(chalk.yellow("⚠️ Initialized empty training data"));
     }
 
     initializeTFIDF() {
@@ -118,16 +111,16 @@ class ResponseGenerator {
             output: process.stdout
         });
 
-        console.log(chalk.cyan('\n=== Training Data Management Console ==='));
-        console.log(chalk.yellow('Available Commands:'));
-        console.log('1. view    - View training data');
-        console.log('2. add     - Add new training data');
-        console.log('3. edit    - Edit existing training data');
-        console.log('4. delete  - Delete training data');
-        console.log('5. search  - Search training data');
-        console.log('6. test    - Test response generation');
-        console.log('7. stats   - View statistics');
-        console.log('8. export  - Export training data');
+        console.log(chalk.cyan('\n=== Training Data Management ==='));
+        console.log(chalk.yellow('Commands:'));
+        console.log('1. view    - View data');
+        console.log('2. add     - Add data');
+        console.log('3. edit    - Edit data');
+        console.log('4. delete  - Delete data');
+        console.log('5. search  - Search data');
+        console.log('6. test    - Test response');
+        console.log('7. stats   - View stats');
+        console.log('8. export  - Export data');
         console.log('9. exit    - Exit console');
 
         const handleCommand = async (command) => {
@@ -177,7 +170,7 @@ class ResponseGenerator {
     async viewTrainingData() {
         console.log(chalk.green('\nCurrent Training Data:'));
         if (this.trainingData.conversations.length === 0) {
-            console.log(chalk.yellow('No training data available.'));
+            console.log(chalk.yellow('No data available.'));
             return;
         }
 
@@ -192,18 +185,19 @@ class ResponseGenerator {
 
     async addTrainingDataConsole(rl) {
         const input = await new Promise(resolve => {
-            rl.question(chalk.cyan('Enter input text: '), resolve);
+            rl.question(chalk.cyan('Enter input: '), resolve);
         });
 
         const output = await new Promise(resolve => {
-            rl.question(chalk.cyan('Enter output text: '), resolve);
+            rl.question(chalk.cyan('Enter output: '), resolve);
         });
 
-        const capitalizedInput = this.properlyCapitalize(input);
-        const capitalizedOutput = this.properlyCapitalize(output);
-
-        await this.updateTrainingData(capitalizedInput, capitalizedOutput, false);
-        console.log(chalk.green('✅ Training data added successfully!'));
+        await this.updateTrainingData(
+            this.properlyCapitalize(input),
+            this.properlyCapitalize(output),
+            false
+        );
+        console.log(chalk.green('✅ Data added'));
     }
 
     async editTrainingDataConsole(rl) {
@@ -220,11 +214,11 @@ class ResponseGenerator {
             console.log(`Output: ${currentEntry.output}`);
 
             const input = await new Promise(resolve => {
-                rl.question(chalk.cyan('\nEnter new input text (or press Enter to keep current): '), resolve);
+                rl.question(chalk.cyan('\nNew input (Enter to keep): '), resolve);
             });
 
             const output = await new Promise(resolve => {
-                rl.question(chalk.cyan('Enter new output text (or press Enter to keep current): '), resolve);
+                rl.question(chalk.cyan('New output (Enter to keep): '), resolve);
             });
 
             this.trainingData.conversations[idx] = {
@@ -235,9 +229,9 @@ class ResponseGenerator {
             };
 
             await this.saveTrainingData();
-            console.log(chalk.green('✅ Training data updated successfully!'));
+            console.log(chalk.green('✅ Updated'));
         } else {
-            console.log(chalk.red('❌ Invalid index!'));
+            console.log(chalk.red('❌ Invalid index'));
         }
     }
 
@@ -250,24 +244,24 @@ class ResponseGenerator {
         const idx = parseInt(index) - 1;
         if (idx >= 0 && idx < this.trainingData.conversations.length) {
             const confirm = await new Promise(resolve => {
-                rl.question(chalk.yellow('Are you sure you want to delete this entry? (y/n): '), resolve);
+                rl.question(chalk.yellow('Confirm delete? (y/n): '), resolve);
             });
 
             if (confirm.toLowerCase() === 'y') {
                 this.trainingData.conversations.splice(idx, 1);
                 await this.saveTrainingData();
-                console.log(chalk.green('✅ Training data deleted successfully!'));
+                console.log(chalk.green('✅ Deleted'));
             } else {
-                console.log(chalk.yellow('Deletion cancelled.'));
+                console.log(chalk.yellow('Cancelled'));
             }
         } else {
-            console.log(chalk.red('❌ Invalid index!'));
+            console.log(chalk.red('❌ Invalid index'));
         }
     }
 
     async searchTrainingDataConsole(rl) {
         const searchTerm = await new Promise(resolve => {
-            rl.question(chalk.cyan('Enter search term: '), resolve);
+            rl.question(chalk.cyan('Search term: '), resolve);
         });
 
         const results = this.trainingData.conversations.filter(conv => 
@@ -279,48 +273,46 @@ class ResponseGenerator {
             console.log(chalk.green(`\nFound ${results.length} matches:`));
             results.forEach((conv, index) => {
                 console.log(chalk.yellow(`\n[${index + 1}]`));
-                console.log(chalk.cyan('Input:     ') + this.highlightText(conv.input, searchTerm));
-                console.log(chalk.cyan('Output:    ') + this.highlightText(conv.output, searchTerm));
-                console.log(chalk.cyan('Timestamp: ') + conv.timestamp);
+                console.log(chalk.cyan('Input:  ') + this.highlightText(conv.input, searchTerm));
+                console.log(chalk.cyan('Output: ') + this.highlightText(conv.output, searchTerm));
             });
         } else {
-            console.log(chalk.yellow('No matches found.'));
+            console.log(chalk.yellow('No matches'));
         }
     }
 
     async testResponseGenerationConsole(rl) {
         const input = await new Promise(resolve => {
-            rl.question(chalk.cyan('Enter test input: '), resolve);
+            rl.question(chalk.cyan('Test input: '), resolve);
         });
 
-        console.log(chalk.yellow('\nGenerating responses...'));
+        console.log(chalk.yellow('\nGenerating...'));
         const possibilities = await this.generateEnhancedResponse(input);
 
         if (possibilities && possibilities.length > 0) {
-            console.log(chalk.green('\nGenerated Responses:'));
+            console.log(chalk.green('\nResponses:'));
             possibilities.forEach((p, index) => {
-                console.log(chalk.yellow(`\n[${index + 1}] Confidence: ${(p.confidence * 100).toFixed(2)}%`));
+                console.log(chalk.yellow(`\n[${index + 1}] ${(p.confidence * 100).toFixed(2)}%`));
                 console.log(chalk.cyan('Response: ') + p.response);
                 console.log(chalk.cyan('Source:   ') + p.source);
             });
         } else {
-            console.log(chalk.red('No responses generated.'));
+            console.log(chalk.red('No responses'));
         }
     }
 
     async viewStatistics() {
-        console.log(chalk.green('\nTraining Data Statistics:'));
-        console.log(chalk.cyan('Total Conversations:  ') + this.trainingData.conversations.length);
-        console.log(chalk.cyan('Total Definitions:   ') + this.trainingData.definitions.length);
-        console.log(chalk.cyan('Vocabulary Size:     ') + Object.keys(this.trainingData.vocabulary).length);
-        console.log(chalk.cyan('Last Training Date:  ') + this.trainingData.lastTrainingDate);
+        console.log(chalk.green('\nStatistics:'));
+        console.log(chalk.cyan('Conversations:  ') + this.trainingData.conversations.length);
+        console.log(chalk.cyan('Definitions:    ') + this.trainingData.definitions.length);
+        console.log(chalk.cyan('Vocabulary:     ') + Object.keys(this.trainingData.vocabulary).length);
+        console.log(chalk.cyan('Last Training:  ') + this.trainingData.lastTrainingDate);
 
-        // Calculate average response length
-        const avgResponseLength = this.trainingData.conversations.reduce((acc, conv) => 
+        const avgLength = this.trainingData.conversations.reduce((acc, conv) => 
             acc + (conv.output ? conv.output.length : 0), 0) / 
             (this.trainingData.conversations.length || 1);
 
-        console.log(chalk.cyan('Avg Response Length: ') + avgResponseLength.toFixed(2) + ' characters');
+        console.log(chalk.cyan('Avg Response:   ') + avgLength.toFixed(2) + ' chars');
     }
 
     async exportTrainingData() {
@@ -330,9 +322,9 @@ class ResponseGenerator {
                 exportPath,
                 JSON.stringify(this.trainingData, null, 2)
             );
-            console.log(chalk.green(`✅ Training data exported successfully to ${exportPath}`));
+            console.log(chalk.green(`✅ Exported to ${exportPath}`));
         } catch (error) {
-            console.error(chalk.red('❌ Error exporting training data:'), error);
+            console.error(chalk.red('❌ Export error:'), error);
         }
     }
 
@@ -349,11 +341,9 @@ class ResponseGenerator {
         return sentences.map(sentence => {
             if (!sentence.trim()) return sentence;
             
-            // Special words that should always be capitalized
             const specialWords = ['i', 'i\'m', 'i\'ll', 'i\'ve', 'i\'d'];
             
             return sentence.split(' ').map((word, index) => {
-                // Capitalize first word of sentence or special words
                 if (index === 0 || specialWords.includes(word.toLowerCase())) {
                     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
                 }
@@ -368,7 +358,6 @@ class ResponseGenerator {
         const possibilities = [];
         const context = this.buildResponseContext(inputText);
         
-        // Get direct match
         const directMatch = this.findClosestMatch(inputText, context);
         if (directMatch) {
             possibilities.push({
@@ -378,7 +367,6 @@ class ResponseGenerator {
             });
         }
 
-        // Get template match
         const { bestMatch, score } = this.matcher.findBestTemplate(inputText);
         if (bestMatch && score < 3) {
             possibilities.push({
@@ -388,37 +376,34 @@ class ResponseGenerator {
             });
         }
 
-        // Get similar responses from history
         const similarResponses = this.findSimilarResponses(inputText, context);
         possibilities.push(...similarResponses.map(resp => ({
-response: this.properlyCapitalize(resp.output),
+            response: this.properlyCapitalize(resp.output),
             confidence: resp.similarity,
             source: 'historical'
         })));
 
-        // Add AI model generated response if available
         if (this.model) {
             try {
                 const modelResponse = await this.generateModelResponse(inputText);
                 if (modelResponse) {
                     possibilities.push({
                         response: this.properlyCapitalize(modelResponse),
-                        confidence: 0.6, // Base confidence for model responses
+                        confidence: 0.6,
                         source: 'ai_model'
                     });
                 }
             } catch (error) {
-                console.error(chalk.red("❌ Error generating model response:"), error);
+                console.error(chalk.red("❌ Model error:"), error);
             }
         }
 
-        // Sort by confidence and return top 3
         return possibilities
             .sort((a, b) => b.confidence - a.confidence)
             .slice(0, 3);
     }
 
-    findSimilarResponses(inputText, context) {
+findSimilarResponses(inputText, context) {
         if (!inputText || !this.trainingData.conversations) return [];
 
         const inputTokens = this.tokenizer.tokenize(inputText.toLowerCase());
@@ -432,14 +417,10 @@ response: this.properlyCapitalize(resp.output),
                     convTokens.includes(token)
                 );
 
-                // Calculate TF-IDF similarity
                 const tfidfSimilarity = this.calculateTFIDFSimilarity(inputText, conv.input);
-                
-                // Calculate token similarity
                 const tokenSimilarity = commonTokens.length / 
                     Math.max(inputTokens.length, convTokens.length);
 
-                // Combine both similarities with weights
                 const similarity = (tfidfSimilarity * 0.7) + (tokenSimilarity * 0.3);
 
                 return {
@@ -480,20 +461,13 @@ response: this.properlyCapitalize(resp.output),
         }
 
         try {
-            // Learn new information in background
             await this.learnInBackground(inputText);
             
-            // Generate enhanced responses
             const possibilities = await this.generateEnhancedResponse(inputText);
             
             if (possibilities && possibilities.length > 0) {
-                // Get the best response
                 const bestResponse = possibilities[0];
-                
-                // Store the interaction
                 await this.updateTrainingData(inputText, bestResponse.response, false);
-                
-                // Return the best response
                 return bestResponse.response;
             }
 
@@ -515,57 +489,49 @@ response: this.properlyCapitalize(resp.output),
             const newEntry = {
                 input: this.properlyCapitalize(input),
                 output: this.properlyCapitalize(response),
-                timestamp: new Date(this.currentDateTime).toISOString(),
-                user: this.currentUser
+                timestamp: new Date('2025-02-05 04:14:43').toISOString(),
+                user: 'GMM-rgb'
             };
 
             if (existingIndex === -1) {
-                // New conversation
                 this.trainingData.conversations.push(newEntry);
-                
-                // Update TF-IDF
                 this.tfidf.addDocument(input.toLowerCase());
             } else if (isRefinement) {
-                // Update existing conversation
                 this.trainingData.conversations[existingIndex] = newEntry;
             }
 
-            // Update last training date
-            this.trainingData.lastTrainingDate = this.currentDateTime;
+            this.trainingData.lastTrainingDate = '2025-02-05 04:14:43';
             await this.saveTrainingData();
             
-            console.log(chalk.green('✅ Training data updated successfully'));
+            console.log(chalk.green('✅ Training data updated'));
         } catch (error) {
-            console.error(chalk.red("❌ Error updating training data:"), error);
+            console.error(chalk.red("❌ Update error:"), error);
         }
     }
 
     async saveTrainingData() {
         try {
-            // Update last training date before saving
-            this.trainingData.lastTrainingDate = this.currentDateTime;
+            this.trainingData.lastTrainingDate = '2025-02-05 04:14:43';
             
             await fs.promises.writeFile(
                 this.trainingDataPath,
                 JSON.stringify(this.trainingData, null, 2)
             );
-            console.log(chalk.green('✅ Training data saved successfully'));
+            console.log(chalk.green('✅ Saved'));
         } catch (error) {
-            console.error(chalk.red('❌ Error saving training data:'), error);
+            console.error(chalk.red('❌ Save error:'), error);
         }
     }
 
-    // Utility function to clean and normalize text
     cleanText(text) {
         if (!text) return '';
         
         return text
             .trim()
-            .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-            .replace(/[^\w\s\-',.!?]/g, '') // Remove special characters except punctuation
-            .replace(/\s+([,.!?])/g, '$1'); // Remove spaces before punctuation
+            .replace(/\s+/g, ' ')
+            .replace(/[^\w\s\-',.!?]/g, '')
+            .replace(/\s+([,.!?])/g, '$1');
     }
 }
 
-// Export the ResponseGenerator class
 module.exports = ResponseGenerator;
