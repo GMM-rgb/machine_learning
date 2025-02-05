@@ -1713,6 +1713,14 @@
         {
           "sender": "AI",
           "text": "Hello there! Hi may hi help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Wassup"
+        },
+        {
+          "sender": "AI",
+          "text": "Hey, whats up? Anything on your mind? Sources: wikipedia"
         }
       ]
     }

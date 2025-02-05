@@ -1248,7 +1248,7 @@ async learnFromInteraction(input, output) {
                 return definition;
             }
         } catch (error) {
-            console.error(`Error getting definition for "${word}":`, error);
+            console.error(`❌ Error getting definition for "${word}":`, error);
         }
         
         return null;
