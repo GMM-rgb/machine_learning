@@ -1316,7 +1316,7 @@
     },
     {
       "input": "hi how are you",
-      "output": "Not too much, but hey I'm doing great! And I'm happy to see you!",
+      "output": "Not too much, but hey I'm doing great! And I'm happy to see you! 😊",
       "timestamp": "2025-02-02T05:03:39.343Z"
     },
     {
@@ -1677,12 +1677,12 @@
     },
     {
       "input": "glad to see you",
-      "output": "I'm glad to see you too! Do you need help with anything?",
+      "output": "I'm glad to see you too! Do you need help with anything? 😊",
       "user": "GMM-rgb"
     },
     {
       "input": "I'm glad to see you",
-      "output": "i'm glad to see you to to you see help with anything?",
+      "output": "i'm glad to see you to to you see help with anything? 😊",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     },
@@ -1712,19 +1712,19 @@
     },
     {
       "input": "Anyway, I’m glad to see you",
-      "output": "i'm glad to see you to! do you need help with anything?",
+      "output": "i'm glad to see you to! do you need help with anything? 😊",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     },
     {
       "input": "I'm so glad to see you",
-      "output": "i'm glad to see you to! do you need help with anything?",
+      "output": "i'm glad to see you to! do you need help with anything? 😊",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     },
     {
       "input": "I'm happy to see you",
-      "output": "i'm glad to see you to! do you need help with anything?",
+      "output": "i'm glad to see you to! do you need help with anything? 😊",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     },

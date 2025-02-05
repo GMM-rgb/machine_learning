@@ -2035,6 +2035,14 @@
         {
           "sender": "AI",
           "text": "Hello there again! May I help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "How are you"
+        },
+        {
+          "sender": "AI",
+          "text": "Not too much, but hey I'm doing great! And I'm happy to see you! Sources: wikipedia"
         }
       ]
     }
