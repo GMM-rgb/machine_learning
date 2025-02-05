@@ -1141,7 +1141,7 @@ async learnFromInteraction(input, output) {
         const TIMEOUT_PER_EPOCH = 30000; // 30 seconds
         
         while (currentEpoch < maxEpochs) {
-            console.log(`\n📊 Starting Epoch ${currentEpoch + 1}/${maxEpochs}`);
+            console.log(`\n📊 Starting Epoch ${currentEpoch + 1}/${maxEpochs} ⏳`);
             
             try {
                 // Create a promise that either resolves with training or rejects after timeout
@@ -1162,7 +1162,7 @@ async learnFromInteraction(input, output) {
                     // Timeout promise
                     new Promise((_, reject) => {
                         setTimeout(() => {
-                            reject(new Error('Epoch timeout'));
+                            reject(new Error('Epoch timeout ⌛'));
                         }, TIMEOUT_PER_EPOCH);
                     })
                 ]);
