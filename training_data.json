@@ -1719,6 +1719,11 @@
       "user": "GMM-rgb"
     },
     {
+      "input": "its okay",
+      "output": "Thanks for your confidence in me, I'm trying my best.",
+      "user": "GMM-rgb"
+    },
+    {
       "input": "You're amazing!",
       "output": "i'm glad you think so! i'm here to help you with anything you need.",
       "timestamp": "2025-02-04T13:22:05.000Z",
