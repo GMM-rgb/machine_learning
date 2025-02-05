@@ -767,13 +767,17 @@ async learnFromInteraction(input, output) {
     }
 
     async generateModelResponseWithContext(input, understanding, history) {
-        // Prepare context-aware input
         const contextInput = this.prepareContextInput(input, understanding, history);
+        let response = await this.generateModelResponse(contextInput);
         
-        // Generate response using the enhanced input
-        const response = await this.generateModelResponse(contextInput);
+        // Add web references if it's a question or knowledge-seeking input
+        if (this.detectUserIntent(input).type === 'QUESTION' || 
+            input.toLowerCase().includes('what') || 
+            input.toLowerCase().includes('how') ||
+            input.toLowerCase().includes('why')) {
+            response = await this.addWebReferences(response, input);
+        }
         
-        // Post-process response with context
         return this.addContextToResponse(response, understanding);
     }
 
@@ -1295,6 +1299,47 @@ async learnFromInteraction(input, output) {
             console.error("Error in internal dialogue:", error);
             return [{ speaker: 'AI', text: "I'm having trouble processing that." }];
         }
+    }
+
+    async fetchWebArticles(query) {
+        try {
+            // Use DuckDuckGo or similar API to search for relevant articles
+            const response = await axios.get('https://api.duckduckgo.com/', {
+                params: {
+                    q: query,
+                    format: 'json'
+                }
+            });
+
+            // Filter and format results
+            const articles = response.data.RelatedTopics
+                .filter(topic => topic.FirstURL && topic.Text)
+                .map(topic => ({
+                    url: topic.FirstURL,
+                    title: topic.Text.split(' - ')[0],
+                    snippet: topic.Text,
+                    source: new URL(topic.FirstURL).hostname
+                }))
+                .slice(0, 3); // Limit to top 3 results
+
+            return articles;
+        } catch (error) {
+            console.error('Error fetching web articles:', error);
+            return [];
+        }
+    }
+
+    async addWebReferences(response, query) {
+        const articles = await this.fetchWebArticles(query);
+        
+        if (articles.length > 0) {
+            response += '\n\nRelated articles:\n';
+            articles.forEach(article => {
+                response += `• ${article.title} - ${article.source}\n  ${article.url}\n`;
+            });
+        }
+
+        return response;
     }
 
 }

@@ -83,3 +83,50 @@
     margin-bottom: 5px;
     font-size: 0.9em;
 }
+
+.web-references {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-left: 3px solid #007bff;
+}
+
+.web-references h4 {
+    margin: 0 0 10px 0;
+    color: #007bff;
+}
+
+.article-reference {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.article-reference:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.article-reference a {
+    color: #0056b3;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.article-reference a:hover {
+    text-decoration: underline;
+}
+
+.article-reference .source {
+    color: #6c757d;
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
+.article-reference .snippet {
+    margin: 5px 0 0 0;
+    color: #495057;
+    font-size: 0.9em;
+}

@@ -1284,6 +1284,28 @@ expressApp.post("/chat", async (req, res) => {
             }
         }
 
+        // Add this inside the try block where responses are generated
+        if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i)) {
+            const webArticles = await responseGenerator.fetchWebArticles(message);
+            if (webArticles.length > 0) {
+                htmlResponse = `
+                    <div class='ai-response'>
+                        ${response}
+                        <div class='web-references'>
+                            <h4>Related Articles:</h4>
+                            ${webArticles.map(article => `
+                                <div class='article-reference'>
+                                    <a href="${article.url}" target="_blank">${article.title}</a>
+                                    <span class='source'>(${article.source})</span>
+                                    <p class='snippet'>${article.snippet}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
         // Store the new messages in conversation history
         chatHistory.push({ sender: 'User', text: message });
         if (response) {
