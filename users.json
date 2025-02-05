@@ -1614,6 +1614,24 @@
           "sender": "AI",
           "text": "Hello there! How may I hello you? Sources: wikipedia"
         }
+      ],
+      "Chat 17": [
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hi may hi help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "How are you doing?"
+        },
+        {
+          "sender": "AI",
+          "text": "How how much, but how I'm doing? Great! Sources: wikipedia"
+        }
       ]
     }
   }
