@@ -1803,6 +1803,48 @@
         {
           "sender": "AI",
           "text": "World War II or the Second World War (1 September 1939 – 2 September 1945) was a global conflict between two coalitions: the Allies and the Axis powers.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
+        },
+        {
+          "sender": "User",
+          "text": "Thank you for the info."
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help on facts, let me know! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Did you know that your amazing?"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"your very welcome, if you need help on facts, let me know! Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "oh sorry, I meant your amazing."
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"your very welcome, if you need help on facts, let me know! Sources: wikipedia\". Sources: wikipedia\". Sources: wikipedia"
+        }
+      ],
+      "Chat 20": [
+        {
+          "sender": "User",
+          "text": "sup"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Explain the definition Celebrities"
+        },
+        {
+          "sender": "AI",
+          "text": "Celebrity is a condition of fame and broad public recognition of a person or group due to the attention given to them by mass media.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
         }
       ]
     }

@@ -3365,6 +3365,10 @@
       {
         "word": "when world war two happened",
         "definition": "World War II or the Second World War (1 September 1939 – 2 September 1945) was a global conflict between two coalitions: the Allies and the Axis powers."
+      },
+      {
+        "word": "the definition celebrities",
+        "definition": "Celebrity is a condition of fame and broad public recognition of a person or group due to the attention given to them by mass media."
       }
     ],
     "hi": 2,
@@ -6746,7 +6750,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-05T20:13:24.649Z",
+  "lastTrainingDate": "2025-02-05T20:59:14.983Z",
   "definitions": [
     {
       "word": "you",
