@@ -1128,7 +1128,7 @@ async learnFromInteraction(input, output) {
         return response;
     }
 
-    // Replace the existing trainTransformerModel method with this enhanced version:
+    // Replaces the existing trainTransformerModel method with this enhanced version:
     async trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 4) {
         console.log("Starting staged training process...");
         
@@ -1198,7 +1198,7 @@ async learnFromInteraction(input, output) {
         return model;
     }
     
-    // Add this helper method to the class:
+    // Helper method to the class:
     async saveIntermediateModel(epoch) {
         const savePath = `${this.modelPath}/intermediate_epoch_${epoch}`;
         await this.model.save(`file://${savePath}`);
