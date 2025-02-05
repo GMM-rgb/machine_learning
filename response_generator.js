@@ -285,7 +285,7 @@ class ResponseGenerator {
             rl.question(chalk.cyan('Enter output: '), resolve);
         });
 
-        await this.updateTrainingData(
+        await this.trainingData( // og. updateTrainingData
             this.properlyCapitalize(input),
             this.properlyCapitalize(output),
             false
@@ -459,9 +459,9 @@ async exportTrainingData() {
             // Prepare input
             const tokens = this.tokenizer.tokenize(inputText.toLowerCase());
             const paddedTokens = [...tokens.slice(0, 50), ...Array(Math.max(0, 50 - tokens.length)).fill(0)];
-            
+
             // Convert to tensor
-            const inputTensor = tf.tensor2d([paddedTokens], [1, 50]);
+            const inputTensor = tf.tensor2d([paddedTokens], [1, 50]); // Updated batch size to 1  
             
             // Get prediction
             const prediction = this.model.predict(inputTensor);
@@ -544,15 +544,12 @@ async exportTrainingData() {
     async learnFromInteraction(input, output) {
         try {
             const inputTokens = this.tokenizer.tokenize(input.toLowerCase());
-            const outputTokens = this.tokenizer.tokenize(output.toLowerCase());
-
-            // Prepare training data
             const paddedInput = [...inputTokens.slice(0, 50), ...Array(Math.max(0, 50 - inputTokens.length)).fill(0)];
-            const paddedOutput = [...outputTokens.slice(0, 50), ...Array(Math.max(0, 50 - outputTokens.length)).fill(0)];
+            const inputTensor = tf.tensor2d([paddedInput], [1, 50]); // Ensure this is numeric
 
-            // Convert to tensors
-            const xs = tf.tensor2d([paddedInput], [1, 50]);
-            const ys = tf.tensor2d([paddedOutput], [1, 50]);
+            const outputTokens = this.tokenizer.tokenize(output.toLowerCase());
+            const paddedOutput = [...outputTokens.slice(0, 32), ...Array(Math.max(0, 32 - outputTokens.length)).fill(0)];
+            const outputTensor = tf.tensor2d([paddedOutput], [1, 32]); // Ensure this is numeric
 
             // Train for one step
             await this.model.trainOnBatch(xs, ys);
@@ -562,7 +559,7 @@ async exportTrainingData() {
             ys.dispose();
 
             // Update cache
-            globalCache.lastUpdate = '2025-02-05 04:41:24';
+            globalCache.lastUpdate = this.currentDateTime;
 
             console.log(chalk.green("✅ Learned from interaction"));
         } catch (error) {

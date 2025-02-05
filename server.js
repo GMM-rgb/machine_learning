@@ -1251,7 +1251,7 @@ expressApp.post("/chat", async (req, res) => {
             });
 
             // Update response generator's training data
-            await responseGenerator.updateTrainingData(
+            await responseGenerator.trainingData(
                 storedMessage,
                 response,
                 false
