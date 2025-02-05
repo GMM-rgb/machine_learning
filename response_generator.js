@@ -1138,7 +1138,7 @@ async learnFromInteraction(input, output) {
         const dataset = tf.data.zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) }).batch(batchSize);
     
         let currentEpoch = 0;
-        const TIMEOUT_PER_EPOCH = 30000; // 30 seconds
+        const TIMEOUT_PER_EPOCH = 30000; // 30 seconds in timeout timer
         
         while (currentEpoch < maxEpochs) {
             console.log(`\n📊 Starting Epoch ${currentEpoch + 1}/${maxEpochs} ⏳`);
