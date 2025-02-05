@@ -670,7 +670,7 @@ async learnFromInteraction(input, output) {
 
             // Search Wikipedia if enabled and no references found
             if (references.length === 0) {
-                for (const term of keyTerms.slice(0, 2)) { // Limit to first 2 terms
+                for (const term of keyTerms.slice(0, 4)) { // Limit to first 4 terms / default is 2
                     const wikiInfo = await this.searchWikipedia(term);
                     if (wikiInfo) {
                         references.push({
