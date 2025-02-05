@@ -1132,7 +1132,7 @@ async learnFromInteraction(input, output) {
         return response;
     }
 
-    // Replaces the existing trainTransformerModel method with this enhanced version:
+    // Replaced the existing trainTransformerModel method with this enhanced version:
     async trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 4) {
         console.log("⏳ Starting staged training process... ⏳");
         
