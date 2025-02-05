@@ -47,24 +47,24 @@ class ResponseGenerator {
 
     async initialize() {
         await this.loadModel();
-        await this.loadTrainingData();
+        this.loadTrainingData();
         this.setupModelCache();
     }
 
     setupModelCache() {
         // Setup LRU cache for model outputs
-        this.modelCache.maxSize = 1000;
+        this.modelCache.maxSize = 2500;
         this.responseCache.maxSize = 500;
 
         // Clean old cache entries periodically
         setInterval(() => {
             const now = new Date().getTime();
             for (const [key, value] of this.modelCache) {
-                if (now - value.timestamp > 3600000) { // 1 hour
+                if (now - value.timestamp > 3600000) { // 1 hour period
                     this.modelCache.delete(key);
                 }
             }
-        }, 900000); // Clean every 15 minutes
+        }, 900000); // Clean every 15 minutes for stability on RAM to prevent overflow
     }
 
     async loadModel() {
@@ -141,7 +141,7 @@ class ResponseGenerator {
         }));
         
         model.compile({
-            optimizer: tf.train.adam(1.75),
+            optimizer: tf.train.adam(1.85),
             loss: 'categoricalCrossentropy',
             metrics: ['accuracy']
         });
@@ -211,7 +211,7 @@ class ResponseGenerator {
     });
       await this.saveTrainingData(); // Save updated training data
     }
-    
+
     async startConsoleInterface() {
         const rl = readline.createInterface({
             input: process.stdin,
@@ -384,7 +384,7 @@ class ResponseGenerator {
                 console.log(chalk.cyan('Output: ') + this.highlightText(conv.output, searchTerm));
             });
         } else {
-            console.log(chalk.yellow('No matches'));
+            console.log(chalk.yellow('⚠ No matches found ⚠'));
         }
     }
 
@@ -1134,7 +1134,7 @@ async learnFromInteraction(input, output) {
 
     // Replaces the existing trainTransformerModel method with this enhanced version:
     async trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 4) {
-        console.log("Starting staged training process...");
+        console.log("⏳ Starting staged training process... ⏳");
         
         const reshapedData = data.map(seq => seq.map(step => [step]));
         const xs = tf.tensor3d(reshapedData, [reshapedData.length, reshapedData[0].length, 1]);
@@ -1183,6 +1183,7 @@ async learnFromInteraction(input, output) {
             // Small delay between epochs to prevent system overload
             await new Promise(resolve => setTimeout(resolve, 1000));
             currentEpoch++;
+
             
             // Save intermediate model state every 3 epochs (Checkpoint State)
             if (currentEpoch % 3 === 0) {
