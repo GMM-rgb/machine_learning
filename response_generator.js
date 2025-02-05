@@ -11,7 +11,6 @@ const { isArray } = require('mathjs');
 if (!global.tfSetup) {
     global.tfSetup = true;
 }
-
 const model = {};
 
 class ResponseGenerator {
