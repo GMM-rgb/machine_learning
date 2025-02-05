@@ -7,26 +7,9 @@
       "user": "GMM-rgb"
     },
     {
-      "input": "how are you doing?",
-      "output": "how how much, but how i'm doing? great!",
-      "timestamp": "2025-02-04T13:22:05.000Z",
-      "user": "GMM-rgb"
-    },
-    {
-      "input": "what are you thinking of?",
-      "output": "Sorry, I couldn't find any relevant information on Bing.",
-      "timestamp": "2025-01-25T21:27:51.752Z"
-    },
-    {
       "input": "hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-25T21:32:47.005Z"
-    },
-    {
-      "input": "how are you",
-      "output": "how how much, but how i'm doing great!",
-      "timestamp": "2025-02-04T13:22:05.000Z",
-      "user": "GMM-rgb"
     },
     {
       "input": "hi bro",
@@ -45,7 +28,7 @@
     },
     {
       "input": "your developers name is maximus farvour",
-      "output": "I don't know how to respond to that.",
+      "output": "Okay, got it.",
       "timestamp": "2025-01-26T01:07:36.325Z"
     },
     {
@@ -534,12 +517,6 @@
       "input": "hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-01-26T20:49:29.166Z"
-    },
-    {
-      "input": "how are you doing",
-      "output": "how how much, but how i'm doing great!",
-      "timestamp": "2025-02-04T13:22:05.000Z",
-      "user": "GMM-rgb"
     },
     {
       "input": "explain to me nvme ssd",
@@ -1730,12 +1707,6 @@
     {
       "input": "What’s up",
       "output": "hey, what’s up anything up your mind?",
-      "timestamp": "2025-02-04T13:22:05.000Z",
-      "user": "GMM-rgb"
-    },
-    {
-      "input": "How are you?",
-      "output": "how how much, but how i'm doing great!",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     },
