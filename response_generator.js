@@ -136,7 +136,7 @@ class ResponseGenerator {
         }));
         
         model.add(tf.layers.dense({
-            units: 16, // This indicates the model expects an output shape of [*, 16]
+            units: 16,
             activation: 'softmax'
         }));
         
