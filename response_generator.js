@@ -1141,7 +1141,7 @@ async learnFromInteraction(input, output) {
         const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
         const dataset = tf.data.zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) }).batch(batchSize);
     
-        let currentEpoch = 0;
+        let currentEpoch = 1;
         const TIMEOUT_PER_EPOCH = 30000; // 30 seconds in timeout timer
         
         // Train for the specified number of epochs & log the current stats on console/terminal
