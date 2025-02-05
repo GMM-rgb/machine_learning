@@ -1605,6 +1605,14 @@
         {
           "sender": "System",
           "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "hello"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I hello you? Sources: wikipedia"
         }
       ]
     }
