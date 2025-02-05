@@ -197,7 +197,17 @@ class ResponseGenerator {
             }
         });
     }
-
+  
+    async updateTrainingData(input, output) {
+    this.trainingData.conversations.push({
+        input: input,
+        output: output,
+        timestamp: new Date().toISOString(),
+        user: this.currentUser
+    });
+      await this.saveTrainingData(); // Save updated training data
+    }
+    
     async startConsoleInterface() {
         const rl = readline.createInterface({
             input: process.stdin,
