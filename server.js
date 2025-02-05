@@ -1205,7 +1205,12 @@ expressApp.post("/chat", async (req, res) => {
             response = await solveMathProblem(cleanedMessage);
             htmlResponse = `<div class='math-response'>${response}</div>`;
         } else if(messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
-            // ... existing search handling ...
+            cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
+            response = await getBingSearchInfo(cleanedMessage);
+            htmlResponse = `<div class='search-response'>
+                <div class='search-title'>Search Results:</div>
+                <div class='search-content'>${response}</div>
+            </div>`;
         } else if (messageForChecks.includes("wiki") || 
                    messageForChecks.includes("what is") || 
                    messageForChecks.includes("who is") ||
@@ -1213,7 +1218,22 @@ expressApp.post("/chat", async (req, res) => {
                    messageForChecks.includes("explain") ||
                    messageForChecks.includes("what are") ||
                    messageForChecks.includes("describe")) {
-            // ... existing wiki handling ...
+            
+            cleanedMessage = message
+                .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me)\s*/i, '')
+                .replace(/\?+$/, '')
+                .trim();
+            
+            try {
+                response = await getWikipediaInfo(cleanedMessage);
+                htmlResponse = `<div class='wiki-response'>
+                    <div class='wiki-content'>${response}</div>
+                </div>`;
+            } catch (wikiError) {
+                console.error("Wikipedia search error:", wikiError);
+                response = "I couldn't find relevant information about that.";
+                htmlResponse = "<div class='error-message'>No Wikipedia results found.</div>";
+            }
         } else {
             possibilities = await responseGenerator.generateEnhancedResponse(message);
             if (possibilities && possibilities.length > 0) {
@@ -1236,7 +1256,6 @@ expressApp.post("/chat", async (req, res) => {
 
         // Save conversation if needed
         if (response) {
-            // ... existing conversation saving code ...
         }
 
         const currentGoal = getCurrentGoal();

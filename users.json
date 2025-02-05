@@ -1485,6 +1485,30 @@
         {
           "sender": "AI",
           "text": "I'm glad to see you to! Do you need help with anything?"
+        },
+        {
+          "sender": "User",
+          "text": "hey again"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there again hey hey I hey you?"
+        },
+        {
+          "sender": "User",
+          "text": "What is the capital of France"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "What happened?"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to that."
         }
       ]
     }
