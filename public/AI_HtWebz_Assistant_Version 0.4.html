@@ -1512,12 +1512,12 @@
 
                 if (isHtml) {
                     messageDiv.innerHTML = `
-                        <img src="Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+                        <img srcset="Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
                         <div class="message-content">${content}</div>
                     `;
                 } else {
                     messageDiv.innerHTML = `
-                        <img src="Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+                        <img srcset="Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
                         <div class="message-content">
                             <strong>${sender}:</strong> ${content}
                         </div>
