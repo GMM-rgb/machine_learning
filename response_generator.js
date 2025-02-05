@@ -1203,6 +1203,51 @@ async learnFromInteraction(input, output) {
         const savePath = `${this.modelPath}/intermediate_epoch_${epoch}`;
         await this.model.save(`file://${savePath}`);
     }
+
+    async findOrCreateDefinition(word) {
+        if (!word) return null;
+    
+        // Check existing definitions
+        const existingDef = this.trainingData.vocabulary.definitions?.find(
+            def => def.word.toLowerCase() === word.toLowerCase()
+        );
+    
+        if (existingDef) {
+            return existingDef.definition;
+        }
+    
+        // If no definition exists, search Wikipedia
+        try {
+            const wiki = require('wikijs').default;
+            const searchResults = await wiki().search(word);
+            if (searchResults.results && searchResults.results.length > 0) {
+                const page = await wiki().page(searchResults.results[0]);
+                const summary = await page.summary();
+                
+                // Extract first sentence as definition
+                const definition = summary.split(/[.!?](?:\s|$)/)[0] + '.';
+                
+                // Add to training data
+                if (!this.trainingData.vocabulary.definitions) {
+                    this.trainingData.vocabulary.definitions = [];
+                }
+                
+                this.trainingData.vocabulary.definitions.push({
+                    word: word,
+                    definition: definition
+                });
+                
+                // Save training data
+                this.saveTrainingData();
+                
+                return definition;
+            }
+        } catch (error) {
+            console.error(`Error getting definition for "${word}":`, error);
+        }
+        
+        return null;
+    }
 }
 
 module.exports = ResponseGenerator;

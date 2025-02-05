@@ -1653,3 +1653,111 @@ async function fuzzyMatch(word, knowledge) {
     // Return matched word if confidence is high enough
     return minDistance < word.length * 0.3 ? knowledge[bestMatch] : word;
 }
+
+async function addDefinitionToTrainingData(word, definition) {
+    try {
+        if (!trainingData.vocabulary.definitions) {
+            trainingData.vocabulary.definitions = [];
+        }
+
+        // Avoid duplicates
+        const existingDefIndex = trainingData.vocabulary.definitions.findIndex(
+            def => def.word.toLowerCase() === word.toLowerCase()
+        );
+
+        if (existingDefIndex >= 0) {
+            trainingData.vocabulary.definitions[existingDefIndex].definition = definition;
+        } else {
+            trainingData.vocabulary.definitions.push({
+                word: word,
+                definition: definition
+            });
+        }
+
+        saveTrainingData();
+        console.log(`Added definition for: ${word}`);
+    } catch (error) {
+        console.error('Error adding definition:', error);
+    }
+}
+
+async function searchWikipediaDefinition(word) {
+    try {
+        const searchResults = await wiki().search(word);
+        if (!searchResults.results || !searchResults.results.length) {
+            return null;
+        }
+
+        const page = await wiki().page(searchResults.results[0]);
+        const summary = await page.summary();
+        
+        // Extract first sentence as definition
+        const definition = summary.split(/[.!?](?:\s|$)/)[0] + '.';
+        
+        // Add to training data
+        await addDefinitionToTrainingData(word, definition);
+        
+        return definition;
+    } catch (error) {
+        console.error(`Error getting Wikipedia definition for "${word}":`, error);
+        return null;
+    }
+}
+
+async function getWikipediaInfo(query, previousContext = null) {
+    const sanitizedQuery = query
+        .toLowerCase()
+        .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
+        .replace(/[?.,!]/g, '')
+        .trim();
+
+    try {
+        // First try to find definition in training data
+        const existingDef = trainingData.vocabulary.definitions?.find(
+            def => def.word.toLowerCase() === sanitizedQuery
+        );
+        
+        if (existingDef) {
+            return existingDef.definition;
+        }
+
+        // If no cached definition, search Wikipedia
+        const definition = await searchWikipediaDefinition(sanitizedQuery);
+        if (definition) {
+            return definition;
+        }
+
+        // If no definition found, continue with existing Wikipedia search logic
+        let searchQuery = sanitizedQuery;
+        if (previousContext) {
+            const contextWords = previousContext.split(' ')
+                .filter(word => word.length > 3)
+                .slice(-3)
+                .join(' ');
+            searchQuery = `${contextWords} ${sanitizedQuery}`;
+        }
+
+        const searchResults = await wiki().search(searchQuery);
+        if (!searchResults.results || !searchResults.results.length) {
+            return `Sorry, I couldn't find any relevant information about ${query}.`;
+        }
+
+        const page = await wiki().page(searchResults.results[0]);
+        const [summary, references] = await Promise.all([
+            page.summary(),
+            page.references()
+        ]);
+
+        let response = summary;
+
+        // Add a reference if available
+        if (references && references.length > 0) {
+            response += `\n\nSource: ${references[0]}`;
+        }
+
+        return response;
+    } catch (error) {
+        console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
+        return `Sorry, I couldn't find any relevant information about ${query}.`;
+    }
+}

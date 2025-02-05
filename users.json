@@ -1695,6 +1695,14 @@
         {
           "sender": "AI",
           "text": "Really? Thanks! To really? Thanks! To\n\nsources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Hi bud"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you? Sources: wikipedia"
         }
       ]
     }
