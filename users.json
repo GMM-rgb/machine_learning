@@ -1853,6 +1853,14 @@
         {
           "sender": "AI",
           "text": "Your very welcome, if you need help let me know! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Explain how long Anne Frank was in hiding for of what she stated in her Diary"
+        },
+        {
+          "sender": "AI",
+          "text": "The Diary of a Young Girl, commonly referred to as The Diary of Anne Frank, is a book of the writings from the Dutch-language diary kept by Anne Frank while she was in hiding for two years with her family during the Nazi occupation of the Netherlands.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
         }
       ]
     }

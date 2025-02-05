@@ -3369,6 +3369,10 @@
       {
         "word": "the definition celebrities",
         "definition": "Celebrity is a condition of fame and broad public recognition of a person or group due to the attention given to them by mass media."
+      },
+      {
+        "word": "how long anne frank was in hiding for of what she stated in her diary",
+        "definition": "The Diary of a Young Girl, commonly referred to as The Diary of Anne Frank, is a book of the writings from the Dutch-language diary kept by Anne Frank while she was in hiding for two years with her family during the Nazi occupation of the Netherlands."
       }
     ],
     "hi": 2,
@@ -6750,7 +6754,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-05T20:59:14.983Z",
+  "lastTrainingDate": "2025-02-05T21:31:44.813Z",
   "definitions": [
     {
       "word": "you",
