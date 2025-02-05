@@ -1533,6 +1533,30 @@
         {
           "sender": "AI",
           "text": "I'm still learning how to respond to that."
+        },
+        {
+          "sender": "User",
+          "text": "its okay."
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks for your confidence in me, I'm trying my best."
+        },
+        {
+          "sender": "User",
+          "text": "your welcome"
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks, your the best too!"
+        },
+        {
+          "sender": "User",
+          "text": "awww thank you"
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help let me know!"
         }
       ]
     }
