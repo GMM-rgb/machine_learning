@@ -1613,6 +1613,30 @@
         {
           "sender": "AI",
           "text": "Hello there! How may I hello you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "how are you doing"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "bye"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Its okay"
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks for your confidence in me, I'm trying my best. Sources: wikipedia"
         }
       ],
       "Chat 17": [
