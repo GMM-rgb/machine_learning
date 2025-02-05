@@ -1328,11 +1328,6 @@
       "timestamp": "2025-02-02T05:00:47.670Z"
     },
     {
-      "input": "how are you",
-      "output": "Error generating next word.",
-      "timestamp": "2025-02-02T05:01:07.783Z"
-    },
-    {
       "input": "hi",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-02T05:03:23.684Z"
@@ -1353,19 +1348,9 @@
       "timestamp": "2025-02-02T05:06:15.175Z"
     },
     {
-      "input": "so uh how are you",
-      "output": "so uh how are you are you are are how are",
-      "timestamp": "2025-02-02T05:06:23.958Z"
-    },
-    {
       "input": "hey",
       "output": "Hello there! How may I help you?",
       "timestamp": "2025-02-02T05:10:34.740Z"
-    },
-    {
-      "input": "sup bro",
-      "output": "sup bro tired great okay good great good",
-      "timestamp": "2025-02-02T05:19:17.563Z"
     },
     {
       "input": "hi",
@@ -1463,12 +1448,6 @@
       "timestamp": "2025-02-02T07:20:56.030Z"
     },
     {
-      "input": "how are u",
-      "output": "how how much, u how i'm doing great!",
-      "timestamp": "2025-02-04T13:22:05.000Z",
-      "user": "GMM-rgb"
-    },
-    {
       "input": "that is great to hear",
       "output": "I'm glad you think so! I'm here to help you with anything you need.",
       "timestamp": "2025-02-02T07:21:14.798Z"
@@ -1485,7 +1464,7 @@
     },
     {
       "input": "hey again",
-      "output": "hello there again hey hey i hey you?",
+      "output": "Hello there again! How may I help you?",
       "timestamp": "2025-02-04T13:22:05.000Z",
       "user": "GMM-rgb"
     },
@@ -1616,7 +1595,7 @@
     },
     {
       "input": "i'm not really sure what i should do",
-      "output": "I'm not sure how to respond to that.",
+      "output": "That's up to you to decide, however, I'm always here to help! You could maybe do something that's on your agenda, that's what I would suggest! 😊",
       "timestamp": "2025-02-04T01:43:06.466Z"
     },
     {
@@ -1628,16 +1607,6 @@
       "input": "wut your developer?",
       "output": "My developer is Maximus Farvour.",
       "timestamp": "2025-02-04T01:47:03.825Z"
-    },
-    {
-      "input": "who is your developer",
-      "output": "Here's what I found on Wikipedia: Developer relations, abbreviated as DevRel, is an umbrella term for practices employed by an organization that builds developer-facing software to connect with the developers that use that software. Developer relations is a form of platform evangelism and the activities involved are sometimes referred to as a developer program or a DevRel program. DevRel programs often include the following:\n\nDeveloper marketing: Outreach and engagement activities to create awareness and encourage developers to use a product.\nDeveloper education: Product documentation and resources such as videos to aid learning a product.\nDeveloper experience: Often referred to as \"zeroth customer\" and \"friction logging\", devrel programs include using the product directly, finding problems, and improving the developer experience.\nDeveloper success: Activities to nurture and retain developers as they build and scale with a product.\nCommunity: Events, forums, and social groups around the product.",
-      "timestamp": "2025-02-04T02:24:12.518Z"
-    },
-    {
-      "input": "so uh how are you doing",
-      "output": "In Modern English, the word \"you\" is the second-person pronoun",
-      "timestamp": "2025-02-04T02:31:08.132Z"
     },
     {
       "input": "hello",
@@ -1791,6 +1760,11 @@
     {
       "input": "wait hold on",
       "output": "i'm here, take your time.",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "your fine",
+      "output": "Thanks for your confidence in me, I'm trying my best to help.",
       "user": "GMM-rgb"
     }
   ],
@@ -3373,6 +3347,10 @@
       {
         "word": "how long anne frank was in hiding for of what she stated in her diary",
         "definition": "The Diary of a Young Girl, commonly referred to as The Diary of Anne Frank, is a book of the writings from the Dutch-language diary kept by Anne Frank while she was in hiding for two years with her family during the Nazi occupation of the Netherlands."
+      },
+      {
+        "word": "goggle",
+        "definition": "Goggles, or safety glasses, are forms of protective eyewear that usually enclose or protect the area surrounding the eye in order to prevent particulates, water or chemicals from striking the eyes."
       }
     ],
     "hi": 2,
@@ -6754,7 +6732,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-05T21:31:44.813Z",
+  "lastTrainingDate": "2025-02-05T21:44:54.902Z",
   "definitions": [
     {
       "word": "you",
