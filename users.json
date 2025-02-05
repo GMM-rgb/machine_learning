@@ -1663,6 +1663,14 @@
         {
           "sender": "AI",
           "text": "I'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Hey."
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hey hey I hey you?"
         }
       ]
     }
