@@ -141,12 +141,15 @@ class ResponseGenerator {
         }));
         
         model.compile({
-            optimizer: tf.train.adam(0.001),
+            optimizer: tf.train.adam(1.75),
             loss: 'categoricalCrossentropy',
             metrics: ['accuracy']
         });
-
+        console.log(chalk.green("✅ New model created"));
         return model;
+
+    } catch (error) {
+        console.log(chalk.red("❌ Training data not found"), Error);
     }
 
     loadTrainingData() {
@@ -173,6 +176,7 @@ class ResponseGenerator {
                 console.log(chalk.green("✅ Training data loaded"));
             } catch (error) {
                 console.error(chalk.red("❌ Error loading data:"), error);
+                console.error(`❌ Model was not able to load training data from ${this.trainingDataPath}`);
                 this.initializeEmptyTrainingData();
             }
         } else {
@@ -1179,7 +1183,7 @@ async learnFromInteraction(input, output) {
             await new Promise(resolve => setTimeout(resolve, 1000));
             currentEpoch++;
             
-            // Save intermediate model state every 3 epochs
+            // Save intermediate model state every 3 epochs (Checkpoint State)
             if (currentEpoch % 3 === 0) {
                 try {
                     await this.saveIntermediateModel(currentEpoch);
