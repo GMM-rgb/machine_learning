@@ -1445,6 +1445,14 @@
         {
           "sender": "System",
           "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "sup"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?"
         }
       ]
     }
