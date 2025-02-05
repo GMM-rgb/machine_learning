@@ -1469,6 +1469,22 @@
         {
           "sender": "AI",
           "text": "I'm glad you think so! I'm here to help you with anything you need."
+        },
+        {
+          "sender": "User",
+          "text": "What should we do"
+        },
+        {
+          "sender": "AI",
+          "text": "That's up to you to decide, however, I'm always here to help!"
+        },
+        {
+          "sender": "User",
+          "text": "I'm happy to see you"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm glad to see you to! Do you need help with anything?"
         }
       ]
     }
