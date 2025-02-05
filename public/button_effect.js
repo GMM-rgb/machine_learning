@@ -1,6 +1,7 @@
 const clearChatButton = document.getElementById('clear-button');
 const saveButtonC = document.getElementById('save-button');
 const uploadButton = document.getElementById('load-button');
+const logoutButton = document.getElementById('logout-button');
 
 const effectWait1 = '125';
 const effectWait2 = '450';
@@ -50,3 +51,4 @@ function addButtonEffects(button) {
 addButtonEffects(clearChatButton);
 addButtonEffects(saveButtonC);
 addButtonEffects(uploadButton);
+addButtonEffects(logoutButton);
