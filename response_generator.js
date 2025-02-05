@@ -136,10 +136,10 @@ class ResponseGenerator {
         }));
         
         model.add(tf.layers.dense({
-            units: 16,
+            units: 16, // This indicates the model expects an output shape of [*, 16]
             activation: 'softmax'
         }));
-
+        
         model.compile({
             optimizer: tf.train.adam(0.001),
             loss: 'categoricalCrossentropy',
@@ -551,31 +551,31 @@ async exportTrainingData() {
             .slice(0, 3);
     }
 
-    async learnFromInteraction(input, output) {
-        try {
-            const inputTokens = this.tokenizer.tokenize(input.toLowerCase());
-            const paddedInput = [...inputTokens.slice(0, 50), ...Array(Math.max(0, 50 - inputTokens.length)).fill(0)];
-            const inputTensor = tf.tensor2d([paddedInput], [1, 50]); // Ensure this is numeric
+async learnFromInteraction(input, output) {
+    try {
+        const inputTokens = this.tokenizer.tokenize(input.toLowerCase());
+        const paddedInput = [...inputTokens.slice(0, 50), ...Array(Math.max(0, 50 - inputTokens.length)).fill(0)];
+        const inputTensor = tf.tensor2d([paddedInput.map(token => this.vocab[token] || 0)], [1, 50]); // Ensure numeric
+        
+        const outputTokens = this.tokenizer.tokenize(output.toLowerCase());
+        const paddedOutput = [...outputTokens.slice(0, 16), ...Array(Math.max(0, 16 - outputTokens.length)).fill(0)];
+        const outputTensor = tf.tensor2d([paddedOutput], [1, 16]); // Make sure this is 16        
+        
+        // Train for one step
+        await this.model.trainOnBatch(inputTensor, outputTensor); // Use correct variable names
 
-            const outputTokens = this.tokenizer.tokenize(output.toLowerCase());
-            const paddedOutput = [...outputTokens.slice(0, 32), ...Array(Math.max(0, 32 - outputTokens.length)).fill(0)];
-            const outputTensor = tf.tensor2d([paddedOutput], [1, 32]); // Ensure this is numeric
+        // Cleanup
+        inputTensor.dispose();
+        outputTensor.dispose();
 
-            // Train for one step
-            await this.model.trainOnBatch(xs, ys);
+        // Update cache
+        globalCache.lastUpdate = this.currentDateTime;
 
-            // Cleanup
-            xs.dispose();
-            ys.dispose();
-
-            // Update cache
-            globalCache.lastUpdate = this.currentDateTime;
-
-            console.log(chalk.green("✅ Learned from interaction"));
-        } catch (error) {
-            console.error(chalk.red("❌ Learning error:"), error);
-        }
+        console.log(chalk.green("✅ Learned from interaction"));
+    } catch (error) {
+        console.error(chalk.red("❌ Learning error:"), error);
     }
+}
 
     buildResponseContext(inputText) {
         return {
