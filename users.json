@@ -1631,6 +1631,14 @@
         {
           "sender": "AI",
           "text": "How how much, but how I'm doing? Great! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "That is great to hear"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia"
         }
       ]
     }
