@@ -1721,6 +1721,48 @@
         {
           "sender": "AI",
           "text": "Hey, whats up? Anything on your mind? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "I'm very glad to see you"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm glad to see you to! Do you need help with anything? Sources: wikipedia"
+        }
+      ],
+      "Chat 19": [
+        {
+          "sender": "User",
+          "text": "hey"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hey hey I hey you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "what's up"
+        },
+        {
+          "sender": "AI",
+          "text": "Hey, what's up anything up your mind? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "what should I do"
+        },
+        {
+          "sender": "AI",
+          "text": "\"hey, what's up anything up your mind? Sources: wikipedia\"'s I do do do decide, however, I always here do help! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Explain when World War 2 Happened"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
         }
       ]
     }

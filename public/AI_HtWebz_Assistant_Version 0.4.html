@@ -715,19 +715,20 @@
 }
 </style>
 </head>
-<body>
     <audio id="sendMessage-audio" src="../Audio_Assets/SendSoundEffect.mp3"></audio>
     <div id="return-to-homepage">
         <style>
             #return-to-homepage {
                 position: fixed;
-                flex: 1;
+                flex: 1 auto;
                 top: 0;
                 left: 0;
                 z-index: 1000;
                 width: 100%;
+                height: 12.5%;
                 display: flex;
-                justify-content: space-between;
+                justify-content: space-evenly;
+                gap: 2px;
                 align-content: center;
                 align-items: center;
                 padding: 10px;
@@ -796,50 +797,48 @@
         </style>
         <button class="return-to-homepage-button" id="return-to-homepage-button" onclick="returnToHomepage()">Return to Homepage</button>
         <h1 class="page-title-1">HtWebz Assistant</h1>
-        <button id="minimize-return-button"><</button>
-        <!-- Make the settings Menu Continue working on -->
-        <style>
-            #settings-menu-button {
-                width: 30px;
-                height: 30px;
-                cursor: pointer;
-                position: relative;
-                padding: 4.5px;
-                border-radius: 50px;
-                border: 2px dashed black;
-                outline: 2px solid black;
-                outline-offset: 2px;
-                background: rgba(8, 197, 231, 0.35);
-            }
-            #settings-menu-button:hover {
-                background: lightcyan;
-            }
-            #settings-menu {
-                display: none;
-                justify-content: center;
-                align-items: center;
-                position: absolute;
-                gap: 6px;
-                top: 50px;
-                right: 0;
-                padding: 10px;
-                background: aqua;
-                border: 2px solid #ccc;
-                border-radius: 10px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            }
-        </style>
-        <div>
-            <img href="Images_Assets/Settings_icon.png" id="settings-menu-button" alt="Settings" style="width: 30px; height: 30px; cursor: pointer;">
-            <div id="settings-menu" style="display: none;">
-            <ul>
-                <button id="advanced-generation-toggle">Advanced Generation: </button>
-                <button id="account-view-button">Account</button>
-                <button id="help-view-button">Help</button>
-                <button id="about-view-button">About</button>
-            </ul>
-        </div>
-        <script src="settings_menu_script.js"></script>
+            <!-- Make the settings Menu Continue working on -->
+                <style>
+                    #settings-menu-button {
+                        width: 30px;
+                        height: 30px;
+                        margin-top: 0;
+                        cursor: pointer;
+                        position: relative;
+                        padding: 4.5px;
+                        border-radius: 50px;
+                        border: 2px dashed black;
+                        outline: 2px solid black;
+                        outline-offset: 2px;
+                        background: rgba(8, 197, 231, 0.35);
+                    }
+                    #settings-menu-button:hover {
+                        background: lightcyan;
+                    }
+                    #settings-menu {
+                        display: none;
+                        position: fixed;
+                        top: 50px;
+                        padding: 10px;
+                        background: aqua;
+                        border: 2px solid #ccc;
+                        border-radius: 10px;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+                    }
+                    #settings-menu-button:hover + #settings-menu {
+                        display: block;
+                    }
+                </style>
+                <div id="settings-menu-container">
+                    <img href="Images_Assets/Settings_icon.png" id="settings-menu-button" alt="Settings" style="width: 30px; height: 30px; cursor: pointer;">
+                <div id="settings-menu" style="display: none;">
+                    <button id="advanced-generation-toggle" onclick="">Advanced Generation: </button>
+                    <button id="account-view-button">Account</button>
+                    <button id="help-view-button">Help</button>
+                    <button id="about-view-button">About</button>
+                </div>
+                <script src="settings_menu_script.js"></script>        
+            <button id="minimize-return-button"><</button>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const minimize = document.getElementById('minimize-return-button');
@@ -868,6 +867,7 @@
                 });
             });
         </script>    
+    </div>
     </div>
     <button id="minimize-return-button-one">Show Toolbar</button>
     <h1 class="page-title">HtWebz Assistant</h1>

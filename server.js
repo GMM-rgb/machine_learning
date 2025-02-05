@@ -1237,6 +1237,7 @@ expressApp.post("/chat", async (req, res) => {
             
             // Wikipedia handling with context
             cleanedMessage = message
+                .topLowerCase()
                 .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
                 .replace(/\?+$/, '')
                 .trim();

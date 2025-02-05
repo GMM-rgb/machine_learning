@@ -4,7 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let settingsMenuClose = document.getElementById('settings-menu-close-button');
 
     settings.addEventListener('click', () => {
-        settingsMenu.style.display = 'flex';
+        if(settingsMenu.style.display === 'none' || settingsMenu.style.display === '') {
+            settingsMenu.style.display = 'flex';
+            return;
+        } else if(settingsMenu.style.display === 'flex' || settingsMenu.style.display === '') {
+            settingsMenu.style.display = 'none';
+            return;
+        }
     });
 
     settingsMenuClose.addEventListener('click', () => {
