@@ -1251,11 +1251,7 @@ expressApp.post("/chat", async (req, res) => {
             });
 
             // Update response generator's training data
-            await responseGenerator.trainingData(
-                storedMessage,
-                response,
-                false
-            );
+            await responseGenerator.updateTrainingData(storedMessage, response);
 
             // Trigger model retraining if needed
             if (trainingData.conversations.length % 5 === 0) {
