@@ -1573,6 +1573,30 @@
         {
           "sender": "AI",
           "text": "Your very welcome, if you need help on facts, let me know!"
+        },
+        {
+          "sender": "User",
+          "text": "hey again"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "hey"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
         }
       ]
     }

@@ -639,6 +639,69 @@ async learnFromInteraction(input, output) {
         };
     }
 
+    async findReferences(input) {
+        if (!input) return [];
+
+        try {
+            const references = [];
+            const keyTerms = this.extractKeyTerms(input);
+
+            // Search for references in training data
+            for (const term of keyTerms) {
+                const matches = this.trainingData.conversations.filter(conv => 
+                    conv.input.toLowerCase().includes(term.toLowerCase()) ||
+                    conv.output.toLowerCase().includes(term.toLowerCase())
+                );
+
+                matches.forEach(match => {
+                    if (match.source) {
+                        references.push({
+                            term,
+                            source: match.source,
+                            confidence: this.calculateSimilarity(input, match.input)
+                        });
+                    }
+                });
+            }
+
+            // Search Wikipedia if enabled and no references found
+            if (references.length === 0) {
+                for (const term of keyTerms.slice(0, 2)) { // Limit to first 2 terms
+                    const wikiInfo = await this.searchWikipedia(term);
+                    if (wikiInfo) {
+                        references.push({
+                            term,
+                            source: 'Wikipedia',
+                            confidence: 0.7
+                        });
+                    }
+                }
+            }
+
+            // Sort by confidence and remove duplicates
+            return Array.from(new Set(references
+                .sort((a, b) => b.confidence - a.confidence)
+                .map(ref => ref.source)
+            ));
+
+        } catch (error) {
+            console.error("Error finding references:", error);
+            return [];
+        }
+    }
+
+    calculateSimilarity(str1, str2) {
+        if (!str1 || !str2) return 0;
+        
+        const set1 = new Set(str1.toLowerCase().split(' '));
+        const set2 = new Set(str2.toLowerCase().split(' '));
+        
+        const intersection = new Set([...set1].filter(x => set2.has(x)));
+        const union = new Set([...set1, ...set2]);
+        
+        return intersection.size / union.size;
+    }
+
     findConversationThread(input, history) {
         if (!history || history.length === 0) return null;
 
@@ -813,6 +876,186 @@ async learnFromInteraction(input, output) {
             .replace(/\s+/g, ' ')
             .replace(/[^\w\s\-',.!?]/g, '')
             .replace(/\s+([,.!?])/g, '$1');
+    }
+
+    extractKeyTerms(text) {
+        if (!text) return [];
+
+        // Remove punctuation and convert to lowercase
+        const cleanText = text.toLowerCase().replace(/[^\w\s]/g, '');
+        
+        // Tokenize
+        const tokens = this.tokenizer.tokenize(cleanText);
+        
+        // Remove stopwords
+        const stopwords = new Set([
+            'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 
+            'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on', 
+            'that', 'the', 'to', 'was', 'were', 'will', 'with'
+        ]);
+        
+        const filteredTokens = tokens.filter(token => !stopwords.has(token));
+        
+        // Calculate term frequency
+        const termFreq = {};
+        filteredTokens.forEach(token => {
+            termFreq[token] = (termFreq[token] || 0) + 1;
+        });
+        
+        // Sort by frequency
+        const sortedTerms = Object.entries(termFreq)
+            .sort(([,a], [,b]) => b - a)
+            .map(([term]) => term);
+        
+        return sortedTerms.slice(0, 5); // Return top 5 terms
+    }
+
+    async searchKnowledgeBase(term) {
+        if (!term) return null;
+
+        try {
+            // Check cache first
+            const cacheKey = `kb_${term.toLowerCase()}`;
+            if (this.modelCache.has(cacheKey)) {
+                return this.modelCache.get(cacheKey).data;
+            }
+
+            // Search training data first
+            const relevantData = this.trainingData.conversations.find(conv => 
+                conv.input.toLowerCase().includes(term.toLowerCase()) ||
+                conv.output.toLowerCase().includes(term.toLowerCase())
+            );
+
+            if (relevantData) {
+                this.modelCache.set(cacheKey, {
+                    data: relevantData.output,
+                    timestamp: Date.now()
+                });
+                return relevantData.output;
+            }
+
+            // If not found in training data, try Wikipedia
+            const wikiResult = await this.searchWikipedia(term);
+            if (wikiResult) {
+                this.modelCache.set(cacheKey, {
+                    data: wikiResult,
+                    timestamp: Date.now()
+                });
+                return wikiResult;
+            }
+
+            return null;
+        } catch (error) {
+            console.error(`Error searching knowledge base for term "${term}":`, error);
+            return null;
+        }
+    }
+
+    async searchWikipedia(term) {
+        try {
+            const wiki = require('wikijs').default;
+            const searchResults = await wiki().search(term);
+            if (searchResults.results && searchResults.results.length > 0) {
+                const page = await wiki().page(searchResults.results[0]);
+                const summary = await page.summary();
+                return summary;
+            }
+            return null;
+        } catch (error) {
+            console.error(`Error searching Wikipedia for term "${term}":`, error);
+            return null;
+        }
+    }
+
+    analyzeSentiment(text) {
+        if (!text) return { score: 0, label: 'neutral' };
+
+        // Simple rule-based sentiment analysis
+        const positiveWords = new Set([
+            'good', 'great', 'awesome', 'excellent', 'happy', 
+            'love', 'wonderful', 'fantastic', 'amazing', 'thanks'
+        ]);
+        
+        const negativeWords = new Set([
+            'bad', 'terrible', 'awful', 'horrible', 'sad', 
+            'hate', 'poor', 'worst', 'annoying', 'sorry'
+        ]);
+
+        const words = text.toLowerCase().split(/\s+/);
+        let score = 0;
+
+        words.forEach(word => {
+            if (positiveWords.has(word)) score += 1;
+            if (negativeWords.has(word)) score -= 1;
+        });
+
+        return {
+            score,
+            label: score > 0 ? 'positive' : score < 0 ? 'negative' : 'neutral'
+        };
+    }
+
+    extractPreviousContext(chatHistory) {
+        if (!chatHistory || chatHistory.length === 0) return null;
+
+        // Get last 3 messages for context
+        const recentMessages = chatHistory.slice(-3);
+        
+        return {
+            lastMessage: recentMessages[recentMessages.length - 1],
+            recentContext: recentMessages.map(msg => ({
+                role: msg.sender.toLowerCase(),
+                content: msg.text
+            })),
+            topics: this.extractKeyTerms(
+                recentMessages.map(msg => msg.text).join(' ')
+            )
+        };
+    }
+
+    detectUserIntent(input, chatHistory) {
+        const intents = {
+            QUESTION: /^(what|who|where|when|why|how|can|could|would|will|do|does|did|is|are|was|were)/i,
+            GREETING: /^(hi|hello|hey|greetings|good\s+(morning|afternoon|evening))/i,
+            FAREWELL: /^(bye|goodbye|see\s+you|farewell)/i,
+            GRATITUDE: /(thank|thanks)/i,
+            REQUEST: /^(please|can\s+you|could\s+you|would\s+you)/i,
+            CONFIRMATION: /^(yes|yeah|yep|sure|okay|ok|alright)/i,
+            NEGATION: /^(no|nope|nah|not)/i
+        };
+
+        for (const [intent, pattern] of Object.entries(intents)) {
+            if (pattern.test(input.trim())) {
+                return {
+                    type: intent,
+                    confidence: 0.8,
+                    metadata: {
+                        pattern: pattern.source,
+                        match: input.match(pattern)[0]
+                    }
+                };
+            }
+        }
+
+        // Try to infer intent from context if no pattern matches
+        if (chatHistory && chatHistory.length > 0) {
+            const lastMessage = chatHistory[chatHistory.length - 1];
+            if (lastMessage.sender === 'AI' && lastMessage.text.endsWith('?')) {
+                return {
+                    type: 'RESPONSE_TO_QUESTION',
+                    confidence: 0.6,
+                    metadata: {
+                        previousQuestion: lastMessage.text
+                    }
+                };
+            }
+        }
+
+        return {
+            type: 'UNKNOWN',
+            confidence: 0.3,
+            metadata: {}
+        };
     }
 }
 
