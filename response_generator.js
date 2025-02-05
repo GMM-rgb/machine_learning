@@ -569,52 +569,155 @@ async learnFromInteraction(input, output) {
     }
 }
 
-    async generateEnhancedResponse(inputText) {
+    async generateEnhancedResponse(inputText, chatHistory = []) {
         if (!inputText) return null;
 
         const possibilities = [];
-        const context = this.buildResponseContext(inputText);
+        const context = this.buildResponseContext(inputText, chatHistory);
+        
+        // Get contextual understanding
+        const understanding = await this.analyzeContext(inputText, chatHistory);
+        
+        // Check for conversation continuity
+        const conversationThread = this.findConversationThread(inputText, chatHistory);
         
         const directMatch = this.findClosestMatch(inputText, context);
         if (directMatch) {
             possibilities.push({
-                response: this.properlyCapitalize(directMatch.output),
-                confidence: directMatch.confidence,
+                response: this.properlyCapitalize(this.addContextToResponse(directMatch.output, understanding)),
+                confidence: directMatch.confidence * (conversationThread ? 1.2 : 1),
                 source: 'direct_match'
             });
         }
 
-        const { bestMatch, score } = this.matcher.findBestTemplate(inputText);
-        if (bestMatch && score < 3) {
-            possibilities.push({
-                response: this.properlyCapitalize(bestMatch.output),
-                confidence: 1 - (score / 10),
-                source: 'template'
-            });
-        }
+        // Get similar responses considering context
+        const similarResponses = await this.findSimilarResponsesWithContext(inputText, context, understanding);
+        possibilities.push(...similarResponses);
 
-        const similarResponses = this.findSimilarResponses(inputText, context);
-        possibilities.push(...similarResponses.map(resp => ({
-            response: this.properlyCapitalize(resp.output),
-            confidence: resp.similarity,
-            source: 'historical'
-        })));
-
-        const modelResponse = await this.generateModelResponse(inputText);
+        // Generate model response with context
+        const modelResponse = await this.generateModelResponseWithContext(inputText, understanding, chatHistory);
         if (modelResponse) {
             possibilities.push({
                 response: this.properlyCapitalize(modelResponse),
-                confidence: 0.6,
+                confidence: 0.6 * (conversationThread ? 1.2 : 1),
                 source: 'ai_model'
             });
         }
 
-        // Learn from this interaction in the background
-        this.learnFromInteraction(inputText, possibilities[0]?.response || "").catch(console.error);
+        // Learn from this interaction
+        await this.learnFromInteraction(inputText, possibilities[0]?.response || "", understanding);
 
         return possibilities
             .sort((a, b) => b.confidence - a.confidence)
             .slice(0, 3);
+    }
+
+    async analyzeContext(input, chatHistory) {
+        const understanding = {
+            topic: await this.detectTopic(input),
+            references: await this.findReferences(input),
+            sentiment: this.analyzeSentiment(input),
+            previousContext: this.extractPreviousContext(chatHistory),
+            userIntent: this.detectUserIntent(input, chatHistory)
+        };
+
+        return understanding;
+    }
+
+    async detectTopic(input) {
+        // Use TF-IDF to find key terms
+        const keyTerms = this.extractKeyTerms(input);
+        
+        // Try to find related topics in knowledge base
+        const relatedTopics = await Promise.all(
+            keyTerms.map(term => this.searchKnowledgeBase(term))
+        );
+
+        return {
+            mainTopic: keyTerms[0],
+            relatedTopics: relatedTopics.filter(Boolean)
+        };
+    }
+
+    findConversationThread(input, history) {
+        if (!history || history.length === 0) return null;
+
+        // Look for conversation continuity markers
+        const continuityMarkers = [
+            'that', 'it', 'this', 'those', 'these', 'they',
+            'the', 'your', 'my', 'our', 'their'
+        ];
+
+        const hasMarkers = continuityMarkers.some(marker => 
+            input.toLowerCase().includes(marker)
+        );
+
+        if (hasMarkers) {
+            // Find the most recent relevant message
+            const relevantMessage = history
+                .slice()
+                .reverse()
+                .find(msg => {
+                    const similarity = this.calculateSimilarity(input, msg.text);
+                    return similarity > 0.3;
+                });
+
+            if (relevantMessage) {
+                return {
+                    previousMessage: relevantMessage,
+                    continuityScore: this.calculateContinuityScore(input, relevantMessage)
+                };
+            }
+        }
+
+        return null;
+    }
+
+    addContextToResponse(response, understanding) {
+        if (!understanding || !response) return response;
+
+        // Add contextual references if needed
+        if (understanding.previousContext) {
+            response = this.addPreviousContext(response, understanding.previousContext);
+        }
+
+        // Add source citations if available
+        if (understanding.references && understanding.references.length > 0) {
+            response += '\n\nSources: ' + understanding.references.join(', ');
+        }
+
+        return response;
+    }
+
+    async generateModelResponseWithContext(input, understanding, history) {
+        // Prepare context-aware input
+        const contextInput = this.prepareContextInput(input, understanding, history);
+        
+        // Generate response using the enhanced input
+        const response = await this.generateModelResponse(contextInput);
+        
+        // Post-process response with context
+        return this.addContextToResponse(response, understanding);
+    }
+
+    prepareContextInput(input, understanding, history) {
+        let contextInput = input;
+
+        // Add recent relevant history
+        if (history && history.length > 0) {
+            const relevantHistory = history
+                .slice(-3)
+                .map(msg => `${msg.sender}: ${msg.text}`)
+                .join('\n');
+            contextInput = `Previous messages:\n${relevantHistory}\n\nCurrent message: ${input}`;
+        }
+
+        // Add topic context if available
+        if (understanding.topic) {
+            contextInput += `\nContext: ${understanding.topic.mainTopic}`;
+        }
+
+        return contextInput;
     }
 
     buildResponseContext(inputText) {

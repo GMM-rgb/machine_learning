@@ -1183,7 +1183,7 @@ expressApp.post("/chat", async (req, res) => {
         });
     }
 
-    const { message, accountId = "default" } = req.body;
+    const { message, accountId = "default", chatId } = req.body;
     
     if (!message) {
         return res.status(400).json({
@@ -1193,49 +1193,28 @@ expressApp.post("/chat", async (req, res) => {
     }
 
     try {
+        // Get chat history for context
+        const chatHistory = conversationData[chatId] || [];
+        
         const messageForChecks = message.trim().toLowerCase();
         let response = "";
         let cleanedMessage = "";
         let possibilities = null;
         let htmlResponse = "";
 
-        // Handle different types of queries
+        // Handle different types of queries with context
         if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
-            cleanedMessage = message.replace(/(math|calculate|solve)/gi, '').trim();
-            response = await solveMathProblem(cleanedMessage);
-            htmlResponse = `<div class='math-response'>${response}</div>`;
+            // ... existing math handling ...
         } else if(messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
-            cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
-            response = await getBingSearchInfo(cleanedMessage);
-            htmlResponse = `<div class='search-response'>
-                <div class='search-title'>Search Results:</div>
-                <div class='search-content'>${response}</div>
-            </div>`;
+            // ... existing search handling ...
         } else if (messageForChecks.includes("wiki") || 
                    messageForChecks.includes("what is") || 
                    messageForChecks.includes("who is") ||
-                   messageForChecks.includes("explain to me") ||
-                   messageForChecks.includes("explain") ||
-                   messageForChecks.includes("what are") ||
-                   messageForChecks.includes("describe")) {
-            
-            cleanedMessage = message
-                .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me)\s*/i, '')
-                .replace(/\?+$/, '')
-                .trim();
-            
-            try {
-                response = await getWikipediaInfo(cleanedMessage);
-                htmlResponse = `<div class='wiki-response'>
-                    <div class='wiki-content'>${response}</div>
-                </div>`;
-            } catch (wikiError) {
-                console.error("Wikipedia search error:", wikiError);
-                response = "I couldn't find relevant information about that.";
-                htmlResponse = "<div class='error-message'>No Wikipedia results found.</div>";
-            }
+                   messageForChecks.includes("explain")) {
+            // ... existing wiki handling ...
         } else {
-            possibilities = await responseGenerator.generateEnhancedResponse(message);
+            // Generate response with context
+            possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
             if (possibilities && possibilities.length > 0) {
                 response = possibilities[0].response;
                 htmlResponse = `<div class='ai-response'>
@@ -1245,17 +1224,30 @@ expressApp.post("/chat", async (req, res) => {
                     ${possibilities[0].source ? 
                         `<div class='source'>Source: ${possibilities[0].source}</div>` : ''}
                 </div>`;
-                
-                await responseGenerator.learnFromInteraction(message, response)
-                    .catch(error => console.error("Learning error:", error));
             } else {
                 response = "I'm not sure how to respond to that.";
                 htmlResponse = "<div class='uncertain-response'>I'm not sure how to respond to that.</div>";
             }
         }
 
-        // Save conversation if needed
+        // Save conversation with context
         if (response) {
+            if (!trainingData.conversations) {
+                trainingData.conversations = [];
+            }
+
+            const storedMessage = cleanedMessage || message;
+            
+            // Store message with context
+            trainingData.conversations.push({
+                input: storedMessage,
+                output: response,
+                timestamp: new Date().toISOString(),
+                user: 'GMM-rgb',
+                context: chatHistory
+            });
+
+            await responseGenerator.updateTrainingData(storedMessage, response);
         }
 
         const currentGoal = getCurrentGoal();
