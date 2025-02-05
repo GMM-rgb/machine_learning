@@ -3361,6 +3361,10 @@
       {
         "word": "me",
         "definition": "Term for self, which is relating to individual, a single human being or person."
+      },
+      {
+        "word": "when world war two happened",
+        "definition": "World War II or the Second World War (1 September 1939 – 2 September 1945) was a global conflict between two coalitions: the Allies and the Axis powers."
       }
     ],
     "hi": 2,
@@ -6742,7 +6746,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-04 05:22:05",
+  "lastTrainingDate": "2025-02-05T20:13:24.649Z",
   "definitions": [
     {
       "word": "you",

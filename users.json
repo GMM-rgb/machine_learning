@@ -1787,6 +1787,22 @@
         {
           "sender": "System",
           "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "Hi again"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there again hi may hi help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Explain when World War Two happened"
+        },
+        {
+          "sender": "AI",
+          "text": "World War II or the Second World War (1 September 1939 – 2 September 1945) was a global conflict between two coalitions: the Allies and the Axis powers.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
         }
       ]
     }
