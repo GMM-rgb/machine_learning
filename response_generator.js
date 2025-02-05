@@ -1208,6 +1208,10 @@ async learnFromInteraction(input, output) {
         const savePath = `${this.modelPath}/intermediate_epoch_${epoch}`;
         await this.model.save(`file://${savePath}`);
     }
+    async saveTrainingData(epoch) {
+        const savePath = `${this.modelPath}/intermediate_epoch_${epoch}`;
+        await this.model.save(`file://${savePath}`);
+    }
 
     async findOrCreateDefinition(word) {
         if (!word) return null;
