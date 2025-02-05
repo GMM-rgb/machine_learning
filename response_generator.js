@@ -6,45 +6,147 @@ const levenshtein = require('fast-levenshtein');
 const { ifError } = require('assert');
 const path = require('path');
 const { isArray } = require('mathjs');
+const readline = require('readline');
+const chalk = require('chalk');  // This will work with chalk@4.1.2
+const natural = require('natural');
+const tokenizer = new natural.WordTokenizer();
 
-// TensorFlow setup - Ensures this is only done once
-if (!global.tfSetup) {
-    global.tfSetup = true;
-}
-const model = {};
+// Global cache for model and responses
+const globalCache = {
+    model: null,
+    responses: new Map(),
+    embeddings: new Map(),
+    lastUpdate: '2025-02-05 04:38:59'
+};
 
 class ResponseGenerator {
-    constructor(knowledgePath = 'knowledge.json', trainingDataPath = 'training_data.json') {
+    constructor(knowledgePath = 'knowledge.json', trainingDataPath = 'training_data.json', modelPath = 'model/') {
         this.matcher = new TemplateMatcher(knowledgePath, trainingDataPath);
-        this.model = null
+        this.modelPath = modelPath;
         this.vocab = {};
         this.trainingDataPath = trainingDataPath;
         this.trainingData = {
             conversations: [],
             definitions: [],
             vocabulary: {},
-            lastTrainingDate: '2025-02-04 04:46:46'
+            lastTrainingDate: '2025-02-05 04:38:59'
         };
         this.currentUser = 'GMM-rgb';
-        this.currentDateTime = '2025-02-04 04:46:46';
-        this.loadModel();
-        this.loadTrainingData();
+        this.currentDateTime = '2025-02-05 04:38:59';
+        this.modelCache = new Map();
+        this.responseCache = new Map();
+        
+        // Initialize NLP tools
+        this.tokenizer = new natural.WordTokenizer();
+        this.sentenceTokenizer = new natural.SentenceTokenizer();
+        this.tfidf = new natural.TfIdf();
+
+        // Initialize immediately
+        this.initialize();
+    }
+
+    async initialize() {
+        await this.loadModel();
+        await this.loadTrainingData();
+        this.setupModelCache();
+    }
+
+    setupModelCache() {
+        // Setup LRU cache for model outputs
+        this.modelCache.maxSize = 1000;
+        this.responseCache.maxSize = 500;
+
+        // Clean old cache entries periodically
+        setInterval(() => {
+            const now = new Date().getTime();
+            for (const [key, value] of this.modelCache) {
+                if (now - value.timestamp > 3600000) { // 1 hour
+                    this.modelCache.delete(key);
+                }
+            }
+        }, 900000); // Clean every 15 minutes
     }
 
     async loadModel() {
-        try {
-            this.model = await tf.loadLayersModel("file://D:/machine_learning/model.json");
-            console.log("✅ Model loaded successfully in ResponseGenerator");
-            if(ifError) {
-                console.warn(`Model not found, creating file for data...`);
-                model.createModel(toString());
-                this.model.parse(model);
-                let model = toString();
-                return model;
-            }
-        } catch (error) {
-            console.error("❌ Error loading model in ResponseGenerator:", error);
+        if (globalCache.model) {
+            console.log(chalk.green("✅ Using cached model"));
+            this.model = globalCache.model;
+            return;
         }
+
+        try {
+            // Try loading from memory first
+            if (process.env.USE_MEMORY_CACHE === 'true' && globalCache.model) {
+                this.model = globalCache.model;
+                console.log(chalk.green("✅ Model loaded from memory cache"));
+                return;
+            }
+
+            // Try loading saved model
+            const modelFiles = await fs.promises.readdir(this.modelPath).catch(() => []);
+            if (modelFiles.length > 0) {
+                this.model = await tf.loadLayersModel(`file://${this.modelPath}/model.json`);
+                globalCache.model = this.model;
+                console.log(chalk.green("✅ Model loaded from file"));
+                return;
+            }
+
+            // If no model exists, create a new one
+            console.log(chalk.yellow("Creating new model..."));
+            this.model = await this.createNewModel();
+            globalCache.model = this.model;
+            await this.model.save(`file://${this.modelPath}`);
+            console.log(chalk.green("✅ New model created and saved"));
+
+        } catch (error) {
+            console.error(chalk.red("❌ Error loading model:"), error);
+            // Create emergency backup model
+            this.model = await this.createNewModel();
+            globalCache.model = this.model;
+        }
+    }
+
+    async createNewModel() {
+        const model = tf.sequential();
+        
+        // Add layers for text processing
+        model.add(tf.layers.embedding({
+            inputDim: 10000,
+            outputDim: 128,
+            inputLength: 50
+        }));
+        
+        model.add(tf.layers.lstm({
+            units: 64,
+            returnSequences: true
+        }));
+        
+        model.add(tf.layers.lstm({
+            units: 32
+        }));
+        
+        model.add(tf.layers.dense({
+            units: 64,
+            activation: 'relu'
+        }));
+        
+        model.add(tf.layers.dense({
+            units: 32,
+            activation: 'relu'
+        }));
+        
+        model.add(tf.layers.dense({
+            units: 16,
+            activation: 'softmax'
+        }));
+
+        model.compile({
+            optimizer: tf.train.adam(0.001),
+            loss: 'categoricalCrossentropy',
+            metrics: ['accuracy']
+        });
+
+        return model;
     }
 
     loadTrainingData() {
@@ -53,10 +155,9 @@ class ResponseGenerator {
                 const data = fs.readFileSync(this.trainingDataPath, 'utf8');
                 this.trainingData = JSON.parse(data);
 
-                // Initialize if structure is missing
-                //if (!this.trainingData.conversations) {
-                //    this.trainingData.conversations = [];
-                //}
+                if (!this.trainingData.conversations) {
+                    this.trainingData.conversations = [];
+                }
                 if (!this.trainingData.definitions) {
                     this.trainingData.definitions = [];
                 }
@@ -67,10 +168,11 @@ class ResponseGenerator {
                     this.trainingData.lastTrainingDate = this.currentDateTime;
                 }
 
-                // Load vocabulary into vocab object
                 this.vocab = { ...this.trainingData.vocabulary };
+                this.initializeTFIDF();
+                console.log(chalk.green("✅ Training data loaded"));
             } catch (error) {
-                console.error("❌ Error loading training data:", error);
+                console.error(chalk.red("❌ Error loading data:"), error);
                 this.initializeEmptyTrainingData();
             }
         } else {
@@ -86,435 +188,481 @@ class ResponseGenerator {
             lastTrainingDate: this.currentDateTime
         };
     }
-    
-    async generateResponse(inputText) {
-        if (!inputText || typeof inputText !== 'string') {
-            return "I'm not sure how to respond to that.";
+
+    initializeTFIDF() {
+        this.tfidf = new natural.TfIdf();
+        this.trainingData.conversations.forEach(conv => {
+            if (conv && conv.input) {
+                this.tfidf.addDocument(conv.input.toLowerCase());
+            }
+        });
+    }
+
+    async startConsoleInterface() {
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+
+        console.log(chalk.cyan('\n=== Training Data Management ==='));
+        console.log(chalk.yellow('Commands:'));
+        console.log('1. view    - View data');
+        console.log('2. add     - Add data');
+        console.log('3. edit    - Edit data');
+        console.log('4. delete  - Delete data');
+        console.log('5. search  - Search data');
+        console.log('6. test    - Test response');
+        console.log('7. stats   - View stats');
+        console.log('8. export  - Export data');
+        console.log('9. exit    - Exit console');
+
+        const handleCommand = async (command) => {
+            switch(command.toLowerCase()) {
+                case 'view':
+                    await this.viewTrainingData();
+                    break;
+                case 'add':
+                    await this.addTrainingDataConsole(rl);
+                    break;
+                case 'edit':
+                    await this.editTrainingDataConsole(rl);
+                    break;
+                case 'delete':
+                    await this.deleteTrainingDataConsole(rl);
+                    break;
+                case 'search':
+                    await this.searchTrainingDataConsole(rl);
+                    break;
+                case 'test':
+                    await this.testResponseGenerationConsole(rl);
+                    break;
+                case 'stats':
+                    await this.viewStatistics();
+                    break;
+                case 'export':
+                    await this.exportTrainingData();
+                    break;
+                case 'exit':
+                    console.log(chalk.green('Goodbye!'));
+                    rl.close();
+                    return;
+                default:
+                    console.log(chalk.red('Invalid command'));
+            }
+            
+            rl.question(chalk.cyan('\nEnter command: '), async (cmd) => {
+                await handleCommand(cmd);
+            });
+        };
+
+        rl.question(chalk.cyan('Enter command: '), async (cmd) => {
+            await handleCommand(cmd);
+        });
+    }
+
+    async viewTrainingData() {
+        console.log(chalk.green('\nCurrent Training Data:'));
+        if (this.trainingData.conversations.length === 0) {
+            console.log(chalk.yellow('No data available.'));
+            return;
+        }
+
+        this.trainingData.conversations.forEach((conv, index) => {
+            console.log(chalk.yellow(`\n[${index + 1}]`));
+            console.log(chalk.cyan('Input:     ') + conv.input);
+            console.log(chalk.cyan('Output:    ') + conv.output);
+            console.log(chalk.cyan('Timestamp: ') + conv.timestamp);
+            console.log(chalk.cyan('User:      ') + conv.user);
+        });
+    }
+
+    async addTrainingDataConsole(rl) {
+        const input = await new Promise(resolve => {
+            rl.question(chalk.cyan('Enter input: '), resolve);
+        });
+
+        const output = await new Promise(resolve => {
+            rl.question(chalk.cyan('Enter output: '), resolve);
+        });
+
+        await this.updateTrainingData(
+            this.properlyCapitalize(input),
+            this.properlyCapitalize(output),
+            false
+        );
+        console.log(chalk.green('✅ Data added'));
+    }
+
+    async editTrainingDataConsole(rl) {
+        await this.viewTrainingData();
+        const index = await new Promise(resolve => {
+            rl.question(chalk.cyan('Enter index to edit: '), resolve);
+        });
+
+        const idx = parseInt(index) - 1;
+        if (idx >= 0 && idx < this.trainingData.conversations.length) {
+            const currentEntry = this.trainingData.conversations[idx];
+            console.log(chalk.yellow('\nCurrent values:'));
+            console.log(`Input: ${currentEntry.input}`);
+            console.log(`Output: ${currentEntry.output}`);
+
+            const input = await new Promise(resolve => {
+                rl.question(chalk.cyan('\nNew input (Enter to keep): '), resolve);
+            });
+
+            const output = await new Promise(resolve => {
+                rl.question(chalk.cyan('New output (Enter to keep): '), resolve);
+            });
+
+            this.trainingData.conversations[idx] = {
+                input: input.trim() ? this.properlyCapitalize(input) : currentEntry.input,
+                output: output.trim() ? this.properlyCapitalize(output) : currentEntry.output,
+                timestamp: new Date().toISOString(),
+                user: this.currentUser
+            };
+
+            await this.saveTrainingData();
+            console.log(chalk.green('✅ Updated'));
+        } else {
+            console.log(chalk.red('❌ Invalid index'));
+        }
+    }
+
+    async deleteTrainingDataConsole(rl) {
+        await this.viewTrainingData();
+        const index = await new Promise(resolve => {
+            rl.question(chalk.cyan('Enter index to delete: '), resolve);
+        });
+
+        const idx = parseInt(index) - 1;
+        if (idx >= 0 && idx < this.trainingData.conversations.length) {
+            const confirm = await new Promise(resolve => {
+                rl.question(chalk.yellow('Confirm delete? (y/n): '), resolve);
+            });
+
+            if (confirm.toLowerCase() === 'y') {
+                this.trainingData.conversations.splice(idx, 1);
+                await this.saveTrainingData();
+                console.log(chalk.green('✅ Deleted'));
+            } else {
+                console.log(chalk.yellow('Cancelled'));
+            }
+        } else {
+            console.log(chalk.red('❌ Invalid index'));
+        }
+    }
+
+    async searchTrainingDataConsole(rl) {
+        const searchTerm = await new Promise(resolve => {
+            rl.question(chalk.cyan('Search term: '), resolve);
+        });
+
+        const results = this.trainingData.conversations.filter(conv => 
+            conv.input.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            conv.output.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        if (results.length > 0) {
+            console.log(chalk.green(`\nFound ${results.length} matches:`));
+            results.forEach((conv, index) => {
+                console.log(chalk.yellow(`\n[${index + 1}]`));
+                console.log(chalk.cyan('Input:  ') + this.highlightText(conv.input, searchTerm));
+                console.log(chalk.cyan('Output: ') + this.highlightText(conv.output, searchTerm));
+            });
+        } else {
+            console.log(chalk.yellow('No matches'));
+        }
+    }
+
+    async testResponseGenerationConsole(rl) {
+        const input = await new Promise(resolve => {
+            rl.question(chalk.cyan('Test input: '), resolve);
+        });
+
+        console.log(chalk.yellow('\nGenerating...'));
+        const possibilities = await this.generateEnhancedResponse(input);
+
+        if (possibilities && possibilities.length > 0) {
+            console.log(chalk.green('\nResponses:'));
+            possibilities.forEach((p, index) => {
+                console.log(chalk.yellow(`\n[${index + 1}] ${(p.confidence * 100).toFixed(2)}%`));
+                console.log(chalk.cyan('Response: ') + p.response);
+                console.log(chalk.cyan('Source:   ') + p.source);
+            });
+        } else {
+            console.log(chalk.red('No responses'));
+        }
+    }
+
+    async viewStatistics() {
+        console.log(chalk.green('\nStatistics:'));
+        console.log(chalk.cyan('Conversations:  ') + this.trainingData.conversations.length);
+        console.log(chalk.cyan('Definitions:    ') + this.trainingData.definitions.length);
+        console.log(chalk.cyan('Vocabulary:     ') + Object.keys(this.trainingData.vocabulary).length);
+        console.log(chalk.cyan('Last Training:  ') + this.trainingData.lastTrainingDate);
+
+        const avgLength = this.trainingData.conversations.reduce((acc, conv) => 
+            acc + (conv.output ? conv.output.length : 0), 0) / 
+            (this.trainingData.conversations.length || 1);
+
+        console.log(chalk.cyan('Avg Response:   ') + avgLength.toFixed(2) + ' chars');
+    }
+
+async exportTrainingData() {
+        const exportPath = `training_data_export_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+        try {
+            await fs.promises.writeFile(
+                exportPath,
+                JSON.stringify(this.trainingData, null, 2)
+            );
+            console.log(chalk.green(`✅ Exported to ${exportPath}`));
+        } catch (error) {
+            console.error(chalk.red('❌ Export error:'), error);
+        }
+    }
+
+    highlightText(text, searchTerm) {
+        if (!searchTerm) return text;
+        const regex = new RegExp(searchTerm, 'gi');
+        return text.replace(regex, match => chalk.bgYellow.black(match));
+    }
+
+    properlyCapitalize(text) {
+        if (!text) return text;
+
+        const sentences = this.sentenceTokenizer.tokenize(text);
+        return sentences.map(sentence => {
+            if (!sentence.trim()) return sentence;
+            
+            const specialWords = ['i', 'i\'m', 'i\'ll', 'i\'ve', 'i\'d'];
+            
+            return sentence.split(' ').map((word, index) => {
+                if (index === 0 || specialWords.includes(word.toLowerCase())) {
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                }
+                return word.toLowerCase();
+            }).join(' ');
+        }).join(' ');
+    }
+
+    async generateModelResponse(inputText) {
+        // Check cache first
+        const cacheKey = inputText.toLowerCase().trim();
+        if (this.responseCache.has(cacheKey)) {
+            const cached = this.responseCache.get(cacheKey);
+            if (new Date().getTime() - cached.timestamp < 3600000) { // 1 hour cache
+                return cached.response;
+            }
         }
 
         try {
-            await this.learnInBackground(inputText);
-
-            const context = this.buildResponseContext(inputText);
+            // Prepare input
+            const tokens = this.tokenizer.tokenize(inputText.toLowerCase());
+            const paddedTokens = [...tokens.slice(0, 50), ...Array(Math.max(0, 50 - tokens.length)).fill(0)];
             
-            // Try to find a similar conversation with context
-            let closestMatch = this.findClosestMatch(inputText, context);
-            if (closestMatch && closestMatch.confidence > 0.7) {
-                let refinedResponse = this.refineResponse(closestMatch.output, inputText, context);
-                await this.updateTrainingData(inputText, refinedResponse, true);
-                return refinedResponse;
+            // Convert to tensor
+            const inputTensor = tf.tensor2d([paddedTokens], [1, 50]);
+            
+            // Get prediction
+            const prediction = this.model.predict(inputTensor);
+            const responseIndex = tf.argMax(prediction, 1).dataSync()[0];
+            
+            // Get response from training data
+            let response = "I'm learning to respond to that.";
+            if (this.trainingData.conversations.length > 0) {
+                response = this.trainingData.conversations[
+                    responseIndex % this.trainingData.conversations.length
+                ]?.output || response;
             }
 
-            // Try template matching with context
-            const { bestMatch, score } = this.matcher.findBestTemplate(inputText);
-            if (bestMatch && score < 3) {
-                let response = this.enhanceResponse(bestMatch.output, context);
-                await this.updateTrainingData(inputText, response, false);
-                return response;
-            }
+            // Cache the response
+            this.responseCache.set(cacheKey, {
+                response,
+                timestamp: new Date().getTime()
+            });
 
-            // Use AI model as a last resort
-            if (this.model) {
-                try {
-                    let response = await this.generateModelResponse(inputText);
-                    if (response) {
-                        response = this.enhanceResponse(response, context);
-                        await this.updateTrainingData(inputText, response, false);
-                        return response;
-                    }
-                } catch (error) {
-                    console.error("❌ Error generating model response:", error);
-                }
-            }
+            // Cleanup
+            inputTensor.dispose();
+            prediction.dispose();
 
-            return "I'm not sure how to respond to that.";
+            return response;
+
         } catch (error) {
-            console.error("❌ Error in generateResponse:", error);
-            return "I'm having trouble processing that message.";
+            console.error(chalk.red("❌ Model response error:"), error);
+            return null;
+        }
+    }
+
+    async generateEnhancedResponse(inputText) {
+        if (!inputText) return null;
+
+        const possibilities = [];
+        const context = this.buildResponseContext(inputText);
+        
+        const directMatch = this.findClosestMatch(inputText, context);
+        if (directMatch) {
+            possibilities.push({
+                response: this.properlyCapitalize(directMatch.output),
+                confidence: directMatch.confidence,
+                source: 'direct_match'
+            });
+        }
+
+        const { bestMatch, score } = this.matcher.findBestTemplate(inputText);
+        if (bestMatch && score < 3) {
+            possibilities.push({
+                response: this.properlyCapitalize(bestMatch.output),
+                confidence: 1 - (score / 10),
+                source: 'template'
+            });
+        }
+
+        const similarResponses = this.findSimilarResponses(inputText, context);
+        possibilities.push(...similarResponses.map(resp => ({
+            response: this.properlyCapitalize(resp.output),
+            confidence: resp.similarity,
+            source: 'historical'
+        })));
+
+        const modelResponse = await this.generateModelResponse(inputText);
+        if (modelResponse) {
+            possibilities.push({
+                response: this.properlyCapitalize(modelResponse),
+                confidence: 0.6,
+                source: 'ai_model'
+            });
+        }
+
+        // Learn from this interaction in the background
+        this.learnFromInteraction(inputText, possibilities[0]?.response || "").catch(console.error);
+
+        return possibilities
+            .sort((a, b) => b.confidence - a.confidence)
+            .slice(0, 3);
+    }
+
+    async learnFromInteraction(input, output) {
+        try {
+            const inputTokens = this.tokenizer.tokenize(input.toLowerCase());
+            const outputTokens = this.tokenizer.tokenize(output.toLowerCase());
+
+            // Prepare training data
+            const paddedInput = [...inputTokens.slice(0, 50), ...Array(Math.max(0, 50 - inputTokens.length)).fill(0)];
+            const paddedOutput = [...outputTokens.slice(0, 50), ...Array(Math.max(0, 50 - outputTokens.length)).fill(0)];
+
+            // Convert to tensors
+            const xs = tf.tensor2d([paddedInput], [1, 50]);
+            const ys = tf.tensor2d([paddedOutput], [1, 50]);
+
+            // Train for one step
+            await this.model.trainOnBatch(xs, ys);
+
+            // Cleanup
+            xs.dispose();
+            ys.dispose();
+
+            // Update cache
+            globalCache.lastUpdate = '2025-02-05 04:41:24';
+
+            console.log(chalk.green("✅ Learned from interaction"));
+        } catch (error) {
+            console.error(chalk.red("❌ Learning error:"), error);
         }
     }
 
     buildResponseContext(inputText) {
-        if (!inputText || typeof inputText !== 'string') {
-            return {
-                definitions: {},
-                relatedConversations: [],
-                keyTerms: new Set()
-            };
-        }
-
-        try {
-            const words = inputText.toLowerCase().split(/\s+/);
-            const context = {
-                definitions: {},
-                relatedConversations: [],
-                keyTerms: new Set()
-            };
-
-            // Gather definitions for context
-            for (const word of words) {
-                if (!word) continue;
-                const definition = this.findDefinition(word);
-                if (definition) {
-                    context.definitions[word] = definition;
-                    context.keyTerms.add(word);
-                }
-            }
-
-            // Find related conversations
-            context.relatedConversations = this.findRelatedConversations(inputText, Array.from(context.keyTerms));
-
-            return context;
-        } catch (error) {
-            console.error("❌ Error building context:", error);
-            return {
-                definitions: {},
-                relatedConversations: [],
-                keyTerms: new Set()
-            };
-        }
-    }
-
-    async generateModelResponse(inputText) {
-        if (!inputText || typeof inputText !== 'string' || !this.model) {
-            return null;
-        }
-
-        try {
-            const words = inputText.toLowerCase().split(/\s+/);
-            const inputSequence = words.map(word => this.vocab[word] || 0);
-            const inputTensor = tf.tensor2d([inputSequence], [1, inputSequence.length]);
-            const prediction = this.model.predict(inputTensor);
-            const probabilities = await prediction.array();
-
-            const responseIndices = probabilities[0]
-                .map((prob, index) => ({ prob, index }))
-                .sort((a, b) => b.prob - a.prob)
-                .slice(4, 20)
-                .map(item => item.index);
-
-            const reverseVocab = Object.fromEntries(
-                Object.entries(this.vocab).map(([word, index]) => [index, word])
-            );
-
-            return responseIndices.map(index => reverseVocab[index]).filter(word => word).join(' ');
-        } catch (error) {
-            console.error("❌ Error in generateModelResponse:", error);
-            return null;
-        }
-    }
-
-    findRelatedConversations(inputText, keyTerms) {
-        if (!inputText || !this.trainingData.conversations) {
-            return [];
-        }
-
-        try {
-            return this.trainingData.conversations
-                .filter(conv => {
-                    if (!conv || !conv.input || !conv.output) return false;
-
-                    // Check if conversation contains any key terms
-                    const containsKeyTerm = keyTerms.some(term => 
-                        conv.input.toLowerCase().includes(term) || 
-                        conv.output.toLowerCase().includes(term)
-                    );
-
-                    // Calculate similarity
-                    const inputSimilarity = levenshtein.get(
-                        inputText.toLowerCase(), 
-                        conv.input.toLowerCase()
-                    );
-
-                    return containsKeyTerm || inputSimilarity < 25;
-                })
-                .map(conv => ({
-                    ...conv,
-                    similarity: 1 - (levenshtein.get(inputText.toLowerCase(), conv.input.toLowerCase()) / 
-                                  Math.max(inputText.length, conv.input.length))
-                }))
-                .sort((a, b) => b.similarity - a.similarity)
-                .slice(0, 35);
-        } catch (error) {
-            console.error("❌ Error finding related conversations:", error);
-            return [];
-        }
-    }
-
-    async learnInBackground(inputText) {
-        if (!inputText || typeof inputText !== 'string') return;
-
-        try {
-            const words = inputText.toLowerCase().split(/\s+/);
-            const unknownWords = words.filter(word => !this.findDefinition(word));
-
-            if (unknownWords.length > 0) {
-                console.log("📚 Learning new words in background:", unknownWords);
-
-                for (const word of unknownWords) {
-                    if (!word) continue;
-
-                    // Skip if word already exists in definitions
-                    if (this.findDefinition(word)) {
-                        console.log(`ℹ️ Word '${word}' already exists in definitions, skipping...`);
-                        continue;
-                    }
-
-                    try {
-                        const definition = await this.getWikipediaInfo(word);
-                        if (definition) {
-                            await this.addNewDefinition(word, definition);
-                            console.log(`✅ Learned new word: ${word} -> ${definition}`);
-                        } else {
-                            console.log(`⚠️ No Wikipedia definition found for word: ${word}`);
-                        }
-                    } catch (error) {
-                        console.error(`❌ Error learning word '${word}':`, error);
-                    }
-                }
-            }
-        } catch (error) {
-            console.error("❌ Error in learnInBackground:", error);
-        }
-    }
-
-    async getWikipediaInfo(word) {
-        if (!word || typeof word !== 'string') return null;
-
-        try {
-            const response = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`);
-
-            if (response.data.type === "disambiguation") {
-                console.warn(`⚠️ Wikipedia returned a disambiguation page for ${word}. Skipping.`);
-                return null;
-            }
-
-            if (response.data.extract) {
-                return response.data.extract.split('. ')[0]; // Take the first sentence
-            } else {
-                console.warn(`⚠️ Wikipedia has no summary for ${word}`);
-                return null;
-            }
-        } catch (error) {
-            console.error(`❌ Wikipedia fetch failed for ${word}:`, error.response?.status || error.message);
-            return null;
-        }
-    }
-
-    findDefinition(word) {
-        if (!word || typeof word !== 'string' || !this.trainingData.definitions) {
-            return null;
-        }
-
-        try {
-            const definition = this.trainingData.definitions.find(
-                def => def && def.word && word && 
-                def.word.toLowerCase() === word.toLowerCase()
-            );
-            return definition ? definition.definition : null;
-        } catch (error) {
-            console.error("❌ Error finding definition:", error);
-            return null;
-        }
-    }
-
-    async addNewDefinition(word, definition) {
-        if (!word || !definition || !this.trainingData.definitions) return;
-
-        try {
-            const existingDefIndex = this.trainingData.definitions.findIndex(
-                def => def && def.word && def.word.toLowerCase() === word.toLowerCase()
-            );
-
-            if (existingDefIndex === -1) {
-                this.trainingData.definitions.push({
-                    word: word,
-                    definition: definition
-                });
-                await this.saveTrainingData();
-                console.log(`📚 Added new definition: ${word} -> ${definition}`);
-            }
-        } catch (error) {
-            console.error("❌ Error adding new definition:", error);
-        }
+        return {
+            recentConversations: this.trainingData.conversations.slice(-5),
+            currentTime: this.currentDateTime,
+            currentUser: this.currentUser,
+            vocabulary: this.vocab
+        };
     }
 
     findClosestMatch(inputText, context) {
-        if (!inputText || !this.trainingData.conversations || this.trainingData.conversations.length === 0) {
-            return null;
-        }
+        if (!inputText || !this.trainingData.conversations) return null;
 
-        try {
-            let bestMatch = null;
-            let highestConfidence = 0;
+        const normalizedInput = inputText.toLowerCase().trim();
+        
+        let bestMatch = null;
+        let bestScore = Infinity;
 
-            // Consider both direct matches and context-enhanced matches
-            for (const conversation of this.trainingData.conversations) {
-                if (!conversation || !conversation.input) continue;
+        this.trainingData.conversations.forEach(conv => {
+            if (!conv || !conv.input) return;
 
-                let confidence = 0;
-                
-                // Basic text similarity
-                const distance = levenshtein.get(inputText.toLowerCase(), conversation.input.toLowerCase());
-                const maxLength = Math.max(inputText.length, conversation.input.length);
-                confidence = 1 - (distance / maxLength);
-
-                // Boost confidence if conversation contains key terms from context
-                if (context && context.keyTerms && context.keyTerms.size > 0) {
-                    const keyTermBoost = Array.from(context.keyTerms).reduce((boost, term) => {
-                        if (conversation.input.toLowerCase().includes(term) || 
-                            conversation.output.toLowerCase().includes(term)) {
-                            return boost + 0.15; // Boost for each matching key term for better stability
-                        }
-                        return boost;
-                    }, 0);
-                    confidence += keyTermBoost;
-                }
-
-                if (confidence > highestConfidence) {
-                    highestConfidence = confidence;
-                    bestMatch = {
-                        ...conversation,
-                        confidence
-                    };
-                }
+            const score = levenshtein.get(normalizedInput, conv.input.toLowerCase().trim());
+            if (score < bestScore && score < normalizedInput.length * 0.4) {
+                bestScore = score;
+                bestMatch = {
+                    output: conv.output,
+                    confidence: 1 - (score / Math.max(normalizedInput.length, conv.input.length))
+                };
             }
+        });
 
-            return bestMatch;
-        } catch (error) {
-            console.error("❌ Error finding closest match:", error);
-            return null;
-        }
+        return bestMatch;
     }
 
-    enhanceResponse(response, context) {
-        if (!response || typeof response !== 'string') {
-            return response;
-        }
+    findSimilarResponses(inputText, context) {
+        if (!inputText || !this.trainingData.conversations) return [];
 
-        try {
-            let enhancedResponse = response;
+        const inputTokens = this.tokenizer.tokenize(inputText.toLowerCase());
+        
+        return this.trainingData.conversations
+            .map(conv => {
+                if (!conv || !conv.input || !conv.output) return null;
 
-            // Use context to make response more relevant
-            if (context && context.relatedConversations && context.relatedConversations.length > 0) {
-                const relevantPhrases = context.relatedConversations
-                    .map(conv => conv.output)
-                    .filter(output => output && output !== response);
+                const convTokens = this.tokenizer.tokenize(conv.input.toLowerCase());
+                const commonTokens = inputTokens.filter(token => 
+                    convTokens.includes(token)
+                );
 
-                // Incorporate relevant phrases if they exist
-                if (relevantPhrases.length > 0) {
-                    const relevantPhrase = relevantPhrases[0]; // Use the most relevant one
-                    if (response.length < 50) { // Only enhance short responses
-                        enhancedResponse = `${response} ${relevantPhrase}`;
-                    }
-                }
-            }
+                const tfidfSimilarity = this.calculateTFIDFSimilarity(inputText, conv.input);
+                const tokenSimilarity = commonTokens.length / 
+                    Math.max(inputTokens.length, convTokens.length);
 
-            return enhancedResponse;
-        } catch (error) {
-            console.error("❌ Error enhancing response:", error);
-            return response;
-        }
+                const similarity = (tfidfSimilarity * 0.7) + (tokenSimilarity * 0.3);
+
+                return {
+                    ...conv,
+                    similarity
+                };
+            })
+            .filter(conv => conv && conv.similarity > 0.3)
+            .sort((a, b) => b.similarity - a.similarity)
+            .slice(0, 5);
     }
 
-    refineResponse(existingResponse, inputText, context) {
-        if (!existingResponse || !inputText) {
-            return existingResponse;
-        }
+    calculateTFIDFSimilarity(text1, text2) {
+        if (!text1 || !text2) return 0;
 
-        try {
-            const inputWords = inputText.toLowerCase().split(/\s+/);
-            const responseWords = existingResponse.toLowerCase().split(/\s+/);
+        const tfidf = new natural.TfIdf();
+        tfidf.addDocument(text1.toLowerCase());
+        tfidf.addDocument(text2.toLowerCase());
 
-            let refinedResponse = responseWords.map(word => {
-                if (!word) return word;
-                if (inputWords.includes(word)) {
-                    return word;
-                }
-                return this.findSimilarWord(word, inputWords);
-            }).join(' ');
+        let similarity = 0;
+        const terms = new Set([
+            ...this.tokenizer.tokenize(text1.toLowerCase()),
+            ...this.tokenizer.tokenize(text2.toLowerCase())
+        ]);
 
-            // Enhance with context if the response is too short or generic
-            if (refinedResponse.split(' ').length < 5) {
-                refinedResponse = this.enhanceResponse(refinedResponse, context);
-            }
+        terms.forEach(term => {
+            const score1 = tfidf.tfidf(term, 0);
+            const score2 = tfidf.tfidf(term, 1);
+            similarity += Math.min(score1, score2);
+        });
 
-            return refinedResponse;
-        } catch (error) {
-            console.error("❌ Error refining response:", error);
-            return existingResponse;
-        }
+        return similarity / terms.size;
     }
 
-    findSimilarWord(word, inputWords) {
-        if (!word || !inputWords || !Array.isArray(inputWords)) {
-            return word;
-        }
-
-        try {
-            let closestWord = word;
-            let lowestDistance = Infinity;
-
-            for (const inputWord of inputWords) {
-                if (!inputWord) continue;
-                const distance = levenshtein.get(word, inputWord);
-                if (distance < lowestDistance) {
-                    lowestDistance = distance;
-                    closestWord = inputWord;
-                }
-            }
-
-            return lowestDistance <= 2 ? closestWord : word;
-        } catch (error) {
-            console.error("❌ Error finding similar word:", error);
-            return word;
-        }
-    }
-
-    async updateTrainingData(input, response, isRefinement) {
-        if (!input || !response || !this.trainingData.conversations) return;
-
-        try {
-            const existingIndex = this.trainingData.conversations.findIndex(conv => 
-                conv && conv.input && conv.input.toLowerCase() === input.toLowerCase()
-            );
-
-            const newEntry = {
-                input,
-                output: response,
-                timestamp: new Date(this.currentDateTime).toISOString(),
-                user: this.currentUser
-            };
-
-            if (existingIndex === -1) {
-                // New conversation
-                this.trainingData.conversations.push(newEntry);
-            } else if (isRefinement) {
-                // Update existing conversation only if it's a refinement
-                this.trainingData.conversations[existingIndex] = newEntry;
-            }
-
-            // Update last training date
-            this.trainingData.lastTrainingDate = this.currentDateTime;
-            await this.saveTrainingData();
-        } catch (error) {
-            console.error("❌ Error updating training data:", error);
-        }
-    }
-
-    async saveTrainingData() {
-        try {
-            // Update last training date before saving
-            this.trainingData.lastTrainingDate = this.currentDateTime;
-            
-            await fs.promises.writeFile(
-                this.trainingDataPath,
-                JSON.stringify(this.trainingData, null, 2)
-            );
-            console.log('📝 Training data saved successfully');
-        } catch (error) {
-            console.error('❌ Error saving training data:', error);
-        }
+    cleanText(text) {
+        if (!text) return '';
+        
+        return text
+            .trim()
+            .replace(/\s+/g, ' ')
+            .replace(/[^\w\s\-',.!?]/g, '')
+            .replace(/\s+([,.!?])/g, '$1');
     }
 }
 

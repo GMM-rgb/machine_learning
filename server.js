@@ -7,7 +7,7 @@ const { app, BrowserWindow } = require("electron");
 const wiki = require("wikijs").default;
 const math = require("mathjs");
 const { ifError } = require("assert");
-const tf = require("@tensorflow/tfjs-node-gpu");
+const tf = require("@tensorflow/tfjs-node");
 const https = require("https");
 const ProgressBar = require("progress");
 const cors = require("cors");
@@ -1169,8 +1169,11 @@ function getCurrentGoal() {
 const responseGenerator = new ResponseGenerator();
 
 // Set current date/time and user
-responseGenerator.currentDateTime = '2025-02-04 05:22:05';
+responseGenerator.currentDateTime = '2025-02-05 04:49:50';
 responseGenerator.currentUser = 'GMM-rgb';
+
+// Chat state
+const accountStates = new Map();
 
 expressApp.post("/chat", async (req, res) => {
     if (!chatEnabled) {
@@ -1193,6 +1196,7 @@ expressApp.post("/chat", async (req, res) => {
         const messageForChecks = message.trim().toLowerCase();
         let response = "";
         let cleanedMessage = "";
+        let possibilities = null;
 
         if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
             // Remove math-related keywords
@@ -1216,8 +1220,17 @@ expressApp.post("/chat", async (req, res) => {
                 .trim();
             response = await getWikipediaInfo(cleanedMessage);
         } else {
-            // Pass the original message to response generator
-            response = await responseGenerator.generateResponse(message);
+            // Use the new enhanced response generation
+            possibilities = await responseGenerator.generateEnhancedResponse(message);
+            if (possibilities && possibilities.length > 0) {
+                response = possibilities[0].response;
+                
+                // Learn from this interaction in the background
+                responseGenerator.learnFromInteraction(message, response)
+                    .catch(error => console.error("Learning error:", error));
+            } else {
+                response = "I'm not sure how to respond to that.";
+            }
         }
 
         // Only add to training data if we got a response
@@ -1229,26 +1242,53 @@ expressApp.post("/chat", async (req, res) => {
             // Store the cleaned message or original message as appropriate
             const storedMessage = cleanedMessage || message;
             
+            // Add to training data with current timestamp
             trainingData.conversations.push({
                 input: storedMessage,
                 output: response,
-                timestamp: '2025-02-04 05:22:05'
+                timestamp: '2025-02-05 04:49:50',
+                user: 'GMM-rgb'
             });
+
+            // Update response generator's training data
+            await responseGenerator.updateTrainingData(
+                storedMessage,
+                response,
+                false
+            );
 
             // Trigger model retraining if needed
             if (trainingData.conversations.length % 5 === 0) {
                 console.log("Triggering model retraining...");
-                retrainModel();
+                // The model will automatically retrain through the ResponseGenerator
+                await responseGenerator.saveTrainingData();
             }
         }
 
         const currentGoal = getCurrentGoal();
-        response += `\n\nCurrent Goal: ${currentGoal.goal || "No current goal"}\nPriority: ${currentGoal.priority || "No priority set"}`;
+        const responseObject = {
+            response,
+            timestamp: '2025-02-05 04:49:50',
+            user: 'GMM-rgb',
+            goal: currentGoal.goal || "No current goal",
+            priority: currentGoal.priority || "No priority set"
+        };
 
-        res.json({ response });
+        // Add confidence if available
+        if (possibilities && possibilities[0]) {
+            responseObject.confidence = possibilities[0].confidence;
+            responseObject.source = possibilities[0].source;
+        }
+
+        res.json(responseObject);
+
     } catch (error) {
         console.error("Error in chat endpoint:", error);
-        res.status(500).json({ response: "An error occurred while processing your message." });
+        res.status(500).json({ 
+            response: "An error occurred while processing your message.",
+            timestamp: '2025-02-05 04:49:50',
+            user: 'GMM-rgb'
+        });
     }
 });
 
