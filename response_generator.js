@@ -1194,7 +1194,7 @@ async learnFromInteraction(input, output) {
         xs.dispose();
         ys.dispose();
     
-        console.log("\n🏁 Training completed!");
+        console.log("\n🏁 Training completed! ✅");
         return model;
     }
     
