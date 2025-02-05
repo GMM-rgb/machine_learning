@@ -1453,6 +1453,22 @@
         {
           "sender": "AI",
           "text": "Hello there! How may I help you?"
+        },
+        {
+          "sender": "User",
+          "text": "How are you doing"
+        },
+        {
+          "sender": "AI",
+          "text": "How how much, but how I'm doing great!"
+        },
+        {
+          "sender": "User",
+          "text": "That's great to hear"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm glad you think so! I'm here to help you with anything you need."
         }
       ]
     }
