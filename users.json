@@ -1509,6 +1509,14 @@
         {
           "sender": "AI",
           "text": "I'm still learning how to respond to that."
+        },
+        {
+          "sender": "User",
+          "text": "Hi again"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there again hi may hi help you?"
         }
       ]
     }
