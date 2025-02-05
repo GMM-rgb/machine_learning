@@ -1628,3 +1628,28 @@ expressApp.post("/deleteConversation", (req, res) => {
 
   res.json({ success: false, message: "Conversation not found." });
 });
+
+// Add this function if not already present:
+async function fuzzyMatch(word, knowledge) {
+    if (!word || !knowledge) return word;
+
+    // Try exact match first
+    if (knowledge[word.toLowerCase()]) {
+        return knowledge[word.toLowerCase()];
+    }
+
+    // Find closest match using Levenshtein distance
+    let bestMatch = word;
+    let minDistance = Infinity;
+
+    Object.keys(knowledge).forEach(key => {
+        const distance = getLevenshteinDistance(word.toLowerCase(), key.toLowerCase());
+        if (distance < minDistance) {
+            minDistance = distance;
+            bestMatch = key;
+        }
+    });
+
+    // Return matched word if confidence is high enough
+    return minDistance < word.length * 0.3 ? knowledge[bestMatch] : word;
+}

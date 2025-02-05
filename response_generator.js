@@ -846,6 +846,46 @@ async learnFromInteraction(input, output) {
             .slice(0, 5);
     }
 
+    async findSimilarResponsesWithContext(inputText, context, understanding) {
+        if (!inputText || !this.trainingData.conversations) return [];
+
+        const responses = [];
+        const topicKeywords = understanding.topic?.mainTopic ? [understanding.topic.mainTopic] : [];
+        const sentimentScore = understanding.sentiment?.score || 0;
+
+        // Get base similarity matches
+        const baseMatches = this.findSimilarResponses(inputText, context);
+
+        for (const match of baseMatches) {
+            let contextualConfidence = match.similarity;
+
+            // Boost confidence if topics match
+            if (topicKeywords.length > 0) {
+                const matchTopics = this.extractKeyTerms(match.input);
+                const topicOverlap = topicKeywords.filter(topic => 
+                    matchTopics.includes(topic)
+                ).length;
+                contextualConfidence *= (1 + (topicOverlap * 0.2));
+            }
+
+            // Adjust for sentiment alignment
+            const matchSentiment = this.analyzeSentiment(match.output).score;
+            const sentimentAlignment = 1 - (Math.abs(sentimentScore - matchSentiment) / 2);
+            contextualConfidence *= sentimentAlignment;
+
+            responses.push({
+                response: this.properlyCapitalize(match.output),
+                confidence: contextualConfidence,
+                source: 'contextual_match'
+            });
+        }
+
+        // Sort by confidence and return top matches
+        return responses
+            .sort((a, b) => b.confidence - a.confidence)
+            .slice(0, 3);
+    }
+
     calculateTFIDFSimilarity(text1, text2) {
         if (!text1 || !text2) return 0;
 
@@ -1056,6 +1096,36 @@ async learnFromInteraction(input, output) {
             confidence: 0.3,
             metadata: {}
         };
+    }
+
+    calculateContinuityScore(input, previousMessage) {
+        if (!input || !previousMessage || !previousMessage.text) return 0;
+
+        const baseSimilarity = this.calculateSimilarity(input, previousMessage.text);
+        const timeDecay = previousMessage.timestamp ? 
+            Math.exp(-(Date.now() - new Date(previousMessage.timestamp).getTime()) / (1000 * 60 * 60)) : 1;
+
+        return baseSimilarity * timeDecay;
+    }
+
+    addPreviousContext(response, context) {
+        if (!context || !context.lastMessage) return response;
+
+        const contextReferences = {
+            'it': context.lastMessage.text,
+            'that': context.lastMessage.text,
+            'this': context.lastMessage.text
+        };
+
+        // Replace pronouns with their context
+        Object.entries(contextReferences).forEach(([pronoun, reference]) => {
+            const regex = new RegExp(`\\b${pronoun}\\b`, 'gi');
+            if (response.match(regex)) {
+                response = response.replace(regex, `"${reference}"`);
+            }
+        });
+
+        return response;
     }
 }
 
