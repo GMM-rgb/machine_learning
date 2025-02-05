@@ -1269,6 +1269,34 @@ async learnFromInteraction(input, output) {
         
         return null;
     }
+
+    async simulateInternalDialogue(inputText, numTurns = 3) {
+        const dialogue = [];
+        let currentInput = inputText;
+
+        try {
+            for (let i = 0; i < numTurns; i++) {
+                // Generate a response as if it's the AI thinking
+                const aiResponse = await this.generateModelResponse(currentInput);
+                dialogue.push({ speaker: 'AI', text: aiResponse });
+
+                // Analyze the response to refine the next input
+                const analysis = this.analyzeSentiment(aiResponse);
+                if (analysis.score > 0) {
+                    currentInput = `Expand on the positive aspects of "${inputText}"`;
+                } else if (analysis.score < 0) {
+                    currentInput = `Address the negative aspects of "${inputText}"`;
+                } else {
+                    currentInput = `Provide a neutral perspective on "${inputText}"`;
+                }
+            }
+            return dialogue;
+        } catch (error) {
+            console.error("Error in internal dialogue:", error);
+            return [{ speaker: 'AI', text: "I'm having trouble processing that." }];
+        }
+    }
+
 }
 
 module.exports = ResponseGenerator;

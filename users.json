@@ -1935,6 +1935,22 @@
         {
           "sender": "AI",
           "text": "Hello there hey hey I hey you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hi may hi help you? Sources: wikipedia"
         }
       ]
     }
