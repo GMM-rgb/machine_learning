@@ -1517,6 +1517,22 @@
         {
           "sender": "AI",
           "text": "Hello there again hi may hi help you?"
+        },
+        {
+          "sender": "User",
+          "text": "wait hold on"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        },
+        {
+          "sender": "User",
+          "text": "wait hold on"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to that."
         }
       ]
     }
