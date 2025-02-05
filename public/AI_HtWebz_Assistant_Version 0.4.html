@@ -1436,6 +1436,105 @@
                 document.getElementById('login-container').style.display = 'flex';
             }
         </script>
+        <script>
+            // Update the sendMessage function
+            async function sendMessage() {
+                const userInput = document.getElementById('user-input');
+                const message = userInput.value.trim();
+                
+                if (!message) return;
+
+                // Display user message immediately
+                appendMessage('User', message);
+                userInput.value = '';
+
+                // Show thinking animation
+                const thinkingContainer = document.createElement('div');
+                thinkingContainer.className = 'thinking-container';
+                thinkingContainer.style.display = 'flex';
+                thinkingContainer.innerHTML = `
+                    <span class="thinking-text">AI is thinking</span>
+                    <span class="thinking-dots">
+                        <span class="thinking-dot">.</span>
+                        <span class="thinking-dot">.</span>
+                        <span class="thinking-dot">.</span>
+                    </span>
+                `;
+                document.getElementById('chat-box').appendChild(thinkingContainer);
+
+                try {
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message,
+                            accountId: localStorage.getItem('accountId')
+                        })
+                    });
+
+                    const data = await response.json();
+                    thinkingContainer.remove();
+
+                    // Insert AI response with HTML formatting
+                    if (data.html) {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'chat-message ai';
+                        messageDiv.innerHTML = `
+                            <img src="Image_Assets/ai_profile.png" alt="AI Profile">
+                            <div class="message-content">
+                                ${data.html}
+                            </div>
+                        `;
+                        document.getElementById('chat-box').appendChild(messageDiv);
+                    } else {
+                        appendMessage('AI', data.response);
+                    }
+
+                    // Auto scroll to bottom
+                    const chatBox = document.getElementById('chat-box');
+                    chatBox.scrollTop = chatBox.scrollHeight;
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    thinkingContainer.remove();
+                    appendMessage('System', 'Error: Unable to process message. Please try again.');
+                }
+            }
+
+            // Update appendMessage function to support HTML content
+            function appendMessage(sender, content, isHtml = false) {
+                const chatBox = document.getElementById('chat-box');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chat-message ${sender.toLowerCase()}`;
+
+                if (isHtml) {
+                    messageDiv.innerHTML = `
+                        <img src="Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+                        <div class="message-content">${content}</div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        <img src="Image_Assets/${sender.toLowerCase()}_profile.png" alt="${sender} Profile">
+                        <div class="message-content">
+                            <strong>${sender}:</strong> ${content}
+                        </div>
+                    `;
+                }
+
+                chatBox.appendChild(messageDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+
+            // Add event listener for Enter key
+            document.getElementById('user-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        </script>
     </div>
     <style>
         body {
