@@ -3334,6 +3334,10 @@
       {
         "word": "the company youtube",
         "definition": "YouTube  is an American social media and online video sharing platform owned by Google."
+      },
+      {
+        "word": "a lemon",
+        "definition": "The lemon (Citrus × limon) is a species of small evergreen tree in the Citrus genus of the flowering plant family Rutaceae."
       }
     ],
     "hi": 2,
@@ -6715,7 +6719,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-05T23:31:41.809Z",
+  "lastTrainingDate": "2025-02-05T23:50:19.421Z",
   "definitions": [
     {
       "word": "you",

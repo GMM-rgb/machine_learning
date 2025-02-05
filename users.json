@@ -2043,6 +2043,14 @@
         {
           "sender": "AI",
           "text": "Not too much, but hey I'm doing great! And I'm happy to see you! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "What is a Lemon"
+        },
+        {
+          "sender": "AI",
+          "text": "The lemon (Citrus × limon) is a species of small evergreen tree in the Citrus genus of the flowering plant family Rutaceae.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
         }
       ]
     }
