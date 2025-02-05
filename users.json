@@ -2017,6 +2017,14 @@
         {
           "sender": "AI",
           "text": "Really? Thanks! To really? Thanks! To\n\nsources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Explain how to set up Google search query in a node.js script for free."
+        },
+        {
+          "sender": "AI",
+          "text": "JavaScript (), often abbreviated as JS, is a programming language and core technology of the Web, alongside HTML and CSS.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
         }
       ]
     }
