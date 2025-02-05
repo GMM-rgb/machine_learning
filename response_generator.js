@@ -295,7 +295,7 @@ class ResponseGenerator {
             rl.question(chalk.cyan('Enter output: '), resolve);
         });
 
-        await this.trainingData( // og. updateTrainingData
+        await this.trainingData(
             this.properlyCapitalize(input),
             this.properlyCapitalize(output),
             false
