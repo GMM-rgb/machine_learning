@@ -2099,6 +2099,22 @@
         {
           "sender": "AI",
           "text": "Result: 3x+511"
+        },
+        {
+          "sender": "User",
+          "text": "\"3x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3x+511"
+        },
+        {
+          "sender": "User",
+          "text": "\"y = 5x + 2\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: y5x+2"
         }
       ]
     }

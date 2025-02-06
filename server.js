@@ -1823,29 +1823,54 @@ async function getDuckDuckGoResults(query) {
 }
 
 // Function to solve algebraic equations using math.js
+// Helper: Clean the equation string by inserting multiplication signs where needed.
+// For example, turns "3x" into "3*x"
+// Updated function to clean equations
+function cleanEquationString(equation) {
+  // Add multiplication symbol for cases like "3x" => "3*x"
+  equation = equation.replace(/([0-9])([a-zA-Z])/g, '$1*$2');
+  
+  // Handle cases like "x^2" to "x^2" (safe for exponentiation)
+  equation = equation.replace(/([a-zA-Z])\^/g, '$1^');
+  
+  return equation;
+}
+
+// Enhanced linear equation solver (including adjustments for `x^2` and other cases)
+function solveLinearEquation(equation, variable = 'x') {
+  equation = cleanEquationString(equation); // Clean equation
+  
+  if (!equation.includes('=')) {
+    throw new Error("The input is not a valid equation (missing '=' sign).");
+  }
+
+  const [lhs, rhs] = equation.split('=').map(part => part.trim());
+
+  const exprNode = math.simplify(`${lhs} - (${rhs})`);
+  const exprStr = exprNode.toString();
+  
+  // Handle linear or simple non-linear equations (first pass)
+  const b = math.evaluate(exprStr, { [variable]: 0 });
+  const f1 = math.evaluate(exprStr, { [variable]: 1 });
+  const a = f1 - b;
+
+  if (a === 0) {
+    throw new Error("This equation has no unique solution or is not linear.");
+  }
+
+  // Return solution for linear equations like ax + b = 0
+  return -b / a;
+}
+
+// Main function to handle algebraic equations
 function solveAlgebra(equation) {
   try {
-    // Clean the equation to ensure proper parsing
-    equation = equation.replace(/([0-9])([a-zA-Z])/g, '$1*$2');  // Adds '*' between numbers and variables like 3x -> 3*x
+    equation = cleanEquationString(equation);
 
-    // Check if the equation contains an equals sign to indicate it's a solvable equation
-    if (equation.includes("=")) {
-      // Split the equation into LHS and RHS
-      const [lhs, rhs] = equation.split("=").map(part => part.trim());
-
-      // Create an equation object using math.js
-      const equationObj = math.parse(`${lhs} - (${rhs})`);  // Forming the equation "lhs - rhs = 0"
-      
-      // Solve for 'x'
-      const solutions = math.solve(equationObj, 'x');
-      
-      if (solutions.length > 0) {
-        return `The solution to "${equation}" is: x = ${solutions[0]}`;
-      } else {
-        return `Could not solve for x in the equation: "${equation}"`;
-      }
+    if (equation.includes('=') && equation.toLowerCase().includes('x')) {
+      const solution = solveLinearEquation(equation, 'x');
+      return `The solution to "${equation}" is: x = ${solution}`;
     } else {
-      // If it's not an equation, just simplify
       const simplified = math.simplify(equation).toString();
       return `Simplified expression: ${simplified}`;
     }
@@ -1855,33 +1880,8 @@ function solveAlgebra(equation) {
   }
 }
 
-// Function to fetch algebraic solutions from Wikipedia
-async function getAlgebraSolutionFromWikipedia(query) {
-  try {
-    const searchResults = await wiki().search(query);
-    if (!searchResults.results || searchResults.results.length === 0) {
-      return `Sorry, I couldn't find any relevant information on Wikipedia about "${query}".`;
-    }
-
-    const page = await wiki().page(searchResults.results[0]);
-    const content = await page.content();
-
-    // Assuming content.sections is an array of section objects
-    const algebraSection = content.sections && content.sections.find(section => /algebra/i.test(section.title));
-
-    if (algebraSection) {
-      return `Here's what I found on Wikipedia about algebra related to "${query}":\n${algebraSection.content}`;
-    } else {
-      return `Sorry, I couldn't find specific algebraic information about "${query}" on Wikipedia.`;
-    }
-  } catch (error) {
-    console.error(`Error fetching algebraic information from Wikipedia for query "${query}":`, error);
-    return `Sorry, I couldn't retrieve information on Wikipedia for "${query}".`;
-  }
-}
-
-// Enhanced query type detection
-expressApp.use(express.json()); // Ensure JSON body parsing
+// Main POST handling in Express
+expressApp.use(express.json());
 
 expressApp.post("/chat", async (req, res) => {
   const message = req.body.message || "";
@@ -1891,18 +1891,15 @@ expressApp.post("/chat", async (req, res) => {
   let htmlResponse = "";
 
   // Check if the message looks like an algebraic equation
-  // e.g., it contains mathematical operators or an equals sign
   const equationRegex = /[0-9a-z\)\(]*\s*[\+\-\*\/=]\s*[0-9a-z\)\(]*/i;
   const hasMathOperators = equationRegex.test(message);
 
   // Determine if we should use the algebra solver or fetch from Wikipedia
   if (hasMathOperators && message.includes("=")) {
-    // Clean up the message by removing words like "calculate", "solve", etc.
     const cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
     response = solveAlgebra(cleanedMessage);
     htmlResponse = `<div class='math-response'>${response}</div>`;
   } else if (messageForChecks.includes("algebra")) {
-    // If it’s a general query about algebra
     const cleanedQuery = message.replace(/algebra/gi, '').trim();
     response = await getAlgebraSolutionFromWikipedia(cleanedQuery);
     htmlResponse = `<div class='wiki-response'>
