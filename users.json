@@ -2069,6 +2069,52 @@
           "text": {
             "error": "I couldn't solve this problem. Could you please rephrase it?"
           }
+        },
+        {
+          "sender": "User",
+          "text": "hey"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hey hey I hey you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Your my best creation and I wish you could be with me"
+        },
+        {
+          "sender": "AI",
+          "text": "Dont worry about \"hello there! Hey hey I hey you? Sources: wikipedia\", I'm here to help. 😊\n\nsources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "your so silly."
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks, your silly too! 😂\n\nsources: wikipedia"
+        }
+      ],
+      "Chat 24": [
+        {
+          "sender": "User",
+          "text": "solve 2x + 5 = 15"
+        },
+        {
+          "sender": "AI",
+          "text": {
+            "error": "I couldn't solve this problem. Could you please rephrase it?"
+          }
+        },
+        {
+          "sender": "User",
+          "text": "solve 5*5"
+        },
+        {
+          "sender": "AI",
+          "text": {
+            "error": "I couldn't solve this problem. Could you please rephrase it?"
+          }
         }
       ]
     }
