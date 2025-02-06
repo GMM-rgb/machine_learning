@@ -2487,6 +2487,30 @@
         {
           "sender": "AI",
           "text": "I couldn't find relevant information about that."
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hi may hi help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "What is Nivida"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't find any relevant information about Nivida."
+        },
+        {
+          "sender": "User",
+          "text": "What is the Company Nivida"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't find any relevant information about the Company Nivida."
         }
       ]
     }
