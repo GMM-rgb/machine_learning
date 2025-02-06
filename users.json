@@ -2141,6 +2141,22 @@
         {
           "sender": "AI",
           "text": "I'm still learning how to respond to that. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Hello again bro"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "What should I do"
+        },
+        {
+          "sender": "AI",
+          "text": "What Should I Do."
         }
       ]
     }
