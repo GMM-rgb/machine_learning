@@ -1320,7 +1320,7 @@ async learnFromInteraction(input, output) {
                     snippet: topic.Text,
                     source: new URL(topic.FirstURL).hostname
                 }))
-                .slice(0, 3); // Limit to top 3 results
+                .slice(0, 4); // Limit to top 4 results
 
             return articles;
         } catch (error) {
