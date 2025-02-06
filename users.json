@@ -2030,11 +2030,27 @@
       "Chat 23": [
         {
           "sender": "User",
-          "text": "hello"
+          "text": "hey what's up"
         },
         {
           "sender": "AI",
-          "text": "Hello there! How may I hello you? Sources: wikipedia"
+          "text": "Hey what's up anything up your mind? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Uh, yes I do in fact, I need help."
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"hey what's up anything up your mind? Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Its okay"
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks for your confidence in me, I'm trying my best. Sources: wikipedia"
         }
       ]
     }
