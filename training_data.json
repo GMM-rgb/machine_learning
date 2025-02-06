@@ -1737,6 +1737,11 @@
       "input": "your fine",
       "output": "Thanks for your confidence in me, I'm trying my best to help.",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "im back",
+      "output": "alright, let me know if you got anything, and we can solve it. 😊",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
