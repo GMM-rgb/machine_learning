@@ -19,7 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let settingsMenuItems = document.querySelectorAll('.settings-menu-item');
     settingsMenuItems.forEach((item) => {
         item.addEventListener('click', () => {
-            settingsMenu.style.display = 'none';
+            if(item.id === 'settings-menu-close-button') {
+                settingsMenu.style.display = 'none';
+                return;
+            } else {
+                return;
+            }
         });
     });
 });
