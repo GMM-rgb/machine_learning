@@ -2246,6 +2246,248 @@
           "sender": "AI",
           "text": "I'm glad you think so! I'm here to help you with anything you need. 😊 take care, or are we ready for more? Sources: wikipedia"
         }
+      ],
+      "Chat 23": [
+        {
+          "sender": "User",
+          "text": "sup bro"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"hello there! How may I help you?\" . Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "sorry I meant. Hello"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"hello there! How may I help you?\" . Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Hey"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hey hey I hey you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "\"3*x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3*x+511"
+        },
+        {
+          "sender": "User",
+          "text": "3*x+511"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "\" 3*x+511\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3*x+511"
+        },
+        {
+          "sender": "User",
+          "text": "calculate \"3*x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3*x+511"
+        },
+        {
+          "sender": "User",
+          "text": "\"3*x + 5 = 0\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3*x+50"
+        },
+        {
+          "sender": "User",
+          "text": "\"3x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3x+511"
+        },
+        {
+          "sender": "User",
+          "text": "\"3x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3x+511"
+        },
+        {
+          "sender": "User",
+          "text": "\"y = 5x + 2\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: y5x+2"
+        },
+        {
+          "sender": "User",
+          "text": "Hello again"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I hello you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "lol nevermind."
+        },
+        {
+          "sender": "AI",
+          "text": "Alright, let me know if you need help. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "algebra 2 * x + 3"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "\"2 * x + 3\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 2*x+3"
+        },
+        {
+          "sender": "User",
+          "text": "\"2 * x + 3\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 2*x+3"
+        },
+        {
+          "sender": "User",
+          "text": "(2 * x + 3)"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "\"(2 * x + 3) (2 * x + 3)\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: (2*x+3)(2*x+3)"
+        },
+        {
+          "sender": "User",
+          "text": "4553554654*5"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 22767773270"
+        },
+        {
+          "sender": "User",
+          "text": "\"2 * x + 3 = 0\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 2*x+30"
+        },
+        {
+          "sender": "User",
+          "text": "\"2 * x + 3 = 0\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 2*x+30"
+        },
+        {
+          "sender": "User",
+          "text": "can you continue?"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"result: 2*x+30\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "ehh, its okay"
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks for your confidence in me, I'm trying my best. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "sup"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Explain the Nazi party"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"hello there! How may I help you? Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "explain the Nazi Party"
+        },
+        {
+          "sender": "AI",
+          "text": "The Nazi Party, officially the National Socialist German Workers' Party (German: Nationalsozialistische Deutsche Arbeiterpartei  or NSDAP), was a far-right political party in Germany active between 1920 and 1945 that created and supported the ideology of Nazism.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
+        },
+        {
+          "sender": "User",
+          "text": "Explain what the Nazis did"
+        },
+        {
+          "sender": "AI",
+          "text": "Wallace Michael Shawn (born November 12, 1943) is an American actor, essayist, playwright, and screenwriter.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
+        },
+        {
+          "sender": "User",
+          "text": "Explain what the nazi party did"
+        },
+        {
+          "sender": "AI",
+          "text": "Ranks and insignia were used by the National Socialist German Workers' Party (NSDAP) as paramilitary titles between approximately 1928 and the fall of Nazi Germany in 1945.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
+        },
+        {
+          "sender": "User",
+          "text": "What are pickles"
+        },
+        {
+          "sender": "AI",
+          "text": "I couldn't find relevant information about that."
+        },
+        {
+          "sender": "User",
+          "text": "What is the food pickles"
+        },
+        {
+          "sender": "AI",
+          "text": "I couldn't find relevant information about that."
+        }
       ]
     }
   }

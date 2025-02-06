@@ -81,7 +81,7 @@ loadModel().then(() => {
 expressApp.post('/generate-response', async (req, res) => {
   try {
     const inputText = req.body.inputText;
-    
+
     // Make sure model is loaded before trying to generate response
     if (!model) {
       return res.status(500).send('Model is not loaded yet.');
@@ -290,7 +290,7 @@ function preprocessText(text) {
 function convertDataToSequences() {
   const inputSequences = data.map(sentence => sentence.map(word => vocab[word] || 0));
   const labelSequences = inputSequences.map(seq => seq.slice(1).concat([vocab["<EOS>"]]));
-  
+
   console.log(inputSequences);  // Example: [[0, 1, 2, 3], [4, 5, 6, 7]]
   console.log(labelSequences);  // Example: [[1, 2, 3, 8], [5, 6, 7, 8]]
   return { inputSequences, labelSequences };
@@ -609,11 +609,11 @@ function createModel(vocabSize) {
 
 // Function to train the TensorFlow (AI) model
 async function trainModel(model, data, labels, epochs = 15, batchSize = 4) {
-// Ensure 'data' is properly formatted
-const xs = tf.tensor3d(
-  data.map(seq => seq.map(step => [step])), // Reshape to (batch_size, timesteps, features)
-  [data.length, data[0].length, 1]
-);
+  // Ensure 'data' is properly formatted
+  const xs = tf.tensor3d(
+    data.map(seq => seq.map(step => [step])), // Reshape to (batch_size, timesteps, features)
+    [data.length, data[0].length, 1]
+  );
   const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
   const dataset = tf.data
     .zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) })
@@ -635,10 +635,10 @@ function createTransformerModel(vocabSize) {
 async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 4, timeout = 30000) {
   console.log("Validating training data...");
 
-  const reshapedData = data.map(seq => seq.map(step => [step])); 
+  const reshapedData = data.map(seq => seq.map(step => [step]));
 
   if (!Array.isArray(reshapedData) || reshapedData.length === 0) {
-      throw new Error("Invalid data format: Data must be a non-empty array.");
+    throw new Error("Invalid data format: Data must be a non-empty array.");
   }
 
   console.log(`Data shape: [${reshapedData.length}, ${reshapedData[0].length}, 1]`);
@@ -654,41 +654,41 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchS
   let trainingComplete = false;
 
   setTimeout(() => {
-      if (!trainingComplete, timeout = 575) {
-          function wait(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-          }
-          console.log("⌛ Training timed out. Stopping early.");
-          trainingComplete = true;
-          console.warn("❗⚠️  Moving to next Epoch...", warn);
-          console.log(`⏳ Starting next Epoch...`);
-          wait(185).then(() => {
-            console.log("✅ Succesfully prepared next Epoch.", log);
-            return log;
-          });
+    if (!trainingComplete, timeout = 575) {
+      function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
       }
+      console.log("⌛ Training timed out. Stopping early.");
+      trainingComplete = true;
+      console.warn("❗⚠️  Moving to next Epoch...", warn);
+      console.log(`⏳ Starting next Epoch...`);
+      wait(185).then(() => {
+        console.log("✅ Succesfully prepared next Epoch.", log);
+        return log;
+      });
+    }
   }, timeout);
 
   try {
-      await model.fitDataset(dataset, {
-          epochs: maxEpochs,
-          batchSize,
-          callbacks: {
-              onEpochEnd: (epoch, logs) => {
-                  console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
-                  if (!trainingComplete) {
-                      console.log("⏹️ Stopping training early due to timeout.");
-                      return false;
-                  }
-              },
-          },
-      });
+    await model.fitDataset(dataset, {
+      epochs: maxEpochs,
+      batchSize,
+      callbacks: {
+        onEpochEnd: (epoch, logs) => {
+          console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
+          if (!trainingComplete) {
+            console.log("⏹️ Stopping training early due to timeout.");
+            return false;
+          }
+        },
+      },
+    });
   } catch (err) {
-      console.error("❌ Error during training:", err);
+    console.error("❌ Error during training:", err);
   }
   trainingComplete = true;
   //
-  if(trainingComplete === true ? trainingComplete === false: null) {
+  if (trainingComplete === true ? trainingComplete === false : null) {
     console.log("📦 ⏳ Saving trained model...");
     await model.location(path.parse.model);
     await model.path.save('file://D:/machine_learning/model.json'); // Save model after training
@@ -1031,9 +1031,8 @@ async function solveMathProblem(input) {
     if (math.typeOf(result) === "Matrix") {
       return `Result:\n${result.toString()}`;
     } else if (typeof result === "number") {
-      return `The answer is: ${
-        Number.isInteger(result) ? result : result.toFixed(4)
-      }`;
+      return `The answer is: ${Number.isInteger(result) ? result : result.toFixed(4)
+        }`;
     } else {
       return `Result: ${result.toString()}`;
     }
@@ -1102,8 +1101,8 @@ async function learnInBackground(unknownWords) {
 // Add conversation history tracking
 const conversationHistory = new Map(); // Store conversation history per account
 
-  // Function to get varied response based on repetition
-  function getVariedResponse(message, accountId) {
+// Function to get varied response based on repetition
+function getVariedResponse(message, accountId) {
   if (!conversationHistory.has(accountId)) {
     conversationHistory.set(accountId, []);
   }
@@ -1177,188 +1176,234 @@ const accountStates = new Map();
 const conversationData = new Map(); // Store conversations by chatId
 
 expressApp.post("/chat", async (req, res) => {
-    if (!chatEnabled) {
-        return res.json({
-            response: "Chat is currently disabled while performing a search. Please try again in a moment.",
-            html: "<div class='system-message'>Chat is currently disabled while performing a search. Please try again in a moment.</div>"
-        });
+  if (!chatEnabled) {
+    return res.json({
+      response: "Chat is currently disabled while performing a search. Please try again in a moment.",
+      html: "<div class='system-message'>Chat is currently disabled while performing a search. Please try again in a moment.</div>"
+    });
+  }
+
+  const { message, accountId = "default", chatId } = req.body;
+
+  if (!message) {
+    return res.status(400).json({
+      response: "Please provide a message.",
+      html: "<div class='error-message'>Please provide a message.</div>"
+    });
+  }
+
+  try {
+    // Initialize conversation data for this chat if it doesn't exist
+    if (!conversationData.has(chatId)) {
+      conversationData.set(chatId, []);
     }
 
-    const { message, accountId = "default", chatId } = req.body;
-    
-    if (!message) {
-        return res.status(400).json({
-            response: "Please provide a message.",
-            html: "<div class='error-message'>Please provide a message.</div>"
-        });
-    }
+    // Get chat history
+    const chatHistory = conversationData.get(chatId) || [];
 
-    try {
-        // Initialize conversation data for this chat if it doesn't exist
-        if (!conversationData.has(chatId)) {
-            conversationData.set(chatId, []);
+    // Prepare variables for later use
+    let response = "";
+    let cleanedMessage = "";
+    let htmlResponse = "";
+    const messageForChecks = message.trim().toLowerCase();
+
+    // Determine what type of query we’re handling
+
+    // 1. Math problems (if the query contains math keywords or operators)
+    if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
+      cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
+      response = await solveMathProblem(cleanedMessage);
+      htmlResponse = `<div class='math-response'>${response}</div>`;
+
+      // 2. Bing search command
+    } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
+      cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
+      response = await getBingSearchInfo(cleanedMessage);
+      htmlResponse = `<div class='search-response'>
+                    <div class='search-title'>Search Results:</div>
+                    <div class='search-content'>${response}</div>
+                  </div>`;
+
+      // 3. Wiki/Info questions (keywords such as "wiki", "what is", "who is", etc.)
+    } else if (
+      messageForChecks.includes("wiki") ||
+      messageForChecks.includes("what is") ||
+      messageForChecks.includes("who is") ||
+      messageForChecks.includes("explain to me") ||
+      messageForChecks.includes("explain") ||
+      messageForChecks.includes("what are") ||
+      messageForChecks.includes("when did") ||
+      messageForChecks.includes("where is") ||
+      messageForChecks.includes("how did") ||
+      messageForChecks.includes("describe")
+    ) {
+      // Remove the wiki-related prefix and trailing question marks.
+      cleanedMessage = message
+        .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
+        .replace(/\?+$/, '')
+        .trim();
+
+      // Try grabbing the wiki summary using any available context
+      let wikiInfo = "";
+      try {
+        const previousContext = chatHistory.length > 0 ? chatHistory[chatHistory.length - 1].text : null;
+        wikiInfo = await getWikipediaInfo(cleanedMessage, previousContext);
+      } catch (wikiLookupError) {
+        console.error("Wikipedia lookup error:", wikiLookupError);
+      }
+
+      // Also get a main response in case wiki fails or to integrate with the enhanced result process
+      response = wikiInfo || await responseGenerator.generateEnhancedResponse(message, chatHistory).then(possibilities => possibilities[0]?.response || "");
+
+      // Get a list of related topics (fixing the variable naming bugs by mapping each returned article)
+      let relatedArticlesHtml = "";
+      try {
+        const relatedArticles = await findRelatedWikiArticles(cleanedMessage);
+        if (relatedArticles && relatedArticles.length > 0) {
+          relatedArticlesHtml = relatedArticles
+            .slice(0, 3)
+            .map(article => `• ${article}`)
+            .join("\n");
+          wikiInfo += `\n\nRelated topics:\n${relatedArticlesHtml}`;
         }
+      } catch (err) {
+        console.error("Error fetching related wiki articles:", err);
+      }
 
-        // Get chat history
-        const chatHistory = conversationData.get(chatId) || [];
-        
-        const messageForChecks = message.trim().toLowerCase();
-        let response = "";
-        let cleanedMessage = "";
-        let possibilities = null;
-        let htmlResponse = "";
+      // In addition, get some DuckDuckGo web results for further reading:
+      let webArticles = [];
+      try {
+        webArticles = await getDuckDuckGoResults(cleanedMessage);
+      } catch (err2) {
+        console.error("DuckDuckGo search error:", err2);
+      }
 
-        // Enhanced query type detection
-        if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
-            // Math handling
-            cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
-            response = await solveMathProblem(cleanedMessage);
-            htmlResponse = `<div class='math-response'>${response}</div>`;
-            
-        } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
-            // Bing search handling
-            cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
-            response = await getBingSearchInfo(cleanedMessage);
-            htmlResponse = `<div class='search-response'>
-                <div class='search-title'>Search Results:</div>
-                <div class='search-content'>${response}</div>
-            </div>`;
-            
-        } else if (messageForChecks.includes("wiki") || 
-                   messageForChecks.includes("what is") || 
-                   messageForChecks.includes("who is") ||
-                   messageForChecks.includes("explain to me") ||
-                   messageForChecks.includes("explain") ||
-                   messageForChecks.includes("what are") ||
-                   messageForChecks.includes("when did") ||
-                   messageForChecks.includes("where is") ||
-                   messageForChecks.includes("how did") ||
-                   messageForChecks.includes("describe")) {
-            
-            // Wikipedia handling with context
-            cleanedMessage = message
-                .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
-                .replace(/\?+$/, '')
-                .trim();
-            
-            try {
-                const previousContext = chatHistory.length > 0 ? 
-                    chatHistory[chatHistory.length - 1].text : null;
-                
-                response = await getWikipediaInfo(cleanedMessage, previousContext);
-                
-                // Add related articles if available
-                const relatedArticles = await findRelatedWikiArticles(cleanedMessage);
-                if (relatedArticles && relatedArticles.length > 0) {
-                    response += "\n\nRelated topics:\n" + relatedArticles
-                        .slice(0, 3)
-                        .map(article => `• ${article}`)
-                        .join("\n");
-                }
-
-                htmlResponse = `<div class='wiki-response'>
-                    <div class='wiki-content'>${response}</div>
-                </div>`;
-                
-            } catch (wikiError) {
-                console.error("Wikipedia search error:", wikiError);
-                response = "I couldn't find relevant information about that.";
-                htmlResponse = "<div class='error-message'>No Wikipedia results found.</div>";
-            }
-        } else {
-            // Normal chat handling with context
-            possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
-            if (possibilities && possibilities.length > 0) {
-                response = possibilities[0].response;
-                
-                // Build HTML response with internal dialogue
-                let html = `<div class='ai-response'>${response}</div>`;
-                if (possibilities.length > 1) {
-                    html += "<div class='internal-dialogue'>";
-                    possibilities.slice(1).forEach(p => {
-                        html += `<div class='dialogue-turn'>${p.response}</div>`;
-                    });
-                    html += "</div>";
-                }
-                htmlResponse = html;
-            }
-        }
-
-        // Add this inside the try block where responses are generated
-        if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i)) {
-            // First get Wikipedia info
-            const wikiInfo = await getWikipediaInfo(cleanedMessage);
-            
-            // Then get DuckDuckGo results
-            const webArticles = await getDuckDuckGoResults(cleanedMessage);
-
-            // Combine responses in a nice format
-            htmlResponse = `
-                <div class='ai-response'>
-                    <div class='response-main'>${response}</div>
-                    
-                    ${wikiInfo && wikiInfo !== response ? `
-                        <div class='wiki-section'>
-                            <h4>Wikipedia Says:</h4>
-                            <div class='wiki-content'>${wikiInfo}</div>
-                        </div>
-                    ` : ''}
-                    
-                    ${webArticles.length > 0 ? `
-                        <div class='web-references'>
-                            <h4>Related Articles:</h4>
-                            <div class='references-grid'>
-                                ${webArticles.map(article => `
-                                    <div class='article-card'>
-                                        <h5>${article.title}</h5>
-                                        <p class='snippet'>${article.snippet}</p>
-                                        <div class='article-footer'>
-                                            <span class='source'>${article.source}</span>
-                                            <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
+      // Combine the wiki info and web references into the final html response
+      htmlResponse = `
+    <div class='ai-response'>
+      <div class='response-main'>${response}</div>
+      
+      ${wikiInfo && wikiInfo !== response ? `
+        <div class='wiki-section'>
+          <h4>Wikipedia Says:</h4>
+          <div class='wiki-content'>${wikiInfo}</div>
+        </div>
+      ` : ""}
+      
+      ${webArticles.length > 0 ? `
+        <div class='web-references'>
+          <h4>Related Articles:</h4>
+          <div class='references-grid'>
+            ${webArticles.map(article => `
+              <div class='article-card'>
+                <h5>${article.title}</h5>
+                <p class='snippet'>${article.snippet}</p>
+                <div class='article-footer'>
+                  <span class='source'>${article.source}</span>
+                  <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
                 </div>
-            `;
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ""}
+    </div>
+  `;
+
+      // 4. Otherwise, process with normal chat handling (using enhanced response generator)
+    } else {
+      const possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
+      if (possibilities && possibilities.length > 0) {
+        response = possibilities[0].response;
+
+        // Build HTML with additional internal dialogue if available
+        let html = `<div class='ai-response'>${response}</div>`;
+        if (possibilities.length > 1) {
+          html += "<div class='internal-dialogue'>";
+          possibilities.slice(1).forEach(p => {
+            html += `<div class='dialogue-turn'>${p.response}</div>`;
+          });
+          html += "</div>";
         }
-
-        // Store the new messages in conversation history
-        chatHistory.push({ sender: 'User', text: message });
-        if (response) {
-            chatHistory.push({ sender: 'AI', text: response });
-        }
-        conversationData.set(chatId, chatHistory);
-
-        const currentGoal = getCurrentGoal();
-
-        // Send the response back to the client
-        res.json({ response, html: htmlResponse });
-
-    } catch (error) {
-        console.error("Chat error:", error);
-        res.status(500).json({ response: "Sorry, I encountered an error.", html: "<div class='error-message'>Sorry, I encountered an error.</div>" });
+        htmlResponse = html;
+      }
     }
+
+    // Optionally, for questions starting with what/how/why/etc. that were not caught above,
+    // (if you’d like to guarantee getting both wiki and web results) you can add an additional check:
+    if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i) && !htmlResponse.includes("wiki-section")) {
+      try {
+        const wikiInfoFallback = await getWikipediaInfo(cleanedMessage);
+        const webArticlesFallback = await getDuckDuckGoResults(cleanedMessage);
+        htmlResponse = `
+      <div class='ai-response'>
+        <div class='response-main'>${response}</div>
+        
+        ${wikiInfoFallback && wikiInfoFallback !== response ? `
+          <div class='wiki-section'>
+            <h4>Wikipedia Says:</h4>
+            <div class='wiki-content'>${wikiInfoFallback}</div>
+          </div>
+        ` : ""}
+        
+        ${webArticlesFallback.length > 0 ? `
+          <div class='web-references'>
+            <h4>Related Articles:</h4>
+            <div class='references-grid'>
+              ${webArticlesFallback.map(article => `
+                <div class='article-card'>
+                  <h5>${article.title}</h5>
+                  <p class='snippet'>${article.snippet}</p>
+                  <div class='article-footer'>
+                    <span class='source'>${article.source}</span>
+                    <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ""}
+      </div>
+    `;
+      } catch (fallbackError) {
+        console.error("Fallback wiki/web search error:", fallbackError);
+      }
+    }
+
+    // Save the conversation history (user and AI messages)
+    chatHistory.push({ sender: 'User', text: message });
+    if (response) {
+      chatHistory.push({ sender: 'AI', text: response });
+    }
+    conversationData.set(chatId, chatHistory);
+
+    // (Optional) Get current goal from your application context
+    const currentGoal = getCurrentGoal();
+
+    // Finally, send back the response and formatted HTML
+    res.json({ response, html: htmlResponse });
+  } catch (error) {
+    console.error("Chat error:", error);
+    res.status(500).json({ response: "Sorry, I encountered an error.", html: "<div class='error-message'>Sorry, I encountered an error.</div>" });
+  }
 });
 
 // Feedback API endpoint
 expressApp.post("/feedback", (req, res) => {
   const { message, correctResponse } = req.body;
-  if(message === ('correction:').toLowerCase()) {
+  if (message === ('correction:').toLowerCase()) {
     const normalizedInput = normalizeText(
       message.replace(/[,'](correction: )/g, "").toLowerCase()
     );
     knowledge[normalizedInput] = correctResponse;
     knowledge[message.toLowerCase()] = correctResponse;
-  
+
     try {
       fs.writeFileSync(knowledgeFile, JSON.stringify(knowledge, null, 2));
       console.log("Knowledge data saved!");
     } catch (err) {
       console.error("Error saving knowledge:", err);
-    }  
+    }
   }
   res.json({ response: "Thank you for your feedback!" });
 });
@@ -1438,60 +1483,60 @@ expressApp.post("/start", async (req, res) => {
 // Add these new helper functions
 async function findRelatedWikiArticles(topic) {
   try {
-      const searchResults = await wiki().search(topic, 5);
-      return searchResults.results.map(result => result.title);
+    const searchResults = await wiki().search(topic, 5);
+    return searchResults.results.map(result => result.title);
   } catch (error) {
-      console.error("Error finding related articles:", error);
-      return null;
+    console.error("Error finding related articles:", error);
+    return null;
   }
 }
 
 async function getWikipediaInfo(query, previousContext = null) {
   const sanitizedQuery = query
-      .toLowerCase()
-      .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
-      .replace(/[?.,!]/g, '')
-      .trim();
+    .toLowerCase()
+    .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
+    .replace(/[?.,!]/g, '')
+    .trim();
 
   try {
-      // If there's previous context, try to use it for better search
-      let searchQuery = sanitizedQuery;
-      if (previousContext) {
-          const contextWords = previousContext.split(' ')
-              .filter(word => word.length > 3)
-              .slice(-3)
-              .join(' ');
-          searchQuery = `${contextWords} ${sanitizedQuery}`;
-      }
+    // If there's previous context, try to use it for better search
+    let searchQuery = sanitizedQuery;
+    if (previousContext) {
+      const contextWords = previousContext.split(' ')
+        .filter(word => word.length > 3)
+        .slice(-3)
+        .join(' ');
+      searchQuery = `${contextWords} ${sanitizedQuery}`;
+    }
 
-      const searchResults = await wiki().search(searchQuery);
-      if (!searchResults.results || !searchResults.results.length) {
-          return `Sorry, I couldn't find any relevant information about ${query}.`;
-      }
-
-      const page = await wiki().page(searchResults.results[0]);
-      const [summary, references] = await Promise.all([
-          page.summary(),
-          page.references()
-      ]);
-
-      let response = summary;
-
-      // Add a reference if available
-      if (references && references.length > 0) {
-          response += `\n\nSource: ${references[0]}`;
-      }
-
-      return response;
-  } catch (error) {
-      console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
+    const searchResults = await wiki().search(searchQuery);
+    if (!searchResults.results || !searchResults.results.length) {
       return `Sorry, I couldn't find any relevant information about ${query}.`;
+    }
+
+    const page = await wiki().page(searchResults.results[0]);
+    const [summary, references] = await Promise.all([
+      page.summary(),
+      page.references()
+    ]);
+
+    let response = summary;
+
+    // Add a reference if available
+    if (references && references.length > 0) {
+      response += `\n\nSource: ${references[0]}`;
+    }
+
+    return response;
+  } catch (error) {
+    console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
+    return `Sorry, I couldn't find any relevant information about ${query}.`;
   }
 }
 
 // Add styles route
 expressApp.get("/styles.css", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "styles.css"));
+  res.sendFile(path.join(__dirname, "public", "styles.css"));
 });
 
 // Update main server startup with static file serving
@@ -1663,162 +1708,162 @@ expressApp.post("/deleteConversation", (req, res) => {
 
 // Add this function if not already present:
 async function fuzzyMatch(word, knowledge) {
-    if (!word || !knowledge) return word;
+  if (!word || !knowledge) return word;
 
-    // Try exact match first
-    if (knowledge[word.toLowerCase()]) {
-        return knowledge[word.toLowerCase()];
+  // Try exact match first
+  if (knowledge[word.toLowerCase()]) {
+    return knowledge[word.toLowerCase()];
+  }
+
+  // Find closest match using Levenshtein distance
+  let bestMatch = word;
+  let minDistance = Infinity;
+
+  Object.keys(knowledge).forEach(key => {
+    const distance = getLevenshteinDistance(word.toLowerCase(), key.toLowerCase());
+    if (distance < minDistance) {
+      minDistance = distance;
+      bestMatch = key;
     }
+  });
 
-    // Find closest match using Levenshtein distance
-    let bestMatch = word;
-    let minDistance = Infinity;
-
-    Object.keys(knowledge).forEach(key => {
-        const distance = getLevenshteinDistance(word.toLowerCase(), key.toLowerCase());
-        if (distance < minDistance) {
-            minDistance = distance;
-            bestMatch = key;
-        }
-    });
-
-    // Return matched word if confidence is high enough
-    return minDistance < word.length * 0.3 ? knowledge[bestMatch] : word;
+  // Return matched word if confidence is high enough
+  return minDistance < word.length * 0.3 ? knowledge[bestMatch] : word;
 }
 
 async function addDefinitionToTrainingData(word, definition) {
-    try {
-        if (!trainingData.vocabulary.definitions) {
-            trainingData.vocabulary.definitions = [];
-        }
-
-        // Avoid duplicates
-        const existingDefIndex = trainingData.vocabulary.definitions.findIndex(
-            def => def.word.toLowerCase() === word.toLowerCase()
-        );
-
-        if (existingDefIndex >= 0) {
-            trainingData.vocabulary.definitions[existingDefIndex].definition = definition;
-        } else {
-            trainingData.vocabulary.definitions.push({
-                word: word,
-                definition: definition
-            });
-        }
-
-        saveTrainingData();
-        console.log(`Added definition for: ${word}`);
-    } catch (error) {
-        console.error('Error adding definition:', error);
+  try {
+    if (!trainingData.vocabulary.definitions) {
+      trainingData.vocabulary.definitions = [];
     }
+
+    // Avoid duplicates
+    const existingDefIndex = trainingData.vocabulary.definitions.findIndex(
+      def => def.word.toLowerCase() === word.toLowerCase()
+    );
+
+    if (existingDefIndex >= 0) {
+      trainingData.vocabulary.definitions[existingDefIndex].definition = definition;
+    } else {
+      trainingData.vocabulary.definitions.push({
+        word: word,
+        definition: definition
+      });
+    }
+
+    saveTrainingData();
+    console.log(`Added definition for: ${word}`);
+  } catch (error) {
+    console.error('Error adding definition:', error);
+  }
 }
 
 async function searchWikipediaDefinition(word) {
-    try {
-        const searchResults = await wiki().search(word);
-        if (!searchResults.results || !searchResults.results.length) {
-            return null;
-        }
-
-        const page = await wiki().page(searchResults.results[0]);
-        const summary = await page.summary();
-        
-        // Extract first sentence as definition
-        const definition = summary.split(/[.!?](?:\s|$)/)[0] + '.';
-        
-        // Add to training data
-        await addDefinitionToTrainingData(word, definition);
-        
-        return definition;
-    } catch (error) {
-        console.error(`Error getting Wikipedia definition for "${word}":`, error);
-        return null;
+  try {
+    const searchResults = await wiki().search(word);
+    if (!searchResults.results || !searchResults.results.length) {
+      return null;
     }
+
+    const page = await wiki().page(searchResults.results[0]);
+    const summary = await page.summary();
+
+    // Extract first sentence as definition
+    const definition = summary.split(/[.!?](?:\s|$)/)[0] + '.';
+
+    // Add to training data
+    await addDefinitionToTrainingData(word, definition);
+
+    return definition;
+  } catch (error) {
+    console.error(`Error getting Wikipedia definition for "${word}":`, error);
+    return null;
+  }
 }
 
 async function getWikipediaInfo(query, previousContext = null) {
-    const sanitizedQuery = query
-        .toLowerCase()
-        .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
-        .replace(/[?.,!]/g, '')
-        .trim();
+  const sanitizedQuery = query
+    .toLowerCase()
+    .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
+    .replace(/[?.,!]/g, '')
+    .trim();
 
-    try {
-        // First try to find definition in training data
-        const existingDef = trainingData.vocabulary.definitions?.find(
-            def => def.word.toLowerCase() === sanitizedQuery
-        );
-        
-        if (existingDef) {
-            return existingDef.definition;
-        }
+  try {
+    // First try to find definition in training data
+    const existingDef = trainingData.vocabulary.definitions?.find(
+      def => def.word.toLowerCase() === sanitizedQuery
+    );
 
-        // If no cached definition, search Wikipedia
-        const definition = await searchWikipediaDefinition(sanitizedQuery);
-        if (definition) {
-            return definition;
-        }
-
-        // If no definition found, continue with existing Wikipedia search logic
-        let searchQuery = sanitizedQuery;
-        if (previousContext) {
-            const contextWords = previousContext.split(' ')
-                .filter(word => word.length > 3)
-                .slice(-3)
-                .join(' ');
-            searchQuery = `${contextWords} ${sanitizedQuery}`;
-        }
-
-        const searchResults = await wiki().search(searchQuery);
-        if (!searchResults.results || !searchResults.results.length) {
-            return `Sorry, I couldn't find any relevant information about ${query}.`;
-        }
-
-        const page = await wiki().page(searchResults.results[0]);
-        const [summary, references] = await Promise.all([
-            page.summary(),
-            page.references()
-        ]);
-
-        let response = summary;
-
-        // Add a reference if available
-        if (references && references.length > 0) {
-            response += `\n\nSource: ${references[0]}`;
-        }
-
-        return response;
-    } catch (error) {
-        console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
-        return `Sorry, I couldn't find any relevant information about ${query}.`;
+    if (existingDef) {
+      return existingDef.definition;
     }
+
+    // If no cached definition, search Wikipedia
+    const definition = await searchWikipediaDefinition(sanitizedQuery);
+    if (definition) {
+      return definition;
+    }
+
+    // If no definition found, continue with existing Wikipedia search logic
+    let searchQuery = sanitizedQuery;
+    if (previousContext) {
+      const contextWords = previousContext.split(' ')
+        .filter(word => word.length > 3)
+        .slice(-3)
+        .join(' ');
+      searchQuery = `${contextWords} ${sanitizedQuery}`;
+    }
+
+    const searchResults = await wiki().search(searchQuery);
+    if (!searchResults.results || !searchResults.results.length) {
+      return `Sorry, I couldn't find any relevant information about ${query}.`;
+    }
+
+    const page = await wiki().page(searchResults.results[0]);
+    const [summary, references] = await Promise.all([
+      page.summary(),
+      page.references()
+    ]);
+
+    let response = summary;
+
+    // Add a reference if available
+    if (references && references.length > 0) {
+      response += `\n\nSource: ${references[0]}`;
+    }
+
+    return response;
+  } catch (error) {
+    console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
+    return `Sorry, I couldn't find any relevant information about ${query}.`;
+  }
 }
 
 async function getDuckDuckGoResults(query) {
-    try {
-        const response = await axios.get('https://api.duckduckgo.com/', {
-            params: {
-                q: query,
-                format: 'json',
-                t: 'AIAssistant'
-            }
-        });
+  try {
+    const response = await axios.get('https://api.duckduckgo.com/', {
+      params: {
+        q: query,
+        format: 'json',
+        t: 'AIAssistant'
+      }
+    });
 
-        const results = response.data.RelatedTopics
-            .filter(topic => topic.FirstURL && topic.Text)
-            .map(topic => ({
-                url: topic.FirstURL,
-                title: topic.Text.split(' - ')[0],
-                snippet: topic.Text.split(' - ').slice(1).join(' - ') || topic.Text,
-                source: new URL(topic.FirstURL).hostname.replace(/^www\./, '')
-            }))
-            .slice(0, 3); // Limit to top 3 results
-            
-        return results;
-    } catch (error) {
-        console.error('Error fetching DuckDuckGo results:', error);
-        return [];
-    }
+    const results = response.data.RelatedTopics
+      .filter(topic => topic.FirstURL && topic.Text)
+      .map(topic => ({
+        url: topic.FirstURL,
+        title: topic.Text.split(' - ')[0],
+        snippet: topic.Text.split(' - ').slice(1).join(' - ') || topic.Text,
+        source: new URL(topic.FirstURL).hostname.replace(/^www\./, '')
+      }))
+      .slice(0, 3); // Limit to top 3 results
+
+    return results;
+  } catch (error) {
+    console.error('Error fetching DuckDuckGo results:', error);
+    return [];
+  }
 }
 
 // Function to solve algebraic equations using math.js
@@ -1858,7 +1903,7 @@ async function getAlgebraSolutionFromWikipedia(query) {
 // Enhanced query type detection
 expressApp.post("/chat", async (req, res) => {
   // ...existing code...
-  
+
   if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
     // Algebra handling
     cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();

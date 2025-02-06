@@ -3374,6 +3374,26 @@
       {
         "word": "a lemon",
         "definition": "The lemon (Citrus × limon) is a species of small evergreen tree in the Citrus genus of the flowering plant family Rutaceae."
+      },
+      {
+        "word": "the nazi party",
+        "definition": "The Nazi Party, officially the National Socialist German Workers' Party (German: Nationalsozialistische Deutsche Arbeiterpartei  or NSDAP), was a far-right political party in Germany active between 1920 and 1945 that created and supported the ideology of Nazism."
+      },
+      {
+        "word": "what the nazis did",
+        "definition": "Wallace Michael Shawn (born November 12, 1943) is an American actor, essayist, playwright, and screenwriter."
+      },
+      {
+        "word": "what the nazi party did",
+        "definition": "Ranks and insignia were used by the National Socialist German Workers' Party (NSDAP) as paramilitary titles between approximately 1928 and the fall of Nazi Germany in 1945."
+      },
+      {
+        "word": "pickles",
+        "definition": "A pickle is a food that has undergone pickling."
+      },
+      {
+        "word": "the food pickles",
+        "definition": "Pickling is the process of preserving or extending the shelf life of food by either anaerobic fermentation in brine or immersion in vinegar."
       }
     ],
     "hi": 2,
@@ -6755,7 +6775,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-06T04:44:04.177Z",
+  "lastTrainingDate": "2025-02-06T16:06:17.850Z",
   "definitions": [
     {
       "word": "you",
