@@ -2123,6 +2123,46 @@
         {
           "sender": "AI",
           "text": "I'm still learning how to respond to that. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "okay"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How okay I help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "no no"
+        },
+        {
+          "sender": "AI",
+          "text": "Okay, got it, I will make sure to remember that."
+        },
+        {
+          "sender": "User",
+          "text": "you should say like, Okay, glad you got it."
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"okay, got it, I will make sure to remember that.\" . Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "hmmm, well alright."
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"okay, got it, I will make sure to remember that.\" . Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Nevermind then"
+        },
+        {
+          "sender": "AI",
+          "text": "Alright, let me know if you need help. Sources: wikipedia"
         }
       ]
     }
