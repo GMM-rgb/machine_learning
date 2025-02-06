@@ -3394,6 +3394,10 @@
       {
         "word": "the food pickles",
         "definition": "Pickling is the process of preserving or extending the shelf life of food by either anaerobic fermentation in brine or immersion in vinegar."
+      },
+      {
+        "word": "blender threed",
+        "definition": "Blender is a free and open-source 3D computer graphics software tool set that runs on Windows, macOS, BSD, Haiku, IRIX and Linux."
       }
     ],
     "hi": 2,
@@ -6775,7 +6779,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-06T16:06:17.850Z",
+  "lastTrainingDate": "2025-02-06T16:20:49.940Z",
   "definitions": [
     {
       "word": "you",

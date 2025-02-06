@@ -2511,6 +2511,30 @@
         {
           "sender": "AI",
           "text": "Sorry, I couldn't find any relevant information about the Company Nivida."
+        },
+        {
+          "sender": "User",
+          "text": "what is a lemon"
+        },
+        {
+          "sender": "AI",
+          "text": "The lemon (Citrus × limon) is a species of small evergreen tree in the Citrus genus of the flowering plant family Rutaceae."
+        },
+        {
+          "sender": "User",
+          "text": "What is the company nivida corporations"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't find any relevant information about the company nivida corporations."
+        },
+        {
+          "sender": "User",
+          "text": "What is blender threeD"
+        },
+        {
+          "sender": "AI",
+          "text": "Blender is a free and open-source 3D computer graphics software tool set that runs on Windows, macOS, BSD, Haiku, IRIX and Linux."
         }
       ]
     }
