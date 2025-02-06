@@ -1833,7 +1833,7 @@ const openai = new OpenAI({
 async function getChatGPTResponse(message, context = []) {
     try {
         const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: "gpt-o1-preview-2022-02",
             messages: [
                 ...context,
                 { role: "user", content: message }
