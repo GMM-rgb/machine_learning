@@ -2187,6 +2187,30 @@
         {
           "sender": "AI",
           "text": "Result: 2*x+30"
+        },
+        {
+          "sender": "User",
+          "text": "\"2 * x + 3 = 0\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 2*x+30"
+        },
+        {
+          "sender": "User",
+          "text": "can you continue?"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"result: 2*x+30\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "ehh, its okay"
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks for your confidence in me, I'm trying my best. Sources: wikipedia"
         }
       ]
     }
