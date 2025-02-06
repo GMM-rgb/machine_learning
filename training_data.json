@@ -1752,6 +1752,11 @@
       "input": "okay",
       "output": "Alright, tell me if you will need any more help, and we can do it.",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "well okay",
+      "output": "Alright, tell me if you will need any more help, and we can do it.",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
