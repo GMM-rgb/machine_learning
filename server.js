@@ -2053,3 +2053,299 @@ expressApp.post("/chatgpt", async (req, res) => {
     });
   }
 });
+
+// Enhanced math detection patterns
+const mathPatterns = {
+  algebra: /[a-z]\s*=|solve|equation|simplify|factor|expand|[a-z]\s*[\+\-\*\/]\s*[a-z]/i,
+  fractions: /\d+\s*\/\s*\d+/,
+  equations: /[\+\-\*\/\^]\s*=|=\s*[\+\-\*\/\^]/
+};
+
+// Function to detect type of math problem
+function detectMathProblem(input) {
+  for (const [type, pattern] of Object.entries(mathPatterns)) {
+    if (pattern.test(input)) return type;
+  }
+  return 'arithmetic';
+}
+
+// Function to format math expressions into HTML
+function formatMathExpression(expr) {
+  return expr
+    .replace(/(\d+)\s*\/\s*(\d+)/g, '<div class="fraction"><span class="numerator">$1</span><span class="denominator">$2</span></div>')
+    .replace(/\*\*/g, '<sup>')
+    .replace(/\^\s*(\d+)/g, '<sup>$1</sup>')
+    .replace(/\s*=\s*/g, ' = ');
+}
+
+// Enhanced math problem solver
+async function solveMathProblem(input) {
+  try {
+    const problemType = detectMathProblem(input);
+    const cleanedInput = cleanMathExpression(input);
+    let solution = '';
+    let steps = [];
+
+    if (problemType === 'algebra') {
+      // Parse algebraic equation
+      const equation = math.parse(cleanedInput);
+
+      // Solve for variables
+      solution = await math.solve(equation);
+
+      // Generate solution steps
+      steps = generateAlgebraSteps(equation, solution);
+
+    } else if (problemType === 'fractions') {
+      solution = math.evaluate(cleanedInput);
+      steps = generateFractionSteps(cleanedInput, solution);
+    } else {
+      solution = math.evaluate(cleanedInput);
+    }
+
+    // Look up similar problems online
+    const similarProblems = await findSimilarMathProblems(input);
+
+    return {
+      original: formatMathExpression(cleanedInput),
+      solution: formatMathExpression(solution.toString()),
+      steps: steps.map(step => formatMathExpression(step)),
+      similar: similarProblems
+    };
+  } catch (error) {
+    console.error("Math solving error:", error);
+    return {
+      error: "I couldn't solve this problem. Could you please rephrase it?"
+    };
+  }
+}
+
+// Generate step-by-step algebra solutions
+function generateAlgebraSteps(equation, solution) {
+  const steps = [];
+  let currentStep = equation;
+
+  // Simplify both sides
+  steps.push(`Simplify both sides: ${currentStep}`);
+
+  // Collect like terms
+  currentStep = math.simplify(currentStep);
+  steps.push(`Collect like terms: ${currentStep}`);
+
+  // Isolate variable
+  steps.push(`Solve for variable: ${solution}`);
+
+  return steps;
+}
+
+// Search for similar math problems online
+async function findSimilarMathProblems(problem) {
+  try {
+    const searchQuery = `math problem solution ${problem}`;
+    const results = await axios.get('https://api.wolframalpha.com/v2/query', {
+      params: {
+        input: problem,
+        appid: process.env.WOLFRAM_APP_ID,
+        format: 'plaintext'
+      }
+    });
+
+    return results.data.queryresult?.pods
+      ?.filter(pod => pod.title === 'Solution')
+      ?.map(pod => pod.subpods[0].plaintext) || [];
+  } catch (error) {
+    console.error("Error finding similar problems:", error);
+    return [];
+  }
+}
+
+// Update the chat endpoint to handle math problems
+expressApp.post("/chat", async (req, res) => {
+  if (!chatEnabled) {
+    return res.json({
+      response: "Chat is currently disabled while performing a search. Please try again in a moment.",
+      html: "<div class='system-message'>Chat is currently disabled while performing a search. Please try again in a moment.</div>"
+    });
+  }
+
+  const { message, accountId = "default", chatId } = req.body;
+
+  if (!message) {
+    return res.status(400).json({
+      response: "Please provide a message.",
+      html: "<div class='error-message'>Please provide a message.</div>"
+    });
+  }
+
+  try {
+    // Initialize conversation data for this chat if it doesn't exist
+    if (!conversationData.has(chatId)) {
+      conversationData.set(chatId, []);
+    }
+
+    // Get chat history
+    const chatHistory = conversationData.get(chatId) || [];
+
+    const messageForChecks = message.trim().toLowerCase();
+    let response = "";
+    let cleanedMessage = "";
+    let possibilities = null;
+    let htmlResponse = "";
+
+    // Enhanced query type detection
+    if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra|equation/i)) {
+      // Math handling with enhanced formatting
+      cleanedMessage = message.replace(/(math|calculate|solve|algebra|equation)/gi, '').trim();
+      const mathResult = await solveMathProblem(cleanedMessage);
+
+      if (mathResult.error) {
+        response = mathResult.error;
+        htmlResponse = `<div class='math-error'>${mathResult.error}</div>`;
+      } else {
+        response = `Solution: ${mathResult.solution}`;
+        htmlResponse = `
+                <div class='math-response'>
+                    <div class='math-problem'>Problem: ${mathResult.original}</div>
+                    <div class='math-steps'>
+                        ${mathResult.steps.map(step => `<div class='math-step'>${step}</div>`).join('')}
+                    </div>
+                    <div class='math-solution'>Solution: ${mathResult.solution}</div>
+                    ${mathResult.similar.length > 0 ? `
+                        <div class='similar-problems'>
+                            <h4>Similar Problems:</h4>
+                            ${mathResult.similar.map(prob => `<div class='similar-problem'>${prob}</div>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>`;
+      }
+    } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
+      // Bing search handling
+      cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
+      response = await getBingSearchInfo(cleanedMessage);
+      htmlResponse = `<div class='search-response'>
+                <div class='search-title'>Search Results:</div>
+                <div class='search-content'>${response}</div>
+            </div>`;
+
+    } else if (messageForChecks.includes("wiki") ||
+      messageForChecks.includes("what is") ||
+      messageForChecks.includes("who is") ||
+      messageForChecks.includes("explain to me") ||
+      messageForChecks.includes("explain") ||
+      messageForChecks.includes("what are") ||
+      messageForChecks.includes("when did") ||
+      messageForChecks.includes("where is") ||
+      messageForChecks.includes("how did") ||
+      messageForChecks.includes("describe")) {
+
+      // Wikipedia handling with context
+      cleanedMessage = message
+        .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
+        .replace(/\?+$/, '')
+        .trim();
+
+      try {
+        const previousContext = chatHistory.length > 0 ?
+          chatHistory[chatHistory.length - 1].text : null;
+
+        response = await getWikipediaInfo(cleanedMessage, previousContext);
+
+        // Add related articles if available
+        const relatedArticles = await findRelatedWikiArticles(cleanedMessage);
+        if (relatedArticles && relatedArticles.length > 0) {
+          response += "\n\nRelated topics:\n" + relatedArticles
+            .slice(0, 3)
+            .map(article => `• ${article}`)
+            .join("\n");
+        }
+
+        htmlResponse = `<div class='wiki-response'>
+                    <div class='wiki-content'>${response}</div>
+                </div>`;
+
+      } catch (wikiError) {
+        console.error("Wikipedia search error:", wikiError);
+        response = "I couldn't find relevant information about that.";
+        htmlResponse = "<div class='error-message'>No Wikipedia results found.</div>";
+      }
+    } else {
+      // Normal chat handling with context
+      possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
+
+      // If our AI isn't confident enough (below 0.6), try ChatGPT
+      if (!possibilities || possibilities[0]?.confidence < 0.6) {
+        const chatGPTResponse = await getChatGPTResponse(message,
+          chatHistory.slice(-5).map(msg => ({
+            role: msg.sender.toLowerCase() === 'user' ? 'user' : 'assistant',
+            content: msg.text
+          }))
+        );
+
+        if (chatGPTResponse) {
+          response = chatGPTResponse;
+          htmlResponse = `<div class='chatgpt-response'>${chatGPTResponse}</div>`;
+        }
+      } else {
+        response = possibilities[0].response;
+        htmlResponse = `<div class='ai-response'>${response}</div>`;
+      }
+    }
+
+    // Add this inside the try block where responses are generated
+    if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i)) {
+      // First get Wikipedia info
+      const wikiInfo = await getWikipediaInfo(cleanedMessage);
+
+      // Then get DuckDuckGo results
+      const webArticles = await getDuckDuckGoResults(cleanedMessage);
+
+      // Combine responses in a nice format
+      htmlResponse = `
+                <div class='ai-response'>
+                    <div class='response-main'>${response}</div>
+                    
+                    ${wikiInfo && wikiInfo !== response ? `
+                        <div class='wiki-section'>
+                            <h4>Wikipedia Says:</h4>
+                            <div class='wiki-content'>${wikiInfo}</div>
+                        </div>
+                    ` : ''}
+                    
+                    ${webArticles.length > 0 ? `
+                        <div class='web-references'>
+                            <h4>Related Articles:</h4>
+                            <div class='references-grid'>
+                                ${webArticles.map(article => `
+                                    <div class='article-card'>
+                                        <h5>${article.title}</h5>
+                                        <p class='snippet'>${article.snippet}</p>
+                                        <div class='article-footer'>
+                                            <span class='source'>${article.source}</span>
+                                            <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+    }
+
+    // Store the new messages in conversation history
+    chatHistory.push({ sender: 'User', text: message });
+    if (response) {
+      chatHistory.push({ sender: 'AI', text: response });
+    }
+    conversationData.set(chatId, chatHistory);
+
+    const currentGoal = getCurrentGoal();
+
+    // Send the response back to the client
+    res.json({ response, html: htmlResponse });
+
+  } catch (error) {
+    console.error("Chat error:", error);
+    res.status(500).json({ response: "Sorry, I encountered an error.", html: "<div class='error-message'>Sorry, I encountered an error.</div>" });
+  }
+});

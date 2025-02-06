@@ -21,6 +21,84 @@
     padding: 10px;
     border-radius: 4px;
     font-family: monospace;
+    font-family: 'Computer Modern', serif;
+    padding: 20px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.math-problem {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.math-steps {
+    border-left: 3px solid #007bff;
+    padding-left: 15px;
+    margin: 15px 0;
+}
+
+.math-step {
+    margin: 8px 0;
+    color: #495057;
+}
+
+.math-solution {
+    font-weight: bold;
+    color: #28a745;
+    margin-top: 15px;
+    font-size: 1.1em;
+}
+
+.fraction {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    margin: 0 3px;
+}
+
+.fraction > .numerator {
+    display: block;
+    padding: 0 3px;
+    border-bottom: 1px solid;
+}
+
+.fraction > .denominator {
+    display: block;
+    padding: 0 3px;
+}
+
+.similar-problems {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+}
+
+.similar-problems h4 {
+    color: #6c757d;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+.similar-problem {
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.math-error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
 }
 
 .search-response {
