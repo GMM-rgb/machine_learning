@@ -2056,107 +2056,11 @@
       "Chat 24": [
         {
           "sender": "User",
-          "text": "What's up!"
+          "text": "hey"
         },
         {
           "sender": "AI",
-          "text": "Sorry, I couldn't find any relevant information about ."
-        },
-        {
-          "sender": "User",
-          "text": "wassup"
-        },
-        {
-          "sender": "AI",
-          "text": "Hey, whats up? Anything on your mind? Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "What's a Lemon"
-        },
-        {
-          "sender": "AI",
-          "text": "Sorry, I couldn't find any relevant information about ."
-        },
-        {
-          "sender": "User",
-          "text": "Hey again."
-        },
-        {
-          "sender": "AI",
-          "text": "Hello there again! How may I help you? Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "What's the company Apple"
-        },
-        {
-          "sender": "AI",
-          "text": "Sorry, I couldn't find any relevant information about ."
-        },
-        {
-          "sender": "User",
-          "text": "What is a Apple"
-        },
-        {
-          "sender": "AI",
-          "text": "Apple Inc."
-        },
-        {
-          "sender": "User",
-          "text": "What is the Diary of Anne Frank?"
-        },
-        {
-          "sender": "AI",
-          "text": "The Diary of a Young Girl, commonly referred to as The Diary of Anne Frank, is a book of the writings from the Dutch-language diary kept by Anne Frank while she was in hiding for two years with her family during the Nazi occupation of the Netherlands."
-        },
-        {
-          "sender": "User",
-          "text": "What are Iphones"
-        },
-        {
-          "sender": "AI",
-          "text": "The iPhone is a line of smartphones developed and marketed by Apple that run iOS, the company's own mobile operating system."
-        },
-        {
-          "sender": "User",
-          "text": "thanks"
-        },
-        {
-          "sender": "AI",
-          "text": "Your very welcome, if you need help let me know! Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "Explain the process osmosis"
-        },
-        {
-          "sender": "AI",
-          "text": "Osmosis (, US also ) is the spontaneous net movement or diffusion of solvent molecules through a selectively-permeable membrane from a region of high water potential (region of lower solute concentration) to a region of low water potential (region of higher solute concentration), in the direction that tends to equalize the solute concentrations on the two sides."
-        },
-        {
-          "sender": "User",
-          "text": "Hello again, I'm back."
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to that. Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "Hello again bro"
-        },
-        {
-          "sender": "AI",
-          "text": "Hello there! How may I help you? Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "What should I do"
-        },
-        {
-          "sender": "AI",
-          "text": "What Should I Do."
+          "text": "Hello there! Hey hey I hey you? Sources: wikipedia"
         }
       ]
     }

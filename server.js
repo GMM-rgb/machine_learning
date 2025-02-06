@@ -1233,7 +1233,7 @@ expressApp.post("/chat", async (req, res) => {
       messageForChecks.includes("where is") ||
       messageForChecks.includes("how did") ||
       messageForChecks.includes("describe") ||
-      messageForChecks.match(/^(what|how|why|who|when|where|explain|tell me about)/i) ||
+      messageForChecks.match(/^(why|who|when|where|explain|tell me about)/i) ||
       messageForChecks.includes("?")) {
 
       try {

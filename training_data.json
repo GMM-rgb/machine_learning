@@ -117,12 +117,6 @@
       "timestamp": "2025-01-26T01:13:57.595Z"
     },
     {
-      "input": "hey there",
-      "output": "hello there hey hey i hey you?",
-      "timestamp": "2025-02-04T13:22:05.000Z",
-      "user": "GMM-rgb"
-    },
-    {
       "input": "how r you my silly bro",
       "output": "Not too much, but hey I'm doing great!",
       "timestamp": "2025-01-26T01:17:39.002Z"
@@ -3353,6 +3347,10 @@
       {
         "word": "what should i do",
         "definition": "What Should I Do."
+      },
+      {
+        "word": "what could i do",
+        "definition": "9½ Weeks is an American erotic romantic drama film from 1986, directed by Adrian Lyne, and starring Kim Basinger and Mickey Rourke."
       }
     ],
     "hi": 2,
@@ -6734,7 +6732,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-06T00:38:48.745Z",
+  "lastTrainingDate": "2025-02-06T00:41:10.641Z",
   "definitions": [
     {
       "word": "you",
