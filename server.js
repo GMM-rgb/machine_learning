@@ -1286,24 +1286,43 @@ expressApp.post("/chat", async (req, res) => {
 
         // Add this inside the try block where responses are generated
         if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i)) {
-            const webArticles = await responseGenerator.fetchWebArticles(message);
-            if (webArticles.length > 0) {
-                htmlResponse = `
-                    <div class='ai-response'>
-                        ${response}
+            // First get Wikipedia info
+            const wikiInfo = await getWikipediaInfo(cleanedMessage);
+            
+            // Then get DuckDuckGo results
+            const webArticles = await getDuckDuckGoResults(cleanedMessage);
+
+            // Combine responses in a nice format
+            htmlResponse = `
+                <div class='ai-response'>
+                    <div class='response-main'>${response}</div>
+                    
+                    ${wikiInfo && wikiInfo !== response ? `
+                        <div class='wiki-section'>
+                            <h4>Wikipedia Says:</h4>
+                            <div class='wiki-content'>${wikiInfo}</div>
+                        </div>
+                    ` : ''}
+                    
+                    ${webArticles.length > 0 ? `
                         <div class='web-references'>
                             <h4>Related Articles:</h4>
-                            ${webArticles.map(article => `
-                                <div class='article-reference'>
-                                    <a href="${article.url}" target="_blank">${article.title}</a>
-                                    <span class='source'>(${article.source})</span>
-                                    <p class='snippet'>${article.snippet}</p>
-                                </div>
-                            `).join('')}
+                            <div class='references-grid'>
+                                ${webArticles.map(article => `
+                                    <div class='article-card'>
+                                        <h5>${article.title}</h5>
+                                        <p class='snippet'>${article.snippet}</p>
+                                        <div class='article-footer'>
+                                            <span class='source'>${article.source}</span>
+                                            <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
                         </div>
-                    </div>
-                `;
-            }
+                    ` : ''}
+                </div>
+            `;
         }
 
         // Store the new messages in conversation history
@@ -1772,5 +1791,32 @@ async function getWikipediaInfo(query, previousContext = null) {
     } catch (error) {
         console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
         return `Sorry, I couldn't find any relevant information about ${query}.`;
+    }
+}
+
+async function getDuckDuckGoResults(query) {
+    try {
+        const response = await axios.get('https://api.duckduckgo.com/', {
+            params: {
+                q: query,
+                format: 'json',
+                t: 'AIAssistant'
+            }
+        });
+
+        const results = response.data.RelatedTopics
+            .filter(topic => topic.FirstURL && topic.Text)
+            .map(topic => ({
+                url: topic.FirstURL,
+                title: topic.Text.split(' - ')[0],
+                snippet: topic.Text.split(' - ').slice(1).join(' - ') || topic.Text,
+                source: new URL(topic.FirstURL).hostname.replace(/^www\./, '')
+            }))
+            .slice(0, 3); // Limit to top 3 results
+
+        return results;
+    } catch (error) {
+        console.error('Error fetching DuckDuckGo results:', error);
+        return [];
     }
 }
