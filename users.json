@@ -2237,6 +2237,14 @@
         {
           "sender": "AI",
           "text": "I'm still learning how to respond to that. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Bro you the best"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm glad you think so! I'm here to help you with anything you need. 😊 take care, or are we ready for more? Sources: wikipedia"
         }
       ]
     }
