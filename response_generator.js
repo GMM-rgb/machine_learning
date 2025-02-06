@@ -1336,21 +1336,23 @@ async learnFromInteraction(input, output) {
         }
     }
 
+    // Modified the existing addWebReferences method:
     async addWebReferences(response, query) {
-        try {
-            const articles = await fetchWebArticles(query);
-            
-            if (articles.length > 0) {
-                response += '\n\nRelevant sources:\n';
-                articles.forEach(article => {
-                    response += `• ${article.title}\n  ${article.snippet}\n  Source: ${article.source}\n`;
-                });
-            }
-        } catch (error) {
-            console.error('Error adding web references:', error);
+        // Fetch information from Wikipedia and web articles
+        const wikiResult = await this.searchWikipedia(query);
+        const webArticles = await this.fetchWebArticles(query);
+        
+        let referencesText = "\n\n--- References ---\n";
+        if (wikiResult) {
+            referencesText += `Wikipedia: ${wikiResult.title} - ${wikiResult.link}\n`;
         }
-
-        return response;
+        if (webArticles && Array.isArray(webArticles) && webArticles.length) {
+            webArticles.forEach(article => {
+                referencesText += `${article.title}: ${article.url}\n`;
+            });
+        }
+        // ...existing code if any...
+        return response + referencesText;
     }
 
 }

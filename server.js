@@ -506,11 +506,13 @@ async function getWikipediaInfo(query, summarize = false) {
   }
 }
 
-// Update Bing search function with better error handling and logging
+// Updated Bing search function: configurable number of results and improved logging/return
 async function getBingSearchInfo(query) {
   // Need to get a valid API key from Microsoft Azure
   const subscriptionKey = "1feda3372abf425494ce986ad9024238";
   const endpoint = "https://api.bing.microsoft.com/v7.0/search";
+  // Configure how many top results to grab (can be modified via env variable)
+  const topCount = process.env.BING_TOP_COUNT || 3;  
 
   try {
     chatEnabled = false; // Disable chat while searching
@@ -525,36 +527,27 @@ async function getBingSearchInfo(query) {
       },
       params: {
         q: query,
-        count: 1,
+        count: topCount,
         responseFilter: "Webpages",
         mkt: "en-US",
       },
     });
 
-    console.log("Bing API response status:", response.status);
-
-    if (
-      response.data &&
-      response.data.webPages &&
-      response.data.webPages.value &&
-      response.data.webPages.value.length > 0
-    ) {
-      const result = response.data.webPages.value[0];
-      chatEnabled = true;
-      return `Here's what I found on Bing: ${result.name}\n${result.snippet}\nSource: ${result.url}`;
+    if (response.data && response.data.webPages && response.data.webPages.value && response.data.webPages.value.length > 0) {
+      const results = response.data.webPages.value;
+      console.log("Bing search results:", results.map(r => r.name));
+      let resultText = "Bing Top Results:\n";
+      results.forEach((result, idx) => {
+        resultText += `${idx + 1}. ${result.name} - ${result.url}\n`;
+      });
+      return resultText;
     } else {
-      console.log("No results found in Bing response:", response.data);
-      return "Sorry, I couldn't find any relevant information on Bing.";
+      console.warn("No Bing search results found for query:", query);
+      return "No results found on Bing.";
     }
   } catch (error) {
-    console.error(
-      "Bing search error:",
-      error.response ? error.response.data : error.message
-    );
+    console.error("Bing search error:", error.response ? error.response.data : error.message);
     chatEnabled = true;
-    if (error.response && error.response.status === 401) {
-      return "Sorry, there's an issue with the Bing search authentication. Please check the API key.";
-    }
     return "Sorry, I couldn't complete the Bing search at this time.";
   } finally {
     chatEnabled = true; // Always re-enable chat
@@ -1145,20 +1138,24 @@ if (fs.existsSync(goalDataFile)) {
   fs.writeFileSync(goalDataFile, JSON.stringify(goalData, null, 2));
 }
 
-// Function to read goal data
+// Function to read goal data with error handling and single JSON parse
 function readGoalData() {
   if (fs.existsSync(goalDataFile)) {
-    const rawData = fs.readFileSync(goalDataFile, "utf8");
-    goalData = JSON.parse(rawData);
-    goalInfo = JSON.parse(rawData);
-    console.log("Current Goal:", goalData.goal);
-    console.log("Priority:", goalData.priority);
-    console.log("Goal retrieval output: ", goalInfo);
-    console.log(tf.memory());
+    try {
+      const rawData = fs.readFileSync(goalDataFile, "utf8");
+      goalData = JSON.parse(rawData);
+      console.log("Current Goal:", goalData.goal || "None");
+      console.log("Priority:", goalData.priority || "None");
+      console.log("Goal retrieval output:", goalData);
+      console.log(tf.memory());
+    } catch (err) {
+      console.error("Error parsing goalData:", err);
+      goalData = {};
+    }
   }
 }
 
-// Function to get the current goal and priority
+// Function to get the current goal and priority remains unchanged
 function getCurrentGoal() {
   readGoalData();
   return goalData;
@@ -1760,7 +1757,7 @@ async function addDefinitionToTrainingData(word, definition) {
 async function searchWikipediaDefinition(word) {
   try {
     const searchResults = await wiki().search(word);
-    if (!searchResults.results || !searchResults.results.length) {
+    if (!searchResults.results || searchResults.results.length === 0) {
       return null;
     }
 
