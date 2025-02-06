@@ -1824,7 +1824,7 @@ async function getDuckDuckGoResults(query) {
 
 // Initialize OpenAI client
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY || '', // Make sure to use environment variables // 6UZbOlObJviTtGww5GbGvAiWyNgR3IOppSOvJOQv5G2Jm8ugW7NvJQQJ99BBACHYHv6XJ3w3AAABACOGdyvX
+    apiKey: process.env.OPENAI_API_KEY || '6UZbOlObJviTtGww5GbGvAiWyNgR3IOppSOvJOQv5G2Jm8ugW7NvJQQJ99BBACHYHv6XJ3w3AAABACOGdyvX', // Make sure to use environment variables // 6UZbOlObJviTtGww5GbGvAiWyNgR3IOppSOvJOQv5G2Jm8ugW7NvJQQJ99BBACHYHv6XJ3w3AAABACOGdyvX
     maxRetries: 3,
     timeout: 30000
 });
