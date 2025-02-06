@@ -1813,7 +1813,7 @@ async function getDuckDuckGoResults(query) {
                 source: new URL(topic.FirstURL).hostname.replace(/^www\./, '')
             }))
             .slice(0, 3); // Limit to top 3 results
-
+            
         return results;
     } catch (error) {
         console.error('Error fetching DuckDuckGo results:', error);
