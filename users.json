@@ -2115,6 +2115,38 @@
         {
           "sender": "AI",
           "text": "Result: y5x+2"
+        },
+        {
+          "sender": "User",
+          "text": "Hello again"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I hello you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "lol nevermind."
+        },
+        {
+          "sender": "AI",
+          "text": "Alright, let me know if you need help. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "algebra 2 * x + 3"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "\"2 * x + 3\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 2*x+3"
         }
       ]
     }

@@ -1826,51 +1826,34 @@ async function getDuckDuckGoResults(query) {
 // Helper: Clean the equation string by inserting multiplication signs where needed.
 // For example, turns "3x" into "3*x"
 // Updated function to clean equations
+// Function to clean and format the equation string (e.g., handling multiplication between numbers and variables)
 function cleanEquationString(equation) {
-  // Add multiplication symbol for cases like "3x" => "3*x"
-  equation = equation.replace(/([0-9])([a-zA-Z])/g, '$1*$2');
-  
-  // Handle cases like "x^2" to "x^2" (safe for exponentiation)
-  equation = equation.replace(/([a-zA-Z])\^/g, '$1^');
-  
-  return equation;
+  // Handle cases like "3x" => "3*x" and "x2" => "x*2"
+  return equation.replace(/([0-9a-zA-Z])([a-zA-Z])/g, '$1*$2').replace(/([0-9])([a-zA-Z])/g, '$1*$2');
 }
 
-// Enhanced linear equation solver (including adjustments for `x^2` and other cases)
-function solveLinearEquation(equation, variable = 'x') {
-  equation = cleanEquationString(equation); // Clean equation
-  
-  if (!equation.includes('=')) {
-    throw new Error("The input is not a valid equation (missing '=' sign).");
-  }
-
-  const [lhs, rhs] = equation.split('=').map(part => part.trim());
-
-  const exprNode = math.simplify(`${lhs} - (${rhs})`);
-  const exprStr = exprNode.toString();
-  
-  // Handle linear or simple non-linear equations (first pass)
-  const b = math.evaluate(exprStr, { [variable]: 0 });
-  const f1 = math.evaluate(exprStr, { [variable]: 1 });
-  const a = f1 - b;
-
-  if (a === 0) {
-    throw new Error("This equation has no unique solution or is not linear.");
-  }
-
-  // Return solution for linear equations like ax + b = 0
-  return -b / a;
-}
-
-// Main function to handle algebraic equations
+// Function to solve algebraic equations
 function solveAlgebra(equation) {
   try {
+    // Clean up the equation string to handle multiplication properly
     equation = cleanEquationString(equation);
+    
+    // Check if the equation is of the form "lhs = rhs"
+    if (equation.includes("=")) {
+      const [lhs, rhs] = equation.split('=').map(part => part.trim());
 
-    if (equation.includes('=') && equation.toLowerCase().includes('x')) {
-      const solution = solveLinearEquation(equation, 'x');
+      // Parse both sides using math.js
+      const lhsParsed = math.parse(lhs);
+      const rhsParsed = math.parse(rhs);
+      
+      // Set up the equation for math.js to solve
+      const equationNode = math.parse(`${lhs} - (${rhs})`);
+      
+      // Solve for 'x' by isolating the variable
+      const solution = math.solve(equationNode, 'x');
       return `The solution to "${equation}" is: x = ${solution}`;
     } else {
+      // Simplify expression if no '=' sign is present
       const simplified = math.simplify(equation).toString();
       return `Simplified expression: ${simplified}`;
     }
@@ -1880,7 +1863,7 @@ function solveAlgebra(equation) {
   }
 }
 
-// Main POST handling in Express
+// Example POST handler for the chat
 expressApp.use(express.json());
 
 expressApp.post("/chat", async (req, res) => {
@@ -1894,20 +1877,14 @@ expressApp.post("/chat", async (req, res) => {
   const equationRegex = /[0-9a-z\)\(]*\s*[\+\-\*\/=]\s*[0-9a-z\)\(]*/i;
   const hasMathOperators = equationRegex.test(message);
 
-  // Determine if we should use the algebra solver or fetch from Wikipedia
   if (hasMathOperators && message.includes("=")) {
+    // Clean up the message by removing extra words like "calculate", "solve", etc.
     const cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
     response = solveAlgebra(cleanedMessage);
     htmlResponse = `<div class='math-response'>${response}</div>`;
-  } else if (messageForChecks.includes("algebra")) {
-    const cleanedQuery = message.replace(/algebra/gi, '').trim();
-    response = await getAlgebraSolutionFromWikipedia(cleanedQuery);
-    htmlResponse = `<div class='wiki-response'>
-      <div class='wiki-content'>${response}</div>
-    </div>`;
   } else {
-    console.log(chalk.yellow("No algebraic equation detected."));
-    return res.status(400).send("No algebraic equation or algebra-related query detected.");
+    console.log("No valid algebraic equation detected.");
+    return res.status(400).send("No algebraic equation detected.");
   }
 
   res.send(htmlResponse);
