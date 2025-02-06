@@ -2098,56 +2098,43 @@
       "Chat 24": [
         {
           "sender": "User",
-          "text": "solve 2x + 5 = 15"
+          "text": "hey"
         },
         {
           "sender": "AI",
-          "text": {
-            "error": "I couldn't solve this problem. Could you please rephrase it?"
-          }
+          "text": "Hello there! Hey hey I hey you? Sources: wikipedia"
         },
         {
           "sender": "User",
-          "text": "solve 5*5"
+          "text": "how are you"
         },
         {
           "sender": "AI",
-          "text": {
-            "error": "I couldn't solve this problem. Could you please rephrase it?"
-          }
+          "text": "Not too much, but hey I'm doing great! And I'm happy to see you! Sources: wikipedia"
         },
         {
           "sender": "User",
-          "text": "sup"
+          "text": "I'm glad to see you to"
         },
         {
           "sender": "AI",
-          "text": "Hello there! How may I help you? Sources: wikipedia"
+          "text": "I'm glad to see you to to you see help with anything? Sources: wikipedia"
         },
         {
           "sender": "User",
-          "text": "calculate 1+1"
+          "text": "no, I'm fine"
         },
         {
           "sender": "AI",
-          "text": {
-            "error": "I couldn't solve this problem. Could you please rephrase it?"
-          }
-        }
-      ],
-      "Chat 25": [
+          "text": "I'm still learning how to respond to \"i'm glad to see you to to you see help with anything? Sources: wikipedia\". Sources: wikipedia"
+        },
         {
           "sender": "User",
-          "text": "solve 5^2"
+          "text": "oh okay, your fine."
         },
         {
-          "sender": "AI",
-          "text": {
-            "original": "5<sup>2</sup>",
-            "solution": "25",
-            "steps": [],
-            "similar": []
-          }
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
         }
       ]
     }

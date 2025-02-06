@@ -1238,6 +1238,8 @@ expressApp.post("/chat", async (req, res) => {
     let possibilities = null;
     let htmlResponse = "";
 
+    console.log("Received message:", message); // Log input message
+
     // Enhanced query type detection
     if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
       // Math handling
@@ -1363,6 +1365,8 @@ expressApp.post("/chat", async (req, res) => {
     conversationData.set(chatId, chatHistory);
 
     const currentGoal = getCurrentGoal();
+
+    console.log("Generated response:", response); // Log output response
 
     // Send the response back to the client
     res.json({ response, html: htmlResponse });
@@ -1927,6 +1931,8 @@ expressApp.post("/chat", async (req, res) => {
     let possibilities = null;
     let htmlResponse = "";
 
+    console.log("Received message:", message); // Log input message
+
     // Enhanced query type detection
     if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra|equation/i)) {
       // Math handling with enhanced formatting
@@ -2075,6 +2081,8 @@ expressApp.post("/chat", async (req, res) => {
     conversationData.set(chatId, chatHistory);
 
     const currentGoal = getCurrentGoal();
+
+    console.log("Generated response:", response); // Log output response
 
     // Send the response back to the client
     res.json({ response, html: htmlResponse });
