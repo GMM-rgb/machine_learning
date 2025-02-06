@@ -1209,9 +1209,9 @@ expressApp.post("/chat", async (req, res) => {
         let htmlResponse = "";
 
         // Enhanced query type detection
-        if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
+        if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
             // Math handling
-            cleanedMessage = message.replace(/(math|calculate|solve)/gi, '').trim();
+            cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
             response = await solveMathProblem(cleanedMessage);
             htmlResponse = `<div class='math-response'>${response}</div>`;
             
@@ -1820,3 +1820,60 @@ async function getDuckDuckGoResults(query) {
         return [];
     }
 }
+
+// Function to solve algebraic equations using math.js
+function solveAlgebra(equation) {
+  try {
+    const solution = math.simplify(equation).toString();
+    return `The solution to the equation "${equation}" is: ${solution}`;
+  } catch (error) {
+    console.error("Error solving algebraic equation:", error);
+    return "Sorry, I couldn't solve that algebraic equation. Please check the expression and try again.";
+  }
+}
+
+// Function to fetch algebraic solutions from Wikipedia
+async function getAlgebraSolutionFromWikipedia(query) {
+  try {
+    const searchResults = await wiki().search(query);
+    if (!searchResults.results || searchResults.results.length === 0) {
+      return `Sorry, I couldn't find any relevant information on Wikipedia about ${query}.`;
+    }
+
+    const page = await wiki().page(searchResults.results[0]);
+    const content = await page.content();
+    const algebraSection = content.sections.find(section => /algebra/i.test(section.title));
+
+    if (algebraSection) {
+      return `Here's what I found on Wikipedia about algebra related to "${query}":\n${algebraSection.content}`;
+    } else {
+      return `Sorry, I couldn't find specific algebraic information about ${query} on Wikipedia.`;
+    }
+  } catch (error) {
+    console.error(`Error fetching algebraic information from Wikipedia for query "${query}":`, error);
+    return `Sorry, I couldn't find any relevant information on Wikipedia about ${query}.`;
+  }
+}
+
+// Enhanced query type detection
+expressApp.post("/chat", async (req, res) => {
+  // ...existing code...
+  
+  if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
+    // Algebra handling
+    cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
+    response = solveAlgebra(cleanedMessage);
+    htmlResponse = `<div class='math-response'>${response}</div>`;
+  } else if (messageForChecks.includes("algebra")) {
+    // Wikipedia algebra handling
+    cleanedMessage = message.replace(/algebra/gi, '').trim();
+    response = await getAlgebraSolutionFromWikipedia(cleanedMessage);
+    htmlResponse = `<div class='wiki-response'>
+      <div class='wiki-content'>${response}</div>
+    </div>`;
+  } else {
+    // ...existing code...
+  }
+
+  // ...existing code...
+});
