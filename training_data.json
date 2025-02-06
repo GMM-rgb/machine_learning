@@ -3350,6 +3350,10 @@
       {
         "word": "iphones",
         "definition": "The iPhone is a line of smartphones developed and marketed by Apple that run iOS, the company's own mobile operating system."
+      },
+      {
+        "word": "the process osmosis",
+        "definition": "Osmosis (, US also ) is the spontaneous net movement or diffusion of solvent molecules through a selectively-permeable membrane from a region of high water potential (region of lower solute concentration) to a region of low water potential (region of higher solute concentration), in the direction that tends to equalize the solute concentrations on the two sides."
       }
     ],
     "hi": 2,
@@ -6731,7 +6735,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-06T00:18:52.111Z",
+  "lastTrainingDate": "2025-02-06T00:28:01.491Z",
   "definitions": [
     {
       "word": "you",

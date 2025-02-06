@@ -1273,7 +1273,7 @@ expressApp.post("/chat", async (req, res) => {
                                 </div>
                             `).join('')}
                         </div>
-                    ` : ''}
+                    ` : '<div class=\'web-references\'>No related articles found.</div>'}
                 </div>
             `;
 

@@ -2117,6 +2117,22 @@
         {
           "sender": "AI",
           "text": "The iPhone is a line of smartphones developed and marketed by Apple that run iOS, the company's own mobile operating system."
+        },
+        {
+          "sender": "User",
+          "text": "thanks"
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help let me know! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Explain the process osmosis"
+        },
+        {
+          "sender": "AI",
+          "text": "Osmosis (, US also ) is the spontaneous net movement or diffusion of solvent molecules through a selectively-permeable membrane from a region of high water potential (region of lower solute concentration) to a region of low water potential (region of higher solute concentration), in the direction that tends to equalize the solute concentrations on the two sides."
         }
       ]
     }
