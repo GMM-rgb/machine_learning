@@ -1825,6 +1825,9 @@ async function getDuckDuckGoResults(query) {
 // Function to solve algebraic equations using math.js
 function solveAlgebra(equation) {
   try {
+    // Clean the equation to ensure proper parsing
+    equation = equation.replace(/([0-9])([a-zA-Z])/g, '$1*$2');  // Adds '*' between numbers and variables like 3x -> 3*x
+
     // Check if the equation contains an equals sign to indicate it's a solvable equation
     if (equation.includes("=")) {
       // Split the equation into LHS and RHS

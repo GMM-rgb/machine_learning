@@ -2075,6 +2075,30 @@
         {
           "sender": "AI",
           "text": "Result: 3*x+511"
+        },
+        {
+          "sender": "User",
+          "text": "calculate \"3*x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3*x+511"
+        },
+        {
+          "sender": "User",
+          "text": "\"3*x + 5 = 0\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3*x+50"
+        },
+        {
+          "sender": "User",
+          "text": "\"3x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 3x+511"
         }
       ]
     }
