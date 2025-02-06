@@ -2229,6 +2229,14 @@
         {
           "sender": "AI",
           "text": "I'm still learning how to respond to \"no problem, let me know if you need help! 😊\n\nsources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Bro your the best"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to that. Sources: wikipedia"
         }
       ]
     }

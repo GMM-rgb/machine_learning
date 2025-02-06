@@ -1767,6 +1767,11 @@
       "input": "your the best & amazing.",
       "output": "i'm glad you think so! i'm here to help you with anything you need. 😊 Take care, or are we ready for more?",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "bro your the best",
+      "output": "i'm glad you think so! i'm here to help you with anything you need. 😊 Take care, or are we ready for more?",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
