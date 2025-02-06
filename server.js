@@ -1825,8 +1825,19 @@ async function getDuckDuckGoResults(query) {
 // Function to solve algebraic equations using math.js
 function solveAlgebra(equation) {
   try {
-    const solution = math.simplify(equation).toString();
-    return `The solution to the equation "${equation}" is: ${solution}`;
+    // If the equation contains an equals sign, split it into LHS and RHS
+    if (equation.includes('=')) {
+      const [lhs, rhs] = equation.split('=').map(part => part.trim());
+      // We can simplify both sides (or consider using math.solve if available)
+      const simplifiedLHS = math.simplify(lhs).toString();
+      const simplifiedRHS = math.simplify(rhs).toString();
+      // Here, you might implement a solver for linear equations (if needed)
+      return `Simplified equation: ${simplifiedLHS} = ${simplifiedRHS}`;
+    } else {
+      // For non-equation expressions, simply simplify
+      const simplified = math.simplify(equation).toString();
+      return `Simplified expression: ${simplified}`;
+    }
   } catch (error) {
     console.error("Error solving algebraic equation:", error);
     return "Sorry, I couldn't solve that algebraic equation. Please check the expression and try again.";
@@ -1838,40 +1849,58 @@ async function getAlgebraSolutionFromWikipedia(query) {
   try {
     const searchResults = await wiki().search(query);
     if (!searchResults.results || searchResults.results.length === 0) {
-      return `Sorry, I couldn't find any relevant information on Wikipedia about ${query}.`;
+      return `Sorry, I couldn't find any relevant information on Wikipedia about "${query}".`;
     }
 
     const page = await wiki().page(searchResults.results[0]);
     const content = await page.content();
-    const algebraSection = content.sections.find(section => /algebra/i.test(section.title));
+
+    // Assuming content.sections is an array of section objects
+    const algebraSection = content.sections && content.sections.find(section => /algebra/i.test(section.title));
 
     if (algebraSection) {
       return `Here's what I found on Wikipedia about algebra related to "${query}":\n${algebraSection.content}`;
     } else {
-      return `Sorry, I couldn't find specific algebraic information about ${query} on Wikipedia.`;
+      return `Sorry, I couldn't find specific algebraic information about "${query}" on Wikipedia.`;
     }
   } catch (error) {
     console.error(`Error fetching algebraic information from Wikipedia for query "${query}":`, error);
-    return `Sorry, I couldn't find any relevant information on Wikipedia about ${query}.`;
+    return `Sorry, I couldn't retrieve information on Wikipedia for "${query}".`;
   }
 }
 
 // Enhanced query type detection
+expressApp.use(express.json()); // Ensure JSON body parsing
+
 expressApp.post("/chat", async (req, res) => {
-  
-  if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
-    // Algebra handling
-    cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
+  const message = req.body.message || "";
+  const messageForChecks = message.toLowerCase();
+
+  let response = "";
+  let htmlResponse = "";
+
+  // Check if the message looks like an algebraic equation
+  // e.g., it contains mathematical operators or an equals sign
+  const equationRegex = /[0-9a-z\)\(]*\s*[\+\-\*\/=]\s*[0-9a-z\)\(]*/i;
+  const hasMathOperators = equationRegex.test(message);
+
+  // Determine if we should use the algebra solver or fetch from Wikipedia
+  if (hasMathOperators && message.includes("=")) {
+    // Clean up the message by removing words like "calculate", "solve", etc.
+    const cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
     response = solveAlgebra(cleanedMessage);
     htmlResponse = `<div class='math-response'>${response}</div>`;
   } else if (messageForChecks.includes("algebra")) {
-    // Wikipedia algebra handling
-    cleanedMessage = message.replace(/algebra/gi, '').trim();
-    response = await getAlgebraSolutionFromWikipedia(cleanedMessage);
+    // If it’s a general query about algebra
+    const cleanedQuery = message.replace(/algebra/gi, '').trim();
+    response = await getAlgebraSolutionFromWikipedia(cleanedQuery);
     htmlResponse = `<div class='wiki-response'>
       <div class='wiki-content'>${response}</div>
     </div>`;
   } else {
-    return console.log(chalk.yellow("No algebraic equation detected."));
+    console.log(chalk.yellow("No algebraic equation detected."));
+    return res.status(400).send("No algebraic equation or algebra-related query detected.");
   }
+
+  res.send(htmlResponse);
 });

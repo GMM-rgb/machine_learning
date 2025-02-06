@@ -2245,6 +2245,54 @@
         {
           "sender": "AI",
           "text": "I'm glad you think so! I'm here to help you with anything you need. 😊 take care, or are we ready for more? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Hey what's up again?"
+        },
+        {
+          "sender": "AI",
+          "text": "Hey what's up anything up your mind? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "solve 3x + 5 = 11"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "\"Solve for x: 3*x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: forx:3*x+511"
+        },
+        {
+          "sender": "User",
+          "text": "Solve for x: 3*x + 5 = 11"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "Solve for x: \"3*x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "\"Solve for x: 3*x + 5 = 11\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: forx:3*x+511"
         }
       ]
     }
