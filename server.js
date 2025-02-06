@@ -19,7 +19,6 @@ const { text } = require("stream/consumers");
 const { Response } = require("@whatwg-node/node-fetch");
 const { error, warn, log } = require("console");
 const { any } = require("async");
-const chalk = require("chalk");
 
 let model; // model is loaded separately (e.g., `model = await tf.loadLayersModel('localstorage://my-model')`)
 
@@ -1858,6 +1857,7 @@ async function getAlgebraSolutionFromWikipedia(query) {
 
 // Enhanced query type detection
 expressApp.post("/chat", async (req, res) => {
+  // ...existing code...
   
   if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
     // Algebra handling
@@ -1872,6 +1872,8 @@ expressApp.post("/chat", async (req, res) => {
       <div class='wiki-content'>${response}</div>
     </div>`;
   } else {
-    return console.error(chalk.red("Error: Invalid message type."));
+    // ...existing code...
   }
+
+  // ...existing code...
 });
