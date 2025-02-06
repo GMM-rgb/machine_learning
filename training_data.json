@@ -1737,6 +1737,11 @@
       "input": "your fine",
       "output": "Thanks for your confidence in me, I'm trying my best to help.",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "😊",
+      "output": "I see your happy, that's great! 😊",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
@@ -3326,6 +3331,10 @@
       {
         "word": "how to set up google search query in a nodejs script for free",
         "definition": "JavaScript (), often abbreviated as JS, is a programming language and core technology of the Web, alongside HTML and CSS."
+      },
+      {
+        "word": "an algebraic expression",
+        "definition": "In mathematics, an algebraic expression is an expression built up from constants (usually, algebraic numbers) variables, and the basic algebraic operations: \naddition (+), subtraction (-), multiplication (×), division (÷), whole number powers, and roots (fractional powers).."
       }
     ],
     "hi": 2,
@@ -6707,7 +6716,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-05T23:10:16.653Z",
+  "lastTrainingDate": "2025-02-06T01:05:47.795Z",
   "definitions": [
     {
       "word": "you",

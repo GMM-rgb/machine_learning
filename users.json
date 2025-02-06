@@ -2026,6 +2026,40 @@
           "sender": "AI",
           "text": "JavaScript (), often abbreviated as JS, is a programming language and core technology of the Web, alongside HTML and CSS.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
         }
+      ],
+      "Chat 24": [
+        {
+          "sender": "User",
+          "text": "Well. Hello there!"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "What is an algebraic expression?"
+        },
+        {
+          "sender": "AI",
+          "text": "In mathematics, an algebraic expression is an expression built up from constants (usually, algebraic numbers) variables, and the basic algebraic operations: \naddition (+), subtraction (-), multiplication (×), division (÷), whole number powers, and roots (fractional powers)..\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
+        },
+        {
+          "sender": "User",
+          "text": "thanks for the info & help"
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help on facts, let me know! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Im happy"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"your very welcome, if you need help on facts, let me know! Sources: wikipedia\". Sources: wikipedia"
+        }
       ]
     }
   }
