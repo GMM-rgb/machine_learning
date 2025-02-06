@@ -1232,71 +1232,53 @@ expressApp.post("/chat", async (req, res) => {
       messageForChecks.includes("when did") ||
       messageForChecks.includes("where is") ||
       messageForChecks.includes("how did") ||
-      messageForChecks.includes("describe")) {
-
-      // Wikipedia handling with context
-      cleanedMessage = message
-        .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
-        .replace(/\?+$/, '')
-        .trim();
+      messageForChecks.includes("describe") ||
+      messageForChecks.match(/^(what|how|why|who|when|where|explain|tell me about)/i) ||
+      messageForChecks.includes("?")) {
 
       try {
-        const previousContext = chatHistory.length > 0 ?
-          chatHistory[chatHistory.length - 1].text : null;
+        // Get both wiki info and web references in parallel
+        const [wikiInfo, webArticles] = await Promise.all([
+          getWikipediaInfo(cleanedMessage),
+          responseGenerator.fetchWebArticles(message)
+        ]);
 
-        response = await getWikipediaInfo(cleanedMessage, previousContext);
-
-        // Add related articles if available
-        const relatedArticles = await findRelatedWikiArticles(cleanedMessage);
-        if (relatedArticles && relatedArticles.length > 0) {
-          response += "\n\nRelated topics:\n" + relatedArticles
-            .slice(0, 3)
-            .map(article => `• ${article}`)
-            .join("\n");
-        }
-
-        // Add this inside the try block where responses are generated
-        if (messageForChecks.match(/^(what|how|why|who|when|where|explain|tell me about)/i) ||
-          messageForChecks.includes('?')) {
-
-          const webArticles = await responseGenerator.fetchWebArticles(message);
-          if (webArticles.length > 0) {
-            htmlResponse = `
+        // Combine wiki response with web references in a single HTML block
+        htmlResponse = `
                 <div class='ai-response'>
-                    ${response}
-                    <div class='web-references'>
-                        <h4>📚 Related Articles:</h4>
-                        ${webArticles.map((article, index) => `
-                            <div class='article-reference'>
-                                <div class='article-title'>
-                                    ${index + 1}. <a href="${article.url}" target="_blank" rel="noopener noreferrer">
-                                        ${article.title}
-                                    </a>
-                                    <span class='source'>(${article.source})</span>
+                    <div class='wiki-content'>${wikiInfo}</div>
+                    ${webArticles.length > 0 ? `
+                        <div class='web-references'>
+                            <h4>📚 Related Articles:</h4>
+                            ${webArticles.map((article, index) => `
+                                <div class='article-reference'>
+                                    <div class='article-title'>
+                                        ${index + 1}. <a href="${article.url}" target="_blank" rel="noopener noreferrer">
+                                            ${article.title}
+                                        </a>
+                                        <span class='source'>(${article.source})</span>
+                                    </div>
+                                    <p class='snippet'>${article.snippet}</p>
+                                    <div class='article-link'>
+                                        <small>🔗 <a href="${article.url}" target="_blank" rel="noopener noreferrer">
+                                            Read more
+                                        </a></small>
+                                    </div>
                                 </div>
-                                <p class='snippet'>${article.snippet}</p>
-                                <div class='article-link'>
-                                    <small>🔗 <a href="${article.url}" target="_blank" rel="noopener noreferrer">
-                                        Read more
-                                    </a></small>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
                 </div>
             `;
-          }
-        }
 
-        htmlResponse = `<div class='wiki-response'>
-                    <div class='wiki-content'>${response}</div>
-                </div>`;
+        response = wikiInfo;
 
-      } catch (wikiError) {
-        console.error("Wikipedia search error:", wikiError);
-        response = "I couldn't find relevant information about that.";
-        htmlResponse = "<div class='error-message'>No Wikipedia results found.</div>";
+      } catch (error) {
+        console.error("Error:", error);
+        htmlResponse = "<div class='error-message'>Sorry, I encountered an error.</div>";
+        response = "I encountered an error processing your request.";
       }
+
     } else {
       // Normal chat handling with context
       possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
