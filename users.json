@@ -2201,6 +2201,26 @@
         {
           "sender": "User",
           "text": "sure will!"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"alright, let me know if you need help. Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Sure will bro!"
+        },
+        {
+          "sender": "AI",
+          "text": "Ha ha, I love your enthusiasm! 😊\n\nsources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "thanks bro"
+        },
+        {
+          "sender": "AI",
+          "text": "No problem, let me know if you need help! 😊\n\nsources: wikipedia"
         }
       ]
     }
