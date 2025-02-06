@@ -2051,6 +2051,24 @@
         {
           "sender": "AI",
           "text": "Thanks for your confidence in me, I'm trying my best. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hi may hi help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "solve 2x + 5 = 15"
+        },
+        {
+          "sender": "AI",
+          "text": {
+            "error": "I couldn't solve this problem. Could you please rephrase it?"
+          }
         }
       ]
     }

@@ -1016,31 +1016,61 @@ function cleanMathExpression(input) {
 
 async function solveMathProblem(input) {
   try {
-    const cleanedExpression = cleanMathExpression(input);
-    console.log("Solving math expression:", cleanedExpression);
+    const problemType = detectMathProblem(input);
+    const cleanedInput = cleanMathExpression(input);
+    let solution = '';
+    let steps = [];
 
-    // Handle special cases
-    if (cleanedExpression.includes("!")) {
-      const num = parseInt(cleanedExpression.replace("!", ""));
-      return `The factorial of ${num} is ${math.factorial(num)}`;
-    }
+    if (problemType === 'algebra') {
+      // Parse algebraic equation
+      const equation = math.parse(cleanedInput);
 
-    // Parse and evaluate the expression
-    const result = math.evaluate(cleanedExpression);
+      // Solve for variables
+      solution = await math.solve(equation);
 
-    // Format the result based on its type
-    if (math.typeOf(result) === "Matrix") {
-      return `Result:\n${result.toString()}`;
-    } else if (typeof result === "number") {
-      return `The answer is: ${Number.isInteger(result) ? result : result.toFixed(4)
-        }`;
+      // Generate solution steps
+      steps = generateAlgebraSteps(equation, solution);
+
+    } else if (problemType === 'fractions') {
+      solution = math.evaluate(cleanedInput);
+      steps = generateFractionSteps(cleanedInput, solution);
     } else {
-      return `Result: ${result.toString()}`;
+      solution = math.evaluate(cleanedInput);
     }
+
+    // Look up similar problems online
+    const similarProblems = await findSimilarMathProblems(input);
+
+    return {
+      original: formatMathExpression(cleanedInput),
+      solution: formatMathExpression(solution.toString()),
+      steps: steps.map(step => formatMathExpression(step)),
+      similar: similarProblems
+    };
   } catch (error) {
-    console.error("Math evaluation error:", error);
-    return "Sorry, I couldn't solve that math problem. Please check the expression and try again.";
+    console.error("Math solving error:", error);
+    return {
+      error: "I couldn't solve this problem. Could you please rephrase it?"
+    };
   }
+}
+
+// Generate step-by-step algebra solutions
+function generateAlgebraSteps(equation, solution) {
+  const steps = [];
+  let currentStep = equation;
+
+  // Simplify both sides
+  steps.push(`Simplify both sides: ${currentStep}`);
+
+  // Collect like terms
+  currentStep = math.simplify(currentStep);
+  steps.push(`Collect like terms: ${currentStep}`);
+
+  // Isolate variable
+  steps.push(`Solve for variable: ${solution}`);
+
+  return steps;
 }
 
 // Add definitions lookup and processing
@@ -1882,12 +1912,31 @@ expressApp.post("/chat", async (req, res) => {
     let htmlResponse = "";
 
     // Enhanced query type detection
-    if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
-      // Math handling
-      cleanedMessage = message.replace(/(math|calculate|solve)/gi, '').trim();
-      response = await solveMathProblem(cleanedMessage);
-      htmlResponse = `<div class='math-response'>${response}</div>`;
+    if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra|equation/i)) {
+      // Math handling with enhanced formatting
+      cleanedMessage = message.replace(/(math|calculate|solve|algebra|equation)/gi, '').trim();
+      const mathResult = await solveMathProblem(cleanedMessage);
 
+      if (mathResult.error) {
+        response = mathResult.error;
+        htmlResponse = `<div class='math-error'>${mathResult.error}</div>`;
+      } else {
+        response = `Solution: ${mathResult.solution}`;
+        htmlResponse = `
+                <div class='math-response'>
+                    <div class='math-problem'>Problem: ${mathResult.original}</div>
+                    <div class='math-steps'>
+                        ${mathResult.steps.map(step => `<div class='math-step'>${step}</div>`).join('')}
+                    </div>
+                    <div class='math-solution'>Solution: ${mathResult.solution}</div>
+                    ${mathResult.similar.length > 0 ? `
+                        <div class='similar-problems'>
+                            <h4>Similar Problems:</h4>
+                            ${mathResult.similar.map(prob => `<div class='similar-problem'>${prob}</div>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>`;
+      }
     } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
       // Bing search handling
       cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
@@ -2136,27 +2185,6 @@ function generateAlgebraSteps(equation, solution) {
   steps.push(`Solve for variable: ${solution}`);
 
   return steps;
-}
-
-// Search for similar math problems online
-async function findSimilarMathProblems(problem) {
-  try {
-    const searchQuery = `math problem solution ${problem}`;
-    const results = await axios.get('https://api.wolframalpha.com/v2/query', {
-      params: {
-        input: problem,
-        appid: process.env.WOLFRAM_APP_ID,
-        format: 'plaintext'
-      }
-    });
-
-    return results.data.queryresult?.pods
-      ?.filter(pod => pod.title === 'Solution')
-      ?.map(pod => pod.subpods[0].plaintext) || [];
-  } catch (error) {
-    console.error("Error finding similar problems:", error);
-    return [];
-  }
 }
 
 // Update the chat endpoint to handle math problems
