@@ -2093,6 +2093,30 @@
         {
           "sender": "AI",
           "text": "Sorry, I couldn't find any relevant information about ."
+        },
+        {
+          "sender": "User",
+          "text": "What is a Apple"
+        },
+        {
+          "sender": "AI",
+          "text": "Apple Inc."
+        },
+        {
+          "sender": "User",
+          "text": "What is the Diary of Anne Frank?"
+        },
+        {
+          "sender": "AI",
+          "text": "The Diary of a Young Girl, commonly referred to as The Diary of Anne Frank, is a book of the writings from the Dutch-language diary kept by Anne Frank while she was in hiding for two years with her family during the Nazi occupation of the Netherlands."
+        },
+        {
+          "sender": "User",
+          "text": "What are Iphones"
+        },
+        {
+          "sender": "AI",
+          "text": "The iPhone is a line of smartphones developed and marketed by Apple that run iOS, the company's own mobile operating system."
         }
       ]
     }

@@ -3338,6 +3338,18 @@
       {
         "word": "a lemon",
         "definition": "The lemon (Citrus × limon) is a species of small evergreen tree in the Citrus genus of the flowering plant family Rutaceae."
+      },
+      {
+        "word": "a apple",
+        "definition": "Apple Inc."
+      },
+      {
+        "word": "the diary of anne frank",
+        "definition": "The Diary of a Young Girl, commonly referred to as The Diary of Anne Frank, is a book of the writings from the Dutch-language diary kept by Anne Frank while she was in hiding for two years with her family during the Nazi occupation of the Netherlands."
+      },
+      {
+        "word": "iphones",
+        "definition": "The iPhone is a line of smartphones developed and marketed by Apple that run iOS, the company's own mobile operating system."
       }
     ],
     "hi": 2,
@@ -6719,7 +6731,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-05T23:50:19.421Z",
+  "lastTrainingDate": "2025-02-06T00:18:52.111Z",
   "definitions": [
     {
       "word": "you",
