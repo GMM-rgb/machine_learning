@@ -2115,6 +2115,24 @@
           "text": {
             "error": "I couldn't solve this problem. Could you please rephrase it?"
           }
+        },
+        {
+          "sender": "User",
+          "text": "sup"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "calculate 1+1"
+        },
+        {
+          "sender": "AI",
+          "text": {
+            "error": "I couldn't solve this problem. Could you please rephrase it?"
+          }
         }
       ]
     }

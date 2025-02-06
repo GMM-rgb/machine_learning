@@ -2342,3 +2342,45 @@ async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchS
     return false;
   }
 }
+
+// Function to find similar math problems
+async function findSimilarMathProblems(input) {
+  // This is a placeholder function. You can implement your own logic to find similar math problems.
+  // For now, it returns an empty array.
+  return [];
+}
+
+// Fixed math problem solver
+async function solveMathProblem(input) {
+  try {
+    const problemType = detectMathProblem(input);
+    const cleanedInput = cleanMathExpression(input);
+    let solution = '';
+    let steps = [];
+
+    if (problemType === 'algebra') {
+      const equation = math.parse(cleanedInput);
+      solution = await math.solve(equation);
+      steps = generateAlgebraSteps(equation, solution);
+    } else if (problemType === 'fractions') {
+      solution = math.evaluate(cleanedInput);
+      steps = generateFractionSteps(cleanedInput, solution);
+    } else {
+      solution = math.evaluate(cleanedInput);
+    }
+
+    const similarProblems = await findSimilarMathProblems(input);
+
+    return {
+      original: formatMathExpression(cleanedInput),
+      solution: formatMathExpression(solution.toString()),
+      steps: steps.map(step => formatMathExpression(step)),
+      similar: similarProblems || []
+    };
+  } catch (error) {
+    console.error("Math solving error:", error);
+    return {
+      error: "I couldn't solve this problem. Could you please rephrase it?"
+    };
+  }
+}
