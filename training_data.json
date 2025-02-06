@@ -1757,6 +1757,11 @@
       "input": "well okay",
       "output": "Alright, tell me if you will need any more help, and we can do it.",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "sure will!",
+      "output": "Ha ha, I love your enthusiasm! 😊",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
