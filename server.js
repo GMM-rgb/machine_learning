@@ -19,6 +19,7 @@ const { text } = require("stream/consumers");
 const { Response } = require("@whatwg-node/node-fetch");
 const { error, warn, log } = require("console");
 const { any } = require("async");
+const OpenAI = require('openai');
 
 let model; // model is loaded separately (e.g., `model = await tf.loadLayersModel('localstorage://my-model')`)
 
@@ -1820,3 +1821,236 @@ async function getDuckDuckGoResults(query) {
         return [];
     }
 }
+
+// Initialize OpenAI client
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY || '6UZbOlObJviTtGww5GbGvAiWyNgR3IOppSOvJOQv5G2Jm8ugW7NvJQQJ99BBACHYHv6XJ3w3AAABACOGdyvX', // Make sure to use environment variables
+    maxRetries: 3,
+    timeout: 30000
+});
+
+// Add new async function to get ChatGPT response
+async function getChatGPTResponse(message, context = []) {
+    try {
+        const completion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                ...context,
+                { role: "user", content: message }
+            ],
+            temperature: 0.7,
+            max_tokens: 1000
+        });
+
+        return completion.choices[0].message.content;
+    } catch (error) {
+        console.error("ChatGPT API error:", error);
+        return null;
+    }
+}
+
+// Update the chat endpoint to include ChatGPT fallback
+expressApp.post("/chat", async (req, res) => {
+    if (!chatEnabled) {
+        return res.json({
+            response: "Chat is currently disabled while performing a search. Please try again in a moment.",
+            html: "<div class='system-message'>Chat is currently disabled while performing a search. Please try again in a moment.</div>"
+        });
+    }
+
+    const { message, accountId = "default", chatId } = req.body;
+    
+    if (!message) {
+        return res.status(400).json({
+            response: "Please provide a message.",
+            html: "<div class='error-message'>Please provide a message.</div>"
+        });
+    }
+
+    try {
+        // Initialize conversation data for this chat if it doesn't exist
+        if (!conversationData.has(chatId)) {
+            conversationData.set(chatId, []);
+        }
+
+        // Get chat history
+        const chatHistory = conversationData.get(chatId) || [];
+        
+        const messageForChecks = message.trim().toLowerCase();
+        let response = "";
+        let cleanedMessage = "";
+        let possibilities = null;
+        let htmlResponse = "";
+
+        // Enhanced query type detection
+        if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve/i)) {
+            // Math handling
+            cleanedMessage = message.replace(/(math|calculate|solve)/gi, '').trim();
+            response = await solveMathProblem(cleanedMessage);
+            htmlResponse = `<div class='math-response'>${response}</div>`;
+            
+        } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
+            // Bing search handling
+            cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
+            response = await getBingSearchInfo(cleanedMessage);
+            htmlResponse = `<div class='search-response'>
+                <div class='search-title'>Search Results:</div>
+                <div class='search-content'>${response}</div>
+            </div>`;
+            
+        } else if (messageForChecks.includes("wiki") || 
+                   messageForChecks.includes("what is") || 
+                   messageForChecks.includes("who is") ||
+                   messageForChecks.includes("explain to me") ||
+                   messageForChecks.includes("explain") ||
+                   messageForChecks.includes("what are") ||
+                   messageForChecks.includes("when did") ||
+                   messageForChecks.includes("where is") ||
+                   messageForChecks.includes("how did") ||
+                   messageForChecks.includes("describe")) {
+            
+            // Wikipedia handling with context
+            cleanedMessage = message
+                .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
+                .replace(/\?+$/, '')
+                .trim();
+            
+            try {
+                const previousContext = chatHistory.length > 0 ? 
+                    chatHistory[chatHistory.length - 1].text : null;
+                
+                response = await getWikipediaInfo(cleanedMessage, previousContext);
+                
+                // Add related articles if available
+                const relatedArticles = await findRelatedWikiArticles(cleanedMessage);
+                if (relatedArticles && relatedArticles.length > 0) {
+                    response += "\n\nRelated topics:\n" + relatedArticles
+                        .slice(0, 3)
+                        .map(article => `• ${article}`)
+                        .join("\n");
+                }
+
+                htmlResponse = `<div class='wiki-response'>
+                    <div class='wiki-content'>${response}</div>
+                </div>`;
+                
+            } catch (wikiError) {
+                console.error("Wikipedia search error:", wikiError);
+                response = "I couldn't find relevant information about that.";
+                htmlResponse = "<div class='error-message'>No Wikipedia results found.</div>";
+            }
+        } else {
+            // Normal chat handling with context
+            possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
+            
+            // If our AI isn't confident enough (below 0.6), try ChatGPT
+            if (!possibilities || possibilities[0]?.confidence < 0.6) {
+                const chatGPTResponse = await getChatGPTResponse(message, 
+                    chatHistory.slice(-5).map(msg => ({
+                        role: msg.sender.toLowerCase() === 'user' ? 'user' : 'assistant',
+                        content: msg.text
+                    }))
+                );
+                
+                if (chatGPTResponse) {
+                    response = chatGPTResponse;
+                    htmlResponse = `<div class='chatgpt-response'>${chatGPTResponse}</div>`;
+                }
+            } else {
+                response = possibilities[0].response;
+                htmlResponse = `<div class='ai-response'>${response}</div>`;
+            }
+        }
+
+        // Add this inside the try block where responses are generated
+        if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i)) {
+            // First get Wikipedia info
+            const wikiInfo = await getWikipediaInfo(cleanedMessage);
+            
+            // Then get DuckDuckGo results
+            const webArticles = await getDuckDuckGoResults(cleanedMessage);
+
+            // Combine responses in a nice format
+            htmlResponse = `
+                <div class='ai-response'>
+                    <div class='response-main'>${response}</div>
+                    
+                    ${wikiInfo && wikiInfo !== response ? `
+                        <div class='wiki-section'>
+                            <h4>Wikipedia Says:</h4>
+                            <div class='wiki-content'>${wikiInfo}</div>
+                        </div>
+                    ` : ''}
+                    
+                    ${webArticles.length > 0 ? `
+                        <div class='web-references'>
+                            <h4>Related Articles:</h4>
+                            <div class='references-grid'>
+                                ${webArticles.map(article => `
+                                    <div class='article-card'>
+                                        <h5>${article.title}</h5>
+                                        <p class='snippet'>${article.snippet}</p>
+                                        <div class='article-footer'>
+                                            <span class='source'>${article.source}</span>
+                                            <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Store the new messages in conversation history
+        chatHistory.push({ sender: 'User', text: message });
+        if (response) {
+            chatHistory.push({ sender: 'AI', text: response });
+        }
+        conversationData.set(chatId, chatHistory);
+
+        const currentGoal = getCurrentGoal();
+
+        // Send the response back to the client
+        res.json({ response, html: htmlResponse });
+
+    } catch (error) {
+        console.error("Chat error:", error);
+        res.status(500).json({ response: "Sorry, I encountered an error.", html: "<div class='error-message'>Sorry, I encountered an error.</div>" });
+    }
+});
+
+// Add dedicated ChatGPT endpoint
+expressApp.post("/chatgpt", async (req, res) => {
+    const { message, context = [] } = req.body;
+    
+    if (!message) {
+        return res.status(400).json({
+            response: "Please provide a message.",
+            html: "<div class='error-message'>Please provide a message.</div>"
+        });
+    }
+
+    try {
+        const response = await getChatGPTResponse(message, context);
+        
+        if (response) {
+            res.json({
+                response,
+                html: `<div class='chatgpt-response'>${response}</div>`
+            });
+        } else {
+            res.status(500).json({
+                response: "Unable to get response from ChatGPT.",
+                html: "<div class='error-message'>Unable to get response from ChatGPT.</div>"
+            });
+        }
+    } catch (error) {
+        console.error("ChatGPT endpoint error:", error);
+        res.status(500).json({
+            response: "Error processing ChatGPT request.",
+            html: "<div class='error-message'>Error processing ChatGPT request.</div>"
+        });
+    }
+});
