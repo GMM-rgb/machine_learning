@@ -1828,9 +1828,13 @@ async function getDuckDuckGoResults(query) {
 // Updated function to clean equations
 // Function to clean and format the equation string (e.g., handling multiplication between numbers and variables)
 // Function to clean and format the equation string (e.g., handling multiplication between numbers and variables)
+// Function to clean and format the equation string (e.g., handling multiplication between numbers and variables)
 function cleanEquationString(equation) {
   // Handle cases like "3x" => "3*x" and "x2" => "x*2"
-  return equation.replace(/([0-9a-zA-Z])([a-zA-Z])/g, '$1*$2').replace(/([0-9])([a-zA-Z])/g, '$1*$2');
+  return equation
+    .replace(/([0-9a-zA-Z])([a-zA-Z])/g, '$1*$2')  // Insert '*' between numbers and variables
+    .replace(/([0-9])([a-zA-Z])/g, '$1*$2')       // Insert '*' between numbers and variables
+    .replace(/\s+/g, ''); // Remove any unnecessary spaces
 }
 
 // Function to solve algebraic equations
@@ -1838,7 +1842,7 @@ function solveAlgebra(equation) {
   try {
     // Clean up the equation string to handle multiplication properly
     equation = cleanEquationString(equation);
-    
+
     // If the equation includes an '=' sign, we need to solve for x
     if (equation.includes("=")) {
       const [lhs, rhs] = equation.split('=').map(part => part.trim());
@@ -1847,7 +1851,7 @@ function solveAlgebra(equation) {
       const lhsParsed = math.parse(lhs);
       const rhsParsed = math.parse(rhs);
       
-      // Set up the equation for math.js to solve
+      // Set up the equation for math.js to solve: lhs - rhs = 0
       const equationNode = math.parse(`${lhs} - (${rhs})`);
       
       // Solve for 'x' by isolating the variable

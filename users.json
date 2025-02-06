@@ -2179,6 +2179,14 @@
         {
           "sender": "AI",
           "text": "The answer is: 22767773270"
+        },
+        {
+          "sender": "User",
+          "text": "\"2 * x + 3 = 0\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 2*x+30"
         }
       ]
     }
