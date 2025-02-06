@@ -1303,28 +1303,33 @@ async learnFromInteraction(input, output) {
 
     async fetchWebArticles(query) {
         try {
-            // Use DuckDuckGo or similar API to search for relevant articles
-            const response = await axios.get('https://api.duckduckgo.com/', {
+            const subscriptionKey = '1feda3372abf425494ce986ad9024238';
+            const response = await axios({
+                method: 'get',
+                url: 'https://api.bing.microsoft.com/v7.0/search',
+                headers: {
+                    'Ocp-Apim-Subscription-Key': subscriptionKey,
+                    'Accept': 'application/json'
+                },
                 params: {
                     q: query,
-                    format: 'json'
+                    count: 4,
+                    responseFilter: 'Webpages',
+                    mkt: 'en-US'
                 }
             });
 
-            // Filter and format results
-            const articles = response.data.RelatedTopics
-                .filter(topic => topic.FirstURL && topic.Text)
-                .map(topic => ({
-                    url: topic.FirstURL,
-                    title: topic.Text.split(' - ')[0],
-                    snippet: topic.Text,
-                    source: new URL(topic.FirstURL).hostname
-                }))
-                .slice(0, 4); // Limit to top 4 results
-
-            return articles;
+            if (response.data.webPages && response.data.webPages.value) {
+                return response.data.webPages.value.map(result => ({
+                    url: result.url,
+                    title: result.name,
+                    snippet: result.snippet,
+                    source: new URL(result.url).hostname.replace(/^www\./, '')
+                }));
+            }
+            return [];
         } catch (error) {
-            console.error('Error fetching web articles:', error);
+            console.error('Error fetching Bing results:', error);
             return [];
         }
     }
@@ -1333,9 +1338,9 @@ async learnFromInteraction(input, output) {
         const articles = await this.fetchWebArticles(query);
         
         if (articles.length > 0) {
-            response += '\n\nRelated articles:\n';
+            response += '\n\nRelevant sources:\n';
             articles.forEach(article => {
-                response += `• ${article.title} - ${article.source}\n  ${article.url}\n`;
+                response += `• ${article.title}\n  ${article.snippet}\n  Source: ${article.source}\n`;
             });
         }
 

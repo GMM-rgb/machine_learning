@@ -1195,135 +1195,68 @@ expressApp.post("/chat", async (req, res) => {
     }
 
     try {
-        // Initialize conversation data for this chat if it doesn't exist
         if (!conversationData.has(chatId)) {
             conversationData.set(chatId, []);
         }
 
-        // Get chat history
         const chatHistory = conversationData.get(chatId) || [];
-        
         const messageForChecks = message.trim().toLowerCase();
         let response = "";
         let cleanedMessage = "";
         let possibilities = null;
         let htmlResponse = "";
 
-        // Enhanced query type detection
-        if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
-            // Math handling
-            cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
-            response = await solveMathProblem(cleanedMessage);
-            htmlResponse = `<div class='math-response'>${response}</div>`;
-            
-        } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
-            // Bing search handling
-            cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
-            response = await getBingSearchInfo(cleanedMessage);
-            htmlResponse = `<div class='search-response'>
-                <div class='search-title'>Search Results:</div>
-                <div class='search-content'>${response}</div>
-            </div>`;
-            
-        } else if (messageForChecks.includes("wiki") || 
-                   messageForChecks.includes("what is") || 
-                   messageForChecks.includes("who is") ||
-                   messageForChecks.includes("explain to me") ||
-                   messageForChecks.includes("explain") ||
-                   messageForChecks.includes("what are") ||
-                   messageForChecks.includes("when did") ||
-                   messageForChecks.includes("where is") ||
-                   messageForChecks.includes("how did") ||
-                   messageForChecks.includes("describe")) {
-            
-            // Wikipedia handling with context
-            cleanedMessage = message
-                .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
-                .replace(/\?+$/, '')
-                .trim();
+        // Check if it's a search request
+        if (messageForChecks.startsWith("search") || messageForChecks.includes("find information about")) {
+            chatEnabled = false; // Disable chat while searching
+            cleanedMessage = message.replace(/^search\s+/i, '').trim();
             
             try {
-                const previousContext = chatHistory.length > 0 ? 
-                    chatHistory[chatHistory.length - 1].text : null;
-                
-                response = await getWikipediaInfo(cleanedMessage, previousContext);
-                
-                // Add related articles if available
-                const relatedArticles = await findRelatedWikiArticles(cleanedMessage);
-                if (relatedArticles && relatedArticles.length > 0) {
-                    response += "\n\nRelated topics:\n" + relatedArticles
-                        .slice(0, 3)
-                        .map(article => `• ${article}`)
-                        .join("\n");
-                }
+                const searchResults = await axios({
+                    method: 'get',
+                    url: 'https://api.bing.microsoft.com/v7.0/search',
+                    headers: {
+                        'Ocp-Apim-Subscription-Key': '1feda3372abf425494ce986ad9024238',
+                        'Accept': 'application/json'
+                    },
+                    params: {
+                        q: cleanedMessage,
+                        count: 5,
+                        responseFilter: 'Webpages',
+                        mkt: 'en-US'
+                    }
+                });
 
-                htmlResponse = `<div class='wiki-response'>
-                    <div class='wiki-content'>${response}</div>
-                </div>`;
-                
-            } catch (wikiError) {
-                console.error("Wikipedia search error:", wikiError);
-                response = "I couldn't find relevant information about that.";
-                htmlResponse = "<div class='error-message'>No Wikipedia results found.</div>";
+                if (searchResults.data.webPages && searchResults.data.webPages.value.length > 0) {
+                    htmlResponse = `<div class='search-results'>
+                        <h3>Search Results:</h3>
+                        ${searchResults.data.webPages.value.map(result => `
+                            <div class='search-result'>
+                                <h4><a href="${result.url}" target="_blank">${result.name}</a></h4>
+                                <p>${result.snippet}</p>
+                                <small>${new URL(result.url).hostname}</small>
+                            </div>
+                        `).join('')}
+                    </div>`;
+                    response = "Here are the search results I found.";
+                } else {
+                    response = "I couldn't find any relevant results for that search.";
+                    htmlResponse = "<div class='error-message'>No results found.</div>";
+                }
+            } catch (error) {
+                console.error("Search error:", error);
+                response = "Sorry, I encountered an error while searching.";
+                htmlResponse = "<div class='error-message'>Search error occurred.</div>";
+            } finally {
+                chatEnabled = true; // Re-enable chat
             }
         } else {
-            // Normal chat handling with context
+            // Handle normal chat responses
             possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
             if (possibilities && possibilities.length > 0) {
                 response = possibilities[0].response;
-                
-                // Build HTML response with internal dialogue
-                let html = `<div class='ai-response'>${response}</div>`;
-                if (possibilities.length > 1) {
-                    html += "<div class='internal-dialogue'>";
-                    possibilities.slice(1).forEach(p => {
-                        html += `<div class='dialogue-turn'>${p.response}</div>`;
-                    });
-                    html += "</div>";
-                }
-                htmlResponse = html;
+                htmlResponse = `<div class='ai-response'>${response}</div>`;
             }
-        }
-
-        // Add this inside the try block where responses are generated
-        if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i)) {
-            // First get Wikipedia info
-            const wikiInfo = await getWikipediaInfo(cleanedMessage);
-            
-            // Then get DuckDuckGo results
-            const webArticles = await getDuckDuckGoResults(cleanedMessage);
-
-            // Combine responses in a nice format
-            htmlResponse = `
-                <div class='ai-response'>
-                    <div class='response-main'>${response}</div>
-                    
-                    ${wikiInfo && wikiInfo !== response ? `
-                        <div class='wiki-section'>
-                            <h4>Wikipedia Says:</h4>
-                            <div class='wiki-content'>${wikiInfo}</div>
-                        </div>
-                    ` : ''}
-                    
-                    ${webArticles.length > 0 ? `
-                        <div class='web-references'>
-                            <h4>Related Articles:</h4>
-                            <div class='references-grid'>
-                                ${webArticles.map(article => `
-                                    <div class='article-card'>
-                                        <h5>${article.title}</h5>
-                                        <p class='snippet'>${article.snippet}</p>
-                                        <div class='article-footer'>
-                                            <span class='source'>${article.source}</span>
-                                            <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
         }
 
         // Store the new messages in conversation history
@@ -1333,14 +1266,18 @@ expressApp.post("/chat", async (req, res) => {
         }
         conversationData.set(chatId, chatHistory);
 
-        const currentGoal = getCurrentGoal();
-
-        // Send the response back to the client
-        res.json({ response, html: htmlResponse });
+        res.json({
+            response,
+            html: htmlResponse,
+            timestamp: new Date().toISOString()
+        });
 
     } catch (error) {
         console.error("Chat error:", error);
-        res.status(500).json({ response: "Sorry, I encountered an error.", html: "<div class='error-message'>Sorry, I encountered an error.</div>" });
+        res.status(500).json({
+            response: "Sorry, I encountered an error.",
+            html: "<div class='error-message'>An error occurred.</div>"
+        });
     }
 });
 
