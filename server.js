@@ -1827,6 +1827,7 @@ async function getDuckDuckGoResults(query) {
 // For example, turns "3x" into "3*x"
 // Updated function to clean equations
 // Function to clean and format the equation string (e.g., handling multiplication between numbers and variables)
+// Function to clean and format the equation string (e.g., handling multiplication between numbers and variables)
 function cleanEquationString(equation) {
   // Handle cases like "3x" => "3*x" and "x2" => "x*2"
   return equation.replace(/([0-9a-zA-Z])([a-zA-Z])/g, '$1*$2').replace(/([0-9])([a-zA-Z])/g, '$1*$2');
@@ -1838,7 +1839,7 @@ function solveAlgebra(equation) {
     // Clean up the equation string to handle multiplication properly
     equation = cleanEquationString(equation);
     
-    // Check if the equation is of the form "lhs = rhs"
+    // If the equation includes an '=' sign, we need to solve for x
     if (equation.includes("=")) {
       const [lhs, rhs] = equation.split('=').map(part => part.trim());
 
@@ -1851,9 +1852,13 @@ function solveAlgebra(equation) {
       
       // Solve for 'x' by isolating the variable
       const solution = math.solve(equationNode, 'x');
-      return `The solution to "${equation}" is: x = ${solution}`;
+      if (solution.length > 0) {
+        return `The solution to "${equation}" is: x = ${solution[0]}`;
+      } else {
+        return "No solution found for the equation.";
+      }
     } else {
-      // Simplify expression if no '=' sign is present
+      // If it's just an expression without '=', simplify it
       const simplified = math.simplify(equation).toString();
       return `Simplified expression: ${simplified}`;
     }
@@ -1883,8 +1888,9 @@ expressApp.post("/chat", async (req, res) => {
     response = solveAlgebra(cleanedMessage);
     htmlResponse = `<div class='math-response'>${response}</div>`;
   } else {
-    console.log("No valid algebraic equation detected.");
-    return res.status(400).send("No algebraic equation detected.");
+    // For expressions or queries without equations
+    response = solveAlgebra(message);
+    htmlResponse = `<div class='math-response'>${response}</div>`;
   }
 
   res.send(htmlResponse);

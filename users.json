@@ -2147,6 +2147,38 @@
         {
           "sender": "AI",
           "text": "Result: 2*x+3"
+        },
+        {
+          "sender": "User",
+          "text": "\"2 * x + 3\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 2*x+3"
+        },
+        {
+          "sender": "User",
+          "text": "(2 * x + 3)"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "\"(2 * x + 3) (2 * x + 3)\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: (2*x+3)(2*x+3)"
+        },
+        {
+          "sender": "User",
+          "text": "4553554654*5"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 22767773270"
         }
       ]
     }
