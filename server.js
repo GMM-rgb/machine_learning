@@ -2360,7 +2360,7 @@ async function solveMathProblem(input) {
 
     if (problemType === 'algebra') {
       const equation = math.parse(cleanedInput);
-      solution = await math.solve(equation);
+      solution = math.lsolve(equation);
       steps = generateAlgebraSteps(equation, solution);
     } else if (problemType === 'fractions') {
       solution = math.evaluate(cleanedInput);

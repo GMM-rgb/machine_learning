@@ -2134,6 +2134,21 @@
             "error": "I couldn't solve this problem. Could you please rephrase it?"
           }
         }
+      ],
+      "Chat 25": [
+        {
+          "sender": "User",
+          "text": "solve 5^2"
+        },
+        {
+          "sender": "AI",
+          "text": {
+            "original": "5<sup>2</sup>",
+            "solution": "25",
+            "steps": [],
+            "similar": []
+          }
+        }
       ]
     }
   }
