@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsMenuClose.addEventListener('click', () => {
         settingsMenu.style.display = 'none';
     });
+
     let settingsMenuItems = document.querySelectorAll('.settings-menu-item');
     settingsMenuItems.forEach((item) => {
         item.addEventListener('click', () => {
@@ -27,4 +28,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    const AdvancedGeneration = document.getElementById('advanced-generation-toggle');
+    const AdvancedGenerationMenu = document.getElementById('advanced-generation-menu');
+    const AdvancedGenerationClose = document.getElementById('advanced-generation-close-button');
+    const AdvancedGenerationMenuOpen = document.getElementById('advanced-generation-menu-open-button');
+    let advancedGenerationState = false; // Flag to control the advanced generation feature & allow the user to toggle the menu open and closed
+    let allowMenuOpen = false; // Flag to control the menu open and close state
+
+    AdvancedGeneration.addEventListener('click', () => {
+        if(advancedGenerationState === false && AdvancedGeneration.innerHTML === 'Advanced Generation: Off') {
+            AdvancedGeneration.innerHTML = 'Advanced Generation: On';
+            advancedGenerationState = true;
+            return;
+        } else if(advancedGenerationState === true && AdvancedGeneration.innerHTML === 'Advanced Generation: On') {
+            AdvancedGeneration.innerHTML = 'Advanced Generation: Off';
+            advancedGenerationState = false;
+            return;
+        } else {
+            return;
+        }
+    });
+
+    AdvancedGenerationClose.addEventListener('click', () => {
+        AdvancedGenerationMenu.style.display = 'none';
+    });
+
+    if(advancedGenerationState === false) {
+        AdvancedGenerationMenu.style.display = 'none';
+        allowMenuOpen = false;
+        return;
+    } else if(advancedGenerationState === true) {
+        allowMenuOpen = true;
+        return;
+    }
+    if(allowMenuOpen === false) {
+        AdvancedGenerationMenu.style.display = 'none';
+        return;
+    } else if(allowMenuOpen === true) {
+        AdvancedGenerationMenuOpen.addEventListener('click', () => {
+            if(AdvancedGenerationMenu.style.display === 'none' || AdvancedGenerationMenu.style.display === '') {
+                AdvancedGenerationMenu.style.display = 'flex';
+                return;
+            } else if(AdvancedGenerationMenu.style.display === 'flex' || AdvancedGenerationMenu.style.display === '') {
+                AdvancedGenerationMenu.style.display = 'none';
+                return;
+            } else {
+                return;
+            }
+        });
+        return;
+    }
 });
