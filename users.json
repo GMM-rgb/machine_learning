@@ -2052,6 +2052,48 @@
           "sender": "AI",
           "text": "The lemon (Citrus × limon) is a species of small evergreen tree in the Citrus genus of the flowering plant family Rutaceae.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
         }
+      ],
+      "Chat 24": [
+        {
+          "sender": "User",
+          "text": "What's up!"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't find any relevant information about ."
+        },
+        {
+          "sender": "User",
+          "text": "wassup"
+        },
+        {
+          "sender": "AI",
+          "text": "Hey, whats up? Anything on your mind? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "What's a Lemon"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't find any relevant information about ."
+        },
+        {
+          "sender": "User",
+          "text": "Hey again."
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there again! How may I help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "What's the company Apple"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't find any relevant information about ."
+        }
       ]
     }
   }

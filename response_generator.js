@@ -1304,51 +1304,34 @@ async learnFromInteraction(input, output) {
     }
 
     async fetchWebArticles(query) {
+        if (!query) return [];
+
         try {
-            // Use multiple sources for better results
-            const [duckResults, googleResults] = await Promise.all([
-                // DuckDuckGo search
-                axios.get('https://api.duckduckgo.com/', {
-                    params: {
-                        q: query,
-                        format: 'json'
-                    }
-                }),
-                // Google Custom Search (you'll need to add your API key)
-                axios.get('https://www.googleapis.com/customsearch/v1', {
-                    params: {
-                        key: 'YOUR_GOOGLE_API_KEY',
-                        cx: 'YOUR_SEARCH_ENGINE_ID',
-                        q: query
-                    }
-                }).catch(() => ({ data: { items: [] } })) // Fallback if Google API fails
-            ]);
+            // Use only DuckDuckGo for now since it doesn't require API keys
+            const response = await axios.get(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&pretty=1`);
+            
+            if (!response.data || !response.data.RelatedTopics) {
+                console.log("No results found from DuckDuckGo");
+                return [];
+            }
 
-            // Combine and format results
-            const articles = [
-                // Format DuckDuckGo results
-                ...duckResults.data.RelatedTopics
-                    .filter(topic => topic.FirstURL && topic.Text)
-                    .map(topic => ({
-                        url: topic.FirstURL,
-                        title: topic.Text.split(' - ')[0],
-                        snippet: topic.Text,
-                        source: 'DuckDuckGo'
-                    })),
-                // Format Google results
-                ...(googleResults.data.items || [])
-                    .map(item => ({
-                        url: item.link,
-                        title: item.title,
-                        snippet: item.snippet,
-                        source: new URL(item.link).hostname
-                    }))
-            ]
-            .slice(0, 5); // Limit to top 5 most relevant results
+            // Process and format the results
+            const articles = response.data.RelatedTopics
+                .filter(topic => topic.FirstURL && topic.Text) // Only keep valid results
+                .map(topic => ({
+                    url: topic.FirstURL,
+                    title: topic.Text.split(' - ')[0] || topic.Text,
+                    snippet: topic.Text,
+                    source: new URL(topic.FirstURL).hostname
+                }))
+                .slice(0, 5); // Limit to top 5 results
 
+            console.log(`Found ${articles.length} related articles`);
             return articles;
+
         } catch (error) {
             console.error('Error fetching web articles:', error);
+            // Return empty array instead of throwing error
             return [];
         }
     }

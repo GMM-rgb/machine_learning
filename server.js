@@ -1237,10 +1237,16 @@ expressApp.post("/chat", async (req, res) => {
       messageForChecks.includes("?")) {
 
       try {
+        // Decode the query properly
+        cleanedMessage = message
+          .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did|tell me about)\s*/i, '')
+          .replace(/\?+$/, '')
+          .trim();
+
         // Get both wiki info and web references in parallel
         const [wikiInfo, webArticles] = await Promise.all([
           getWikipediaInfo(cleanedMessage),
-          responseGenerator.fetchWebArticles(message)
+          responseGenerator.fetchWebArticles(cleanedMessage)
         ]);
 
         // Combine wiki response with web references in a single HTML block
@@ -1274,9 +1280,9 @@ expressApp.post("/chat", async (req, res) => {
         response = wikiInfo;
 
       } catch (error) {
-        console.error("Error:", error);
-        htmlResponse = "<div class='error-message'>Sorry, I encountered an error.</div>";
-        response = "I encountered an error processing your request.";
+        console.error("Error during search:", error);
+        htmlResponse = "<div class='error-message'>Sorry, I encountered an error while searching.</div>";
+        response = `I encountered an error while searching for information about "${cleanedMessage}".`;
       }
 
     } else {
