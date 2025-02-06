@@ -1825,16 +1825,24 @@ async function getDuckDuckGoResults(query) {
 // Function to solve algebraic equations using math.js
 function solveAlgebra(equation) {
   try {
-    // If the equation contains an equals sign, split it into LHS and RHS
-    if (equation.includes('=')) {
-      const [lhs, rhs] = equation.split('=').map(part => part.trim());
-      // We can simplify both sides (or consider using math.solve if available)
-      const simplifiedLHS = math.simplify(lhs).toString();
-      const simplifiedRHS = math.simplify(rhs).toString();
-      // Here, you might implement a solver for linear equations (if needed)
-      return `Simplified equation: ${simplifiedLHS} = ${simplifiedRHS}`;
+    // Check if the equation contains an equals sign to indicate it's a solvable equation
+    if (equation.includes("=")) {
+      // Split the equation into LHS and RHS
+      const [lhs, rhs] = equation.split("=").map(part => part.trim());
+
+      // Create an equation object using math.js
+      const equationObj = math.parse(`${lhs} - (${rhs})`);  // Forming the equation "lhs - rhs = 0"
+      
+      // Solve for 'x'
+      const solutions = math.solve(equationObj, 'x');
+      
+      if (solutions.length > 0) {
+        return `The solution to "${equation}" is: x = ${solutions[0]}`;
+      } else {
+        return `Could not solve for x in the equation: "${equation}"`;
+      }
     } else {
-      // For non-equation expressions, simply simplify
+      // If it's not an equation, just simplify
       const simplified = math.simplify(equation).toString();
       return `Simplified expression: ${simplified}`;
     }

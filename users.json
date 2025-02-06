@@ -2027,10 +2027,26 @@
           "text": "JavaScript (), often abbreviated as JS, is a programming language and core technology of the Web, alongside HTML and CSS.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
         }
       ],
-      "Chat 24": [
+      "Chat 23": [
         {
           "sender": "User",
-          "text": "hey"
+          "text": "sup bro"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"hello there! How may I help you?\" . Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "sorry I meant. Hello"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"hello there! How may I help you?\" . Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Hey"
         },
         {
           "sender": "AI",
@@ -2038,225 +2054,15 @@
         },
         {
           "sender": "User",
-          "text": "how are you"
+          "text": "\"3*x + 5 = 11\""
         },
         {
           "sender": "AI",
-          "text": "Not too much, but hey I'm doing great! And I'm happy to see you! Sources: wikipedia"
+          "text": "Result: 3*x+511"
         },
         {
           "sender": "User",
-          "text": "I'm glad to see you to"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm glad to see you to to you see help with anything? Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "no, I'm fine"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to \"i'm glad to see you to to you see help with anything? Sources: wikipedia\". Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "oh okay, your fine."
-        },
-        {
-          "sender": "System",
-          "text": "Error: Unable to process message. Please try again."
-        },
-        {
-          "sender": "User",
-          "text": "hey"
-        },
-        {
-          "sender": "AI",
-          "text": "Hello there! Hey hey I hey you? Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "How are you doing?"
-        },
-        {
-          "sender": "AI",
-          "text": "Not too much, but hey I'm doing great! Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "What is a Lemon"
-        },
-        {
-          "sender": "AI",
-          "text": "The lemon (Citrus × limon) is a species of small evergreen tree in the Citrus genus of the flowering plant family Rutaceae.\n\nRelated topics:\n• undefined\n• undefined\n• undefined"
-        },
-        {
-          "sender": "User",
-          "text": "What's osmosis"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to \"the lemon (citrus × limon) is a species of small evergreen tree in the citrus genus of the flowering plant family rutaceae. Related topics:\n• undefined\n• undefined\n• undefined\". Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "nevermind"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"the lemon (citrus × limon) is a species of small evergreen tree in the citrus genus of the flowering plant family rutaceae. Related topics:\n• undefined\n• undefined\n• undefined\". Sources: wikipedia\". Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "nevermind"
-        },
-        {
-          "sender": "AI",
-          "text": "Alright, let me know if you need help. Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "well okay"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to that. Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "okay"
-        },
-        {
-          "sender": "AI",
-          "text": "Hello there! How okay I help you? Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "no no"
-        },
-        {
-          "sender": "AI",
-          "text": "Okay, got it, I will make sure to remember that."
-        },
-        {
-          "sender": "User",
-          "text": "you should say like, Okay, glad you got it."
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to \"okay, got it, I will make sure to remember that.\" . Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "hmmm, well alright."
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"okay, got it, I will make sure to remember that.\" . Sources: wikipedia\". Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "Nevermind then"
-        },
-        {
-          "sender": "AI",
-          "text": "Alright, let me know if you need help. Sources: wikipedia"
-        }
-      ],
-      "Chat 25": [
-        {
-          "sender": "User",
-          "text": "Sup"
-        },
-        {
-          "sender": "AI",
-          "text": "Hello there! How may I help you? Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "solve 10/2"
-        },
-        {
-          "sender": "AI",
-          "text": "The answer is: 5"
-        },
-        {
-          "sender": "User",
-          "text": "okay thank"
-        },
-        {
-          "sender": "AI",
-          "text": "Alright, let me know if you need help. Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "okay thank you"
-        },
-        {
-          "sender": "AI",
-          "text": "Alright, let me know if you need help. Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "sure will!"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to \"alright, let me know if you need help. Sources: wikipedia\". Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "Sure will bro!"
-        },
-        {
-          "sender": "AI",
-          "text": "Ha ha, I love your enthusiasm! 😊\n\nsources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "thanks bro"
-        },
-        {
-          "sender": "AI",
-          "text": "No problem, let me know if you need help! 😊\n\nsources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "Your the best & amazing."
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to \"no problem, let me know if you need help! 😊\n\nsources: wikipedia\". Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "Bro your the best"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm still learning how to respond to that. Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "Bro you the best"
-        },
-        {
-          "sender": "AI",
-          "text": "I'm glad you think so! I'm here to help you with anything you need. 😊 take care, or are we ready for more? Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "Hey what's up again?"
-        },
-        {
-          "sender": "AI",
-          "text": "Hey what's up anything up your mind? Sources: wikipedia"
-        },
-        {
-          "sender": "User",
-          "text": "solve 3x + 5 = 11"
+          "text": "3*x+511"
         },
         {
           "sender": "AI",
@@ -2264,35 +2070,11 @@
         },
         {
           "sender": "User",
-          "text": "\"Solve for x: 3*x + 5 = 11\""
+          "text": "\" 3*x+511\""
         },
         {
           "sender": "AI",
-          "text": "Result: forx:3*x+511"
-        },
-        {
-          "sender": "User",
-          "text": "Solve for x: 3*x + 5 = 11"
-        },
-        {
-          "sender": "AI",
-          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
-        },
-        {
-          "sender": "User",
-          "text": "Solve for x: \"3*x + 5 = 11\""
-        },
-        {
-          "sender": "AI",
-          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
-        },
-        {
-          "sender": "User",
-          "text": "\"Solve for x: 3*x + 5 = 11\""
-        },
-        {
-          "sender": "AI",
-          "text": "Result: forx:3*x+511"
+          "text": "Result: 3*x+511"
         }
       ]
     }
