@@ -1747,6 +1747,11 @@
       "input": "😊",
       "output": "I see your happy, that's great! 😊",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "okay",
+      "output": "Alright, tell me if you will need any more help, and we can do it.",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {

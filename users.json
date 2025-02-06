@@ -2107,6 +2107,14 @@
         {
           "sender": "AI",
           "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"the lemon (citrus × limon) is a species of small evergreen tree in the citrus genus of the flowering plant family rutaceae. Related topics:\n• undefined\n• undefined\n• undefined\". Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "nevermind"
+        },
+        {
+          "sender": "AI",
+          "text": "Alright, let me know if you need help. Sources: wikipedia"
         }
       ]
     }
