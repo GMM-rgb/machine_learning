@@ -883,7 +883,7 @@ async learnFromInteraction(input, output) {
                 const topicOverlap = topicKeywords.filter(topic => 
                     matchTopics.includes(topic)
                 ).length;
-                contextualConfidence *= (1 + (topicOverlap * 0.2));
+                contextualConfidence *= (2 + (topicOverlap * 0.25));
             }
 
             // Adjust for sentiment alignment
@@ -901,7 +901,7 @@ async learnFromInteraction(input, output) {
         // Sort by confidence and return top matches
         return responses
             .sort((a, b) => b.confidence - a.confidence)
-            .slice(0, 3);
+            .slice(0, 8);
     }
 
     calculateTFIDFSimilarity(text1, text2) {
@@ -957,7 +957,7 @@ async learnFromInteraction(input, output) {
         // Calculate term frequency
         const termFreq = {};
         filteredTokens.forEach(token => {
-            termFreq[token] = (termFreq[token] || 0) + 1;
+            termFreq[token] = (termFreq[token] || 0) + 3;
         });
         
         // Sort by frequency
@@ -1016,6 +1016,7 @@ async learnFromInteraction(input, output) {
             if (searchResults.results && searchResults.results.length > 0) {
                 const page = await wiki().page(searchResults.results[0]);
                 const summary = await page.summary();
+                console.log(chalk.green(`${summary}`));
                 return summary;
             }
             return null;
@@ -1313,7 +1314,7 @@ async learnFromInteraction(input, output) {
                 },
                 params: {
                     q: query,
-                    count: 4,
+                    count: 6,
                     responseFilter: 'Webpages',
                     mkt: 'en-US'
                 },

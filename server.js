@@ -1320,7 +1320,7 @@ expressApp.post("/chat", async (req, res) => {
         let html = `<div class='ai-response'>${response}</div>`;
         if (possibilities.length > 1) {
           html += "<div class='internal-dialogue'>";
-          possibilities.slice(1).forEach(p => {
+          possibilities.slice(74).forEach(p => {
             html += `<div class='dialogue-turn'>${p.response}</div>`;
           });
           html += "</div>";
@@ -1329,8 +1329,6 @@ expressApp.post("/chat", async (req, res) => {
       }
     }
 
-    // Optionally, for questions starting with what/how/why/etc. that were not caught above,
-    // (if you’d like to guarantee getting both wiki and web results) you can add an additional check:
     if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i) && !htmlResponse.includes("wiki-section")) {
       try {
         const wikiInfoFallback = await getWikipediaInfo(cleanedMessage);
@@ -1367,6 +1365,7 @@ expressApp.post("/chat", async (req, res) => {
     `;
       } catch (fallbackError) {
         console.error("Fallback wiki/web search error:", fallbackError);
+        return response = fallbackError;
       }
     }
 
