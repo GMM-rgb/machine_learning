@@ -2059,6 +2059,30 @@
         {
           "sender": "AI",
           "text": "I'm still learning how to respond to \"your very welcome, if you need help on facts, let me know! Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Oh, it's okay."
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to that. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "That's fine"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to that. Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "You're fine"
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks for your confidence in me, I'm trying my best to help. Sources: wikipedia"
         }
       ]
     }

@@ -16,4 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsMenuClose.addEventListener('click', () => {
         settingsMenu.style.display = 'none';
     });
+    let settingsMenuItems = document.querySelectorAll('.settings-menu-item');
+    settingsMenuItems.forEach((item) => {
+        item.addEventListener('click', () => {
+            settingsMenu.style.display = 'none';
+        });
+    });
 });
