@@ -384,7 +384,7 @@ class ResponseGenerator {
                 console.log(chalk.cyan('Output: ') + this.highlightText(conv.output, searchTerm));
             });
         } else {
-            console.log(chalk.yellow('⚠ No matches found ⚠'));
+            console.log(chalk.yellow('⚠ No matches found, trying from memmory on generation. ⚠'));
         }
     }
 
@@ -530,7 +530,7 @@ async learnFromInteraction(input, output) {
         });
 
         // Create padded numeric input sequence
-        const paddedInput = [...inputIndices.slice(0, 50), ...Array(Math.max(0, 50 - inputIndices.length)).fill(0)];
+        const paddedInput = [...inputIndices.slice(0, 5000), ...Array(Math.max(0, 5000 - inputIndices.length)).fill(0)];
 
         // Convert output tokens to numeric indices
         const outputTokens = this.tokenizer.tokenize(output.toLowerCase());
@@ -545,7 +545,7 @@ async learnFromInteraction(input, output) {
         const paddedOutput = [...outputIndices.slice(0, 16), ...Array(Math.max(0, 16 - outputIndices.length)).fill(0)];
 
         // Create tensors with numeric values
-        const inputTensor = tf.tensor2d([paddedInput], [1, 50]);
+        const inputTensor = tf.tensor2d([paddedInput], [10, 5000]);
         
         // Create one-hot encoded output
         const oneHotOutput = tf.oneHot(tf.tensor1d(paddedOutput, 'int32'), Math.max(...Object.values(this.vocab)) + 1);

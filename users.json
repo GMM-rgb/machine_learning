@@ -2659,6 +2659,96 @@
         {
           "sender": "AI",
           "text": "The Gadsden Purchase (Spanish: Venta de La Mesilla \"La Mesilla sale\") is a 29,640-square-mile (76,800 km2) region of present-day southern Arizona and southwestern New Mexico that the United States acquired from Mexico by the Treaty of Mesilla, which took effect on June 8, 1854."
+        },
+        {
+          "sender": "User",
+          "text": "Hey there again."
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there hey hey I hey you?"
+        },
+        {
+          "sender": "User",
+          "text": "-25"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: -25"
+        },
+        {
+          "sender": "User",
+          "text": "243847238473847284723847384"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 2.4384723847384728e+26"
+        },
+        {
+          "sender": "User",
+          "text": "y=5+6"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "\"x*5=6\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: x*56"
+        },
+        {
+          "sender": "User",
+          "text": "\"5x=6\""
+        },
+        {
+          "sender": "AI",
+          "text": "Result: 5x6"
+        }
+      ],
+      "Chat 28": [
+        {
+          "sender": "User",
+          "text": "hi again"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there again! How may I help you?"
+        },
+        {
+          "sender": "User",
+          "text": "Nice to see you"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm glad to see you too! Do you need help with anything? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Sure!"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?"
+        },
+        {
+          "sender": "User",
+          "text": "Hello again"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I hello you?"
+        },
+        {
+          "sender": "User",
+          "text": "your so silly."
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks, your silly too! 😂"
         }
       ]
     }
