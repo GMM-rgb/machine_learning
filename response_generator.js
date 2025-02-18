@@ -3,23 +3,34 @@ const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
 const axios = require('axios');
 const levenshtein = require('fast-levenshtein');
+const path = require('path');
 
 class ResponseGenerator {
-    constructor(knowledgePath = 'knowledge.json', trainingDataPath = 'training_data.json') {
+    constructor(knowledgePath = 'knowledge.json', trainingDataPath = 'training_data.json', loadModelFlag = false) {
         this.matcher = new TemplateMatcher(knowledgePath, trainingDataPath);
         this.model = null;
         this.vocab = {};
         this.conversations = {};
         this.trainingDataPath = trainingDataPath;
-        this.trainingData = []; // Initialize as an empty array
-        this.loadModel();
-        this.loadTrainingData(); // Ensures training data will be properly loaded
+        this.trainingData = [];
+        this.loadModelFlag = loadModelFlag; // Add a flag to control model loading
+
+        if (this.loadModelFlag) {
+            this.loadModel();
+        }
+        this.loadTrainingData();
     }
 
     async loadModel() {
         try {
-            this.model = await tf.loadLayersModel('file://D:/machine_learning/model.json');
-            console.log("Model loaded successfully in ResponseGenerator");
+            const modelPath = path.resolve('/mnt/d/machine_learning/model.json');
+            console.log(`Attempting to load model from: ${modelPath}`);
+            if (fs.existsSync(modelPath)) {
+                this.model = await tf.loadLayersModel(`file://${modelPath}`);
+                console.log("Model loaded successfully in ResponseGenerator");
+            } else {
+                console.error(`Error: Path ${modelPath} does not exist.`);
+            }
         } catch (error) {
             console.error("Error loading model in ResponseGenerator:", error);
         }
@@ -30,9 +41,8 @@ class ResponseGenerator {
             try {
                 const data = fs.readFileSync(this.trainingDataPath, 'utf8');
                 this.trainingData = JSON.parse(data);
-
-                if(!Array.isArray(this.trainingData)) {
-                  console.warn("Warning: training_data.json is not an array. Attempting reset.");
+                if (!Array.isArray(this.trainingData)) {
+                    console.warn("Warning: training_data.json is not an array. Attempting reset.");
                 }
             } catch (error) {
                 console.error("Error loading training data:", error);
@@ -46,7 +56,6 @@ class ResponseGenerator {
     async generateResponse(inputText) {
         this.learnInBackground(inputText);
 
-        // Find a similar past conversation
         let closestMatch = this.findClosestMatch(inputText);
         if (closestMatch) {
             let refinedResponse = this.refineResponse(closestMatch.response, inputText);
@@ -54,13 +63,11 @@ class ResponseGenerator {
             return refinedResponse;
         }
 
-        // Try template matching
         const { bestMatch, score } = this.matcher.findBestTemplate(inputText);
         if (bestMatch && score < 3) {
             return bestMatch.output;
         }
 
-        // Use AI model as a last resort
         if (this.model) {
             try {
                 let response = await this.generateModelResponse(inputText);
@@ -123,7 +130,7 @@ class ResponseGenerator {
         try {
             const response = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`);
             if (response.data.extract) {
-                return response.data.extract.split('. ')[0];  
+                return response.data.extract.split('. ')[0];
             }
         } catch (error) {
             console.error(`Wikipedia fetch failed for ${word}`);
@@ -132,9 +139,10 @@ class ResponseGenerator {
     }
 
     findClosestMatch(inputText) {
-      if(!Array.isArray(this.trainingData) || this.trainingData.length === 0) {
-        return null; // No training data was yet initialized
-      }
+        if (!Array.isArray(this.trainingData) || this.trainingData.length === 0) {
+            return null;
+        }
+
         let bestMatch = null;
         let lowestDistance = Infinity;
 
@@ -146,7 +154,7 @@ class ResponseGenerator {
             }
         }
 
-        return lowestDistance < 5 ? bestMatch : null;  
+        return lowestDistance < 5 ? bestMatch : null;
     }
 
     refineResponse(existingResponse, inputText) {
