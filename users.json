@@ -2767,8 +2767,65 @@
         {
           "sender": "AI",
           "text": "Not too much, but hey I'm doing great! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "What is Linux Ubuntu"
+        },
+        {
+          "sender": "AI",
+          "text": "Ubuntu (  uu-BUUN-too) is a Linux distribution derived from Debian and composed mostly of free and open-source software."
+        },
+        {
+          "sender": "User",
+          "text": "Explain more about Linux Ubuntu"
+        },
+        {
+          "sender": "AI",
+          "text": "Ubuntu (  uu-BUUN-too) is a Linux distribution derived from Debian and composed mostly of free and open-source software."
+        },
+        {
+          "sender": "User",
+          "text": "Oh well thats okay you did your best."
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"ubuntu (  uu-buun-too) is a linux distribution derived from debian and composed mostly of free and open-source software.\" . Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "its okay, lol"
+        },
+        {
+          "sender": "AI",
+          "text": "Thanks for your confidence in me, I'm trying my best. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "Im happy"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"thanks for your confidence in me, I'm trying my best. Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": ":)"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "😊"
+        },
+        {
+          "sender": "AI",
+          "text": "I see your happy, \"sorry, I couldn't solve that math problem. Please check the expression and try again.\" 's great! 😊"
         }
-      ]
+      ],
+      "Chat 30": []
     }
   }
 }
