@@ -1794,7 +1794,7 @@
       "user": "GMM-rgb"
     },
     {
-      "input": "",
+      "input": "no it's like this ${...}",
       "output": "Oh, okay now I understand what you are talking about.",
       "type": ["correction", "confirmation"],
       "user": "GMM-rgb"
