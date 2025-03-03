@@ -2754,19 +2754,19 @@
       "Chat 29": [
         {
           "sender": "User",
-          "text": "Hi"
+          "text": "Hello there."
         },
         {
           "sender": "AI",
-          "text": "Hello there! Hi may hi help you?"
+          "text": "Hello there! How may I help you?"
         },
         {
           "sender": "User",
-          "text": "Sure you can help me."
+          "text": "could you help me"
         },
         {
           "sender": "AI",
-          "text": "I'm still learning how to respond to \"hello there! Hi may hi help you?\" . Sources: wikipedia"
+          "text": "Sure I can, just describe what you need help with. Sources: wikipedia"
         }
       ]
     }

@@ -1792,6 +1792,12 @@
       "input": "sure you could help me",
       "output": "Okay, what do you need help with? The more inforamtion you provide the better I can help with the work. So, lets do that, okay?",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "",
+      "output": "Oh, okay now I understand what you are talking about.",
+      "type": ["correction", "confirmation"],
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
