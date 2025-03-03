@@ -2750,6 +2750,24 @@
           "sender": "AI",
           "text": "Thanks, your silly too! 😂"
         }
+      ],
+      "Chat 29": [
+        {
+          "sender": "User",
+          "text": "Hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hi may hi help you?"
+        },
+        {
+          "sender": "User",
+          "text": "Sure you can help me."
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"hello there! Hi may hi help you?\" . Sources: wikipedia"
+        }
       ]
     }
   }
