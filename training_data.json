@@ -1794,10 +1794,9 @@
       "user": "GMM-rgb"
     },
     {
-      "input": "no it's like this ${...}",
-      "output": "Oh, okay now I understand what you are talking about.",
-      "type": ["correction", "confirmation"],
-      "user": "GMM-rgb"
+      "input": "what do you think of today?",
+      "output": "As an AI I dont have preferences or personal experiences of what happended today, but I bet it was really great! 😊",
+      "user": "defaultUser"
     }
   ],
   "vocabulary": {
@@ -3443,6 +3442,18 @@
       {
         "word": "gained through the gadsden purchase of",
         "definition": "The Gadsden Purchase (Spanish: Venta de La Mesilla \"La Mesilla sale\") is a 29,640-square-mile (76,800 km2) region of present-day southern Arizona and southwestern New Mexico that the United States acquired from Mexico by the Treaty of Mesilla, which took effect on June 8, 1854."
+      },
+      {
+        "word": "google docs",
+        "definition": "Google Docs is an online word processor and part of the free, web-based Google Docs Editors suite offered by Google."
+      },
+      {
+        "word": "the reform movement in history",
+        "definition": "Reform Judaism, also known as Liberal Judaism or Progressive Judaism, is a major Jewish denomination that emphasizes the evolving nature of Judaism, the superiority of its ethical aspects to its ceremonial ones, and belief in a continuous revelation which is closely intertwined with human reason and not limited to the Theophany at Mount Sinai."
+      },
+      {
+        "word": "the situation about reform movement situation",
+        "definition": "The 2024 Bangladesh quota reform movement was a series of anti-government and pro-democracy protests in Bangladesh, spearheaded primarily by university students."
       }
     ],
     "hi": 2,
@@ -6824,7 +6835,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-02-06T19:25:45.345Z",
+  "lastTrainingDate": "2025-03-03T20:09:49.077Z",
   "definitions": [
     {
       "word": "you",

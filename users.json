@@ -2754,19 +2754,45 @@
       "Chat 29": [
         {
           "sender": "User",
-          "text": "Hello there."
+          "text": "Hello there, what's up with you?"
         },
         {
           "sender": "AI",
-          "text": "Hello there! How may I help you?"
+          "text": "Not too much, but hey I'm doing great! And I'm happy to see you! 😊 what do you need help with? Sources: wikipedia"
         },
         {
           "sender": "User",
-          "text": "could you help me"
+          "text": "What is the reform movement in history"
         },
         {
           "sender": "AI",
-          "text": "Sure I can, just describe what you need help with. Sources: wikipedia"
+          "text": "Reform Judaism, also known as Liberal Judaism or Progressive Judaism, is a major Jewish denomination that emphasizes the evolving nature of Judaism, the superiority of its ethical aspects to its ceremonial ones, and belief in a continuous revelation which is closely intertwined with human reason and not limited to the Theophany at Mount Sinai."
+        },
+        {
+          "sender": "User",
+          "text": "Explain the situation about Reform Movement situation."
+        },
+        {
+          "sender": "AI",
+          "text": "The 2024 Bangladesh quota reform movement was a series of anti-government and pro-democracy protests in Bangladesh, spearheaded primarily by university students."
+        },
+        {
+          "sender": "User",
+          "text": "Hello again"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I hello you?"
+        }
+      ],
+      "Chat 30": [
+        {
+          "sender": "User",
+          "text": "Hey again, how are you?"
+        },
+        {
+          "sender": "AI",
+          "text": "Not too much, but hey I'm doing great! And I'm happy to see you! Sources: wikipedia"
         }
       ]
     }
