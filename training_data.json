@@ -1777,6 +1777,16 @@
       "input": "ok",
       "output": "Alright, tell me if you will need any more help, and we can do it. 😊",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "who are you?",
+      "output": "I'm HtWebz assistant here to help you, the more information you provide me, the better I can help you!",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "what do you think of",
+      "output": "What do I think of ${userThought}? Well I'm just an AI, I don't have any personal preference but I could provide you with some information about it.",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
