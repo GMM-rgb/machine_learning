@@ -23,10 +23,9 @@ class ResponseGenerator {
     trainingDataPath = "training_data.json",
     modelPath = "model/"
   ) {
-  this.matcher = new TemplateMatcher(knowledgePath, trainingDataPath);
-  // Convert to absolute path
-  this.modelPath = path.resolve(modelPath);
-  this.modelSaveDir = path.join(this.modelPath, 'latest');
+    this.matcher = new TemplateMatcher(knowledgePath, trainingDataPath);
+    // Convert to absolute path
+    this.modelPath = path.resolve(modelPath);
     this.vocab = {};
     this.trainingDataPath = trainingDataPath;
     this.trainingData = {
@@ -81,14 +80,14 @@ class ResponseGenerator {
     }
 
     try {
-      // Ensure model save directory exists
-      if (!fs.existsSync(this.modelSaveDir)) {
-        fs.mkdirSync(this.modelSaveDir, { recursive: true });
+      // Ensure model directory exists
+      if (!fs.existsSync(this.modelPath)) {
+        fs.mkdirSync(this.modelPath, { recursive: true });
       }
 
-      // Check if model.json exists in the save directory
-      const modelJsonPath = path.join(this.modelSaveDir, "model.json");
-
+      // Check if model.json exists (not just if directory has files)
+      const modelJsonPath = path.join(this.modelPath, "model.json");
+      
       if (fs.existsSync(modelJsonPath)) {
         console.log(chalk.yellow("📂 Found existing model, loading..."));
         this.model = await tf.loadLayersModel(
@@ -104,12 +103,12 @@ class ResponseGenerator {
       console.log(chalk.yellow("   This is normal on first run."));
       this.model = await this.createNewModel();
       globalCache.model = this.model;
-
+      
       // Save immediately after creation
       console.log(chalk.cyan("💾 Saving newly created model..."));
-      await this.model.save(`file://${this.modelSaveDir}`);
+      await this.model.save(`file://${this.modelPath}`);
       console.log(chalk.green("✅ New model created and saved to disk"));
-      console.log(chalk.cyan(`   Location: ${this.modelSaveDir}`));
+      console.log(chalk.cyan(`   Location: ${this.modelPath}`));
     } catch (error) {
       console.error(chalk.red("❌ Error loading model:"), error);
       console.log(chalk.yellow("⚠️  Creating emergency backup model..."));
@@ -118,7 +117,7 @@ class ResponseGenerator {
       
       // Try to save the backup model
       try {
-        await this.model.save(`file://${this.modelSaveDir}`);
+        await this.model.save(`file://${this.modelPath}`);
         console.log(chalk.green("✅ Backup model saved"));
       } catch (saveError) {
         console.error(chalk.red("❌ Could not save backup model:"), saveError);
@@ -128,6 +127,7 @@ class ResponseGenerator {
 
   async createNewModel() {
     const model = tf.sequential();
+
     model.add(
       tf.layers.embedding({
         inputDim: 10000,
@@ -203,6 +203,7 @@ class ResponseGenerator {
         console.log(chalk.green("✅ Training data loaded"));
       } catch (error) {
         console.error(chalk.red("❌ Error loading data:"), error);
+        this.initializeEmptyTrainingData();
       }
     } else {
       this.initializeEmptyTrainingData();
@@ -610,18 +611,18 @@ class ResponseGenerator {
       this.detectUserIntent(input).type === "QUESTION" ||
       input.toLowerCase().includes("what") ||
       input.toLowerCase().includes("how") ||
-      input.toLowerCase().includes("why")) {
-    try {
-      // Ensure save directory exists
-      if (!fs.existsSync(this.modelSaveDir)) {
-        fs.mkdirSync(this.modelSaveDir, { recursive: true });
-      }
-      await this.model.save(`file://${this.modelSaveDir}`);
-      return true;
-    } catch (error) {
-      console.error(chalk.red("❌ Error saving model to disk:"), error);
-      return false;
+      input.toLowerCase().includes("why")
+    ) {
+      response = await this.addWebReferences(response, input);
     }
+
+    return this.addContextToResponse(response, understanding);
+  }
+
+  prepareContextInput(input, understanding, history) {
+    let contextInput = input;
+
+    if (history && history.length > 0) {
       const relevantHistory = history
         .slice(-3)
         .map((msg) => `${msg.sender}: ${msg.text}`)
@@ -723,56 +724,83 @@ class ResponseGenerator {
     tfidf.addDocument(text2.toLowerCase());
 
     let similarity = 0;
-    const model = tf.sequential();
+    const terms = new Set([
+      ...this.tokenizer.tokenize(text1.toLowerCase()),
+      ...this.tokenizer.tokenize(text2.toLowerCase()),
+    ]);
 
-    model.add(
-      tf.layers.embedding({
-        inputDim: 10000,
-        outputDim: 128,
-        inputLength: 50,
-      })
-    );
-
-    model.add(
-      tf.layers.lstm({
-        units: 64,
-        returnSequences: true,
-      })
-    );
-
-    model.add(
-      tf.layers.lstm({
-        units: 32,
-      })
-    );
-
-    model.add(
-      tf.layers.dense({
-        units: 64,
-        activation: "relu",
-      })
-    );
-
-    model.add(
-      tf.layers.dense({
-        units: 32,
-        activation: "relu",
-      })
-    );
-
-    model.add(
-      tf.layers.dense({
-        units: 16,
-        activation: "softmax",
-      })
-    );
-
-    model.compile({
-      optimizer: tf.train.adam(0.001),
-      metrics: ["accuracy"],
+    terms.forEach((term) => {
+      const score1 = tfidf.tfidf(term, 0);
+      const score2 = tfidf.tfidf(term, 1);
+      similarity += Math.min(score1, score2);
     });
-    console.log(chalk.green("✅ New model created"));
-    return model;
+
+    return similarity / terms.size;
+  }
+
+  extractKeyTerms(text) {
+    if (!text) return [];
+
+    const cleanText = text.toLowerCase().replace(/[^\w\s]/g, "");
+    const tokens = this.tokenizer.tokenize(cleanText);
+
+    const stopwords = new Set([
+      "a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
+      "has", "he", "in", "is", "it", "its", "of", "on", "that", "the",
+      "to", "was", "were", "will", "with",
+    ]);
+
+    const filteredTokens = tokens.filter((token) => !stopwords.has(token));
+
+    const termFreq = {};
+    filteredTokens.forEach((token) => {
+      termFreq[token] = (termFreq[token] || 0) + 1;
+    });
+
+    const sortedTerms = Object.entries(termFreq)
+      .sort(([, a], [, b]) => b - a)
+      .map(([term]) => term);
+
+    return sortedTerms.slice(0, 5);
+  }
+
+  async searchKnowledgeBase(term) {
+    if (!term) return null;
+
+    try {
+      const cacheKey = `kb_${term.toLowerCase()}`;
+      if (this.modelCache.has(cacheKey)) {
+        return this.modelCache.get(cacheKey).data;
+      }
+
+      const relevantData = this.trainingData.conversations.find(
+        (conv) =>
+          conv.input.toLowerCase().includes(term.toLowerCase()) ||
+          conv.output.toLowerCase().includes(term.toLowerCase())
+      );
+
+      if (relevantData) {
+        this.modelCache.set(cacheKey, {
+          data: relevantData.output,
+          timestamp: Date.now(),
+        });
+        return relevantData.output;
+      }
+
+      const wikiResult = await this.searchWikipedia(term);
+      if (wikiResult) {
+        this.modelCache.set(cacheKey, {
+          data: wikiResult,
+          timestamp: Date.now(),
+        });
+        return wikiResult;
+      }
+
+      return null;
+    } catch (error) {
+      console.error(`Error searching knowledge base for term "${term}":`, error);
+      return null;
+    }
   }
 
   async searchWikipedia(term) {
@@ -989,7 +1017,7 @@ class ResponseGenerator {
 
       // Update training data first
       await this.updateTrainingData(input, output);
-
+      
       // Only retrain model periodically (every 10 interactions) to avoid constant retraining
       const conversationCount = this.trainingData.conversations.length;
       const shouldRetrain = conversationCount % 10 === 0;
@@ -997,12 +1025,16 @@ class ResponseGenerator {
       if (shouldRetrain) {
         console.log(chalk.yellow(`📚 Learning checkpoint reached (${conversationCount} conversations)`));
         console.log(chalk.cyan("💾 Saving model with new knowledge..."));
+        
         try {
-          const saved = await this.saveModelToDisk();
-          if (saved) {
-            // Update global cache timestamp
-            globalCache.lastUpdate = new Date().toISOString();
-          }
+          // Save the model to disk - convert backslashes to forward slashes for Windows
+          const savePath = `file://${this.modelPath.replace(/\\/g, '/')}`;
+          await this.model.save(savePath);
+          console.log(chalk.green("✅ Model saved successfully!"));
+          console.log(chalk.cyan(`   Location: ${this.modelPath}`));
+          
+          // Update global cache timestamp
+          globalCache.lastUpdate = new Date().toISOString();
         } catch (saveError) {
           console.error(chalk.red("❌ Error saving model:"), saveError);
         }
@@ -1018,13 +1050,11 @@ class ResponseGenerator {
   async saveModel() {
     try {
       console.log(chalk.cyan("💾 Manually saving model..."));
-      const saved = await this.saveModelToDisk();
-      if (saved) {
-        await this.saveTrainingData();
-        console.log(chalk.green("✅ Model and training data saved!"));
-        return true;
-      }
-      return false;
+      await this.model.save(`file://${this.modelPath}`);
+      await this.saveTrainingData();
+      console.log(chalk.green("✅ Model and training data saved!"));
+      console.log(chalk.cyan(`   Location: ${this.modelPath}`));
+      return true;
     } catch (error) {
       console.error(chalk.red("❌ Error saving model:"), error);
       return false;

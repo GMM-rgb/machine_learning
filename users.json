@@ -3146,6 +3146,16 @@
           "sender": "AI",
           "text": "Really? Thanks! 😄"
         }
+      ],
+      "Chat 31": [
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "System",
+          "text": "Error: Unable to process message. Please try again."
+        }
       ]
     }
   }
