@@ -5,7 +5,7 @@ const path = require("path");
 const axios = require("axios");
 const wiki = require("wikijs").default;
 const math = require("mathjs");
-const tf = require("@tensorflow/tfjs-node");
+const tf = require("@tensorflow/tfjs-node-gpu");
 const ResponseGenerator = require('./response_generator');
 
 const expressApp = express();

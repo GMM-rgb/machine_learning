@@ -1,3 +1,5 @@
+// Configurable: disable Bing search if needed
+const DISABLE_BING = true; // Set to true to disable Bing API
 const TemplateMatcher = require("./template_matcher");
 const tf = require("@tensorflow/tfjs-node-gpu");
 const fs = require("fs");
@@ -106,9 +108,18 @@ class ResponseGenerator {
       
       // Save immediately after creation
       console.log(chalk.cyan("💾 Saving newly created model..."));
-      await this.model.save(`file://${this.modelPath}`);
-      console.log(chalk.green("✅ New model created and saved to disk"));
-      console.log(chalk.cyan(`   Location: ${this.modelPath}`));
+      const savePath = `file://${this.modelPath.replace(/\\/g, '/')}`;
+      try {
+        await this.model.save(savePath);
+        console.log(chalk.green("✅ New model created and saved to disk"));
+        console.log(chalk.cyan(`   Location: ${this.modelPath}`));
+      } catch (saveError) {
+        if (saveError && saveError.message && saveError.message.includes('save handlers')) {
+          console.error(chalk.red("❌ Error saving model: Multiple tfjs-node packages detected. Please uninstall either @tensorflow/tfjs-node or @tensorflow/tfjs-node-gpu."));
+        } else {
+          console.error(chalk.red("❌ Error saving model:"), saveError);
+        }
+      }
     } catch (error) {
       console.error(chalk.red("❌ Error loading model:"), error);
       console.log(chalk.yellow("⚠️  Creating emergency backup model..."));
@@ -990,10 +1001,32 @@ class ResponseGenerator {
         response = this.trainingData.conversations[responseIndex]?.output;
       }
 
+      // Improved fallback order: TemplateMatcher, Wikipedia, KnowledgeBase, then Bing
       if (!response) {
         const { bestMatch } = this.matcher.findBestTemplate(inputText);
-        response =
-          bestMatch?.output || "I'm still learning how to respond to that.";
+        if (bestMatch?.output) {
+          response = bestMatch.output;
+        } else {
+          // Try Wikipedia
+          const wiki = await this.searchWikipedia(inputText);
+          if (wiki) {
+            response = wiki;
+          } else {
+            // Try knowledge base
+            const kb = await this.searchKnowledgeBase(inputText);
+            if (kb) {
+              response = kb;
+            } else {
+              // Try Bing (if enabled)
+              const web = await this.fetchWebArticles(inputText);
+              if (web && web.length > 0) {
+                response = web[0].snippet || web[0].title;
+              } else {
+                response = "I'm still learning how to respond to that.";
+              }
+            }
+          }
+        }
       }
 
       this.responseCache.set(cacheKey, {
@@ -1025,18 +1058,24 @@ class ResponseGenerator {
       if (shouldRetrain) {
         console.log(chalk.yellow(`📚 Learning checkpoint reached (${conversationCount} conversations)`));
         console.log(chalk.cyan("💾 Saving model with new knowledge..."));
-        
         try {
-          // Save the model to disk - convert backslashes to forward slashes for Windows
+          // Save the model to disk - always use forward slashes for Windows
           const savePath = `file://${this.modelPath.replace(/\\/g, '/')}`;
-          await this.model.save(savePath);
-          console.log(chalk.green("✅ Model saved successfully!"));
-          console.log(chalk.cyan(`   Location: ${this.modelPath}`));
-          
-          // Update global cache timestamp
-          globalCache.lastUpdate = new Date().toISOString();
-        } catch (saveError) {
-          console.error(chalk.red("❌ Error saving model:"), saveError);
+          try {
+            await this.model.save(savePath);
+            console.log(chalk.green("✅ Model saved successfully!"));
+            console.log(chalk.cyan(`   Location: ${this.modelPath}`));
+            // Update global cache timestamp
+            globalCache.lastUpdate = new Date().toISOString();
+          } catch (saveError) {
+            if (saveError && saveError.message && saveError.message.includes('save handlers')) {
+              console.error(chalk.red("❌ Error saving model: Multiple tfjs-node packages detected. Please uninstall either @tensorflow/tfjs-node or @tensorflow/tfjs-node-gpu."));
+            } else {
+              console.error(chalk.red("❌ Error saving model:"), saveError);
+            }
+          }
+        } catch (saveOuterError) {
+          console.error(chalk.red("❌ Error in save logic:"), saveOuterError);
         }
       } else {
         console.log(chalk.green(`✅ Learned from interaction (${conversationCount} total conversations)`));
@@ -1090,8 +1129,16 @@ class ResponseGenerator {
   }
 
   async fetchWebArticles(query) {
+    if (DISABLE_BING) {
+      // Bing is disabled, skip web search
+      return [];
+    }
     try {
       const subscriptionKey = "1feda3372abf425494ce986ad9024238";
+      if (!subscriptionKey || subscriptionKey === "" || subscriptionKey === "YOUR_BING_KEY") {
+        console.warn("[INFO] Bing API key missing or disabled. Skipping Bing search.");
+        return [];
+      }
       const response = await axios({
         method: "get",
         url: "https://api.bing.microsoft.com/v7.0/search",
@@ -1107,7 +1154,6 @@ class ResponseGenerator {
         },
         timeout: 10000,
       });
-
       if (response.data?.webPages?.value) {
         return response.data.webPages.value.map((result) => ({
           url: result.url,
