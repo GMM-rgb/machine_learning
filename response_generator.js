@@ -1,3 +1,7 @@
+/*
+  response_generator.js
+*/
+
 // Configurable: disable Bing search if needed
 const DISABLE_BING = true; // Set to true to disable Bing API
 const TemplateMatcher = require("./template_matcher");
@@ -273,6 +277,46 @@ class ResponseGenerator {
     }
   }
 
+  // NEW: Resolve references like "this", "that", "it" to actual content
+  // FIXED: Only look at USER messages, not AI responses
+  resolveReferences(inputText, chatHistory) {
+    if (!chatHistory || chatHistory.length === 0) return inputText;
+
+    const referenceWords = ['this', 'that', 'it', 'these', 'those', 'them'];
+    const hasReference = referenceWords.some(ref => 
+      inputText.toLowerCase().includes(ref)
+    );
+
+    if (!hasReference) return inputText;
+
+    // Find the most recent relevant content FROM USER ONLY
+    const recentMessages = chatHistory
+      .slice(-5)
+      .filter(msg => msg.sender === 'User') // ONLY look at user messages
+      .reverse();
+    
+    for (const msg of recentMessages) {
+      // Skip very short messages
+      if (msg.text.length < 10) continue;
+      
+      // Extract key content from user's previous messages
+      const match = msg.text.match(/^(.*?)[.!?]/);
+      if (match) {
+        const firstSentence = match[1].trim();
+        // Replace reference words with actual content
+        let resolved = inputText;
+        referenceWords.forEach(ref => {
+          const pattern = new RegExp(`\\b${ref}\\b`, 'gi');
+          resolved = resolved.replace(pattern, `"${firstSentence}"`);
+        });
+        console.log(`[Context] Resolved "${inputText}" to "${resolved}"`);
+        return resolved;
+      }
+    }
+
+    return inputText;
+  }
+
   // NEW: Detect if user is answering AI's previous question
   detectIfAnsweringPreviousQuestion(input, chatHistory) {
     if (!chatHistory || chatHistory.length < 2) return null;
@@ -356,19 +400,22 @@ class ResponseGenerator {
   async generateEnhancedResponse(inputText, chatHistory = []) {
     if (!inputText) return null;
 
+    // First, resolve any references to previous content
+    const resolvedInput = this.resolveReferences(inputText, chatHistory);
+
     const possibilities = [];
-    const context = this.buildResponseContext(inputText, chatHistory);
-    const understanding = await this.analyzeContext(inputText, chatHistory);
+    const context = this.buildResponseContext(resolvedInput, chatHistory);
+    const understanding = await this.analyzeContext(resolvedInput, chatHistory);
 
     // Check if user is answering AI's previous question
     const questionContext = this.detectIfAnsweringPreviousQuestion(
-      inputText,
+      resolvedInput,
       chatHistory
     );
 
     if (questionContext && questionContext.isAnswer) {
       const acknowledgment = this.generateAcknowledgment(
-        inputText,
+        resolvedInput,
         questionContext.question
       );
       possibilities.push({
@@ -379,26 +426,34 @@ class ResponseGenerator {
     }
 
     const conversationThread = this.findConversationThread(
-      inputText,
+      resolvedInput,
       chatHistory
     );
     const contextBoost = conversationThread ? 1.2 : 1;
 
-    // Direct match with improved confidence calculation
-    const directMatch = this.findClosestMatch(inputText, context);
-    if (directMatch && directMatch.confidence > 0.5) {
-      possibilities.push({
-        response: this.properlyCapitalize(
-          this.addContextToResponse(directMatch.output, understanding)
-        ),
-        confidence: directMatch.confidence * contextBoost,
-        source: "direct_match",
-      });
+    // Direct match with improved confidence calculation - BUT STRICTER
+    const directMatch = this.findClosestMatch(resolvedInput, context);
+    if (directMatch && directMatch.confidence > 0.75) { // Increased from 0.5 to 0.75
+      // Additional check: make sure the match actually makes sense
+      const inputWords = resolvedInput.toLowerCase().split(' ').filter(w => w.length > 3);
+      const matchWords = directMatch.output.toLowerCase().split(' ').filter(w => w.length > 3);
+      const overlap = inputWords.filter(w => matchWords.includes(w)).length;
+      
+      // Only use if there's actual topic overlap
+      if (overlap > 0 || directMatch.confidence > 0.9) {
+        possibilities.push({
+          response: this.properlyCapitalize(
+            this.addContextToResponse(directMatch.output, understanding)
+          ),
+          confidence: directMatch.confidence * contextBoost,
+          source: "direct_match",
+        });
+      }
     }
 
-    // Template matcher
-    const templateMatch = this.matcher.findBestTemplate(inputText);
-    if (templateMatch.bestMatch && templateMatch.confidence > 0.5) {
+    // Template matcher - also stricter
+    const templateMatch = this.matcher.findBestTemplate(resolvedInput);
+    if (templateMatch.bestMatch && templateMatch.confidence > 0.65) { // Increased from 0.5
       possibilities.push({
         response: this.properlyCapitalize(templateMatch.bestMatch.output),
         confidence: templateMatch.confidence * contextBoost,
@@ -408,16 +463,25 @@ class ResponseGenerator {
 
     // Similar responses with context
     const similarResponses = await this.findSimilarResponsesWithContext(
-      inputText,
+      resolvedInput,
       context,
       understanding
     );
-    possibilities.push(...similarResponses);
+    
+    // Filter out responses with random irrelevant content
+    const filteredSimilar = similarResponses.filter(resp => {
+      const respLower = resp.response.toLowerCase();
+      // Don't return responses about geology, math errors, etc. unless asked
+      const irrelevantTopics = ['law of superposition', 'rock strata', 'geology', 'couldn\'t solve that math'];
+      return !irrelevantTopics.some(topic => respLower.includes(topic));
+    });
+    
+    possibilities.push(...filteredSimilar);
 
     // Model response only if no good matches
     if (possibilities.length === 0 || possibilities[0].confidence < 0.7) {
       const modelResponse = await this.generateModelResponseWithContext(
-        inputText,
+        resolvedInput,
         understanding,
         chatHistory
       );
@@ -438,7 +502,7 @@ class ResponseGenerator {
     // Learn from the interaction
     if (sortedResponses.length > 0) {
       await this.learnFromInteraction(
-        inputText,
+        resolvedInput,
         sortedResponses[0].response,
         understanding
       );
@@ -714,6 +778,7 @@ class ResponseGenerator {
     if (!inputText || !this.trainingData.conversations) return [];
 
     const inputTokens = this.tokenizer.tokenize(inputText.toLowerCase());
+    const inputIntent = this.detectUserIntent(inputText);
 
     return this.trainingData.conversations
       .map((conv) => {
@@ -731,14 +796,27 @@ class ResponseGenerator {
         const tokenSimilarity =
           commonTokens.length / Math.max(inputTokens.length, convTokens.length);
 
-        const similarity = tfidfSimilarity * 0.7 + tokenSimilarity * 0.3;
+        let similarity = tfidfSimilarity * 0.7 + tokenSimilarity * 0.3;
+
+        // PENALTY: If the output seems completely unrelated to input, reduce similarity
+        const outputTokens = this.tokenizer.tokenize(conv.output.toLowerCase());
+        const outputRelevance = inputTokens.filter(t => outputTokens.includes(t)).length;
+        if (outputRelevance === 0 && similarity < 0.7) {
+          similarity *= 0.5; // Heavy penalty for unrelated outputs
+        }
+
+        // PENALTY: If intents don't match at all, reduce similarity
+        const convIntent = this.detectUserIntent(conv.input);
+        if (inputIntent.type !== convIntent.type && similarity < 0.8) {
+          similarity *= 0.8;
+        }
 
         return {
           ...conv,
           similarity,
         };
       })
-      .filter((conv) => conv && conv.similarity > 0.3)
+      .filter((conv) => conv && conv.similarity > 0.4) // Increased from 0.3
       .sort((a, b) => b.similarity - a.similarity)
       .slice(0, 5);
   }
@@ -833,15 +911,57 @@ class ResponseGenerator {
   async searchWikipedia(term) {
     try {
       const wiki = require("wikijs").default;
-      const searchResults = await wiki().search(term);
-      if (searchResults.results && searchResults.results.length > 0) {
-        const page = await wiki().page(searchResults.results[0]);
-        const summary = await page.summary();
-        return summary;
+      
+      // Clean the search term
+      const cleanTerm = term.trim();
+      console.log(`[Wikipedia Search] Looking for: "${cleanTerm}"`);
+      
+      const searchResults = await wiki().search(cleanTerm);
+      
+      if (!searchResults.results || searchResults.results.length === 0) {
+        console.log(`[Wikipedia Search] No results found for "${cleanTerm}"`);
+        return null;
       }
-      return null;
+
+      const firstResult = searchResults.results[0];
+      console.log(`[Wikipedia Search] First result: "${firstResult}"`);
+      
+      // Verify relevance: check if search term appears in result title
+      const termWords = cleanTerm.toLowerCase().split(' ').filter(w => w.length > 2);
+      const resultLower = firstResult.toLowerCase();
+      const matchCount = termWords.filter(word => resultLower.includes(word)).length;
+      
+      // If less than 30% of words match, result is probably irrelevant
+      if (matchCount < termWords.length * 0.3) {
+        console.log(`[Wikipedia Search] Result "${firstResult}" seems irrelevant to "${cleanTerm}" (only ${matchCount}/${termWords.length} words match)`);
+        return null;
+      }
+
+      const page = await wiki().page(firstResult);
+      const summary = await page.summary();
+      
+      // Summarize if too long (over 500 chars)
+      let finalSummary = summary;
+      if (summary.length > 500) {
+        const sentences = summary.split(/[.!?]+/).filter(s => s.trim().length > 20);
+        const briefSummary = [];
+        let totalLength = 0;
+        
+        for (let i = 0; i < sentences.length && i < 3; i++) {
+          const sentence = sentences[i].trim();
+          if (totalLength + sentence.length > 400 && briefSummary.length > 0) break;
+          briefSummary.push(sentence);
+          totalLength += sentence.length;
+        }
+        
+        finalSummary = briefSummary.join('. ').trim() + '.';
+        finalSummary += `\n\n[Summarized from Wikipedia]`;
+      }
+      
+      console.log(`[Wikipedia Search] Successfully retrieved summary for "${firstResult}"`);
+      return finalSummary;
     } catch (error) {
-      console.error(`Error searching Wikipedia for term "${term}":`, error);
+      console.error(`[Wikipedia Search] Error searching for term "${term}":`, error);
       return null;
     }
   }
@@ -890,8 +1010,24 @@ class ResponseGenerator {
     };
   }
 
+  // UPDATED: Detect intent with better contextual understanding
   detectUserIntent(input, chatHistory = []) {
+    const normalizedInput = input.toLowerCase().trim();
+    
+    // Enhanced pattern matching that considers context
     const intents = {
+      QUESTION_ABOUT_PREVIOUS: {
+        pattern: /^(what (does|is|are|was|were)|explain|tell me about|describe) (this|that|it|these|those)/i,
+        contextRequired: true
+      },
+      MATH_EVALUATION: {
+        pattern: /^(what (does|is)|calculate|solve|compute) .*(equal|equals|\+|\-|\*|\/|\^)/i,
+        contextRequired: false
+      },
+      DEFINITION_REQUEST: {
+        pattern: /^(what (does|is|are|was|were)|define|meaning of|definition of)/i,
+        contextRequired: false
+      },
       QUESTION: /^(what|who|where|when|why|how|can|could|would|will|do|does|did|is|are|was|were)/i,
       GREETING: /^(hi|hello|hey|greetings|good\s+(morning|afternoon|evening))/i,
       FAREWELL: /^(bye|goodbye|see\s+you|farewell)/i,
@@ -901,19 +1037,44 @@ class ResponseGenerator {
       NEGATION: /^(no|nope|nah|not|never|wrong)/i,
     };
 
-    for (const [intent, pattern] of Object.entries(intents)) {
-      if (pattern.test(input.trim())) {
+    // Check context-aware intents first
+    for (const [intent, config] of Object.entries(intents)) {
+      if (typeof config === 'object' && config.pattern) {
+        if (config.pattern.test(normalizedInput)) {
+          if (config.contextRequired && chatHistory && chatHistory.length > 0) {
+            return {
+              type: intent,
+              confidence: 0.9,
+              metadata: {
+                requiresContext: true,
+                pattern: config.pattern.source,
+                match: input.match(config.pattern)[0],
+              },
+            };
+          } else if (!config.contextRequired) {
+            return {
+              type: intent,
+              confidence: 0.85,
+              metadata: {
+                pattern: config.pattern.source,
+                match: input.match(config.pattern)[0],
+              },
+            };
+          }
+        }
+      } else if (config.test && config.test(normalizedInput)) {
         return {
           type: intent,
           confidence: 0.8,
           metadata: {
-            pattern: pattern.source,
-            match: input.match(pattern)[0],
+            pattern: config.source,
+            match: input.match(config)[0],
           },
         };
       }
     }
 
+    // Check if responding to AI's previous question
     if (chatHistory && chatHistory.length > 0) {
       const lastMessage = chatHistory[chatHistory.length - 1];
       if (lastMessage.sender === "AI" && lastMessage.text.endsWith("?")) {
@@ -1014,7 +1175,19 @@ class ResponseGenerator {
       let response;
       if (prediction.shape[1] === this.trainingData.conversations.length) {
         const responseIndex = tf.argMax(prediction, 1).dataSync()[0];
-        response = this.trainingData.conversations[responseIndex]?.output;
+        const candidate = this.trainingData.conversations[responseIndex];
+        
+        // VALIDATION: Make sure the response makes sense for the input
+        if (candidate && candidate.output) {
+          const inputWords = inputText.toLowerCase().split(' ').filter(w => w.length > 3);
+          const outputWords = candidate.output.toLowerCase().split(' ').filter(w => w.length > 3);
+          const relevance = inputWords.filter(w => outputWords.includes(w)).length;
+          
+          // Only use if there's some relevance OR high confidence
+          if (relevance > 0 || prediction.dataSync()[responseIndex] > 0.8) {
+            response = candidate.output;
+          }
+        }
       }
 
       // Improved fallback order: TemplateMatcher, Wikipedia, KnowledgeBase, then Bing

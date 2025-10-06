@@ -1,3 +1,4 @@
+// server.js
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
@@ -184,27 +185,103 @@ function normalizeText(input) {
     .join(" ");
 }
 
-// Wikipedia info fetching
+// Helper function to detect if input is gibberish/random characters
+function isGibberish(text) {
+  if (!text || text.length < 3) return false;
+  
+  // Check for excessive repeated characters
+  const repeatedChars = text.match(/(.)\1{3,}/g);
+  if (repeatedChars && repeatedChars.length > 0) return true;
+  
+  // Check for lack of vowels (most real words have vowels)
+  const vowelCount = (text.match(/[aeiou]/gi) || []).length;
+  const vowelRatio = vowelCount / text.length;
+  if (vowelRatio < 0.15 && text.length > 5) return true;
+  
+  // Check for random consonant clusters
+  const consonantClusters = text.match(/[bcdfghjklmnpqrstvwxyz]{5,}/gi);
+  if (consonantClusters && consonantClusters.length > 0) return true;
+  
+  // Check character diversity (gibberish often has too many unique chars in short span)
+  const uniqueChars = new Set(text.toLowerCase()).size;
+  if (text.length > 10 && uniqueChars > text.length * 0.8) return true;
+  
+  return false;
+}
+
+// Summarize Wikipedia content using AI
+async function summarizeWikipediaContent(wikiText, topic) {
+  if (!wikiText || wikiText.length < 100) return wikiText;
+  
+  // If content is already short, return as-is
+  if (wikiText.length < 500) return wikiText;
+  
+  // Extract first 3-4 sentences as a natural summary
+  const sentences = wikiText.split(/[.!?]+/).filter(s => s.trim().length > 20);
+  
+  // Take first 3 sentences, or up to ~300 characters
+  let summary = [];
+  let totalLength = 0;
+  
+  for (let i = 0; i < sentences.length && i < 4; i++) {
+    const sentence = sentences[i].trim();
+    if (totalLength + sentence.length > 400 && summary.length > 0) break;
+    summary.push(sentence);
+    totalLength += sentence.length;
+  }
+  
+  const result = summary.join('. ').trim() + '.';
+  
+  // Add a note that it's summarized
+  return `${result}\n\n[Summarized from Wikipedia - ${Math.round((result.length / wikiText.length) * 100)}% of original length]`;
+}
+
+// Wikipedia info fetching with better search relevance
 async function getWikipediaInfo(query, previousContext = null) {
+  // Clean the query more aggressively to get better search results
   const sanitizedQuery = query
     .toLowerCase()
-    .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
+    .replace(/^(what is|what are|who is|who are|describe|explain|tell me about|when did|where is|how did)\s+/i, '')
     .replace(/[?.,!]/g, '')
     .trim();
 
+  // Don't use previous context for proper nouns or specific people/things
+  const isProperNoun = /^[A-Z]/.test(query.trim());
+  const useContext = !isProperNoun && previousContext;
+
   try {
     let searchQuery = sanitizedQuery;
-    if (previousContext) {
+    
+    // Only add context if it's relevant and not a proper noun
+    if (useContext) {
       const contextWords = previousContext.split(' ')
         .filter(word => word.length > 3)
-        .slice(-3)
+        .slice(-2) // Reduced from 3 to 2 to avoid confusion
         .join(' ');
-      searchQuery = `${contextWords} ${sanitizedQuery}`;
+      searchQuery = `${sanitizedQuery} ${contextWords}`;
     }
 
+    console.log(`[Wikipedia] Searching for: "${searchQuery}"`);
     const searchResults = await wiki().search(searchQuery);
+    
     if (!searchResults.results || !searchResults.results.length) {
-      return `Sorry, I couldn't find any relevant information about ${query}.`;
+      console.log(`[Wikipedia] No results found for "${searchQuery}"`);
+      return `Sorry, I couldn't find any relevant information about "${query}".`;
+    }
+
+    console.log(`[Wikipedia] Found: ${searchResults.results[0]}`);
+    
+    // Verify the result is actually relevant to the query
+    const firstResult = searchResults.results[0].toLowerCase();
+    const queryTerms = sanitizedQuery.toLowerCase().split(' ');
+    const relevanceScore = queryTerms.filter(term => 
+      term.length > 3 && firstResult.includes(term)
+    ).length;
+
+    // If relevance is too low, the result is probably wrong
+    if (relevanceScore === 0 && queryTerms.length > 1) {
+      console.log(`[Wikipedia] Result "${searchResults.results[0]}" doesn't seem relevant to "${sanitizedQuery}"`);
+      return `Sorry, I couldn't find relevant information about "${query}". The search returned unrelated results.`;
     }
 
     const page = await wiki().page(searchResults.results[0]);
@@ -213,16 +290,17 @@ async function getWikipediaInfo(query, previousContext = null) {
       page.references().catch(() => [])
     ]);
 
-    let response = summary;
+    // Summarize the Wikipedia content
+    let response = await summarizeWikipediaContent(summary, searchQuery);
 
     if (references && references.length > 0) {
-      response += `\n\nSource: ${references[0]}`;
+      response += `\nSource: ${references[0]}`;
     }
 
     return response;
   } catch (error) {
-    console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
-    return `Sorry, I couldn't find any relevant information about ${query}.`;
+    console.error(`[Wikipedia] Error fetching data for "${sanitizedQuery}":`, error);
+    return `Sorry, I couldn't find any relevant information about "${query}".`;
   }
 }
 
@@ -365,14 +443,45 @@ expressApp.post("/chat", async (req, res) => {
     });
   }
 
+  // Check for gibberish input
+  if (isGibberish(message)) {
+    console.log(`[Chat] Gibberish detected: "${message}"`);
+    return res.json({
+      response: "I can't understand that. Could you please type something more clear?",
+      html: "<div class='ai-response'>I can't understand that. Could you please type something more clear?</div>"
+    });
+  }
+
   try {
     // Initialize conversation data for this chat if it doesn't exist
     if (!conversationData.has(chatId)) {
       conversationData.set(chatId, []);
     }
 
-    // Get chat history
-    const chatHistory = conversationData.get(chatId) || [];
+    // Get chat history and filter to ensure integrity
+    let chatHistory = conversationData.get(chatId) || [];
+    
+    // SAFETY CHECK: Remove any corrupted or malformed messages
+    chatHistory = chatHistory.filter(msg => 
+      msg && 
+      msg.sender && 
+      msg.text && 
+      (msg.sender === 'User' || msg.sender === 'AI') &&
+      typeof msg.text === 'string' &&
+      msg.text.length > 0
+    );
+
+    // Prevent AI from responding to itself by checking last message
+    if (chatHistory.length > 0) {
+      const lastMsg = chatHistory[chatHistory.length - 1];
+      if (lastMsg.sender === 'User' && lastMsg.text === message) {
+        console.log('[Chat] Duplicate user message detected, skipping...');
+        return res.json({ 
+          response: "I already received that message.", 
+          html: "<div class='system-message'>Message already received.</div>" 
+        });
+      }
+    }
 
     let response = "";
     let cleanedMessage = "";
@@ -394,21 +503,18 @@ expressApp.post("/chat", async (req, res) => {
                     <div class='search-content'>${response}</div>
                   </div>`;
 
-    // 3. Wiki/Info questions
+    // 3. Wiki/Info questions - now handles contextual questions better
     } else if (
       messageForChecks.includes("wiki") ||
-      messageForChecks.includes("what is") ||
-      messageForChecks.includes("who is") ||
-      messageForChecks.includes("explain to me") ||
-      messageForChecks.includes("explain") ||
-      messageForChecks.includes("what are") ||
-      messageForChecks.includes("when did") ||
-      messageForChecks.includes("where is") ||
-      messageForChecks.includes("how did") ||
-      messageForChecks.includes("describe")
+      messageForChecks.match(/^(what (is|are|does|did|was|were)|who (is|was|are|were)|explain|describe|when did|where is|how did)/i)
     ) {
-      cleanedMessage = message
-        .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
+      // Use resolved input for better context
+      const resolvedMessage = responseGenerator.resolveReferences ? 
+        responseGenerator.resolveReferences(message, chatHistory) : 
+        message;
+
+      cleanedMessage = resolvedMessage
+        .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did|what does)\s*/i, '')
         .replace(/\?+$/, '')
         .trim();
 
@@ -421,7 +527,7 @@ expressApp.post("/chat", async (req, res) => {
       }
 
       // Use enhanced response generator
-      const possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
+      const possibilities = await responseGenerator.generateEnhancedResponse(resolvedMessage, chatHistory);
       response = possibilities && possibilities.length > 0 ? possibilities[0].response : wikiInfo;
 
       let relatedArticlesHtml = "";
@@ -559,11 +665,21 @@ expressApp.post("/chat", async (req, res) => {
       }
     }
 
-    // Save conversation history
-    chatHistory.push({ sender: 'User', text: message });
+    // Save conversation history - FIXED: Only save user's actual message
+    chatHistory.push({ 
+      sender: 'User', 
+      text: message,
+      timestamp: new Date().toISOString()
+    });
+    
     if (response) {
-      chatHistory.push({ sender: 'AI', text: response });
+      chatHistory.push({ 
+        sender: 'AI', 
+        text: response,
+        timestamp: new Date().toISOString()
+      });
     }
+    
     conversationData.set(chatId, chatHistory);
 
     res.json({ response, html: htmlResponse });
