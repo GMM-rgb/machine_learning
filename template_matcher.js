@@ -31,8 +31,8 @@ class TemplateMatcher {
         this.trainingDataPath = trainingDataPath;
         this.knowledge = this._loadJson(knowledgePath);
         this.trainingData = this._loadJson(trainingDataPath);
-        this.templates = this._extractTemplates();
-        this.intentPatterns = this._buildIntentPatterns();
+        this.intentPatterns = this._buildIntentPatterns(); // Build patterns FIRST
+        this.templates = this._extractTemplates(); // Then extract templates
     }
 
     _loadJson(path) {
@@ -92,7 +92,14 @@ class TemplateMatcher {
     }
 
     _detectIntent(text) {
+        if (!text) return 'STATEMENT';
+        
         const normalizedText = text.toLowerCase().trim();
+        
+        // Safety check - if intentPatterns isn't initialized yet, return default
+        if (!this.intentPatterns) {
+            return 'STATEMENT';
+        }
         
         for (const [intent, pattern] of Object.entries(this.intentPatterns)) {
             if (pattern.test(normalizedText)) {
