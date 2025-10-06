@@ -3,36 +3,21 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-const { app, BrowserWindow } = require("electron");
 const wiki = require("wikijs").default;
 const math = require("mathjs");
-const { ifError } = require("assert");
 const tf = require("@tensorflow/tfjs-node");
-const https = require("https");
-const ProgressBar = require("progress");
-const cors = require("cors");
-const os = require("os");
-const Fuse = require("fuse.js");
 const ResponseGenerator = require('./response_generator');
-const templateMatch = require('./template_matcher');
-const { text } = require("stream/consumers");
-const { Response } = require("@whatwg-node/node-fetch");
-const { error, warn, log } = require("console");
-const { any } = require("async");
-
-let model; // model is loaded separately (e.g., `model = await tf.loadLayersModel('localstorage://my-model')`)
-
-// Initialize vocabulary or/and data
-const data = [];
-const labels = [];
-const vocab = {};
 
 const expressApp = express();
 const PORT = 3002;
 
-let chatEnabled = true; // Flag to control chat availability
+let chatEnabled = true;
+let model;
 
-// Middleware to parse JSON and serve static files
+const data = [];
+const labels = [];
+const vocab = {};
+
 expressApp.use(bodyParser.json());
 expressApp.use(express.static(path.join(__dirname, "public")));
 
@@ -46,61 +31,53 @@ if (fs.existsSync(usersFile)) {
   fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
 }
 
-// TensorFlow setup - Ensure this is only done once
-if (!global.tfSetup) {
-  global.tfSetup = true;
-  // Any additional TensorFlow setup code
-}
-
-// Load the model (ensure this is called when needed)
-async function loadModel() {
-  try {
-    // Use the correct file:// path for Node.js
-    const model = await tf.loadLayersModel('file://D:/machine_learning/model.json');
-    console.log("Model loaded successfully.");
-    return model;
-  } catch (error) {
-    console.log("Error loading model:", error);
-    // Optionally, handle model initialization or fallbacks here
-    return null;
-  }
-}
-
-// Load model when the server starts
-loadModel().catch(err => {
-  console.error("Error loading the model during server startup:", err);
-});
-
-// Load the model at the start of the server
-loadModel().then(() => {
-  console.log('Model is ready!');
-}).catch((err) => {
-  console.error('Model load failed:', err);
-});
-
-expressApp.post('/generate-response', async (req, res) => {
-  try {
-    const inputText = req.body.inputText;
-
-    // Make sure model is loaded before trying to generate response
-    if (!model) {
-      return res.status(500).send('Model is not loaded yet.');
-    }
-
-    const response = await generateResponse(inputText, vocab, model);
-    res.send(response);
-  } catch (error) {
-    console.error("Error during response generation:", error);
-    res.status(500).send("Internal server error.");
-  }
-});
-
-// Function to save user data
 function saveUserData() {
   fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
 }
 
-// Endpoint for user registration
+// Load or initialize knowledge
+const knowledgeFile = path.join(__dirname, "knowledge.json");
+let knowledge = {};
+
+if (fs.existsSync(knowledgeFile)) {
+  knowledge = JSON.parse(fs.readFileSync(knowledgeFile, "utf8"));
+} else {
+  fs.writeFileSync(knowledgeFile, JSON.stringify(knowledge, null, 2));
+}
+
+// Initialize training data storage
+const trainingDataFile = path.join(__dirname, "training_data.json");
+let trainingData = {
+  conversations: [],
+  vocabulary: {},
+  lastTrainingDate: null,
+};
+
+if (fs.existsSync(trainingDataFile)) {
+  trainingData = JSON.parse(fs.readFileSync(trainingDataFile, "utf8"));
+} else {
+  fs.writeFileSync(trainingDataFile, JSON.stringify(trainingData, null, 2));
+}
+
+function saveTrainingData() {
+  trainingData.lastTrainingDate = new Date().toISOString();
+  fs.writeFileSync(trainingDataFile, JSON.stringify(trainingData, null, 2));
+}
+
+// Initialize ResponseGenerator
+const responseGenerator = new ResponseGenerator(
+  knowledgeFile,
+  trainingDataFile,
+  "model/"
+);
+
+responseGenerator.currentDateTime = new Date().toISOString();
+responseGenerator.currentUser = 'GMM-rgb';
+
+// Conversation data per chat
+const conversationData = new Map();
+
+// User registration
 expressApp.post("/signup", (req, res) => {
   const { username, password } = req.body;
 
@@ -115,7 +92,7 @@ expressApp.post("/signup", (req, res) => {
   res.json({ success: true, accountId: users[username].accountId });
 });
 
-// Endpoint for user login
+// User login
 expressApp.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -127,7 +104,7 @@ expressApp.post("/login", (req, res) => {
   res.json({ success: true, accountId: users[username].accountId });
 });
 
-// Normalize input by replacing contractions and short term meaning
+// Normalize input
 function normalizeText(input) {
   const maps = {
     contractions: {
@@ -186,336 +163,56 @@ function normalizeText(input) {
     .join(" ");
 }
 
-// Load or initialize knowledge
-const knowledgeFile = path.join(__dirname, "knowledge.json");
-let knowledge = {};
-
-if (fs.existsSync(knowledgeFile)) {
-  knowledge = JSON.parse(fs.readFileSync(knowledgeFile, "utf8"));
-} else {
-  fs.writeFileSync(knowledgeFile, JSON.stringify(knowledge, null, 2));
-}
-
-// Initialize training data storage
-const trainingDataFile = path.join(__dirname, "training_data.json");
-let trainingData = {
-  conversations: [],
-  vocabulary: {},
-  lastTrainingDate: null,
-};
-
-// Load or create training data file
-if (fs.existsSync(trainingDataFile)) {
-  trainingData = JSON.parse(fs.readFileSync(trainingDataFile, "utf8"));
-} else {
-  fs.writeFileSync(trainingDataFile, JSON.stringify(trainingData, null, 2));
-}
-
-// Function to save training data
-function saveTrainingData() {
-  trainingData.lastTrainingDate = new Date().toISOString();
-  fs.writeFileSync(trainingDataFile, JSON.stringify(trainingData, null, 2));
-}
-
-// Function to add new training data
-function addTrainingData(userMessage, aiResponse) {
-  trainingData.conversations.push({
-    input: userMessage,
-    output: aiResponse,
-    timestamp: new Date().toISOString(),
-  });
-
-  // Update vocabulary
-  const words = preprocessText(userMessage + " " + aiResponse);
-  words.forEach((word) => {
-    if (!trainingData.vocabulary[word]) {
-      trainingData.vocabulary[word] =
-        Object.keys(trainingData.vocabulary).length + 1;
-    }
-  });
-
-  saveTrainingData();
-
-  // Retrain model if we have enough new data (every 5 conversations)
-  if (trainingData.conversations.length % 5 === 0) {
-    retrainModel();
-  }
-}
-
-// Function to read training data in a special encoding
-function readTrainingData() {
-  if (fs.existsSync(trainingDataFile)) {
-    const rawData = fs.readFileSync(trainingDataFile, "utf8");
-    const parsedData = JSON.parse(rawData);
-
-    // Process the training data in a special encoding
-    parsedData.conversations.forEach((conversation) => {
-      const inputWords = preprocessText(conversation.input);
-      const outputWords = preprocessText(conversation.output);
-
-      // Create training pairs
-      inputWords.forEach((word, index) => {
-        if (!vocab[word]) {
-          vocab[word] = Object.keys(vocab).length + 1;
-        }
-        if (index < inputWords.length - 1) {
-          data.push(inputWords.slice(0, index + 1).map((w) => vocab[w]));
-          labels.push([vocab[inputWords[index + 1]]]);
-        }
-      });
-
-      // Also learn from AI responses
-      outputWords.forEach((word, index) => {
-        if (!vocab[word]) {
-          vocab[word] = Object.keys(vocab).length + 1;
-        }
-        if (index < outputWords.length - 1) {
-          data.push(outputWords.slice(0, index + 1).map((w) => vocab[w]));
-          labels.push([vocab[outputWords[index + 1]]]);
-        }
-      });
-    });
-
-    trainingData = parsedData;
-  }
-}
-
-// Function to preprocess text (convert to indices)
-function preprocessText(text) {
-  const words = text.toLowerCase().split(/\s+/);  // Tokenize the sentence
-  return words.map(word => vocab[word] || 0);  // Map each word to its index in the vocab
-}
-
-// Convert text data into sequences of indices
-function convertDataToSequences() {
-  const inputSequences = data.map(sentence => sentence.map(word => vocab[word] || 0));
-  const labelSequences = inputSequences.map(seq => seq.slice(1).concat([vocab["<EOS>"]]));
-
-  console.log(inputSequences);  // Example: [[0, 1, 2, 3], [4, 5, 6, 7]]
-  console.log(labelSequences);  // Example: [[1, 2, 3, 8], [5, 6, 7, 8]]
-  return { inputSequences, labelSequences };
-}
-
-// Initialize the model with existing knowledge
-async function initializeModel(useTransformerModel = true) {
-  try {
-    // Load the model if previously saved
-    await loadModel();  // Ensure model is loaded before proceeding
-    console.log("Model loaded.");
-
-    readTrainingData();  // Read any existing training data, if needed
-
-    // Add knowledge base data
-    for (const key in knowledge) {
-      const words = preprocessText(key);
-      words.forEach((word, index) => {
-        if (!vocab[word]) {
-          vocab[word] = Object.keys(vocab).length + 1;  // Ensure unique index for each word
-        }
-        if (index < words.length - 1) {
-          data.push(words.slice(0, index + 1).map((w) => vocab[w]));  // Input sequence
-          labels.push([vocab[words[index + 1]]]);  // Label is the next word
-        }
-      });
-    }
-
-    // Convert the data into sequences of indices and labels
-    const { inputSequences, labelSequences } = convertDataToSequences();
-
-    // Choose model type
-    if (useTransformerModel) {
-      model = createTransformerModel(Object.keys(vocab).length);
-      await trainTransformerModel(model, inputSequences, labelSequences);  // Train the Transformer model
-    } else {
-      model = createModel(Object.keys(vocab).length);
-      await trainModel(model, inputSequences, labelSequences);  // Train the TensorFlow model
-    }
-
-    // Save the model after training
-    await saveModel();
-    console.log("Model trained and saved.");
-  } catch (error) {
-    console.error("Error during model initialization:", error);
-  }
-}
-
-// Function to retrain the model with accumulated data
-async function retrainModel() {
-  try {
-    const newData = [];
-    const newLabels = [];
-
-    // Process all conversations for training
-    trainingData.conversations.forEach((conversation) => {
-      const inputWords = preprocessText(conversation.input);
-      const outputWords = preprocessText(conversation.output);
-
-      // Create training pairs for input
-      inputWords.forEach((word, index) => {
-        if (!vocab[word]) {
-          vocab[word] = Object.keys(vocab).length + 1;
-        }
-        if (index < inputWords.length - 1) {
-          newData.push(inputWords.slice(0, index + 1).map((w) => vocab[w]));
-          newLabels.push([vocab[inputWords[index + 1]]]);
-        }
-      });
-
-      // Create training pairs for output
-      outputWords.forEach((word, index) => {
-        if (!vocab[word]) {
-          vocab[word] = Object.keys(vocab).length + 1;
-        }
-        if (index < outputWords.length - 1) {
-          newData.push(outputWords.slice(0, index + 1).map((w) => vocab[w]));
-          newLabels.push([vocab[outputWords[index + 1]]]);
-        }
-      });
-    });
-
-    // Check if data and labels are available
-    if (newData.length === 0 || newLabels.length === 0) {
-      console.log("No new training data to process.");
-      return;
-    }
-
-    // Retrain the model with the accumulated data
-    console.log("Retraining model...");
-    model = createTransformerModel(Object.keys(vocab).length);
-    await trainTransformerModel(model, newData, newLabels);
-
-    // Save the retrained model
-    await saveModel();
-    console.log("Model retrained and saved with accumulated data.");
-  } catch (error) {
-    console.error("Error during model retraining:", error);
-  }
-}
-
-function getLevenshteinDistance(a, b) {
-  const tmp = Array(b.length + 1)
-    .fill(null)
-    .map(() => Array(a.length + 1).fill(0));
-
-  for (let i = 0; i <= b.length; i++) {
-    tmp[i][0] = i;
-  }
-  for (let j = 0; j <= a.length; j++) {
-    tmp[0][j] = j;
-  }
-
-  for (let i = 1; i <= b.length; i++) {
-    for (let j = 1; j <= a.length; j++) {
-      tmp[i][j] =
-        b[i - 1] === a[j - 1]
-          ? tmp[i - 1][j - 1]
-          : Math.min(tmp[i - 1][j - 1] + 1, tmp[i][j - 1] + 1, tmp[i - 1][j] + 1);
-    }
-  }
-  console.log("Levenshtein Distance:", tmp[b.length][a.length]);
-  if (a.length > 1000 || b.length > 1000) {
-    console.warn("Strings are too long, skipping computation.");
-    return -1;
-  }
-  return tmp[b.length][a.length]; // Final distance
-}
-
-// Find the best match in knowledge (with exact and fuzzy match)
-function findBestMatch(query, knowledge) {
-  let closestMatch = null;
-  let minDistance = Infinity;
-
-  // Check for exact matches first
-  for (const key in (knowledge)) {
-    const normalizedKey = key.toLowerCase();
-    if (query === normalizedKey) {
-      return knowledge[key];
-    }
-  }
-
-  // Use fuzzy matching based on Levenshtein distance
-  for (const key in (knowledge)) {
-    const distance = getLevenshteinDistance(query, key);
-    if (distance < minDistance) {
-      minDistance = distance;
-      closestMatch = key;
-    }
-  }
-
-  return closestMatch
-    ? knowledge[closestMatch]
-    : "Sorry, I didn't understand that.";
-}
-
-// Detect if the user is asking for Wikipedia information
-function isWikipediaQuery(input) {
-  const wikipediaTriggers = [
-    /^what is |^what are |^what was |^tell me about |^who is |^explain |^define |^describe /i,
-    /^how does |^how do |^how can |^what does |^where is |^when did /i,
-  ];
-
-  const normalizedInput = input.toLowerCase().trim();
-  return wikipediaTriggers.some((trigger) => trigger.test(normalizedInput));
-}
-
-// Function to summarize text into bullet points
-function summarizeText(text) {
-  const sentences = text.split(". ");
-  const summary = sentences
-    .slice(0, 5)
-    .map((sentence) => `• ${sentence.trim()}`)
-    .join("\n");
-  return summary;
-}
-
-// Wikipedia info fetching with input sanitization (e.g., "What is X?")
-async function getWikipediaInfo(query, summarize = false) {
-  // Clean up query
+// Wikipedia info fetching
+async function getWikipediaInfo(query, previousContext = null) {
   const sanitizedQuery = query
     .toLowerCase()
-    .replace(
-      /^(what is|what are|what was|tell me about|who is|explain|define|describe|how does|how do|how can|what does|where is|when did)\s+/i,
-      ""
-    )
-    .replace(/[?.,!]/g, "")
+    .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
+    .replace(/[?.,!]/g, '')
     .trim();
 
-  console.log("Sanitized Wikipedia query:", sanitizedQuery);
-
   try {
-    const searchResults = await wiki().search(sanitizedQuery);
+    let searchQuery = sanitizedQuery;
+    if (previousContext) {
+      const contextWords = previousContext.split(' ')
+        .filter(word => word.length > 3)
+        .slice(-3)
+        .join(' ');
+      searchQuery = `${contextWords} ${sanitizedQuery}`;
+    }
+
+    const searchResults = await wiki().search(searchQuery);
     if (!searchResults.results || !searchResults.results.length) {
-      return `Sorry, I couldn't find any relevant information on Wikipedia about ${query}.`;
+      return `Sorry, I couldn't find any relevant information about ${query}.`;
     }
 
     const page = await wiki().page(searchResults.results[0]);
-    const summary = await page.summary();
+    const [summary, references] = await Promise.all([
+      page.summary(),
+      page.references().catch(() => [])
+    ]);
 
-    if (summarize) {
-      return `Here's a summary of what I found on Wikipedia:\n${summarizeText(
-        summary
-      )}`;
+    let response = summary;
+
+    if (references && references.length > 0) {
+      response += `\n\nSource: ${references[0]}`;
     }
-    return `Here's what I found on Wikipedia: ${summary}`;
+
+    return response;
   } catch (error) {
-    console.error(
-      `Error fetching data from Wikipedia for query "${sanitizedQuery}":`,
-      error
-    );
-    return `Sorry, I couldn't find any relevant information on Wikipedia about ${query}.`;
+    console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
+    return `Sorry, I couldn't find any relevant information about ${query}.`;
   }
 }
 
-// Updated Bing search function: configurable number of results and improved logging/return
+// Bing search
 async function getBingSearchInfo(query) {
-  // Need to get a valid API key from Microsoft Azure
   const subscriptionKey = "1feda3372abf425494ce986ad9024238";
   const endpoint = "https://api.bing.microsoft.com/v7.0/search";
-  // Configure how many top results to grab (can be modified via env variable)
-  const topCount = process.env.BING_TOP_COUNT || 3;  
+  const topCount = process.env.BING_TOP_COUNT || 3;
 
   try {
-    chatEnabled = false; // Disable chat while searching
+    chatEnabled = false;
     console.log("Initiating Bing search for:", query);
 
     const response = await axios({
@@ -533,7 +230,7 @@ async function getBingSearchInfo(query) {
       },
     });
 
-    if (response.data && response.data.webPages && response.data.webPages.value && response.data.webPages.value.length > 0) {
+    if (response.data?.webPages?.value && response.data.webPages.value.length > 0) {
       const results = response.data.webPages.value;
       console.log("Bing search results:", results.map(r => r.name));
       let resultText = "Bing Top Results:\n";
@@ -547,454 +244,52 @@ async function getBingSearchInfo(query) {
     }
   } catch (error) {
     console.error("Bing search error:", error.response ? error.response.data : error.message);
-    chatEnabled = true;
     return "Sorry, I couldn't complete the Bing search at this time.";
   } finally {
-    chatEnabled = true; // Always re-enable chat
+    chatEnabled = true;
   }
 }
 
-// Update handleUserInput function to better handle Bing searches
-async function handleUserInput(input) {
-  const searchKeywords = ["search bing", "bing"];
-  const lowerCaseInput = input.toLowerCase().trim();
-
-  // Check if input starts with any search keywords
-  for (const keyword of searchKeywords) {
-    if (lowerCaseInput.startsWith(keyword)) {
-      // Extract the actual search query
-      const query = lowerCaseInput.replace(keyword, "").trim();
-
-      if (!query) {
-        return "Please provide a search query.";
-      }
-
-      console.log("Processing Bing search for:", query);
-      return await getBingSearchInfo(query);
-    }
-  }
-
-  return "I'm not sure how to handle that request.";
-}
-
-// Function to preprocess text for TensorFlow (AI) model
-function preprocessText(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .split(" ");
-}
-
-// Function to create a TensorFlow (AI) model
-function createModel(vocabSize) {
-  const model = tf.sequential();
-  model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
-  model.add(tf.layers.lstm({ units: 64, returnSequences: true }));
-  model.add(tf.layers.lstm({ units: 64 }));
-  model.add(tf.layers.dense({ units: vocabSize, activation: "softmax" }));
-  const optimizer = tf.train.adam(0.01); // Increasing the learning rate to 0.01
-  model.compile({
-    optimizer: optimizer,
-    loss: "sparseCategoricalCrossentropy",
-  });
-  return model;
-}
-
-// Function to train the TensorFlow (AI) model
-async function trainModel(model, data, labels, epochs = 15, batchSize = 4) {
-  // Ensure 'data' is properly formatted
-  const xs = tf.tensor3d(
-    data.map(seq => seq.map(step => [step])), // Reshape to (batch_size, timesteps, features)
-    [data.length, data[0].length, 1]
-  );
-  const ys = tf.tensor2d(labels, [labels.length, labels[0].length]); // Ensures labels have the correct shape
-  const dataset = tf.data
-    .zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) })
-    .batch(batchSize);
-  await model.fitDataset(dataset, { epochs });
-}
-
-// Function to create a Transformer model
-function createTransformerModel(vocabSize) {
-  const model = tf.sequential();
-  model.add(tf.layers.embedding({ inputDim: vocabSize, outputDim: 128 }));
-  model.add(tf.layers.dense({ units: 128, activation: "relu" }));
-  model.add(tf.layers.dense({ units: vocabSize, activation: "softmax" }));
-  model.compile({ optimizer: tf.train.adam(1.05), loss: "sparseCategoricalCrossentropy" }); // Lower learning rate to stabilize (stable value: 0.001)
-  return model;
-}
-
-// Function to train the Transformer model with a timer to avoid infinite epochs
-async function trainTransformerModel(model, data, labels, maxEpochs = 10, batchSize = 4, timeout = 30000) {
-  console.log("Validating training data...");
-
-  const reshapedData = data.map(seq => seq.map(step => [step]));
-
-  if (!Array.isArray(reshapedData) || reshapedData.length === 0) {
-    throw new Error("Invalid data format: Data must be a non-empty array.");
-  }
-
-  console.log(`Data shape: [${reshapedData.length}, ${reshapedData[0].length}, 1]`);
-  console.log(`Labels shape: [${labels.length}, ${labels[0].length}]`);
-
-  const xs = tf.tensor3d(reshapedData, [reshapedData.length, reshapedData[0].length, 1]);
-  const ys = tf.tensor2d(labels, [labels.length, labels[0].length]);
-
-  const dataset = tf.data.zip({ xs: tf.data.array(xs), ys: tf.data.array(ys) }).batch(batchSize);
-  // 📦 Apply data 📦 //
-  console.log("⏳ Training model... ⏳");
-
-  let trainingComplete = false;
-
-  setTimeout(() => {
-    if (!trainingComplete, timeout = 575) {
-      function wait(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-      }
-      console.log("⌛ Training timed out. Stopping early.");
-      trainingComplete = true;
-      console.warn("❗⚠️  Moving to next Epoch...", warn);
-      console.log(`⏳ Starting next Epoch...`);
-      wait(185).then(() => {
-        console.log("✅ Succesfully prepared next Epoch.", log);
-        return log;
-      });
-    }
-  }, timeout);
-
+// DuckDuckGo results
+async function getDuckDuckGoResults(query) {
   try {
-    await model.fitDataset(dataset, {
-      epochs: maxEpochs,
-      batchSize,
-      callbacks: {
-        onEpochEnd: (epoch, logs) => {
-          console.log(`✅ Epoch ${epoch + 1}: Loss = ${logs.loss}`);
-          if (!trainingComplete) {
-            console.log("⏹️ Stopping training early due to timeout.");
-            return false;
-          }
-        },
-      },
-    });
-  } catch (err) {
-    console.error("❌ Error during training:", err);
-  }
-  trainingComplete = true;
-  //
-  if (trainingComplete === true ? trainingComplete === false : null) {
-    console.log("📦 ⏳ Saving trained model...");
-    await model.location(path.parse.model);
-    await model.path.save('file://D:/machine_learning/model.json'); // Save model after training
-    console.log("✅ 💾 Model saved successfully."); // Log that model has been successfully saved
-  }
-  return trainingComplete = true; // Checks to make sure the trainingComplete variable is true
-}
-
-// Function to retrain for 1 epoch when user messages
-async function retrainOnMessage(model, data, labels) {
-  console.log("🔄 Retraining for 1 epoch...");
-  await trainTransformerModel(model, data, labels, 1, 64);
-  console.log("✅ Retraining complete.");
-}
-
-// Function to generate a response based on the trained model
-// Vocabulary and unwanted words
-const unwantedWords = ["black", "illegal", "fuck", "shit"];  // Add words you want to filter out
-const neutralWord = "*Censored*";  // Neutral fallback word if unwanted word is detected
-
-// Sample allowed words and common fallback words
-const commonWords = ["hello", "there", "how", "are", "you", "good", "okay"];
-const allowedWords = ["good", "fine", "okay", "well", "great", "tired", "busy"];
-
-// Function to process the input text
-function preprocessText(text) {
-  return text.toLowerCase().split(/\s+/);  // Split by whitespace and convert to lowercase
-}
-
-// Function to pick a word based on probabilities (for randomness in generation)
-function weightedRandomChoice(probabilities) {
-  let sum = 0;
-  const r = Math.random();
-  for (let i = 0; i < probabilities.length; i++) {
-    sum += probabilities[i];
-    if (r < sum) return i;
-  }
-  return probabilities.length - 1;
-}
-
-// Load the model (use for checking model before predictions)
-async function loadModel() {
-  try {
-    const model = await tf.loadLayersModel('localstorage://my-model');  // Load model from local storage
-    console.log("Model loaded:", model);  // Log the model to ensure it's correctly loaded
-    return model;
-  } catch (error) {
-    console.error("Error loading model:", error);
-    return null;
-  }
-}
-// Function to generate a response based on the trained model
-async function generateResponse(inputText, vocab, model, knowledge, temperature = 0.4) {
-  console.log("Generating response for:", inputText);  // Debug log
-
-  if (!model || typeof model.predict !== 'function') {
-    console.error("Model is not loaded correctly or is not a valid TensorFlow model.");
-    return "Error: Invalid model.";
-  }
-
-  const vocabReverse = Object.fromEntries(Object.entries(vocab).map(([word, idx]) => [idx, word]));
-  const input = preprocessText(inputText);  // Process input text
-  const inputTensor = tf.tensor2d([input.map((word) => vocab[word] || 0)], [1, input.length]);
-
-  console.log("Input Tensor:", inputTensor.toString());
-
-  let prediction;
-  try {
-    prediction = model.predict(inputTensor);  // Get prediction from the model
-    console.log("Model prediction:", prediction);
-  } catch (error) {
-    console.error("Error during prediction:", error);
-    return "Error generating response.";
-  }
-
-  let predictedArray = prediction.arraySync()[0];  // Convert prediction tensor to array
-  console.log("Predicted array:", predictedArray);  // Log the predicted output
-
-  let logits = tf.div(tf.sub(predictedArray, tf.min(predictedArray)), temperature);  // Apply temperature scaling
-  let probabilities = tf.softmax(logits).dataSync();  // Apply softmax for probabilities
-  let predictedIndex = weightedRandomChoice(probabilities);  // Get index of predicted word
-
-  let predictedWord = vocabReverse[predictedIndex] || "hello";  // Default to "hello" if prediction fails
-  console.log("Predicted word:", predictedWord);
-
-  let matchedWord = fuzzyMatch(predictedWord, knowledge);  // Match against knowledge base
-
-  let generatedText = `${inputText} ${matchedWord}`;  // Construct response with matched word
-  learnInBackground(ResponseGenerator, generatedText);
-  understandInput(generatedText = input);
-  console.log("Generated Text:", generatedText);  // Log the generated text
-
-  return generatedText;  // Return the final generated text
-}
-
-async function run() {
-  const model = await loadModel();  // Load the model
-
-  if (model) {
-    const response = await generateResponse('how are you', vocab, model, knowledge);
-    console.log("Final Generated Response:", response);
-  } else {
-    console.log("Model loading failed.");
-  }
-}
-
-run();
-
-// Preprocess text (convert to lowercase and split by whitespace)
-function preprocessText(text) {
-  return text.toLowerCase().split(/\s+/);
-}
-
-// Generate a response (assuming you have a trained model)
-generateResponse("Hello", model).then(response => {
-  console.log("Generated Response:", response);
-});
-
-// Save the model after training or retraining
-async function saveModel(model) {
-  try {
-    await model.save('file://D:/machine_learning/my-model');  // Saves model to the file system
-    console.log("Model saved successfully.");
-  } catch (error) {
-    console.error("Error saving model:", error);
-  }
-}
-
-// Train the model with existing knowledge
-async function initializeModel() {
-  await loadModel();  // Load the model if previously saved
-
-  readTrainingData();  // Read any existing training data, if needed
-
-  // Add knowledge base data
-  for (const key in knowledge) {
-    const words = preprocessText(key);
-    words.forEach((word, index) => {
-      if (!vocab[word]) {
-        vocab[word] = Object.keys(vocab).length + 1;
-      }
-      if (index < words.length - 1) {
-        data.push(words.slice(0, index + 1).map((w) => vocab[w]));
-        labels.push([vocab[words[index + 1]]]);
+    const response = await axios.get('https://api.duckduckgo.com/', {
+      params: {
+        q: query,
+        format: 'json',
+        t: 'AIAssistant'
       }
     });
-  }
 
-  // Convert the data into sequences of indices and labels
-  const { inputSequences, labelSequences } = convertDataToSequences();
+    const results = response.data.RelatedTopics
+      .filter(topic => topic.FirstURL && topic.Text)
+      .map(topic => ({
+        url: topic.FirstURL,
+        title: topic.Text.split(' - ')[0],
+        snippet: topic.Text.split(' - ').slice(1).join(' - ') || topic.Text,
+        source: new URL(topic.FirstURL).hostname.replace(/^www\./, '')
+      }))
+      .slice(0, 3);
 
-  // Create and train the model
-  model = createTransformerModel(Object.keys(vocab).length);
-  await trainTransformerModel(model, inputSequences, labelSequences);
-
-  // Save the model after training
-  await saveModel();
-}
-
-// Function to train the model asynchronously
-async function trainModelAsync() {
-  try {
-    console.log("Training model asynchronously...");
-    console.log(tf.memory());
-
-    // Initialize the model with the training data
-    await initializeModel();
-    console.log("Model training completed.");
-
-    // Test the generation function
-    const testInput = "hello";
-    const generatedResponse = await generateResponse(testInput, vocab);
-    console.log(`Generated response for "${testInput}": ${generatedResponse}`);
+    return results;
   } catch (error) {
-    console.error("Error during model training:", error);
+    console.error('Error fetching DuckDuckGo results:', error);
+    return [];
   }
 }
 
-// Main server startup
-expressApp.listen(PORT, "0.0.0.0", () => {
-  const localIps = getLocalIpAddress();
-  console.log("\n=== Server Network Information ===");
-  console.log(`Local Access: http://localhost:${PORT}`);
-  console.log(`\nNetwork Access URLs:`);
-
-  if (localIps.length > 0) {
-    localIps.forEach(({ name, address, isMain }) => {
-      if (isMain) {
-        console.log(`\n→ Main URL (Your IP): http://${address}:${PORT}`);
-        console.log(
-          `  Use this URL to access from other devices on your network`
-        );
-      } else {
-        console.log(`\nAlternative URL: http://${address}:${PORT}`);
-      }
-    });
-  } else {
-    console.log("No network interfaces found");
+// Related wiki articles
+async function findRelatedWikiArticles(topic) {
+  try {
+    const searchResults = await wiki().search(topic, 5);
+    return searchResults.results.map(result => result.title);
+  } catch (error) {
+    console.error("Error finding related articles:", error);
+    return [];
   }
-
-  console.log("\nServer startup & setup was successful.");
-
-  // Train the model asynchronously
-  trainModelAsync().catch((error) => {
-    console.error("Error during model training:", error);
-    console.log("Data Type:", typeof data); // Should be 'object'
-    console.log("Data Length:", data.length); // Should be greater than 0
-    console.log("First element type:", typeof data[0]); // Should be 'object'
-    console.log("First element length:", data[0]?.length); // Should be greater than 0
-    console.log("First sub-element type:", typeof data[0]?.[0]); // Should be 'object'
-    console.log("First sub-sub-element type:", typeof data[0]?.[0]?.[0]); // Should be 'number'
-  });
-});
-
-// Find similar conversations from training history with fuzzy matching
-function findSimilarConversation(input) {
-  const conversations = trainingData.conversations;
-  let bestMatch = null;
-  let bestScore = 0;
-  let minDistance = Infinity;
-
-  // Normalize input for comparison
-  const normalizedInput = input.toLowerCase().trim();
-
-  for (const conv of conversations) {
-    // Try exact word matching first
-    const similarity = calculateSimilarity(
-      normalizedInput,
-      conv.input.toLowerCase()
-    );
-    if (similarity > bestScore && similarity > 0.6) {
-      bestScore = similarity;
-      bestMatch = conv;
-      continue;
-    }
-
-    // If no good word match, try fuzzy matching
-    const distance = getLevenshteinDistance(
-      normalizedInput,
-      conv.input.toLowerCase()
-    );
-    if (distance < minDistance) {
-      minDistance = distance;
-      // Only use fuzzy match if it's close enough (adjust threshold as needed)
-      if (distance < normalizedInput.length * 0.4) {
-        // 40% similarity threshold
-        bestMatch = conv;
-      }
-    }
-  }
-
-  return bestMatch;
 }
 
-// Enhanced similarity calculation that considers partial matches
-function calculateSimilarity(str1, str2) {
-  const words1 = str1.split(" ");
-  const words2 = str2.split(" ");
-  let matches = 0;
-  let totalWords = Math.max(words1.length, words2.length);
-
-  // Check each word from the first string
-  for (const word1 of words1) {
-    // Look for exact or fuzzy matches in the second string
-    for (const word2 of words2) {
-      if (word1 === word2) {
-        matches += 1; // Full match
-        break;
-      }
-      const distance = getLevenshteinDistance(word1, word2);
-      if (distance <= Math.min(word1.length, word2.length) * 0.3) {
-        // 30% difference tolerance
-        matches += 0.8; // Partial match
-        break;
-      }
-    }
-  }
-
-  return matches / totalWords;
-}
-
-// Get response from training data or knowledge base
-function getResponse(message) {
-  // First try to find a similar conversation using fuzzy matching
-  const similarConversation = findSimilarConversation(message);
-  if (similarConversation) {
-    console.log("Found similar conversation:", {
-      input: similarConversation.input,
-      confidence: calculateSimilarity(message, similarConversation.input),
-    });
-    return similarConversation.output;
-  }
-
-  // If no conversation match, try knowledge base
-  return findBestMatch(message, knowledge);
-}
-
-// Add math detection and solving functions
-function isMathQuery(input) {
-  const mathTriggers = [
-    /^calculate/i,
-    /^solve/i,
-    /^compute/i,
-    /^evaluate/i,
-    /=\?$/,
-    /\d+[\+\-\*\/\^\(\)]/,
-    /[\+\-\*\/\^\(\)]\d+/,
-    /\d+\s*[\+\-\*\/\^]\s*\d+/,
-  ];
-
-  return mathTriggers.some((trigger) => trigger.test(input));
-}
-
+// Math problem solving
 function cleanMathExpression(input) {
   return input
     .toLowerCase()
@@ -1011,21 +306,17 @@ async function solveMathProblem(input) {
     const cleanedExpression = cleanMathExpression(input);
     console.log("Solving math expression:", cleanedExpression);
 
-    // Handle special cases
     if (cleanedExpression.includes("!")) {
       const num = parseInt(cleanedExpression.replace("!", ""));
       return `The factorial of ${num} is ${math.factorial(num)}`;
     }
 
-    // Parse and evaluate the expression
     const result = math.evaluate(cleanedExpression);
 
-    // Format the result based on its type
     if (math.typeOf(result) === "Matrix") {
       return `Result:\n${result.toString()}`;
     } else if (typeof result === "number") {
-      return `The answer is: ${Number.isInteger(result) ? result : result.toFixed(4)
-        }`;
+      return `The answer is: ${Number.isInteger(result) ? result : result.toFixed(4)}`;
     } else {
       return `Result: ${result.toString()}`;
     }
@@ -1035,143 +326,7 @@ async function solveMathProblem(input) {
   }
 }
 
-// Add definitions lookup and processing
-function findDefinitionInTrainingData(word) {
-  if (trainingData.vocabulary.definitions) {
-    const definition = trainingData.vocabulary.definitions.find(
-      (def) => def.word.toLowerCase() === word.toLowerCase()
-    );
-    return definition ? definition.definition : null;
-  }
-  return null;
-}
-
-// Enhanced understanding using definitions
-function understandInput(input) {
-  const words = input.toLowerCase().split(/\s+/);
-  const understanding = {
-    definitions: [],
-    unknownWords: [],
-    context: {},
-  };
-
-  words.forEach((word) => {
-    const definition = findDefinitionInTrainingData(word);
-    if (definition) {
-      understanding.definitions.push({ word, definition });
-    } else {
-      understanding.unknownWords.push(word);
-    }
-  });
-
-  return understanding;
-}
-
-// Background learning function
-async function learnInBackground(unknownWords) {
-  for (const word of unknownWords) {
-    try {
-      // Try to find information about unknown words
-      const info = await getWikipediaInfo(word);
-      if (!info.includes("Sorry")) {
-        // Add new definition to training data
-        if (!trainingData.vocabulary.definitions) {
-          trainingData.vocabulary.definitions = [];
-        }
-        trainingData.vocabulary.definitions.push({
-          word: word,
-          definition: info.substring(0, info.indexOf(".") + 1),
-        });
-        saveTrainingData();
-        console.log(`Learned new word: ${word}`);
-      }
-    } catch (error) {
-      console.log(`Failed to learn about: ${word}`);
-    }
-  }
-}
-
-// Add conversation history tracking
-const conversationHistory = new Map(); // Store conversation history per account
-
-// Function to get varied response based on repetition
-function getVariedResponse(message, accountId) {
-  if (!conversationHistory.has(accountId)) {
-    conversationHistory.set(accountId, []);
-  }
-
-  const history = conversationHistory.get(accountId);
-  const repeatedCount = history.filter(
-    (m) => m.toLowerCase() === message.toLowerCase()
-  ).length;
-
-  // Add message to history
-  history.push(message);
-  // Keep last 10 messages only
-  if (history.length > 10) history.shift();
-
-  // If message is repeated, provide variation
-  if (repeatedCount > 0) {
-    const similarConversation = findSimilarConversation(message);
-    if (similarConversation) {
-      const variations = [
-        `You've already mentioned "${similarConversation.input}". How can I assist further?`,
-        `We talked about "${similarConversation.input}" earlier. Anything else on your mind?`,
-        `You mentioned "${similarConversation.input}" before. Let's discuss something new.`,
-        `I remember you said "${similarConversation.input}". What else would you like to know?`,
-      ];
-      return variations[repeatedCount % variations.length];
-    }
-  }
-
-  // If not repeated or no specific variation, return normal response
-  return null;
-}
-
-// Load or initialize goal data
-const goalDataFile = "goal_data.json";
-let goalData = {};
-
-if (fs.existsSync(goalDataFile)) {
-  goalData = JSON.parse(fs.readFileSync(goalDataFile, "utf8"));
-} else {
-  fs.writeFileSync(goalDataFile, JSON.stringify(goalData, null, 2));
-}
-
-// Function to read goal data with error handling and single JSON parse
-function readGoalData() {
-  if (fs.existsSync(goalDataFile)) {
-    try {
-      const rawData = fs.readFileSync(goalDataFile, "utf8");
-      goalData = JSON.parse(rawData);
-      console.log("Current Goal:", goalData.goal || "None");
-      console.log("Priority:", goalData.priority || "None");
-      console.log("Goal retrieval output:", goalData);
-      console.log(tf.memory());
-    } catch (err) {
-      console.error("Error parsing goalData:", err);
-      goalData = {};
-    }
-  }
-}
-
-// Function to get the current goal and priority remains unchanged
-function getCurrentGoal() {
-  readGoalData();
-  return goalData;
-}
-
-// Updated the chat endpoint to use varied responses and isolate accounts
-const responseGenerator = new ResponseGenerator();
-
-// Set current date/time and user
-responseGenerator.currentDateTime = '2025-02-05 04:49:50';
-responseGenerator.currentUser = 'GMM-rgb';
-
-// Chat state
-const accountStates = new Map();
-const conversationData = new Map(); // Store conversations by chatId
-
+// UPDATED: Main chat endpoint with improved response handling
 expressApp.post("/chat", async (req, res) => {
   if (!chatEnabled) {
     return res.json({
@@ -1198,21 +353,18 @@ expressApp.post("/chat", async (req, res) => {
     // Get chat history
     const chatHistory = conversationData.get(chatId) || [];
 
-    // Prepare variables for later use
     let response = "";
     let cleanedMessage = "";
     let htmlResponse = "";
     const messageForChecks = message.trim().toLowerCase();
 
-    // Determine what type of query we’re handling
-
-    // 1. Math problems (if the query contains math keywords or operators)
+    // 1. Math problems
     if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
       cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
       response = await solveMathProblem(cleanedMessage);
       htmlResponse = `<div class='math-response'>${response}</div>`;
 
-      // 2. Bing search command
+    // 2. Bing search command
     } else if (messageForChecks.startsWith("search bing") || messageForChecks.startsWith("bing")) {
       cleanedMessage = message.replace(/^(search\s+bing|bing)\s*/i, '').trim();
       response = await getBingSearchInfo(cleanedMessage);
@@ -1221,7 +373,7 @@ expressApp.post("/chat", async (req, res) => {
                     <div class='search-content'>${response}</div>
                   </div>`;
 
-      // 3. Wiki/Info questions (keywords such as "wiki", "what is", "who is", etc.)
+    // 3. Wiki/Info questions
     } else if (
       messageForChecks.includes("wiki") ||
       messageForChecks.includes("what is") ||
@@ -1234,13 +386,11 @@ expressApp.post("/chat", async (req, res) => {
       messageForChecks.includes("how did") ||
       messageForChecks.includes("describe")
     ) {
-      // Remove the wiki-related prefix and trailing question marks.
       cleanedMessage = message
         .replace(/^(wiki|what is|who is|what are|describe|explain|explain to me|when did|where is|how did)\s*/i, '')
         .replace(/\?+$/, '')
         .trim();
 
-      // Try grabbing the wiki summary using any available context
       let wikiInfo = "";
       try {
         const previousContext = chatHistory.length > 0 ? chatHistory[chatHistory.length - 1].text : null;
@@ -1249,10 +399,10 @@ expressApp.post("/chat", async (req, res) => {
         console.error("Wikipedia lookup error:", wikiLookupError);
       }
 
-      // Also get a main response in case wiki fails or to integrate with the enhanced result process
-      response = wikiInfo || await responseGenerator.generateEnhancedResponse(message, chatHistory).then(possibilities => possibilities[0]?.response || "");
+      // Use enhanced response generator
+      const possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
+      response = possibilities && possibilities.length > 0 ? possibilities[0].response : wikiInfo;
 
-      // Get a list of related topics (fixing the variable naming bugs by mapping each returned article)
       let relatedArticlesHtml = "";
       try {
         const relatedArticles = await findRelatedWikiArticles(cleanedMessage);
@@ -1261,13 +411,11 @@ expressApp.post("/chat", async (req, res) => {
             .slice(0, 3)
             .map(article => `• ${article}`)
             .join("\n");
-          wikiInfo += `\n\nRelated topics:\n${relatedArticlesHtml}`;
         }
       } catch (err) {
         console.error("Error fetching related wiki articles:", err);
       }
 
-      // In addition, get some DuckDuckGo web results for further reading:
       let webArticles = [];
       try {
         webArticles = await getDuckDuckGoResults(cleanedMessage);
@@ -1275,121 +423,145 @@ expressApp.post("/chat", async (req, res) => {
         console.error("DuckDuckGo search error:", err2);
       }
 
-      // Combine the wiki info and web references into the final html response
       htmlResponse = `
-    <div class='ai-response'>
-      <div class='response-main'>${response}</div>
-      
-      ${wikiInfo && wikiInfo !== response ? `
-        <div class='wiki-section'>
-          <h4>Wikipedia Says:</h4>
-          <div class='wiki-content'>${wikiInfo}</div>
-        </div>
-      ` : ""}
-      
-      ${webArticles.length > 0 ? `
-        <div class='web-references'>
-          <h4>Related Articles:</h4>
-          <div class='references-grid'>
-            ${webArticles.map(article => `
-              <div class='article-card'>
-                <h5>${article.title}</h5>
-                <p class='snippet'>${article.snippet}</p>
-                <div class='article-footer'>
-                  <span class='source'>${article.source}</span>
-                  <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
+        <div class='ai-response'>
+          <div class='response-main'>${response}</div>
+          
+          ${wikiInfo && wikiInfo !== response ? `
+            <div class='wiki-section'>
+              <h4>Wikipedia Says:</h4>
+              <div class='wiki-content'>${wikiInfo}</div>
+              ${relatedArticlesHtml ? `
+                <div class='related-topics'>
+                  <h5>Related Topics:</h5>
+                  <pre>${relatedArticlesHtml}</pre>
                 </div>
+              ` : ""}
+            </div>
+          ` : ""}
+          
+          ${webArticles.length > 0 ? `
+            <div class='web-references'>
+              <h4>Related Articles:</h4>
+              <div class='references-grid'>
+                ${webArticles.map(article => `
+                  <div class='article-card'>
+                    <h5>${article.title}</h5>
+                    <p class='snippet'>${article.snippet}</p>
+                    <div class='article-footer'>
+                      <span class='source'>${article.source}</span>
+                      <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
+                    </div>
+                  </div>
+                `).join('')}
               </div>
-            `).join('')}
-          </div>
+            </div>
+          ` : ""}
         </div>
-      ` : ""}
-    </div>
-  `;
+      `;
 
-      // 4. Otherwise, process with normal chat handling (using enhanced response generator)
+    // 4. Normal chat handling with enhanced response generator
     } else {
       const possibilities = await responseGenerator.generateEnhancedResponse(message, chatHistory);
+      
       if (possibilities && possibilities.length > 0) {
         response = possibilities[0].response;
+        const confidence = (possibilities[0].confidence * 100).toFixed(1);
 
-        // Build HTML with additional internal dialogue if available
-        let html = `<div class='ai-response'>${response}</div>`;
-        if (possibilities.length > 1) {
-          html += "<div class='internal-dialogue'>";
-          possibilities.slice(74).forEach(p => {
-            html += `<div class='dialogue-turn'>${p.response}</div>`;
+        let html = `<div class='ai-response'>
+          <div class='response-main'>${response}</div>
+          <div class='confidence-indicator' style='opacity: 0.6; font-size: 0.85em; margin-top: 8px;'>
+            Confidence: ${confidence}% | Source: ${possibilities[0].source}
+          </div>
+        `;
+
+        // Show alternative responses if available
+        if (possibilities.length > 1 && possibilities[1].confidence > 0.5) {
+          html += "<div class='alternative-responses' style='margin-top: 12px; padding: 8px; background: #f5f5f5; border-radius: 4px;'>";
+          html += "<div style='font-weight: bold; margin-bottom: 6px;'>Alternative perspectives:</div>";
+          possibilities.slice(1, 3).forEach((p, index) => {
+            html += `<div class='alt-response' style='margin: 4px 0; padding-left: 8px; border-left: 2px solid #ccc;'>
+              ${p.response} <span style='opacity: 0.6; font-size: 0.85em;'>(${(p.confidence * 100).toFixed(1)}%)</span>
+            </div>`;
           });
           html += "</div>";
         }
+
+        html += "</div>";
         htmlResponse = html;
+      } else {
+        response = "I'm not quite sure how to respond to that. Could you rephrase or provide more context?";
+        htmlResponse = `<div class='ai-response'>${response}</div>`;
       }
     }
 
+    // Fallback for question-like inputs without wiki handling
     if (messageForChecks.match(/^(what|how|why|explain|who|when|where)/i) && !htmlResponse.includes("wiki-section")) {
       try {
-        const wikiInfoFallback = await getWikipediaInfo(cleanedMessage);
-        const webArticlesFallback = await getDuckDuckGoResults(cleanedMessage);
-        htmlResponse = `
-      <div class='ai-response'>
-        <div class='response-main'>${response}</div>
+        const wikiInfoFallback = await getWikipediaInfo(message);
+        const webArticlesFallback = await getDuckDuckGoResults(message);
         
-        ${wikiInfoFallback && wikiInfoFallback !== response ? `
-          <div class='wiki-section'>
-            <h4>Wikipedia Says:</h4>
-            <div class='wiki-content'>${wikiInfoFallback}</div>
-          </div>
-        ` : ""}
-        
-        ${webArticlesFallback.length > 0 ? `
-          <div class='web-references'>
-            <h4>Related Articles:</h4>
-            <div class='references-grid'>
-              ${webArticlesFallback.map(article => `
-                <div class='article-card'>
-                  <h5>${article.title}</h5>
-                  <p class='snippet'>${article.snippet}</p>
-                  <div class='article-footer'>
-                    <span class='source'>${article.source}</span>
-                    <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
+        if (wikiInfoFallback || webArticlesFallback.length > 0) {
+          htmlResponse = `
+            <div class='ai-response'>
+              <div class='response-main'>${response}</div>
+              
+              ${wikiInfoFallback && wikiInfoFallback !== response ? `
+                <div class='wiki-section'>
+                  <h4>Additional Information:</h4>
+                  <div class='wiki-content'>${wikiInfoFallback}</div>
+                </div>
+              ` : ""}
+              
+              ${webArticlesFallback.length > 0 ? `
+                <div class='web-references'>
+                  <h4>Related Articles:</h4>
+                  <div class='references-grid'>
+                    ${webArticlesFallback.map(article => `
+                      <div class='article-card'>
+                        <h5>${article.title}</h5>
+                        <p class='snippet'>${article.snippet}</p>
+                        <div class='article-footer'>
+                          <span class='source'>${article.source}</span>
+                          <a href="${article.url}" target="_blank" rel="noopener">Read More →</a>
+                        </div>
+                      </div>
+                    `).join('')}
                   </div>
                 </div>
-              `).join('')}
+              ` : ""}
             </div>
-          </div>
-        ` : ""}
-      </div>
-    `;
+          `;
+        }
       } catch (fallbackError) {
         console.error("Fallback wiki/web search error:", fallbackError);
-        return response = fallbackError;
       }
     }
 
-    // Save the conversation history (user and AI messages)
+    // Save conversation history
     chatHistory.push({ sender: 'User', text: message });
     if (response) {
       chatHistory.push({ sender: 'AI', text: response });
     }
     conversationData.set(chatId, chatHistory);
 
-    // (Optional) Get current goal from your application context
-    const currentGoal = getCurrentGoal();
-
-    // Finally, send back the response and formatted HTML
     res.json({ response, html: htmlResponse });
   } catch (error) {
     console.error("Chat error:", error);
-    res.status(500).json({ response: "Sorry, I encountered an error.", html: "<div class='error-message'>Sorry, I encountered an error.</div>" });
+    res.status(500).json({ 
+      response: "Sorry, I encountered an error.", 
+      html: "<div class='error-message'>Sorry, I encountered an error.</div>" 
+    });
   }
 });
 
-// Feedback API endpoint
+// Feedback endpoint
 expressApp.post("/feedback", (req, res) => {
   const { message, correctResponse } = req.body;
-  if (message === ('correction:').toLowerCase()) {
+  
+  if (message.toLowerCase().startsWith('correction:')) {
     const normalizedInput = normalizeText(
-      message.replace(/[,'](correction: )/g, "").toLowerCase()
+      message.replace(/^correction:\s*/i, "").toLowerCase()
     );
     knowledge[normalizedInput] = correctResponse;
     knowledge[message.toLowerCase()] = correctResponse;
@@ -1404,251 +576,7 @@ expressApp.post("/feedback", (req, res) => {
   res.json({ response: "Thank you for your feedback!" });
 });
 
-// Try to start local server for AI when /start is posted from HTML JavaScript
-const startManualPORT = 53483;
-
-// Updated the getLocalIpAddress function to highlight your specific IP
-function getLocalIpAddress() {
-  const { networkInterfaces } = require("os");
-  const nets = networkInterfaces();
-  const results = [];
-  const targetIP = "192.168.0.62";
-
-  for (const name of Object.keys(nets))
-    for (const net of nets[name]) {
-      // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-      if (net.family === "IPv4" && !net.internal) {
-        if (net.address === targetIP) {
-          console.log("\n=== Your Main Network Interface ===");
-          console.log(`Interface: ${name}`);
-          console.log(`IP Address: ${net.address} (This is your machine)`);
-          console.log(`Netmask: ${net.netmask}`);
-        }
-        results.push({
-          name: name,
-          address: net.address,
-          netmask: net.netmask,
-          isMain: net.address === targetIP,
-        });
-      }
-    }
-  // Sort results to put your IP first
-  results.sort((a, b) => b.isMain - a.isMain);
-  return results;
-}
-
-// Move the route definition before the server startup
-expressApp.get("/", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "public", "AI_HtWebz_Assistant_Version 0.4.html")
-  );
-});
-
-// Update the manual server start
-expressApp.post("/start", async (req, res) => {
-  const localIps = getLocalIpAddress();
-
-  const manualServer = express();
-  manualServer.use(express.static(path.join(__dirname, "public")));
-
-  manualServer.get("/", (req, res) => {
-    res.sendFile(
-      path.join(__dirname, "public", "AI_HtWebz_Assistant_Version 0.4.html")
-    );
-  });
-
-  manualServer.listen(startManualPORT, "0.0.0.0", () => {
-    console.log("\n=== Manual Server Network Information ===");
-    console.log(`Local Access: http://localhost:${startManualPORT}`);
-    console.log(`\nNetwork Access:`);
-
-    if (localIps.length > 0) {
-      localIps.forEach(({ name, address, netmask }) => {
-        console.log(`\nInterface: ${name}`);
-        console.log(`URL: http://${address}:${startManualPORT}`);
-        console.log(`Netmask: ${netmask}`);
-      });
-    } else {
-      console.log("No network interfaces found");
-    }
-  });
-
-  res.json({ status: "Manual server started" });
-});
-
-// Add these new helper functions
-async function findRelatedWikiArticles(topic) {
-  try {
-    const searchResults = await wiki().search(topic, 5);
-    return searchResults.results.map(result => result.title);
-  } catch (error) {
-    console.error("Error finding related articles:", error);
-    return null;
-  }
-}
-
-async function getWikipediaInfo(query, previousContext = null) {
-  const sanitizedQuery = query
-    .toLowerCase()
-    .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
-    .replace(/[?.,!]/g, '')
-    .trim();
-
-  try {
-    // If there's previous context, try to use it for better search
-    let searchQuery = sanitizedQuery;
-    if (previousContext) {
-      const contextWords = previousContext.split(' ')
-        .filter(word => word.length > 3)
-        .slice(-3)
-        .join(' ');
-      searchQuery = `${contextWords} ${sanitizedQuery}`;
-    }
-
-    const searchResults = await wiki().search(searchQuery);
-    if (!searchResults.results || !searchResults.results.length) {
-      return `Sorry, I couldn't find any relevant information about ${query}.`;
-    }
-
-    const page = await wiki().page(searchResults.results[0]);
-    const [summary, references] = await Promise.all([
-      page.summary(),
-      page.references()
-    ]);
-
-    let response = summary;
-
-    // Add a reference if available
-    if (references && references.length > 0) {
-      response += `\n\nSource: ${references[0]}`;
-    }
-
-    return response;
-  } catch (error) {
-    console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
-    return `Sorry, I couldn't find any relevant information about ${query}.`;
-  }
-}
-
-// Add styles route
-expressApp.get("/styles.css", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "styles.css"));
-});
-
-// Update main server startup with static file serving
-expressApp.use("/", express.static(path.join(__dirname, "public")));
-
-// Enable CORS for external access
-//expressApp.use(cors());
-//expressApp.use(bodyParser.json());
-//expressApp.use(express.static(path.join(__dirname, "public")));
-
-// Function to get local IP address
-//function getLocalIpAddresses() {
-//const interfaces = require("os").networkInterfaces();
-//const results = [];
-
-//for (const name of Object.keys(interfaces)) {
-//for (const net of interfaces[name]) {
-//if (net.family === "IPv4" && !net.internal) {
-//results.push({ name, address: net.address });
-//}
-//}
-//}
-
-//return results.length > 0 ? results : [{ name: "localhost", address: "127.0.0.1" }];
-//}
-//const externalPort = 3001;
-// Start server and allow external access
-//expressApp.listen(PORT, "0.0.0.0", () => {
-//const localIps = getLocalIpAddresses();
-
-//localIps.forEach(({ name, address }) => {
-//  console.log(`- Network (${name}): http://${address}:${externalPort}`);
-//});
-
-//if (process.env.CODESPACE_NAME) {
-//  console.log(`- GitHub Codespaces: https://${process.env.CODESPACE_NAME}-${externalPort}.githubpreview.dev`);
-//}
-//});
-
-// Electron App Initialization
-//let win;
-
-// Update createWindow to use the first valid network interface
-//function createWindow() {
-//const localIps = getLocalIpAddress();
-//win = new BrowserWindow({
-//width: 1250,
-//height: 1150,
-//webPreferences: {
-//nodeIntegration: true,
-//contextIsolation: false,
-//},
-//});
-
-//const serverUrl =
-//  localIps.length > 0
-//   ? `http://${localIps[0].address}:${PORT}`
-//   : `http://localhost:${PORT}`;
-
-//win.loadURL(serverUrl).catch((error) => {
-//console.error("Failed to load URL:", error);
-//});
-
-//win.on("closed", () => {
-//  win = null;
-//});
-
-//console.log(`\nElectron app loading from: ${serverUrl}`);
-//}
-
-//app
-//.whenReady()
-//.then(() => {
-//createWindow();
-
-//app.on("activate", () => {
-//if (BrowserWindow.getAllWindows().length === 0) {
-//createWindow();
-//console.log("BrowserWindow created successfully.");
-//}
-//});
-//})
-//.catch((error) => {
-//  console.error("Error creating BrowserWindow:", error);
-//});
-
-//app.on("window-all-closed", () => {
-//if (process.platform !== "darwin") {
-//app.quit();
-//}
-//});
-
-console.log("Server.js loaded successfully, and has been initialized.");
-
-// Verification check to ensure all necessary variables and functions are initialized
-if (
-  !expressApp ||
-  !PORT ||
-  !chatEnabled ||
-  !usersFile ||
-  !users ||
-  !knowledgeFile ||
-  !knowledge ||
-  !trainingDataFile ||
-  !trainingData ||
-  !vocab ||
-  !model ||
-  !data ||
-  !labels
-) {
-  console.error(
-    "Initialization error: One or more necessary variables or functions are not initialized."
-  );
-}
-
-// Endpoint to get user conversations
+// Get user conversations
 expressApp.post("/getConversations", (req, res) => {
   const { accountId } = req.body;
 
@@ -1662,7 +590,7 @@ expressApp.post("/getConversations", (req, res) => {
   res.json({ success: true, conversations: user.conversations || {} });
 });
 
-// Endpoint to save user conversations
+// Save user conversations
 expressApp.post("/saveConversation", (req, res) => {
   const { accountId, chatId, conversation } = req.body;
 
@@ -1682,7 +610,7 @@ expressApp.post("/saveConversation", (req, res) => {
   res.json({ success: true });
 });
 
-// Endpoint to delete user conversation
+// Delete user conversation
 expressApp.post("/deleteConversation", (req, res) => {
   const { accountId, chatId } = req.body;
 
@@ -1702,219 +630,71 @@ expressApp.post("/deleteConversation", (req, res) => {
   res.json({ success: false, message: "Conversation not found." });
 });
 
-// Add this function if not already present:
-async function fuzzyMatch(word, knowledge) {
-  if (!word || !knowledge) return word;
+// Get local IP address
+function getLocalIpAddress() {
+  const { networkInterfaces } = require("os");
+  const nets = networkInterfaces();
+  const results = [];
+  const targetIP = "192.168.0.62";
 
-  // Try exact match first
-  if (knowledge[word.toLowerCase()]) {
-    return knowledge[word.toLowerCase()];
-  }
-
-  // Find closest match using Levenshtein distance
-  let bestMatch = word;
-  let minDistance = Infinity;
-
-  Object.keys(knowledge).forEach(key => {
-    const distance = getLevenshteinDistance(word.toLowerCase(), key.toLowerCase());
-    if (distance < minDistance) {
-      minDistance = distance;
-      bestMatch = key;
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+      if (net.family === "IPv4" && !net.internal) {
+        if (net.address === targetIP) {
+          console.log("\n=== Your Main Network Interface ===");
+          console.log(`Interface: ${name}`);
+          console.log(`IP Address: ${net.address} (This is your machine)`);
+          console.log(`Netmask: ${net.netmask}`);
+        }
+        results.push({
+          name: name,
+          address: net.address,
+          netmask: net.netmask,
+          isMain: net.address === targetIP,
+        });
+      }
     }
-  });
-
-  // Return matched word if confidence is high enough
-  return minDistance < word.length * 0.3 ? knowledge[bestMatch] : word;
+  }
+  results.sort((a, b) => b.isMain - a.isMain);
+  return results;
 }
 
-async function addDefinitionToTrainingData(word, definition) {
-  try {
-    if (!trainingData.vocabulary.definitions) {
-      trainingData.vocabulary.definitions = [];
-    }
+// Serve main page
+expressApp.get("/", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "public", "AI_HtWebz_Assistant_Version 0.4.html")
+  );
+});
 
-    // Avoid duplicates
-    const existingDefIndex = trainingData.vocabulary.definitions.findIndex(
-      def => def.word.toLowerCase() === word.toLowerCase()
-    );
+// Styles route
+expressApp.get("/styles.css", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "styles.css"));
+});
 
-    if (existingDefIndex >= 0) {
-      trainingData.vocabulary.definitions[existingDefIndex].definition = definition;
-    } else {
-      trainingData.vocabulary.definitions.push({
-        word: word,
-        definition: definition
-      });
-    }
+// Static files
+expressApp.use("/", express.static(path.join(__dirname, "public")));
 
-    saveTrainingData();
-    console.log(`Added definition for: ${word}`);
-  } catch (error) {
-    console.error('Error adding definition:', error);
-  }
-}
+// Server startup
+expressApp.listen(PORT, "0.0.0.0", () => {
+  const localIps = getLocalIpAddress();
+  console.log("\n=== Server Network Information ===");
+  console.log(`Local Access: http://localhost:${PORT}`);
+  console.log(`\nNetwork Access URLs:`);
 
-async function searchWikipediaDefinition(word) {
-  try {
-    const searchResults = await wiki().search(word);
-    if (!searchResults.results || searchResults.results.length === 0) {
-      return null;
-    }
-
-    const page = await wiki().page(searchResults.results[0]);
-    const summary = await page.summary();
-
-    // Extract first sentence as definition
-    const definition = summary.split(/[.!?](?:\s|$)/)[0] + '.';
-
-    // Add to training data
-    await addDefinitionToTrainingData(word, definition);
-
-    return definition;
-  } catch (error) {
-    console.error(`Error getting Wikipedia definition for "${word}":`, error);
-    return null;
-  }
-}
-
-async function getWikipediaInfo(query, previousContext = null) {
-  const sanitizedQuery = query
-    .toLowerCase()
-    .replace(/^(what is|what are|who is|describe|explain|when did|where is|how did)\s+/i, '')
-    .replace(/[?.,!]/g, '')
-    .trim();
-
-  try {
-    // First try to find definition in training data
-    const existingDef = trainingData.vocabulary.definitions?.find(
-      def => def.word.toLowerCase() === sanitizedQuery
-    );
-
-    if (existingDef) {
-      return existingDef.definition;
-    }
-
-    // If no cached definition, search Wikipedia
-    const definition = await searchWikipediaDefinition(sanitizedQuery);
-    if (definition) {
-      return definition;
-    }
-
-    // If no definition found, continue with existing Wikipedia search logic
-    let searchQuery = sanitizedQuery;
-    if (previousContext) {
-      const contextWords = previousContext.split(' ')
-        .filter(word => word.length > 3)
-        .slice(-3)
-        .join(' ');
-      searchQuery = `${contextWords} ${sanitizedQuery}`;
-    }
-
-    const searchResults = await wiki().search(searchQuery);
-    if (!searchResults.results || !searchResults.results.length) {
-      return `Sorry, I couldn't find any relevant information about ${query}.`;
-    }
-
-    const page = await wiki().page(searchResults.results[0]);
-    const [summary, references] = await Promise.all([
-      page.summary(),
-      page.references()
-    ]);
-
-    let response = summary;
-
-    // Add a reference if available
-    if (references && references.length > 0) {
-      response += `\n\nSource: ${references[0]}`;
-    }
-
-    return response;
-  } catch (error) {
-    console.error(`Error fetching Wikipedia data for "${sanitizedQuery}":`, error);
-    return `Sorry, I couldn't find any relevant information about ${query}.`;
-  }
-}
-
-async function getDuckDuckGoResults(query) {
-  try {
-    const response = await axios.get('https://api.duckduckgo.com/', {
-      params: {
-        q: query,
-        format: 'json',
-        t: 'AIAssistant'
+  if (localIps.length > 0) {
+    localIps.forEach(({ name, address, isMain }) => {
+      if (isMain) {
+        console.log(`\n→ Main URL (Your IP): http://${address}:${PORT}`);
+        console.log(`  Use this URL to access from other devices on your network`);
+      } else {
+        console.log(`\nAlternative URL: http://${address}:${PORT}`);
       }
     });
-
-    const results = response.data.RelatedTopics
-      .filter(topic => topic.FirstURL && topic.Text)
-      .map(topic => ({
-        url: topic.FirstURL,
-        title: topic.Text.split(' - ')[0],
-        snippet: topic.Text.split(' - ').slice(1).join(' - ') || topic.Text,
-        source: new URL(topic.FirstURL).hostname.replace(/^www\./, '')
-      }))
-      .slice(0, 3); // Limit to top 3 results
-
-    return results;
-  } catch (error) {
-    console.error('Error fetching DuckDuckGo results:', error);
-    return [];
-  }
-}
-
-// Function to solve algebraic equations using math.js
-function solveAlgebra(equation) {
-  try {
-    const solution = math.simplify(equation).toString();
-    return `The solution to the equation "${equation}" is: ${solution}`;
-  } catch (error) {
-    console.error("Error solving algebraic equation:", error);
-    return "Sorry, I couldn't solve that algebraic equation. Please check the expression and try again.";
-  }
-}
-
-// Function to fetch algebraic solutions from Wikipedia
-async function getAlgebraSolutionFromWikipedia(query) {
-  try {
-    const searchResults = await wiki().search(query);
-    if (!searchResults.results || searchResults.results.length === 0) {
-      return `Sorry, I couldn't find any relevant information on Wikipedia about ${query}.`;
-    }
-
-    const page = await wiki().page(searchResults.results[0]);
-    const content = await page.content();
-    const algebraSection = content.sections.find(section => /algebra/i.test(section.title));
-
-    if (algebraSection) {
-      return `Here's what I found on Wikipedia about algebra related to "${query}":\n${algebraSection.content}`;
-    } else {
-      return `Sorry, I couldn't find specific algebraic information about ${query} on Wikipedia.`;
-    }
-  } catch (error) {
-    console.error(`Error fetching algebraic information from Wikipedia for query "${query}":`, error);
-    return `Sorry, I couldn't find any relevant information on Wikipedia about ${query}.`;
-  }
-}
-
-// Enhanced query type detection
-expressApp.post("/chat", async (req, res) => {
-  // ...existing code...
-
-  if (messageForChecks.match(/[\d+\-*/()^√π]|math|calculate|solve|algebra/i)) {
-    // Algebra handling
-    cleanedMessage = message.replace(/(math|calculate|solve|algebra)/gi, '').trim();
-    response = solveAlgebra(cleanedMessage);
-    htmlResponse = `<div class='math-response'>${response}</div>`;
-  } else if (messageForChecks.includes("algebra")) {
-    // Wikipedia algebra handling
-    cleanedMessage = message.replace(/algebra/gi, '').trim();
-    response = await getAlgebraSolutionFromWikipedia(cleanedMessage);
-    htmlResponse = `<div class='wiki-response'>
-      <div class='wiki-content'>${response}</div>
-    </div>`;
   } else {
-    // ...existing code...
+    console.log("No network interfaces found");
   }
 
-  // ...existing code...
+  console.log("\nServer startup & setup was successful.");
 });
+
+console.log("Server.js loaded successfully, and has been initialized.");

@@ -1797,6 +1797,36 @@
       "input": "what do you think of today?",
       "output": "As an AI I dont have preferences or personal experiences of what happended today, but I bet it was really great! 😊",
       "user": "defaultUser"
+    },
+    {
+      "input": "hi",
+      "output": "Hello there! Hi may hi help you? Sources: wikipedia",
+      "timestamp": "2025-10-06T00:27:16.294Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "how are you doing?",
+      "output": "Not too much, but hey I'm doing great! Sources: wikipedia",
+      "timestamp": "2025-10-06T00:27:30.111Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "hey",
+      "output": "Hello there! Hey hey I hey you? Sources: wikipedia",
+      "timestamp": "2025-10-06T00:29:33.155Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "how are you doing bro?",
+      "output": "Not too much, but hey I'm doing great! Sources: wikipedia",
+      "timestamp": "2025-10-06T00:29:48.548Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "That's good to hear.",
+      "output": "I'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia",
+      "timestamp": "2025-10-06T00:30:07.116Z",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
@@ -3454,6 +3484,22 @@
       {
         "word": "the situation about reform movement situation",
         "definition": "The 2024 Bangladesh quota reform movement was a series of anti-government and pro-democracy protests in Bangladesh, spearheaded primarily by university students."
+      },
+      {
+        "word": "overall what is gold",
+        "definition": "The 2020 Summer Olympics, officially known as the Games of the XXXII Olympiad, were an international multi-sport event held in Tokyo, Japan, from 23 July to 8 August 2021."
+      },
+      {
+        "word": "1+1",
+        "definition": "1+1 is a mathematical expression that evaluates to:\n\n2 (number) (in ordinary arithmetic)\n1 (number) (in Boolean algebra with a notation where '+' denotes a logical disjunction)\n0 (number) (in Boolean algebra with a notation where '+' denotes 'exclusive or' operation, or in a quotient ring of numbers modulo 2)\nThe terms 1+1, One Plus One, or One and One may refer to:."
+      },
+      {
+        "word": "bill nye the science guy",
+        "definition": "Bill Nye the Science Guy is an American science education television program created by Bill Nye, James McKenna, and Erren Gottlieb, with Nye starring as a fictionalized version of himself."
+      },
+      {
+        "word": "steve jobs",
+        "definition": "Steven Paul Jobs (February 24, 1955 – October 5, 2011) was an American businessman, inventor, and investor best known for co-founding the technology company Apple Inc."
       }
     ],
     "hi": 2,
@@ -6835,7 +6881,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-03-03T20:09:49.077Z",
+  "lastTrainingDate": "2025-10-06T00:30:07.116Z",
   "definitions": [
     {
       "word": "you",

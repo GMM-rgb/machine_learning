@@ -2788,11 +2788,339 @@
       "Chat 30": [
         {
           "sender": "User",
-          "text": "Hey again, how are you?"
+          "text": "Hey"
         },
         {
           "sender": "AI",
-          "text": "Not too much, but hey I'm doing great! And I'm happy to see you! Sources: wikipedia"
+          "text": "Hello there! Hey hey I hey you?"
+        },
+        {
+          "sender": "User",
+          "text": "lol"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"hello there! Hey hey I hey you?\" . Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "thanks then"
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help let me know! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "bye"
+        },
+        {
+          "sender": "AI",
+          "text": "Bye you later, maybe tommorow perhaps? 😊"
+        },
+        {
+          "sender": "User",
+          "text": "hello again nice to see you"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"bye you later, maybe tommorow perhaps? 😊\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hi may hi help you?"
+        },
+        {
+          "sender": "User",
+          "text": "idk"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"hello there! Hi may hi help you?\" . Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "what is gold"
+        },
+        {
+          "sender": "AI",
+          "text": "Here's what I found on Wikipedia: Gold is a chemical element with the chemical symbol Au (from Latin aurum) and atomic number 79."
+        },
+        {
+          "sender": "User",
+          "text": "overall what is gold?"
+        },
+        {
+          "sender": "AI",
+          "text": "The 2020 Summer Olympics, officially known as the Games of the XXXII Olympiad, were an international multi-sport event held in Tokyo, Japan, from 23 July to 8 August 2021."
+        },
+        {
+          "sender": "User",
+          "text": "are you sure?"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"the 2020 summer olympics, officially known as the games of the xxxii olympiad, were an international multi-sport event held in tokyo, japan, from 23 july to 8 august 2021.\" . --- references ---\nwikipedia: undefined - function link() { [native code] }\n\n\nsources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "wait what"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm here, take your time."
+        },
+        {
+          "sender": "User",
+          "text": "what is 1+1"
+        },
+        {
+          "sender": "AI",
+          "text": "Sorry, I couldn't solve that math problem. Please check the expression and try again."
+        },
+        {
+          "sender": "User",
+          "text": "1+!"
+        },
+        {
+          "sender": "AI",
+          "text": "The factorial of 1 is 1"
+        },
+        {
+          "sender": "User",
+          "text": "1!"
+        },
+        {
+          "sender": "AI",
+          "text": "The factorial of 1 is 1"
+        },
+        {
+          "sender": "User",
+          "text": "1!+5"
+        },
+        {
+          "sender": "AI",
+          "text": "The factorial of 1 is 1"
+        },
+        {
+          "sender": "User",
+          "text": "!5+5"
+        },
+        {
+          "sender": "AI",
+          "text": "The factorial of 5 is 120"
+        },
+        {
+          "sender": "User",
+          "text": "who are you"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm htwebz assistant here to help you, the more information you provide me, the better I can help you! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "what"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm htwebz assistant here to help you, the more information you provide me, the better I can help you! Sources: wikipedia\". --- references ---\nwikipedia: undefined - function link() { [native code] }\n\n\nsources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "i don't get it"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"i'm htwebz assistant here to help you, the more information you provide me, the better I can help you! Sources: wikipedia\". --- references ---\nwikipedia: undefined - function link() { [native code] }\n\n\nsources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "okay"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How okay I help you?"
+        },
+        {
+          "sender": "User",
+          "text": "uwu"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"hello there! How okay I help you?\" . Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "no"
+        },
+        {
+          "sender": "AI",
+          "text": "Okay, I will make sure no remember that."
+        },
+        {
+          "sender": "User",
+          "text": "1+5"
+        },
+        {
+          "sender": "AI",
+          "text": "The answer is: 6"
+        },
+        {
+          "sender": "User",
+          "text": "what is bill nye the science guy"
+        },
+        {
+          "sender": "AI",
+          "text": "Bill Nye the Science Guy is an American science education television program created by Bill Nye, James McKenna, and Erren Gottlieb, with Nye starring as a fictionalized version of himself."
+        },
+        {
+          "sender": "User",
+          "text": "that's cool"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"bill nye the science guy is an american science education television program created by bill nye, james mckenna, and erren gottlieb, with nye starring as a fictionalized version of himself.\" . Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "cool"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"bill nye the science guy is an american science education television program created by bill nye, james mckenna, and erren gottlieb, with nye starring as a fictionalized version of himself.\" . Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "nevermind"
+        },
+        {
+          "sender": "AI",
+          "text": "Alright, let me know if you need help."
+        },
+        {
+          "sender": "User",
+          "text": "who is steve jobs"
+        },
+        {
+          "sender": "AI",
+          "text": "Steven Paul Jobs (February 24, 1955 – October 5, 2011) was an American businessman, inventor, and investor best known for co-founding the technology company Apple Inc."
+        },
+        {
+          "sender": "User",
+          "text": "how long did steve jobs live for?"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"steven paul jobs (february 24, 1955 – october 5, 2011) was an american businessman, inventor, and investor best known for co-founding the technology company apple inc.\" . --- references ---\nwikipedia: undefined - function link() { [native code] }\n\n\nsources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "good ai"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"steven paul jobs (february 24, 1955 – october 5, 2011) was an american businessman, inventor, and investor best known for co-founding the technology company apple inc.\" . --- references ---\nwikipedia: undefined - function link() { [native code] }\n\n\nsources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "your amazing"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "fart"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "wow"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"i'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia\". Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "bruh"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"i'm still learning how to respond to \"i'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia\". Sources: wikipedia\". Sources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "why???????????????????????????"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"i'm still learning how to respond to \"i'm still learning how to respond to \"i'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia\". Sources: wikipedia\". Sources: wikipedia\". Sources: wikipedia\". --- references ---\nwikipedia: undefined - function link() { [native code] }\n\n\nsources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "fine"
+        },
+        {
+          "sender": "AI",
+          "text": "I'm still learning how to respond to \"i'm still learning how to respond to \"i'm still learning how to respond to \"i'm still learning how to respond to \"i'm still learning how to respond to \"i'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia\". Sources: wikipedia\". Sources: wikipedia\". Sources: wikipedia\". --- references ---\nwikipedia: undefined - function link() { [native code] }\n\n\nsources: wikipedia\". Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "thanks, whatever"
+        },
+        {
+          "sender": "AI",
+          "text": "Your very welcome, if you need help let me know!"
+        },
+        {
+          "sender": "User",
+          "text": "hi"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hi may hi help you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "how are you doing?"
+        },
+        {
+          "sender": "AI",
+          "text": "Not too much, but hey I'm doing great! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "hey"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! Hey hey I hey you? Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "how are you doing bro?"
+        },
+        {
+          "sender": "AI",
+          "text": "Not too much, but hey I'm doing great! Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "That's good to hear."
+        },
+        {
+          "sender": "AI",
+          "text": "I'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia"
         }
       ]
     }
