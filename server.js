@@ -60,8 +60,29 @@ if (fs.existsSync(trainingDataFile)) {
 }
 
 function saveTrainingData() {
+  // Respect environment flag to prevent uncontrolled overwrites.
+  // To enable automatic saving, set ALLOW_AUTOSAVE=true in the environment.
+  if (process.env.ALLOW_AUTOSAVE !== "true") {
+    console.log("[saveTrainingData] Autosave disabled (set ALLOW_AUTOSAVE=true to enable). Skipping write to training_data.json");
+    return;
+  }
+
   trainingData.lastTrainingDate = new Date().toISOString();
-  fs.writeFileSync(trainingDataFile, JSON.stringify(trainingData, null, 2));
+
+  // Write atomically with a timestamped backup of the previous file.
+  try {
+    const tmpFile = `${trainingDataFile}.tmp`;
+    const backupFile = `${trainingDataFile}.${Date.now()}.bak`;
+    if (fs.existsSync(trainingDataFile)) {
+      // Keep a backup of the previous state before overwriting.
+      fs.copyFileSync(trainingDataFile, backupFile);
+    }
+    fs.writeFileSync(tmpFile, JSON.stringify(trainingData, null, 2));
+    fs.renameSync(tmpFile, trainingDataFile);
+    console.log(`[saveTrainingData] training_data.json saved (backup: ${backupFile})`);
+  } catch (err) {
+    console.error("[saveTrainingData] Failed to save training data:", err);
+  }
 }
 
 // Initialize ResponseGenerator

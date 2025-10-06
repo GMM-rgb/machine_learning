@@ -250,11 +250,27 @@ class ResponseGenerator {
   }
 
   async saveTrainingData() {
+    // Respect environment flag to prevent uncontrolled overwrites.
+    if (process.env.ALLOW_AUTOSAVE !== "true") {
+      console.log("[ResponseGenerator.saveTrainingData] Autosave disabled (set ALLOW_AUTOSAVE=true to enable). Skipping write to training_data.json");
+      return;
+    }
+
     this.trainingData.lastTrainingDate = new Date().toISOString();
-    fs.writeFileSync(
-      this.trainingDataPath,
-      JSON.stringify(this.trainingData, null, 2)
-    );
+
+    // Write atomically with a timestamped backup of the previous file.
+    try {
+      const tmpFile = `${this.trainingDataPath}.tmp`;
+      const backupFile = `${this.trainingDataPath}.${Date.now()}.bak`;
+      if (fs.existsSync(this.trainingDataPath)) {
+        fs.copyFileSync(this.trainingDataPath, backupFile);
+      }
+      fs.writeFileSync(tmpFile, JSON.stringify(this.trainingData, null, 2));
+      fs.renameSync(tmpFile, this.trainingDataPath);
+      console.log(`[ResponseGenerator.saveTrainingData] training_data.json saved (backup: ${backupFile})`);
+    } catch (err) {
+      console.error("[ResponseGenerator.saveTrainingData] Failed to save training data:", err);
+    }
   }
 
   // NEW: Detect if user is answering AI's previous question
