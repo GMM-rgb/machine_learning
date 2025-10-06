@@ -1,6 +1,7 @@
 const TemplateMatcher = require("./template_matcher");
 const tf = require("@tensorflow/tfjs-node-gpu");
 const fs = require("fs");
+const path = require("path");
 const axios = require("axios");
 const levenshtein = require("fast-levenshtein");
 const readline = require("readline");
@@ -22,8 +23,10 @@ class ResponseGenerator {
     trainingDataPath = "training_data.json",
     modelPath = "model/"
   ) {
-    this.matcher = new TemplateMatcher(knowledgePath, trainingDataPath);
-    this.modelPath = modelPath;
+  this.matcher = new TemplateMatcher(knowledgePath, trainingDataPath);
+  // Convert to absolute path
+  this.modelPath = path.resolve(modelPath);
+  this.modelSaveDir = path.join(this.modelPath, 'latest');
     this.vocab = {};
     this.trainingDataPath = trainingDataPath;
     this.trainingData = {
@@ -78,39 +81,53 @@ class ResponseGenerator {
     }
 
     try {
-      if (process.env.USE_MEMORY_CACHE === "true" && globalCache.model) {
-        this.model = globalCache.model;
-        console.log(chalk.green("✅ Model loaded from memory cache"));
-        return;
+      // Ensure model save directory exists
+      if (!fs.existsSync(this.modelSaveDir)) {
+        fs.mkdirSync(this.modelSaveDir, { recursive: true });
       }
 
-      const modelFiles = await fs.promises
-        .readdir(this.modelPath)
-        .catch(() => []);
-      if (modelFiles.length > 0) {
+      // Check if model.json exists in the save directory
+      const modelJsonPath = path.join(this.modelSaveDir, "model.json");
+
+      if (fs.existsSync(modelJsonPath)) {
+        console.log(chalk.yellow("📂 Found existing model, loading..."));
         this.model = await tf.loadLayersModel(
-          `file://${this.modelPath}/model.json`
+          `file://${modelJsonPath}`
         );
         globalCache.model = this.model;
-        console.log(chalk.green("✅ Model loaded from file"));
+        console.log(chalk.green("✅ Existing model loaded successfully!"));
+        console.log(chalk.cyan(`   Model has ${this.model.layers.length} layers`));
         return;
       }
 
-      console.log(chalk.yellow("Creating new model..."));
+      console.log(chalk.yellow("⚠️  No existing model found. Creating new model..."));
+      console.log(chalk.yellow("   This is normal on first run."));
       this.model = await this.createNewModel();
       globalCache.model = this.model;
-      await this.model.save(`file://${this.modelPath}`);
-      console.log(chalk.green("✅ New model created and saved"));
+
+      // Save immediately after creation
+      console.log(chalk.cyan("💾 Saving newly created model..."));
+      await this.model.save(`file://${this.modelSaveDir}`);
+      console.log(chalk.green("✅ New model created and saved to disk"));
+      console.log(chalk.cyan(`   Location: ${this.modelSaveDir}`));
     } catch (error) {
       console.error(chalk.red("❌ Error loading model:"), error);
+      console.log(chalk.yellow("⚠️  Creating emergency backup model..."));
       this.model = await this.createNewModel();
       globalCache.model = this.model;
+      
+      // Try to save the backup model
+      try {
+        await this.model.save(`file://${this.modelSaveDir}`);
+        console.log(chalk.green("✅ Backup model saved"));
+      } catch (saveError) {
+        console.error(chalk.red("❌ Could not save backup model:"), saveError);
+      }
     }
   }
 
   async createNewModel() {
     const model = tf.sequential();
-
     model.add(
       tf.layers.embedding({
         inputDim: 10000,
@@ -186,7 +203,6 @@ class ResponseGenerator {
         console.log(chalk.green("✅ Training data loaded"));
       } catch (error) {
         console.error(chalk.red("❌ Error loading data:"), error);
-        this.initializeEmptyTrainingData();
       }
     } else {
       this.initializeEmptyTrainingData();
@@ -594,18 +610,18 @@ class ResponseGenerator {
       this.detectUserIntent(input).type === "QUESTION" ||
       input.toLowerCase().includes("what") ||
       input.toLowerCase().includes("how") ||
-      input.toLowerCase().includes("why")
-    ) {
-      response = await this.addWebReferences(response, input);
+      input.toLowerCase().includes("why")) {
+    try {
+      // Ensure save directory exists
+      if (!fs.existsSync(this.modelSaveDir)) {
+        fs.mkdirSync(this.modelSaveDir, { recursive: true });
+      }
+      await this.model.save(`file://${this.modelSaveDir}`);
+      return true;
+    } catch (error) {
+      console.error(chalk.red("❌ Error saving model to disk:"), error);
+      return false;
     }
-
-    return this.addContextToResponse(response, understanding);
-  }
-
-  prepareContextInput(input, understanding, history) {
-    let contextInput = input;
-
-    if (history && history.length > 0) {
       const relevantHistory = history
         .slice(-3)
         .map((msg) => `${msg.sender}: ${msg.text}`)
@@ -707,83 +723,56 @@ class ResponseGenerator {
     tfidf.addDocument(text2.toLowerCase());
 
     let similarity = 0;
-    const terms = new Set([
-      ...this.tokenizer.tokenize(text1.toLowerCase()),
-      ...this.tokenizer.tokenize(text2.toLowerCase()),
-    ]);
+    const model = tf.sequential();
 
-    terms.forEach((term) => {
-      const score1 = tfidf.tfidf(term, 0);
-      const score2 = tfidf.tfidf(term, 1);
-      similarity += Math.min(score1, score2);
+    model.add(
+      tf.layers.embedding({
+        inputDim: 10000,
+        outputDim: 128,
+        inputLength: 50,
+      })
+    );
+
+    model.add(
+      tf.layers.lstm({
+        units: 64,
+        returnSequences: true,
+      })
+    );
+
+    model.add(
+      tf.layers.lstm({
+        units: 32,
+      })
+    );
+
+    model.add(
+      tf.layers.dense({
+        units: 64,
+        activation: "relu",
+      })
+    );
+
+    model.add(
+      tf.layers.dense({
+        units: 32,
+        activation: "relu",
+      })
+    );
+
+    model.add(
+      tf.layers.dense({
+        units: 16,
+        activation: "softmax",
+      })
+    );
+
+    model.compile({
+      optimizer: tf.train.adam(0.001),
+      metrics: ["accuracy"],
     });
-
-    return similarity / terms.size;
-  }
-
-  extractKeyTerms(text) {
-    if (!text) return [];
-
-    const cleanText = text.toLowerCase().replace(/[^\w\s]/g, "");
-    const tokens = this.tokenizer.tokenize(cleanText);
-
-    const stopwords = new Set([
-      "a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
-      "has", "he", "in", "is", "it", "its", "of", "on", "that", "the",
-      "to", "was", "were", "will", "with",
-    ]);
-
-    const filteredTokens = tokens.filter((token) => !stopwords.has(token));
-
-    const termFreq = {};
-    filteredTokens.forEach((token) => {
-      termFreq[token] = (termFreq[token] || 0) + 1;
-    });
-
-    const sortedTerms = Object.entries(termFreq)
-      .sort(([, a], [, b]) => b - a)
-      .map(([term]) => term);
-
-    return sortedTerms.slice(0, 5);
-  }
-
-  async searchKnowledgeBase(term) {
-    if (!term) return null;
-
-    try {
-      const cacheKey = `kb_${term.toLowerCase()}`;
-      if (this.modelCache.has(cacheKey)) {
-        return this.modelCache.get(cacheKey).data;
-      }
-
-      const relevantData = this.trainingData.conversations.find(
-        (conv) =>
-          conv.input.toLowerCase().includes(term.toLowerCase()) ||
-          conv.output.toLowerCase().includes(term.toLowerCase())
-      );
-
-      if (relevantData) {
-        this.modelCache.set(cacheKey, {
-          data: relevantData.output,
-          timestamp: Date.now(),
-        });
-        return relevantData.output;
-      }
-
-      const wikiResult = await this.searchWikipedia(term);
-      if (wikiResult) {
-        this.modelCache.set(cacheKey, {
-          data: wikiResult,
-          timestamp: Date.now(),
-        });
-        return wikiResult;
-      }
-
-      return null;
-    } catch (error) {
-      console.error(`Error searching knowledge base for term "${term}":`, error);
-      return null;
-    }
+    console.log(chalk.green("✅ New model created"));
+    return model;
   }
 
   async searchWikipedia(term) {
@@ -998,21 +987,60 @@ class ResponseGenerator {
     try {
       if (!input || !output) return;
 
-      const inputTokens = this.tokenizer.tokenize(input.toLowerCase());
-      const inputIndices = inputTokens.map((token) => {
-        if (!this.vocab[token]) {
-          this.vocab[token] = Object.keys(this.vocab).length + 1;
-        }
-        return parseInt(this.vocab[token]);
-      });
-
+      // Update training data first
       await this.updateTrainingData(input, output);
-      globalCache.lastUpdate = this.currentDateTime;
 
-      console.log(chalk.green("✅ Learned from interaction"));
+      // Only retrain model periodically (every 10 interactions) to avoid constant retraining
+      const conversationCount = this.trainingData.conversations.length;
+      const shouldRetrain = conversationCount % 10 === 0;
+
+      if (shouldRetrain) {
+        console.log(chalk.yellow(`📚 Learning checkpoint reached (${conversationCount} conversations)`));
+        console.log(chalk.cyan("💾 Saving model with new knowledge..."));
+        try {
+          const saved = await this.saveModelToDisk();
+          if (saved) {
+            // Update global cache timestamp
+            globalCache.lastUpdate = new Date().toISOString();
+          }
+        } catch (saveError) {
+          console.error(chalk.red("❌ Error saving model:"), saveError);
+        }
+      } else {
+        console.log(chalk.green(`✅ Learned from interaction (${conversationCount} total conversations)`));
+      }
     } catch (error) {
       console.error(chalk.red("❌ Learning error:"), error);
     }
+  }
+
+  // Method to manually save the model
+  async saveModel() {
+    try {
+      console.log(chalk.cyan("💾 Manually saving model..."));
+      const saved = await this.saveModelToDisk();
+      if (saved) {
+        await this.saveTrainingData();
+        console.log(chalk.green("✅ Model and training data saved!"));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(chalk.red("❌ Error saving model:"), error);
+      return false;
+    }
+  }
+
+  // Method to get model info
+  getModelInfo() {
+    return {
+      layers: this.model.layers.length,
+      trainableParams: this.model.countParams(),
+      conversations: this.trainingData.conversations.length,
+      vocabularySize: Object.keys(this.vocab).length,
+      lastUpdate: globalCache.lastUpdate,
+      modelPath: this.modelPath
+    };
   }
 
   async addWebReferences(response, query) {

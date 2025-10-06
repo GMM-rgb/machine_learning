@@ -3121,6 +3121,30 @@
         {
           "sender": "AI",
           "text": "I'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia"
+        },
+        {
+          "sender": "User",
+          "text": "sup"
+        },
+        {
+          "sender": "AI",
+          "text": "Hello there! How may I help you?"
+        },
+        {
+          "sender": "User",
+          "text": "how are you?"
+        },
+        {
+          "sender": "AI",
+          "text": "Not too much, but hey I'm doing great!"
+        },
+        {
+          "sender": "User",
+          "text": "good to hear from you"
+        },
+        {
+          "sender": "AI",
+          "text": "Really? Thanks! 😄"
         }
       ]
     }

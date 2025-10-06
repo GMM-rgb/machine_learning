@@ -1827,6 +1827,24 @@
       "output": "I'm glad you think so! I'm here to help you with anything you need. Sources: wikipedia",
       "timestamp": "2025-10-06T00:30:07.116Z",
       "user": "GMM-rgb"
+    },
+    {
+      "input": "sup",
+      "output": "Hello there! How may I help you?",
+      "timestamp": "2025-10-06T00:33:23.172Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "how are you?",
+      "output": "Not too much, but hey I'm doing great!",
+      "timestamp": "2025-10-06T00:33:32.043Z",
+      "user": "GMM-rgb"
+    },
+    {
+      "input": "good to hear from you",
+      "output": "Really? Thanks! 😄",
+      "timestamp": "2025-10-06T00:33:43.317Z",
+      "user": "GMM-rgb"
     }
   ],
   "vocabulary": {
@@ -6881,7 +6899,7 @@
     "awards": 3532,
     "excellence.": 3533
   },
-  "lastTrainingDate": "2025-10-06T00:30:07.116Z",
+  "lastTrainingDate": "2025-10-06T00:33:43.317Z",
   "definitions": [
     {
       "word": "you",
