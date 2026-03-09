@@ -16,7 +16,7 @@ This AI companion is designed to assist users in various tasks, provide informat
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/GMM-rgb/machine_learning.git
-   cd your-repo-name
+   cd repo-name
 
 Install Dependencies: Ensure you have node.js installed as well as npm, Then, install the necessary packages:
 ``` bash
